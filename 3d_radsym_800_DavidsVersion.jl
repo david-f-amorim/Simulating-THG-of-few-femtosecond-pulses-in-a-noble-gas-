@@ -26,19 +26,19 @@ P=(pres, pres, pres) # values for pressure gradient
 R = 1e-3            # aperture radius for Hankel transform    ## WHY ???
 N = 1024            # sample size for Hankel tansform         ## WHY ???
 
-grid = Grid.RealGrid(L, 800e-9, (200e-9, 1000e-9), 0.05e-12) # args: prop distance, central wavelength, (λlow, λhigh), pulse duration 
+grid = Grid.RealGrid(L, 800e-9, (200e-9, 1000e-9), 0.05e-12) 
 q = Hankel.QDHT(R, N, dim=2)
 
 energyfun, energyfun_ω = Fields.energyfuncs(grid, q)
 
-densityfun = let dens0=PhysData.density(gas, pres)
+densityfun = let dens0=PhysData.density(gas, pres)   # currently not used ?
     z -> dens0
 end
 
 ionpot = PhysData.ionisation_potential(gas)
 ionrate = Ionisation.ionrate_fun!_PPTcached(gas, λ0)
 
-responses = (Nonlinear.Kerr_field(PhysData.γ3_gas(gas)),Nonlinear.PlasmaCumtrapz(grid.to, grid.to, ionrate, ionpot))
+responses = (Nonlinear.Kerr_field(PhysData.γ3_gas(gas)),Nonlinear.PlasmaCumtrapz(grid.to, grid.to, ionrate, ionpot)) # !!!!
 
 #linop = LinearOps.make_const_linop(grid, q, PhysData.ref_index_fun(gas, pres))
 linop = LinearOps.make_linop(grid, q, coren)
@@ -52,6 +52,11 @@ Eω, transform, FT = Luna.setup(grid, q, dens, normfun, responses, inputs)
 # statsfun = Stats.collect_stats(grid, Eω, Stats.ω0(grid))
 output = Output.MemoryOutput(0, grid.zmax, 201)
 Luna.run(Eω, grid, linop, transform, FT, output)
+
+
+
+#-------------------------------------------------------------------------------------------
+
 
 ω = grid.ω
 t = grid.t
