@@ -153,4 +153,5 @@ for ii in 1:3
     plt.ylim(-1.8, 1.8)
 end
 
+plt.show()
 

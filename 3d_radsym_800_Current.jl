@@ -48,7 +48,7 @@ linop = LinearOps.make_linop(grid, q, coren)
 normfun = NonlinearRHS.norm_radial(grid, q, coren)
 
 responses = (Nonlinear.Kerr_field(PhysData.γ3_gas(gas)),
-            Nonlinear.PlasmaCumtrapz(grid.to, grid.to, ionrate, ionpot))  # ->> "grid.to" appears twice FIX THIS ?!
+            Nonlinear.PlasmaCumtrapz(grid.to, grid.to, ionrate, ionpot))  # ->> "grid.to" appears twice; FIX THIS ?!
 
 # ----------------- SET INPUT FIELD ----------------------------
 #                                       replace with DataField!
@@ -58,46 +58,49 @@ inputs = Fields.GaussGaussField(λ0=λ0, τfwhm=τ, energy=energy, w0=w0, propz=
 # ----------------- RUN SIMULATION ----------------------------
 
 Eω, transform, FT = Luna.setup(grid, q, dens, normfun, responses, inputs)
-output = Output.MemoryOutput(0, grid.zmax, 201)    # ???!!!!
+output = Output.MemoryOutput(0, grid.zmax, 201)    #                     ->> ???!!!!
 Luna.run(Eω, grid, linop, transform, FT, output)            
 
 
-# -----------------------------------------------------------------------------------------------------
-#     PLOTTING AND PROCESSING RESULTS
-# -----------------------------------------------------------------------------------------------------
+# ----------------- PROCESS RESULTS ----------------------------
 
-ω = grid.ω
-t = grid.t
+ω = grid.ω                   # sampled angular frequency values [rad/s]
+t = grid.t                   # sampled points in time [s]                                          
+zout = output.data["z"]      # sampled points along z [m]              ->> Note: keys of output.data are ["simulation_type", "dumps", "meta", "Eω", "grid", "stats", "z"]
 
-zout = output.data["z"]
-Eout = output.data["Eω"]
 
-Erout = (q \ Eout)
-Iωr = abs2.(Erout)
-# Iω0 = Iωr[:, 1, :]
-Er0 = dropdims(Hankel.onaxis(Eout, q), dims=2);
-Iω0 = abs2.(Er0);
+## ?????????
+ 
+Eout = output.data["Eω"]                         # Hankel transformed amplitude in frequency domain ? ->> crutch for other amplitude representations 
+
+Erout = (q \ Eout)                               # Real-space amplitude in frequency domain at r ≠ 0 ??  ->> "\" represents inverse transform back to real space !!!
+Er0 = dropdims(Hankel.onaxis(Eout, q), dims=2)   # Real-space amplitude in frequency domain at r=0 ??
+
+Etout = FFTW.irfft(Erout, length(grid.t), 1)     # time-domain real field amplitude ?? ->> crutch for Et 
+Et = Maths.hilbert(Etout)                        # complex representation of time-domain field ; essentially like Fourier Transform but +ve freq ?? 
+
+
+Iωr = abs2.(Erout)                              # intensity at r≠0 in frequency domain ?? [arbitrary units]
+Iω0 = abs2.(Er0)                                # intensity at r=0 in frequency domain ?? [arbitrary units]
+It = PhysData.c * PhysData.ε_0/2 * abs2.(Et)    # intensity in time domain in "physical units" [power / area] ??
+
+
 Iω0log = log10.(Maths.normbymax(Iω0));
-Etout = FFTW.irfft(Erout, length(grid.t), 1)
-
-Ilog = log10.(Maths.normbymax(abs2.(Eout)))
-
-It = PhysData.c * PhysData.ε_0/2 * abs2.(Maths.hilbert(Etout));
 Itlog = log10.(Maths.normbymax(It))
 
-Ir = zeros(Float64, (length(q.r), length(zout)))
 
-Et = Maths.hilbert(Etout)
+
+Ir = zeros(Float64, (length(q.r), length(zout)))
 energy = zeros(length(zout))                    # IR (?) (or total?) pulse energy
 for ii = 1:size(Etout, 3)
     energy[ii] = energyfun(Etout[:, :, ii]);
     Ir[:, ii] = integrate(grid.ω, Iωr[:, :, ii], SimpsonEven());
 end
 
-ω0idx = argmin(abs.(grid.ω .- 2π*PhysData.c/λ0))
-ω133idx = argmin(abs.(grid.ω .- 2π*PhysData.c/133e-9))
-ωhighidx= argmin(abs.(grid.ω .- 2π*PhysData.c/λ_rangeUV[1]))
-ωlowidx= argmin(abs.(grid.ω .- 2π*PhysData.c/λ_rangeUV[2]))
+ω0idx = argmin(abs.(grid.ω .- 2π*PhysData.c/λ0))                   # index X such that ω[X]=ω0
+ω133idx = argmin(abs.(grid.ω .- 2π*PhysData.c/133e-9))             # index X such that ω[X]=133nm ->> why this value ?? should be TH ??!! set to 3 ω0 ?
+ωhighidx= argmin(abs.(grid.ω .- 2π*PhysData.c/λ_rangeUV[1]))       # index X such that ω[X]=ω_max 
+ωlowidx= argmin(abs.(grid.ω .- 2π*PhysData.c/λ_rangeUV[2]))        # index X such that ω[X]=ω_min
 
 zr = π*w0^2/λ0
 points = L/2 .+ [-15, 3, 21].*zr
@@ -125,14 +128,22 @@ efficiency=energy2[end]/energy[1]
 import PyPlot:pygui, plt
 close("all")
 pygui(true)
+
+
 Iλ0 = Iωr[ω0idx, :, :]
-#λ0 = 2π*PhysData.c/grid.ω[ω0idx]
+
+
 w1 = w0*sqrt(1+(L/2*λ0/(π*w0^2))^2)
-# # w1 = w0
-# Iλ0_analytic = Maths.gauss.(q.r, w1/2)*(w0/w1)^2 # analytical solution (in paraxial approx)
-# plt.figure()
-# plt.plot(q.r*1e3, Maths.normbymax(Iλ0[:, end]))
-# plt.plot(q.r*1e3, Maths.normbymax(Iλ0_analytic), "--")
+
+#### THIS USED TO BE COMMENTED OUT::
+Iλ0_analytic = Maths.gauss.(q.r, w1/2)*(w0/w1)^2 # analytical solution (in paraxial approx)
+
+plt.figure()
+
+plt.plot(q.r*1e3, Maths.normbymax(Iλ0[:, end]))
+plt.plot(q.r*1e3, Maths.normbymax(Iλ0_analytic), "--")
+
+#### UNTIL HERE
 
 ## plot third harmonic and fundamental intensity along x and r
 plt.figure()
@@ -143,7 +154,7 @@ plt.pcolormesh(zout*1e3, q.r*1e3, Iωr[ω0idx, :, :])
 plt.colorbar()
 #plt.ylim(0, 0.2)
 plt.ylabel("r (mm)")
-plt.title("I(r, ω=800nm)")
+plt.title("I(r, ω=800nm)")    # mixed up λ and ω ???
 
 plt.subplot(2,1,2)
 plt.tight_layout()
@@ -152,26 +163,29 @@ plt.colorbar()
 plt.ylim(0, 0.2)
 plt.xlabel("z (mm)")
 plt.ylabel("r (mm)")
-plt.title("I(r, ω=266nm)")
+plt.title("I(r, ω=266nm)")    # mixed up λ and ω ???
 plt.tight_layout()
 
-# plt.figure()
-# plt.pcolormesh(zout, q.r, It[length(grid.t)÷2, :, :])
-# plt.colorbar()
-# plt.ylim(0, 4)
-# plt.xlabel("z (m)")
-# plt.ylabel("r (m)")
-# plt.title("I(r, t=0)")
+#### THIS USED TO BE COMMENTED OUT::
+plt.figure()
+plt.pcolormesh(zout, q.r, It[length(grid.t)÷2, :, :])
+plt.colorbar()
+plt.ylim(0, 4)
+plt.xlabel("z (m)")
+plt.ylabel("r (m)")
+plt.title("I(r, t=0)")
 
-# plt.figure()
-# plt.pcolormesh(zout*1e2, q.r*1e3, Ir)
+plt.figure()
+plt.pcolormesh(zout*1e2, q.r*1e3, Ir)
 # # plt.pcolormesh(zout*1e2, q.r*1e3, log10.(Maths.normbymax(Ir)))
-# plt.colorbar()
-# plt.ylim(0, R*1e3)
+plt.colorbar()
+plt.ylim(0, R*1e3)
 # # plt.clim(-6, 0)
-# plt.xlabel("z (m)")
-# plt.ylabel("r (m)")
-# plt.title("\$\\int I(r, \\omega) d\\omega\$")
+plt.xlabel("z (m)")
+plt.ylabel("r (m)")
+plt.title("\$\\int I(r, \\omega) d\\omega\$")
+
+#### UNTIL HERE
 
 ## plot frequency propagation
 plt.figure()
@@ -182,14 +196,18 @@ plt.xlabel("z (m)")
 plt.ylabel("f (PHz)")
 plt.title("I(r=0, ω)")
 
+#### THIS USED TO BE COMMENTED OUT::
+
 ## plot wavelength propagation
-# plt.figure()
-# plt.pcolormesh(zout*1e2, (2π*PhysData.c*ones(length(grid.ω))./grid.ω *1e9)[2:end], Iω0log[2:end,:])
-# plt.colorbar()
-# plt.clim(0, -6)
-# plt.xlabel("z (m)")
-# plt.ylabel("λ (nm)")
-# plt.title("I(r=0, λ)")
+plt.figure()
+plt.pcolormesh(zout*1e2, (2π*PhysData.c*ones(length(grid.ω))./grid.ω *1e9)[2:end], Iω0log[2:end,:])
+plt.colorbar()
+plt.clim(0, -6)
+plt.xlabel("z (m)")
+plt.ylabel("λ (nm)")
+plt.title("I(r=0, λ)")
+
+#### UNTIL HERE
 
 ## plot final spectrum, frequency
 plt.figure()
@@ -243,22 +261,28 @@ plt.xlabel("λ (nm)")
 plt.ylabel("I(r=0, λ)")
 plt.legend()
 
+
+#### THIS USED TO BE COMMENTED OUT::
+
 ## plot refractive index
-# plt.figure()
-# plt.tight_layout()
-# # plt.plot(grid.ω*1e-15/2π, coren.(grid.ω; z=0.001), label="refractive index of Argon at z=0.001", color="grey") #frequency axis
+
+plt.figure()
+plt.tight_layout()
+# plt.plot(grid.ω*1e-15/2π, coren.(grid.ω; z=0.001), label="refractive index of Argon at z=0.001", color="grey") #frequency axis
 # # plt.xlabel("f (PHz)")
 # # plt.ylabel("refractive index")
-# plt.plot((2π*PhysData.c*ones(length(grid.ω))./grid.ω *1e9)[2:end],coren.(grid.ω; z=0.001)[2:end], label="refractive index of Argon at z=0.001", color="grey") #wavelength axis
-# plt.xlabel("λ (nm)")
-# plt.ylabel("refractive index")
+plt.plot((2π*PhysData.c*ones(length(grid.ω))./grid.ω *1e9)[2:end],coren.(grid.ω; z=0.001)[2:end], label="refractive index of Argon at z=0.001", color="grey") #wavelength axis
+plt.xlabel("λ (nm)")
+plt.ylabel("refractive index")
 
 
 ## IR (?) (or total?) pulse energy along the propagation axis
-# plt.figure()
-# plt.plot(zout.*1e2, energy.*1e6)
-# plt.xlabel("Distance [cm]")
-# plt.ylabel("Energy [μJ]")
+plt.figure()
+plt.plot(zout.*1e2, energy.*1e6)
+plt.xlabel("Distance [cm]")
+plt.ylabel("Energy [μJ]")
+
+#### UNTIL HERE
 
 jw = Plotting.cmap_white("jet"; n=10)
 fig = plt.figure()
@@ -282,40 +306,23 @@ plt.ylabel("Pulse energy (nJ)")
 # save_results_to ="Z:\\user\\Nora Schmitt\\Numerics\\julia\\scan-images\\"
 # plt.savefig(save_results_to*string(λ0)*".png", dpi = 300)
 
+#### THIS USED TO BE COMMENTED OUT::
+
 ## plot polar UV beam shape
-# profile_133=Iωr[ω133idx,:,:]
-# for i=1:length(zout)
-# profile_133[:,i]=Iωr[ω133idx,:,length(zout)]
-# end
-# fig = plt.figure()
-# ax = fig.add_subplot(111, projection="polar")
-# θ = LinRange(0., 2π, length(zout))
-# pc = plt.pcolormesh(θ,q.r,profile_133)
-# cbar = plt.colorbar(pc)
-# cbar.set_label("Intensity")
-# ax[:grid](true)
-# ax[:set_yticks]([0, 0.00005])
-# ax[:set_yticklabels]([" ","50"])
+profile_133=Iωr[ω133idx,:,:]
+for i=1:length(zout)
+     profile_133[:,i]=Iωr[ω133idx,:,length(zout)]
+ end
+fig = plt.figure()
+ax = fig.add_subplot(111, projection="polar")
+θ = LinRange(0., 2π, length(zout))
+pc = plt.pcolormesh(θ,q.r,profile_133)
+cbar = plt.colorbar(pc)
+cbar.set_label("Intensity")
+ax[:grid](true)
+ax[:set_yticks]([0, 0.00005])
+ax[:set_yticklabels]([" ","50"])
 
-#= COMMENTED OUT BC OF PYTHON ERROR; FIX LATER!
-
-## Plot gas density
-dens_x = zeros(0)
-for x in zout
-    append!(dens_x, dens(x))
-end
-plt.figure()
-plt.tight_layout()
-plt.plot(zout.*1e3, dens_x)
-plt.xlabel("Distance (mm)")
-plt.ylabel("density (kg/m3)")
-plt.pcolormesh(zout, q.r, dens_x)
-plt.colorbar()
-plt.ylim(0, 0.0002)
-plt.xlabel("z (m)")
-plt.ylabel("r (m)")
-plt.title("density")
- =#
 plt.show()
 
 
