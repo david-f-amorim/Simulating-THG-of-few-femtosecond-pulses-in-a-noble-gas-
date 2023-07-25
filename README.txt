@@ -1,34 +1,42 @@
 GOAL: improve THG simulation
 -----------------------------
 
-Step 1: 
+Stage 1: 
 
-	- reproduce Josina's existing simulation results (familiarisation with code)
-	- tidy up code where necessary
+	- fix existing code for better comparison with Josina's:
 
-		+ ensure origin of all variable values are clear
-		+ fix input variables for "Nonlinear.PlasmaCumtrapz" in "responses" ?
+		+ fix efficiency display rounding problem
+		+ add normed LOG spectrum / norm existing log spectrum ?
+		+ fix frequency evolution: Josina normalised before taking log?? add legend/arrows for f0 and fTH
+
+		-> try to reproduce Josina's results!!
+	
 		
-	- produce suitable output visualisation for easy comparison with measured data
-
-		+ refractive index as function of propagation distance: I(z)
-		+ gas density as function of propagation distance: rho(z)
-		+ UV energy [as func of z and total] and conversion efficiency
-		+ [log and non log] spectrum at z=0 and z=L: I(f) or I(lam)
-		+ NIR spectrum at input and output [log and non-log; overlay of measured data?]
-		+ UV spectrum at output [log and non-log; overlay of measured data?]
-		+ beam profile I(r,z) for both NIR and UV 
-		+ radial beam profile at z=0 for NIR as well as at z=L for NIR & UV 
+	- produce additional output visualisations: 
 		
-		+ phase information ?? time-domain representation ?? pulse length ?? time-bandwidth product ?? ["Processing.jl"]
 
-		+ INTERPRET CURRENT PLOTS IN THE CODE!!!
-		  
+		+ phase information ?? 
+		+ time-domain representation (including TL pulse length & time-bandwidth product??["Processing.jl"]) ??
 
-Step 2:
+
+Stage 2:
 
 	- set up "Fields.DataField" to represent input pulse (replacing "Fields.GaussGaussField")
 		
 		+ extract spectral phase from FROG data  (read through Jupyter Notebook)
 		+ combine spectral phase with frequency and spectral power density
                   into a data file 
+
+	- compare input and output with measured data 
+
+		+ NIR spectrum at input compared to measured data
+		+ UV spectrum at output compared to measured data
+		+ ....
+
+
+Stage 3:
+
+	- vary pressure, beam intensity, etc. to study effect on THG efficiency
+		-> try to reproduce Josina's measured pressure scans (saturation, pulse shape change, second spectral peak)
+
+	- set up own density function
