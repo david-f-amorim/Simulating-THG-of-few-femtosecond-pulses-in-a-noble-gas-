@@ -355,14 +355,14 @@ end
 
 # ----------------- WRITE PARAMS TO FILE ----------------------------
 
-if save == true: 
+if save == true 
     open(joinpath(out_path,"params.txt"), "w") do file
         write(file, "gas     = :"*string(gas)*"\n")
         write(file, "pres    = "*string(pres)*"\n")
         write(file, "p_ed    = "*string(p_ed)*"\n")
         write(file, "p_const = "*string(p_const)*"\n")
-        write(file, "tau     = "*string(τ)*"\n")
-        write(file, "lam0    = "*string(λ0)*"\n")
+        write(file, "τ       = "*string(τ)*"\n")
+        write(file, "λ0      = "*string(λ0)*"\n")
         write(file, "w0      = "*string(w0)*"\n")
         write(file, "energy  = "*string(energy)*"\n")
         write(file, "L       = "*string(L)*"\n")
