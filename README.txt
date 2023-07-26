@@ -1,25 +1,24 @@
-GOAL: improve THG simulation
------------------------------
+DESY Summer Programme 2023
+============================
 
-Stage 1: 
+GOAL:     simulate THG of a few-femtosecond IR laser beam in a 
+----      noble gas; 
+	  carry out parameter scans to find optimal input beam 
+          conditions for desired UV output beam;   
+		 
 
-	- fix existing code for better comparison with Josina's:
 
-		+ fix efficiency display rounding problem
-		+ add normed LOG spectrum / norm existing log spectrum ?
-		+ fix frequency evolution: Josina normalised before taking log?? add legend/arrows for f0 and fTH
-
-		-> try to reproduce Josina's results!!
+Stage 1: DONE [Week 1-2 ]
+--------------------------
 	
-		
-	- produce additional output visualisations: 
-		
+did background reading ; cleaned up existing code ; 
+provided visualisation functions ; provided output handling 
 
-		+ phase information ?? 
-		+ time-domain representation (including TL pulse length & time-bandwidth product??["Processing.jl"]) ??
+	(MAYBE: reproduce Josina's results ?) 
 
 
-Stage 2:
+Stage 2: IN PROGRESS [Week 2 - ?]
+----------------------------------
 
 	- set up "Fields.DataField" to represent input pulse (replacing "Fields.GaussGaussField")
 		
@@ -34,9 +33,10 @@ Stage 2:
 		+ ....
 
 
-Stage 3:
+Stage 3: TO DO
+-----------------------------
 
-	- vary pressure, beam intensity, etc. to study effect on THG efficiency
+	- vary pressure, beam intensity, etc. to study effect on THG efficiency [Luna parameter scans...]
 		-> try to reproduce Josina's measured pressure scans (saturation, pulse shape change, second spectral peak)
 
 	- set up own density function
