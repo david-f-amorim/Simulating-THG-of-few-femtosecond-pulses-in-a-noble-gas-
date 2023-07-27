@@ -5,10 +5,17 @@ import Luna: Hankel
 import NumericalIntegration: integrate, SimpsonEven
 import Dates
 
-# ----------------- TOGGLE SAVE/SHOW -------------------------------
+# ----------------- TOGGLE SAVE/SHOW/READ -------------------------------
 
 save = true                  # if true, saves output plots and run parameters; see "OUTPUT HANDLING" below
 show = true                  # if true, shows plots
+read_file = true             # if true: read input pulse from file; if false: use Gaussian approximation ; see "INPUT HANDLING" below
+
+# ----------------- INPUT HANDLING -------------------------------
+
+in_dir    = "input"                        # directory of input file
+file_name = "DataField.dat"                # name of input file 
+path      = joinpath(in_dir, file_name)    # sys. path to input file 
 
 # ------------------ SET MEASURED PARAMETERS ------------------------
 
@@ -57,8 +64,12 @@ responses = (Nonlinear.Kerr_field(PhysData.γ3_gas(gas)),    # set nonlinear res
 
 # ----------------- SET INPUT FIELD ----------------------------                                       
 
-inputs = Fields.GaussGaussField(λ0=λ0, τfwhm=τ,             # models input beam as Gaussian (TO BE REPLACED WITH "DataField" BASED ON MEASURED SPECTRUM)
-            energy=energy, w0=w0, propz=-0.001)
+if read_file == true 
+    inputs = Fields.DataField(path, energy=energy, λ0=λ0)              # models input beam based off measured data
+else 
+    inputs = Fields.GaussGaussField(λ0=λ0, τfwhm=τ,                    # models input beam as Gaussian 
+            energy=energy, w0=w0, propz=-L/2)
+end            
 
 # ----------------- RUN SIMULATION ----------------------------
 
@@ -366,5 +377,10 @@ if save == true
         write(file, "w0      = "*string(w0)*"\n")
         write(file, "energy  = "*string(energy)*"\n")
         write(file, "L       = "*string(L)*"\n")
+        
+        if read_file == true:
+            write(file, "\n")
+            write(file, "Input beam read from: "*string(path)*"\n")
+
     end
 end
