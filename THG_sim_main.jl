@@ -8,17 +8,32 @@ using DelimitedFiles
 
 # ----------------- QUICK SETTINGS -------------------------------
 
-save = true                  # if true, saves output plots and run parameters; see "OUTPUT HANDLING" below
+save = true                  # if true, saves output plots and run parameters
 show = true                  # if true, shows plots
-read_file = true             # if true: read input pulse from file; if false: use Gaussian approximation ; see "INPUT HANDLING" below
+
+read_IR = true               # if true: read input IR pulse from file; if false: use Gaussian approximation 
+read_ρ  = false              # if true: read gas density profile from file; if false: use pressure gradient approximation 
+read_UV = false              # if true: overlay measured UV output on simulated results            
 
 # ----------------- INPUT HANDLING -------------------------------
 
-in_dir    = "input"                        # directory of input file
-file_name = "pulse.dat"                    # name of input file 
-path      = joinpath(in_dir, file_name)    # sys. path to input file 
+# NOTE: see "./file_prepare.py" for relevant file content specifications
+
+in_dir    = "input"                          # directory of input files
+
+file_IR   = "IRpulse.dat"                    # name of IR input pulse file 
+path_IR   = joinpath(in_dir, file_IR)        # sys. path to IR input pulse file 
+
+file_ρ    = "dens.dat"                       # name of density profile data file 
+path_ρ    = joinpath(in_dir, file_ρ)         # sys. path to density profile data file 
+
+file_UV   = "IRpulse.dat"                    # name of IR input pulse file 
+path_UV   = joinpath(in_dir, file_UV)        # sys. path to UV output pulse file 
 
 # ------------------ SET MEASURED PARAMETERS ------------------------
+
+# NOTE: some parameters below are overwritten when reading input data
+#       directly from file (see QUICK SETTINGS above)
 
 gas = :Ar           # gas
 pres = 0.4          # central gas pressure [bar]
@@ -36,11 +51,21 @@ L = 2e-3            # propagation distance (cell length) [m]
 
 # ----------------- SET PRESSURE PROFILE ---------------------------
 
-Z= (0, L/2, L)        # define points for pressure gradient
+if read_ρ == true 
+    z_in = readdlm(path_ρ,' ', Float64, '\n')[:,1]        # read in spatial points 
+    ρ_in = readdlm(path_ρ,' ', Float64, '\n')[:,2]        # read in density data 
+    
+    dens = Maths.CSpline(z_in, ρ_in)                      # interpolate density function 
+    γ = PhysData.sellmeier_gas(gas)                       # get polarisability from Sellmeier expansion
+	
+    coren(ω; z) = sqrt(1 + γ(wlfreq(ω)*1e6)*dens(z))      # calculate refractive index along the cell   
 
-p_const ? P=(pres,pres,pres) : P= (p_ed, pres, p_ed)  # define values for pressure gradient (see "p_const" above)
+else   
+    Z= (0, L/2, L)                                        # define points for pressure gradient
+    p_const ? P=(pres,pres,pres) : P= (p_ed, pres, p_ed)  # define values for pressure gradient (see "p_const" above)
+    (coren,dens)=Capillary.gradient(gas,Z,P)              # gives n(ω; z) and ρ(z) from pressure profile   
+end     
 
-(coren,dens)=Capillary.gradient(gas,Z,P)   # gives n(ω; z) and ρ(z) from pressure profile ->> IS THIS UPDATED TO ACCOUNT FOR IONISATION?
 
 # ----------------- SET SIMULATION GRID ----------------------------
 
@@ -66,12 +91,13 @@ responses = (Nonlinear.Kerr_field(PhysData.γ3_gas(gas)),    # set nonlinear res
 
 # ----------------- SET INPUT FIELD ----------------------------                                       
 
-if read_file == true 
+if read_IR == true 
 
-    t_in = readdlm(path,' ', Float64, '\n')[:,1]                      # read in timing data
-    I_in = readdlm(path,' ', Float64, '\n')[:,2]                      # read in intensity data (time domain)
+    t_in = readdlm(path_IR,' ', Float64, '\n')[:,1]                   # read in timing data
+    I_in = readdlm(path_IR,' ', Float64, '\n')[:,2]                   # read in intensity data (time domain)
 
-    beam_spline = Maths.CSpline(t_in, I_in)                           # interpolates temporal beam intensity envelope  
+    beam_spline    = Maths.CSpline(t_in, I_in)                           # interpolates temporal beam intensity envelope  
+    beam_spline_fs = Maths.CSpline(t_in*1e15, I_in)                      # interpolates temporal beam intensity envelope with t in fs
 
     function beam_profile(t,r::AbstractVector)
        beam_spline.(t) .* Maths.gauss.(r, w0/2)'                      # models spatial beam profile as Gaussian  
@@ -158,15 +184,6 @@ end
 
 η_THG = UV_pulse_en[end]/tot_pulse_en[1]            # THG efficiency: initial total pulse energy / final UV pulse energy 
 
-# * * * CALCULATE REFERENCE GAUSSIAN ENVELOPES 
-t0_input = Maths.moment(t, It0_envelope[:,1], 1) / Maths.moment(t, It0_envelope[:,1], 0)            # centre in time of input beam
-t0_UV    = Maths.moment(t, It0_UV_envelope[:,end], 1) / Maths.moment(t, It0_UV_envelope[:,end], 0)  # centre in time of output UV beam  
-
-Imax_input = maximum(It0_envelope[:,1])        # amplitude of input beam envelope
-Imax_UV    = maximum(It0_UV_envelope[:,end])   # amplitude of UV beam envelope 
-
-input_gauss = Imax_input * Maths.normbymax(Maths.gauss.(t*1e15,fwhm=τ_input *1e15, x0=t0_input*1e15))   # Gaussian envelope with same FWHM and centre as actual envelope (NOTE: times in fs!)
-UV_gauss    = Imax_UV * Maths.normbymax(Maths.gauss.(t*1e15,fwhm= τ_UV *1e15, x0=t0_UV*1e15))           # Gaussian envelope with same FWHM and centre as actual envelope  (NOTE: times in fs!)
 
 # ----------------- OUTPUT HANDLING -------------------------
 
@@ -353,7 +370,7 @@ plt.xlabel("t (fs)")
 plt.ylabel("I(t; r=0, z=0) (arb. units)")
 plt.plot(t*1e15, It0[:,1] , color="red", label="FWHM pulse duration: τ="*string(round(τ_input*1e15, digits=1) )*"fs")
 plt.plot(t*1e15,It0_envelope[:,1], color="black", linestyle="--")
-#plt.plot(t*1e15,input_gauss, color="grey", linestyle="-.")           # overlay Gaussian with same mean, FWHM and peak 
+plt.scatter(t*1e15,maximum(It0_envelope[:,1]).*Maths.normbymax(beam_spline_fs.(t*1e15)), color="grey", marker=".")
 plt.legend(loc="upper right")
 
 if save==true
@@ -367,7 +384,6 @@ plt.xlabel("t (fs)")
 plt.ylabel("I(t; r=0, z=L) (arb. units)")
 plt.plot(t*1e15, It0_UV[:,end] , color="red", label="FWHM pulse duration: τ="*string(round(τ_UV*1e15, digits=1) )*"fs")
 plt.plot(t*1e15,It0_UV_envelope[:,end], color="black", linestyle="--")
-#plt.plot(t*1e15,UV_gauss, color="grey", linestyle="-.")             # overlay Gaussian with same mean, FWHM and peak 
 plt.legend(loc="upper right")
 
 if save==true
@@ -393,9 +409,19 @@ if save == true
         write(file, "energy  = "*string(energy)*"\n")
         write(file, "L       = "*string(L)*"\n")
         
-        if read_file == true
+        if read_IR == true
             write(file, "\n")
-            write(file, "Input beam read from: "*string(path)*"\n")
+            write(file, "IR input beam read from: "*string(path_IR)*"\n")
+        end
+
+        if read_ρ == true
+            write(file, "\n")
+            write(file, "Gas density distribution read from: "*string(path_ρ)*"\n")
+        end
+
+        if read_UV == true
+            write(file, "\n")
+            write(file, "UV output beam read from: "*string(path_UV)*"\n")
         end
     end
 end
