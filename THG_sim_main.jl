@@ -4,6 +4,7 @@ import FFTW
 import Luna: Hankel
 import NumericalIntegration: integrate, SimpsonEven
 import Dates
+using DelimitedFiles
 
 # ----------------- TOGGLE SAVE/SHOW/READ -------------------------------
 
@@ -14,7 +15,7 @@ read_file = true             # if true: read input pulse from file; if false: us
 # ----------------- INPUT HANDLING -------------------------------
 
 in_dir    = "input"                        # directory of input file
-file_name = "DataField.dat"                # name of input file 
+file_name = "pulse.dat"                    # name of input file 
 path      = joinpath(in_dir, file_name)    # sys. path to input file 
 
 # ------------------ SET MEASURED PARAMETERS ------------------------
@@ -26,6 +27,7 @@ p_const = false     # if true: set constant pressure profile P==(pres,pres,pres)
 τ = 5e-15           # FWHM pulse duration [s]
 λ0 = 800e-9         # central wavelength [m]
 w0 = 65e-6          # beam waist [m]
+ϕ = 0.0             # central envelope offset (CEO) phase [rad]
 energy = 150e-6     # pulse energy [J]
 L = 2e-3            # propagation distance (cell length) [m]
 
@@ -65,9 +67,21 @@ responses = (Nonlinear.Kerr_field(PhysData.γ3_gas(gas)),    # set nonlinear res
 # ----------------- SET INPUT FIELD ----------------------------                                       
 
 if read_file == true 
-    inputs = Fields.DataField(path, energy=energy, λ0=λ0)              # models input beam based off measured data
+
+    t_in = readdlm(path,' ', Float64, '\n')[:,1]                      # read in timing data
+    I_in = readdlm(path,' ', Float64, '\n')[:,2]                      # read in intensity data (time domain)
+
+    beam_spline = Maths.CSpline(t_in, I_in)                           # interpolates temporal beam intensity envelope  
+
+    function beam_profile(t,r::AbstractVector)
+       beam_spline.(t) .* Maths.gauss.(r, w0/2)'                      # models spatial beam profile as Gaussian  
+    end
+
+    inputs = Fields.SpatioTemporalField(λ0, energy, ϕ, 0.0,           # models input beam based off measured data
+    (t, r) -> beam_profile(t, r), -L/2)  
+
 else 
-    inputs = Fields.GaussGaussField(λ0=λ0, τfwhm=τ,                    # models input beam as Gaussian 
+    inputs = Fields.GaussGaussField(λ0=λ0, τfwhm=τ,                   # models input beam as Gaussian 
             energy=energy, w0=w0, propz=-L/2)
 end            
 
@@ -339,7 +353,7 @@ plt.xlabel("t (fs)")
 plt.ylabel("I(t; r=0, z=0) (arb. units)")
 plt.plot(t*1e15, It0[:,1] , color="red", label="FWHM pulse duration: τ="*string(round(τ_input*1e15, digits=1) )*"fs")
 plt.plot(t*1e15,It0_envelope[:,1], color="black", linestyle="--")
-plt.plot(t*1e15,input_gauss, color="grey", linestyle="-.")
+#plt.plot(t*1e15,input_gauss, color="grey", linestyle="-.")           # overlay Gaussian with same mean, FWHM and peak 
 plt.legend(loc="upper right")
 
 if save==true
@@ -353,8 +367,8 @@ plt.xlabel("t (fs)")
 plt.ylabel("I(t; r=0, z=L) (arb. units)")
 plt.plot(t*1e15, It0_UV[:,end] , color="red", label="FWHM pulse duration: τ="*string(round(τ_UV*1e15, digits=1) )*"fs")
 plt.plot(t*1e15,It0_UV_envelope[:,end], color="black", linestyle="--")
-plt.plot(t*1e15,UV_gauss, color="grey", linestyle="-.")
-plt.legend()
+#plt.plot(t*1e15,UV_gauss, color="grey", linestyle="-.")             # overlay Gaussian with same mean, FWHM and peak 
+plt.legend(loc="upper right")
 
 if save==true
     plt.savefig(joinpath(out_path,"time_domain_UV_output.pdf"))
@@ -375,12 +389,13 @@ if save == true
         write(file, "τ       = "*string(τ)*"\n")
         write(file, "λ0      = "*string(λ0)*"\n")
         write(file, "w0      = "*string(w0)*"\n")
+        write(file, "ϕ       = "*string(ϕ)*"\n")
         write(file, "energy  = "*string(energy)*"\n")
         write(file, "L       = "*string(L)*"\n")
         
-        if read_file == true:
+        if read_file == true
             write(file, "\n")
             write(file, "Input beam read from: "*string(path)*"\n")
-
+        end
     end
 end
