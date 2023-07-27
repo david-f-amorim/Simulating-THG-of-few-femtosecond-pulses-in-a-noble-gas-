@@ -14,36 +14,33 @@ Stage 1: DONE [Week 1-2 ]
 did background reading ; cleaned up existing code ; 
 provided visualisation functions ; provided output handling 
 
-	(MAYBE: reproduce Josina's results ?) 
-
-
 Stage 2: IN PROGRESS [Week 2 - ?]
 ----------------------------------
 
 	- use measured data as input (replacing "Fields.GaussGaussField") [DONE!]
-
-		-> can the CEO phase be extracted from the data?
-		-> is pulse duration still acurate? 
-
-
-		-> use measured spatial beam data to improve input (if exists)
 		
 	- compare input and output with measured data 
 
 		+ NIR spectrum at input compared to measured data
-			-> extract from FROG Speck.dat  ?
+			-> from Speck.dat  
 		+ measured NIR pulse at input compared to simulated NIR pulse at input 
 			-> from Ek.dat 
 
 		+ UV spectrum at output compared to measured data
-			-> 
-		+ ....
+			-> from data folder [spectra]
+		+ UV pulse energy compared to measured data
+			-> from data folder [pressure scans]
 
 
 Stage 3: TO DO
 -----------------------------
 
-	- vary pressure, beam intensity, etc. to study effect on THG efficiency [Luna parameter scans...]
+	- make simulation more realistic: 
+
+		+ set up own density function
+		+ set up non-Gaussian spatial profile 
+		+ input measured CEO phase value 
+
+	- vary pressure, beam intensity, etc. to study effect on THG efficiency [Luna parameter scans...] (Ar & Ne)
 		-> try to reproduce Josina's measured pressure scans (saturation, pulse shape change, second spectral peak)
 
-	- set up own density function ? set up non-Gaussian spatial profile ?

@@ -6,7 +6,7 @@ import NumericalIntegration: integrate, SimpsonEven
 import Dates
 using DelimitedFiles
 
-# ----------------- TOGGLE SAVE/SHOW/READ -------------------------------
+# ----------------- QUICK SETTINGS -------------------------------
 
 save = true                  # if true, saves output plots and run parameters; see "OUTPUT HANDLING" below
 show = true                  # if true, shows plots
@@ -24,11 +24,11 @@ gas = :Ar           # gas
 pres = 0.4          # central gas pressure [bar]
 p_ed = 1e-3         # edge gas pressure [bar]
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
-τ = 5e-15           # FWHM pulse duration [s]
+τ = 5e-15           # FWHM pulse duration [s] (only relevant when temporal beam profile is approximated as Gaussian)
 λ0 = 800e-9         # central wavelength [m]
 w0 = 65e-6          # beam waist [m]
-ϕ = 0.0             # central envelope offset (CEO) phase [rad]
-energy = 150e-6     # pulse energy [J]
+ϕ = 0.0             # central envelope offset (CEO) phase [rad]                                    -> can this be extracted from data?
+energy = 150e-6     # pulse energy [J]                                                             -> multiply by 1kHz (?) repetition rate for beam power
 L = 2e-3            # propagation distance (cell length) [m]
 
 λ_lims = (200e-9, 1000e-9)      # wavelength limits of overall frequency window (both NIR and UV) [m,m]
@@ -62,7 +62,7 @@ linop = LinearOps.make_linop(grid, q, coren)                # generate linear op
 normfun = NonlinearRHS.norm_radial(grid, q, coren)          # generate normalisation function for radial symmetry 
 
 responses = (Nonlinear.Kerr_field(PhysData.γ3_gas(gas)),    # set nonlinear response of the gas: Kerr effect & plasma formation
-            Nonlinear.PlasmaCumtrapz(grid.to, grid.to, ionrate, ionpot))       # ->> "grid.to" appears twice; BUG OR FEATURE ??
+            Nonlinear.PlasmaCumtrapz(grid.to, grid.to, ionrate, ionpot))       
 
 # ----------------- SET INPUT FIELD ----------------------------                                       
 
@@ -101,8 +101,8 @@ t = grid.t                   # sampled points in time [s]
 zout = output.data["z"]      # sampled points along z [m] 
 
 # * * * DEFINE USEFUL GRID INDICES:
-ω0idx       = argmin(abs.(grid.ω .- 2π*PhysData.c/λ0))                   # index X such that ω[X]=ω0 (fundamental)
-ωTHidx      = argmin(abs.(grid.ω .- 2π*PhysData.c/(λ0/3)))               # index X such that ω[X]=3ω0 (TH)
+ω0idx         = argmin(abs.(grid.ω .- 2π*PhysData.c/λ0))                   # index X such that ω[X]=ω0 (fundamental)
+ωTHidx        = argmin(abs.(grid.ω .- 2π*PhysData.c/(λ0/3)))               # index X such that ω[X]=3ω0 (TH)
 ωhighUVidx    = argmin(abs.(grid.ω .- 2π*PhysData.c/λ_rangeUV[1]))         # index X such that ω[X]=ω_maxUV 
 ωlowUVidx     = argmin(abs.(grid.ω .- 2π*PhysData.c/λ_rangeUV[2]))         # index X such that ω[X]=ω_minUV
 
