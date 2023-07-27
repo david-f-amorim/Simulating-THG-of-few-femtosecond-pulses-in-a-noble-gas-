@@ -38,7 +38,7 @@ L = 2e-3            # propagation distance (cell length) [m]
 
 Z= (0, L/2, L)        # define points for pressure gradient
 
-p_const ? P==(pres,pres,pres) : P= (p_ed, pres, p_ed)  # define values for pressure gradient (see "p_const" above)
+p_const ? P=(pres,pres,pres) : P= (p_ed, pres, p_ed)  # define values for pressure gradient (see "p_const" above)
 
 (coren,dens)=Capillary.gradient(gas,Z,P)   # gives n(ω; z) and ρ(z) from pressure profile ->> IS THIS UPDATED TO ACCOUNT FOR IONISATION?
 
@@ -311,7 +311,7 @@ end
 
 #+++++ PLOT 6:  pulse energies and efficiency 
 plt.figure()
-plt.suptitle("THG conversion efficiency: η="*string(round(η_THG, digits=5) *100)[1:5]*"%")
+plt.suptitle("THG conversion efficiency: η="*string(round(η_THG, digits=5) *100)*"%")
 plt.subplots_adjust(hspace=0.5)
 
 plt.subplot(2,1,1)

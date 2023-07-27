@@ -18,18 +18,35 @@ Stage 2: IN PROGRESS [Week 2 - ?]
 ----------------------------------
 
 	- use measured data as input (replacing "Fields.GaussGaussField") [DONE!]
+
+
+	DOES INCREASING ENERGY HAVE DESIRED EFFECT (or do you have to also change input beam data accordingly?)
+
 		
 	- compare input and output with measured data 
 
-		+ NIR spectrum at input compared to measured data
+		CHANGE COLOUR SCHEME ACCORDINGLY ? [RED, GREY, BLACK ?]
+
+		+ NIR spectrum scatter plot at input compared to measured data
 			-> from Speck.dat  
-		+ measured NIR pulse at input compared to simulated NIR pulse at input 
+		+ measured NIR pulse scatter plot at input compared to simulated NIR pulse at input 
 			-> from Ek.dat 
 
-		+ UV spectrum at output compared to measured data
+		+ UV spectrum scatter plot at output compared to measured data
 			-> from data folder [spectra]
-		+ UV pulse energy compared to measured data
+		+ UV pulse energy scatter plot compared to measured data
 			-> from data folder [pressure scans]
+
+	- DENSITY FUNCTION:
+		literally just provide dens(z) [set up option to read from data file; cols: z[m], rho [1/m^2]] ]  
+
+			γ = sellmeier_gas(gas)
+			coren(ω; z) = sqrt(1 + γ(wlfreq(ω)*1e6)*dens(z))
+
+	TAKE A STEP BACK AND REPRODUCE JOSINA'S ORIGINAL SIMULATIONS [SOME DISCREPANCIES!!!]
+
+	
+	PREPARE PRESENTATION FOR JOSINA
 
 
 Stage 3: TO DO
@@ -37,8 +54,8 @@ Stage 3: TO DO
 
 	- make simulation more realistic: 
 
-		+ set up own density function
 		+ set up non-Gaussian spatial profile 
+
 		+ input measured CEO phase value 
 
 	- vary pressure, beam intensity, etc. to study effect on THG efficiency [Luna parameter scans...] (Ar & Ne)
