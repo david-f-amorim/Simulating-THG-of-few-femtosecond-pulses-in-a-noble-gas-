@@ -26,12 +26,13 @@ option to feed in custom gas density profile (untested!) ;
 		=> MUST BE PUT INTO IF STATEMENTS, IF NOT CRASHES PROGRAM WHEN TRYING TO PLOT!!!
 			-> add extra if statement to manually turn off overlay?
 
+		
+		+ when plotting NIR input time pulse, plot raw data instead of spline??
+
 	
 		+ NIR spectrum scatter plot at input compared to measured data
-			-> from Speck.dat  [check if FFT of Ek.dat gives good results]
+			-> from Ek.dat [HOW TI BEST EXTRACT -> calculate sampling rate...???]
 		
-		+ measured NIR pulse scatter plot at input compared to simulated NIR pulse at input 
-			-> from Ek.dat 
 
 		+ UV spectrum scatter plot at output compared to measured data
 			-> from data folder [spectra ]

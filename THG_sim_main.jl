@@ -13,7 +13,9 @@ show = true                  # if true, shows plots
 
 read_IR = true               # if true: read input IR pulse from file; if false: use Gaussian approximation 
 read_ρ  = false              # if true: read gas density profile from file; if false: use pressure gradient approximation 
-read_UV = false              # if true: overlay measured UV output on simulated results            
+read_UV = true              # if true: overlay measured UV output on simulated results   
+
+show_IR = false              # if true and "read_IR" is true: overlay measured input pulse on plots
 
 # ----------------- INPUT HANDLING -------------------------------
 
@@ -155,14 +157,14 @@ filter=FFTW.rfft(Etout, 1)        # set up filter array
 filter[1:ωlowUVidx,:,:].=0;       # filters out ω < ω_min
 filter[ωhighUVidx:end,:,:].=0;    # filters out ω > ω_max 
 
-Etout_UV=FFTW.irfft(filter, length(grid.t), 1)    # time-domain real field amplitude of UV pulse 
+Etout_UV=FFTW.irfft(filter, length(t), 1)    # time-domain real field amplitude of UV pulse 
 
 # * * * FILTER FOR UV FIELD (r=0)
 filter_onaxis = FFTW.rfft(Et0, 1)          # set up filter array
 filter_onaxis[1:ωlowUVidx,:].=0;           # filters out ω < ω_min
 filter_onaxis[ωhighUVidx:end,:].=0;        # filters out ω > ω_max  
 
-Et0_UV =FFTW.irfft(filter_onaxis, length(grid.t), 1)    # time-domain real field amplitude of UV pulse at r=0
+Et0_UV =FFTW.irfft(filter_onaxis, length(t), 1)    # time-domain real field amplitude of UV pulse at r=0
 It0_UV = abs2.(Et0_UV)                           # intensity of on-axis UV pulse at 
 
 # * * * EXTRACT INTENSITY ENVELOPES 
@@ -184,6 +186,22 @@ end
 
 η_THG = UV_pulse_en[end]/tot_pulse_en[1]            # THG efficiency: initial total pulse energy / final UV pulse energy 
 
+# * * * PROCESS MEASURED INPUT DATA 
+if (read_IR & show_IR) == true
+    #Iω0_IR_meas =maximum(Iω0[2:end,1]) .* Maths.normbymax(abs.(FFTW.rfft([beam_spline(i) for i in t]))) # calculates measured IR spectrum from measured timing data
+
+    # CONVERT TO FREQUENCY DOMAIN!
+end
+
+if read_UV == true 
+    λ_in    = readdlm(path_UV,' ', Float64, '\n')[:,1]                      # read in UV wavelength data
+    I_in_UV = readdlm(path_UV,' ', Float64, '\n')[:,2]                      # read in UV intensity data 
+
+    UV_spline    = Maths.CSpline(λ_in, I_in_UV)                             # interpolate points (for smooth plotting)
+    UV_spline_nm = Maths.CSpline(λ_in*1e9, I_in_UV)                         # interpolate points with λ in nm
+
+    # CONVERT TO TIME DOMAIN!
+end    
 
 # ----------------- OUTPUT HANDLING -------------------------
 
@@ -287,6 +305,10 @@ plt.xlabel("λ (nm)")
 plt.ylabel("I(r=0, λ) (arb. units)")
 plt.legend()
 
+if (read_IR & show_IR) == true 
+    #plt.plot(λ[2:end]*1e9, Iω0_IR_meas[2:end], ls="--", color="grey")  # overlay measured input frequency spectrum 
+end    
+
 plt.subplot(2,1,2)
 plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,1], label="z=0mm", color="grey")
 plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,end], label="z=$(L*1e3)mm", color="red")
@@ -297,6 +319,10 @@ plt.legend()
 if save==true
     plt.savefig(joinpath(out_path,"on-axis_spectrum_linear.pdf"))
 end 
+
+if read_UV == true 
+    plt.plot(λ[λlowidx:λhighidx]*1e9,maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(UV_spline_nm.(λ[λlowidx:λhighidx]*1e9)), color="red", ls="-.")
+end
 
 #+++++ PLOT 5:  log. on-axis spectrum I(λ) at z=0 and z=L 
 Iω0log = log10.(Iω0)
@@ -321,6 +347,10 @@ plt.ylim(bottom=10)
 plt.xlabel("λ (nm)")
 plt.ylabel("I(r=0, λ) (arb. units)")
 plt.legend()
+
+if read_UV == true 
+    plt.plot(λ[λlowidx:λhighidx]*1e9,log10.(maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(UV_spline_nm.(λ[λlowidx:λhighidx]*1e9))), color="red", ls="-.")
+end
 
 if save==true
     plt.savefig(joinpath(out_path,"on-axis_spectrum_log.pdf"))
@@ -369,9 +399,12 @@ plt.title("Time-domain representation of on-axis input pulse")
 plt.xlabel("t (fs)")
 plt.ylabel("I(t; r=0, z=0) (arb. units)")
 plt.plot(t*1e15, It0[:,1] , color="red", label="FWHM pulse duration: τ="*string(round(τ_input*1e15, digits=1) )*"fs")
-plt.plot(t*1e15,It0_envelope[:,1], color="black", linestyle="--")
-plt.scatter(t*1e15,maximum(It0_envelope[:,1]).*Maths.normbymax(beam_spline_fs.(t*1e15)), color="grey", marker=".")
+plt.plot(t*1e15,It0_envelope[:,1], color="black", ls="--")
 plt.legend(loc="upper right")
+
+if (read_IR & show_IR )==true  # overlay measured input pulse 
+    plt.plot(t*1e15,maximum(It0_envelope[:,1]).*Maths.normbymax(beam_spline_fs.(t*1e15)), color="grey", ls="-.")
+end
 
 if save==true
     plt.savefig(joinpath(out_path,"time_domain_input.pdf"))

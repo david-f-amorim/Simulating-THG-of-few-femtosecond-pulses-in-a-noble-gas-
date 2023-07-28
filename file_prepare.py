@@ -15,11 +15,11 @@ in_dir  = "raw_input"
 out_dir = "input" 
 
 use_IR  = True
-use_UV  = False 
+use_UV  = True 
 use_rho = False  
 
 in_IR   = "Ek.dat"
-in_UV   = "PUT_FILENAME_HERE"
+in_UV   = "0.4bar_Subt2__0__17-05-45-008.txt"
 in_rho  = "PUT_FILENAME_HERE"
 
 """ 
@@ -60,7 +60,8 @@ if use_UV:
     out_UV = "UVpulse.dat"
 
     arr = np.loadtxt(os.path.join(in_dir, in_UV), usecols=(0,1), skiprows=14)
-    arr[:,0] = scipy.constants.c / (arr[:,0]*1e-9) * 2 * np.pi
+    #arr[:,0] = scipy.constants.c / (arr[:,0]*1e-9) * 2 * np.pi
+    arr[:,0] *= 1e-9
 
     np.savetxt(os.path.join(out_dir, out_UV),arr)
 """ 
