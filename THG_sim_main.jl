@@ -1,10 +1,10 @@
-using Luna
+using  Luna
 import Luna.PhysData: wlfreq
 import FFTW
 import Luna: Hankel
 import NumericalIntegration: integrate, SimpsonEven
 import Dates
-using DelimitedFiles
+using  DelimitedFiles
 
 # ----------------- QUICK SETTINGS -------------------------------
 
@@ -29,7 +29,7 @@ path_IR   = joinpath(in_dir, file_IR)        # sys. path to IR input pulse file
 file_ρ    = "dens.dat"                       # name of density profile data file 
 path_ρ    = joinpath(in_dir, file_ρ)         # sys. path to density profile data file 
 
-file_UV   = "IRpulse.dat"                    # name of IR input pulse file 
+file_UV   = "UVpulse.dat"                    # name of IR input pulse file 
 path_UV   = joinpath(in_dir, file_UV)        # sys. path to UV output pulse file 
 
 # ------------------ SET MEASURED PARAMETERS ------------------------
@@ -129,10 +129,10 @@ t = grid.t                   # sampled points in time [s]
 zout = output.data["z"]      # sampled points along z [m] 
 
 # * * * DEFINE USEFUL GRID INDICES:
-ω0idx         = argmin(abs.(grid.ω .- 2π*PhysData.c/λ0))                   # index X such that ω[X]=ω0 (fundamental)
-ωTHidx        = argmin(abs.(grid.ω .- 2π*PhysData.c/(λ0/3)))               # index X such that ω[X]=3ω0 (TH)
-ωhighUVidx    = argmin(abs.(grid.ω .- 2π*PhysData.c/λ_rangeUV[1]))         # index X such that ω[X]=ω_maxUV 
-ωlowUVidx     = argmin(abs.(grid.ω .- 2π*PhysData.c/λ_rangeUV[2]))         # index X such that ω[X]=ω_minUV
+ω0idx         = argmin(abs.(ω .- 2π*PhysData.c/λ0))                   # index X such that ω[X]=ω0 (fundamental)
+ωTHidx        = argmin(abs.(ω .- 2π*PhysData.c/(λ0/3)))               # index X such that ω[X]=3ω0 (TH)
+ωhighUVidx    = argmin(abs.(ω .- 2π*PhysData.c/λ_rangeUV[1]))         # index X such that ω[X]=ω_maxUV 
+ωlowUVidx     = argmin(abs.(ω .- 2π*PhysData.c/λ_rangeUV[2]))         # index X such that ω[X]=ω_minUV
 
 λhighidx    = argmin(abs.(λ .- λ_rangeUV[1]))         # index X such that λ[X]=λ_maxUV 
 λlowidx     = argmin(abs.(λ .-λ_rangeUV[2]))          # index X such that λ[X]=λ_minUV
@@ -142,8 +142,8 @@ Eout = output.data["Eω"]                         # Hankel-transformed amplitude
 Erout = (q \ Eout)                               # Real-space amplitude in frequency domain at r ≠ 0   ->> "\" represents inverse Hankel transform 
 Er0 = dropdims(Hankel.onaxis(Eout, q), dims=2)   # Real-space amplitude in frequency domain at r=0 
 
-Etout = FFTW.irfft(Erout, length(grid.t), 1)     # time-domain real field amplitude at r≠0
-Et0 = FFTW.irfft(Er0, length(grid.t),1)          # time-domain real field amplitude at r=0
+Etout = FFTW.irfft(Erout, length(t), 1)     # time-domain real field amplitude at r≠0
+Et0 = FFTW.irfft(Er0, length(t),1)          # time-domain real field amplitude at r=0
 Et = Maths.hilbert(Etout)                        # complex (analytic) representation of time-domain field amplitude 
 
 # * * * CONVERT TO INTENSITIES:
@@ -188,19 +188,16 @@ end
 
 # * * * PROCESS MEASURED INPUT DATA 
 if (read_IR & show_IR) == true
-    #Iω0_IR_meas =maximum(Iω0[2:end,1]) .* Maths.normbymax(abs.(FFTW.rfft([beam_spline(i) for i in t]))) # calculates measured IR spectrum from measured timing data
-
-    # CONVERT TO FREQUENCY DOMAIN!
+    
+    # ADD CODE TO CONVERT TO FREQUENCY DOMAIN
 end
 
 if read_UV == true 
     λ_in    = readdlm(path_UV,' ', Float64, '\n')[:,1]                      # read in UV wavelength data
     I_in_UV = readdlm(path_UV,' ', Float64, '\n')[:,2]                      # read in UV intensity data 
+    
+    # ADD CODE TO CONVERT TO TIME DOMAIN
 
-    UV_spline    = Maths.CSpline(λ_in, I_in_UV)                             # interpolate points (for smooth plotting)
-    UV_spline_nm = Maths.CSpline(λ_in*1e9, I_in_UV)                         # interpolate points with λ in nm
-
-    # CONVERT TO TIME DOMAIN!
 end    
 
 # ----------------- OUTPUT HANDLING -------------------------
@@ -220,7 +217,7 @@ close("all")
 pygui(true)
 
 #+++++ PLOT 1:  fundamental and third harmonic intensities as functions of z and r≠0
-plt.figure()
+plt.figure(figsize=[7.04, 5.28])
 plt.suptitle("Off-axis intensity of fundamental and third harmonic")
 plt.subplots_adjust(left=0.125, bottom=0.11, right=0.992, top=0.88, hspace=0.5)
 
@@ -243,7 +240,7 @@ if save==true
 end    
     
 #+++++ PLOT 2:  fundamental and third harmonic intensities as functions of z at r=0
-plt.figure()
+plt.figure(figsize=[7.04, 5.28])
 plt.suptitle("On-axis intensity of fundamental and third harmonic")
 plt.subplots_adjust(hspace=0.5)
 
@@ -266,7 +263,7 @@ if save==true
 end 
 
 #+++++ PLOT 3: gas number density and effective susceptibility along the cell 
-plt.figure()
+plt.figure(figsize=[7.04, 5.28])
 plt.suptitle("Initial gas properties")
 plt.subplots_adjust(hspace=0.4)
 
@@ -293,71 +290,71 @@ if save==true
 end 
 
 #+++++ PLOT 4:  linear on-axis spectrum I(λ) at z=0 and z=L 
-plt.figure()
-plt.suptitle("Linear on-axis beam spectrum (total & UV-only)")
-plt.subplots_adjust(hspace=0.3)
-
-plt.subplot(2,1,1)
+plt.figure(figsize=[7.04, 5.28])
+plt.title("Linear on-axis beam spectrum")
 plt.plot(λ[2:end]*1e9, Iω0[2:end,1], label="z=0mm", color="grey")
 plt.plot(λ[2:end]*1e9, Iω0[2:end,end], label="z=$(L*1e3)mm", color="red")
 plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
 plt.xlabel("λ (nm)")
 plt.ylabel("I(r=0, λ) (arb. units)")
-plt.legend()
+
+if read_UV == true  # overlay measured UV output spectrum 
+    plt.plot(λ_in*1e9, maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(I_in_UV), color="purple", label="UV data (rescaled)")
+end
 
 if (read_IR & show_IR) == true 
-    #plt.plot(λ[2:end]*1e9, Iω0_IR_meas[2:end], ls="--", color="grey")  # overlay measured input frequency spectrum 
+    # ADD CODE TO OVERLAY INPUT IR SPECTRUM 
 end    
 
-plt.subplot(2,1,2)
-plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,1], label="z=0mm", color="grey")
-plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,end], label="z=$(L*1e3)mm", color="red")
-plt.xlabel("λ (nm)")
-plt.ylabel("I(r=0, λ) (arb. units)")
 plt.legend()
 
 if save==true
-    plt.savefig(joinpath(out_path,"on-axis_spectrum_linear.pdf"))
+    plt.savefig(joinpath(out_path,"full_on-axis_spectrum.pdf"))
 end 
 
-if read_UV == true 
-    plt.plot(λ[λlowidx:λhighidx]*1e9,maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(UV_spline_nm.(λ[λlowidx:λhighidx]*1e9)), color="red", ls="-.")
+#+++++ PLOT 5:  UV only linear on-axis spectrum I(λ) at z=0 and z=L 
+plt.figure(figsize=[7.04, 5.28])
+plt.title("Linear on-axis UV spectrum")
+plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,1], label="z=0mm", color="grey")
+plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,end], label="z=$(L*1e3)mm", color="red")
+plt.xlim(λ_rangeUV[1]*1e9, λ_rangeUV[2]*1e9)
+plt.xlabel("λ (nm)")
+plt.ylabel("I(r=0, λ) (arb. units)")
+
+if read_UV == true  # overlay measured UV output spectrum 
+    plt.plot(λ_in*1e9, maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(I_in_UV), color="purple", label="UV data (rescaled)")
 end
 
-#+++++ PLOT 5:  log. on-axis spectrum I(λ) at z=0 and z=L 
+plt.legend()
+
+if save==true
+    plt.savefig(joinpath(out_path,"UV_on-axis_spectrum.pdf"))
+end 
+
+#+++++ PLOT 6:  log. on-axis spectrum I(λ) at z=0 and z=L 
 Iω0log = log10.(Iω0)
 
-plt.figure()
-plt.suptitle("Log. on-axis beam spectrum (total & zoomed)")
-plt.subplots_adjust(hspace=0.3)
-
-plt.subplot(2,1,1)
+plt.figure(figsize=[7.04, 5.28])
+plt.title("Logarithmic on-axis beam spectrum")
 plt.plot(λ[2:end]*1e9, Iω0log[2:end,1], label="z=0mm",  color="grey")
 plt.plot(λ[2:end]*1e9, Iω0log[2:end,end], label="z=$(L*1e3)mm", color="red")
 plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
 plt.xlabel("λ (nm)")
 plt.ylabel("I(r=0, λ) (arb. units)")
-plt.legend()
 
-plt.subplot(2,1,2)
-plt.plot(λ[2:end]*1e9, Iω0log[2:end,1], label="z=0mm", color="grey")
-plt.plot(λ[2:end]*1e9, Iω0log[2:end,end], label="z=$(L*1e3)mm", color="red")
-plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
-plt.ylim(bottom=10)
-plt.xlabel("λ (nm)")
-plt.ylabel("I(r=0, λ) (arb. units)")
-plt.legend()
-
-if read_UV == true 
-    plt.plot(λ[λlowidx:λhighidx]*1e9,log10.(maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(UV_spline_nm.(λ[λlowidx:λhighidx]*1e9))), color="red", ls="-.")
+if read_UV == true  # overlay measured UV output spectrum 
+    plt.plot(λ_in*1e9, log10.(abs.(maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(I_in_UV))), color="purple", label="UV data (rescaled)")
 end
+
+plt.legend()
+
 
 if save==true
     plt.savefig(joinpath(out_path,"on-axis_spectrum_log.pdf"))
 end 
 
-#+++++ PLOT 6:  pulse energies and efficiency 
-plt.figure()
+#+++++ PLOT 7:  pulse energies and efficiency 
+plt.figure(figsize=[7.04, 5.28])
 plt.suptitle("THG conversion efficiency: η="*string(round(η_THG, digits=5) *100)*"%")
 plt.subplots_adjust(hspace=0.5)
 
@@ -379,8 +376,8 @@ if save==true
     plt.savefig(joinpath(out_path,"pulse_energies.pdf"))
 end
 
-#+++++ PLOT 7: on-axis frequency evolution 
-plt.figure()
+#+++++ PLOT 8: on-axis frequency evolution 
+plt.figure(figsize=[7.04, 5.28])
 plt.suptitle("On-axis frequency evolution")
 plt.pcolormesh(zout*1e3, f*1e-15, log10.(Maths.normbymax(Iω0)))   
 plt.colorbar(label="arb. units, normed")
@@ -393,30 +390,37 @@ if save==true
     plt.savefig(joinpath(out_path,"on-axis_frequency_evolution.pdf"))
 end
 
-#+++++ PLOT 8: time-domain plot of input pulse 
-plt.figure() 
+#+++++ PLOT 9: time-domain plot of input pulse 
+plt.figure(figsize=[7.04, 5.28]) 
 plt.title("Time-domain representation of on-axis input pulse")
 plt.xlabel("t (fs)")
+plt.xlim(minimum(t)*1e15, maximum(t)*1e15)
 plt.ylabel("I(t; r=0, z=0) (arb. units)")
 plt.plot(t*1e15, It0[:,1] , color="red", label="FWHM pulse duration: τ="*string(round(τ_input*1e15, digits=1) )*"fs")
 plt.plot(t*1e15,It0_envelope[:,1], color="black", ls="--")
-plt.legend(loc="upper right")
 
 if (read_IR & show_IR )==true  # overlay measured input pulse 
-    plt.plot(t*1e15,maximum(It0_envelope[:,1]).*Maths.normbymax(beam_spline_fs.(t*1e15)), color="grey", ls="-.")
+    plt.plot(t_in*1e15,maximum(It0_envelope[:,1]).*Maths.normbymax(I_in), color="grey")
 end
+
+plt.legend(loc="upper right")
 
 if save==true
     plt.savefig(joinpath(out_path,"time_domain_input.pdf"))
 end
 
-#+++++ PLOT 9: time-domain plot of UV output pulse 
-plt.figure() 
+#+++++ PLOT 10: time-domain plot of UV output pulse 
+plt.figure(figsize=[7.04, 5.28]) 
 plt.title("Time-domain representation of on-axis UV output pulse")
 plt.xlabel("t (fs)")
 plt.ylabel("I(t; r=0, z=L) (arb. units)")
 plt.plot(t*1e15, It0_UV[:,end] , color="red", label="FWHM pulse duration: τ="*string(round(τ_UV*1e15, digits=1) )*"fs")
 plt.plot(t*1e15,It0_UV_envelope[:,end], color="black", linestyle="--")
+
+if read_UV==true  # overlay measured UV output pulse 
+    # ADD CODE TO OVERLAY UV PULSE IN TIME DOMAIN
+end
+
 plt.legend(loc="upper right")
 
 if save==true

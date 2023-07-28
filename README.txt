@@ -19,30 +19,7 @@ Stage 2: IN PROGRESS [Week 2 - ?]
 
 provided option to base input pulse on measured data ; provided 
 option to feed in custom gas density profile (untested!) ; 
-
-		
-	- compare input and output with measured data
- 
-		=> MUST BE PUT INTO IF STATEMENTS, IF NOT CRASHES PROGRAM WHEN TRYING TO PLOT!!!
-			-> add extra if statement to manually turn off overlay?
-
-		
-		+ when plotting NIR input time pulse, plot raw data instead of spline??
-
-	
-		+ NIR spectrum scatter plot at input compared to measured data
-			-> from Ek.dat [HOW TI BEST EXTRACT -> calculate sampling rate...???]
-		
-
-		+ UV spectrum scatter plot at output compared to measured data
-			-> from data folder [spectra ]
-
-		+ measured UV pulse scatter plot at output compared to simulated UV pulse at output 
-			-> from spectrum (provided FFT is good enough...)
-
-	
-	TAKE A STEP BACK AND REPRODUCE JOSINA'S ORIGINAL SIMULATIONS [SOME DISCREPANCIES!!!]
-
+provided option to overlay measured UV spectrum 
 	
 	PREPARE PRESENTATION FOR JOSINA
 
@@ -56,9 +33,11 @@ Stage 3: TO DO
 
 		+ input measured CEO phase value ?
 
-	- produce gas density simulations	
+	        + produce gas density simulations [first test existing COMSOL simulations]
+
+		-> take more data ? (ask Josina if can join)	
 
 	- vary pressure, beam intensity [when changing beam energy, also change beam shape (file)??], etc. to study effect on THG efficiency [Luna parameter scans...] (Ar & Ne)
-		-> try to reproduce Josina's measured pressure scans (saturation, pulse shape change, second spectral peak)
+		-> try to reproduce measured pressure scans (saturation, pulse shape change, second spectral peak)
 			-->> conversion efficiency and pulse energy!
 
