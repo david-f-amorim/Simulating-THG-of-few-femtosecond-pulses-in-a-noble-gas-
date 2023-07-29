@@ -8,20 +8,20 @@ GOAL:     simulate THG of a few-femtosecond IR laser beam in a
 		 
 
 
-Stage 1: DONE [Week 1-2 ]
+Stage 1: DONE [Week 1-2]
 --------------------------
 	
 did background reading ; cleaned up existing code ; 
 provided visualisation functions ; provided output handling 
 
-Stage 2: IN PROGRESS [Week 2 - ?]
+Stage 2: IN PROGRESS [Week 2]
 ----------------------------------
 
 provided option to base input pulse on measured data ; provided 
 option to feed in custom gas density profile (untested!) ; 
 provided option to overlay measured UV spectrum 
 	
-	PREPARE PRESENTATION FOR JOSINA
+	FINISH PRESENTATION FOR JOSINA
 
 
 Stage 3: TO DO
