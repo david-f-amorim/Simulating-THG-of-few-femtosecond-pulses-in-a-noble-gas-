@@ -13,7 +13,7 @@ show = true                  # if true, shows plots
 
 read_IR = true               # if true: read input IR pulse from file; if false: use Gaussian approximation 
 read_ρ  = false              # if true: read gas density profile from file; if false: use pressure gradient approximation 
-read_UV = true              # if true: overlay measured UV output on simulated results   
+read_UV = false              # if true: overlay measured UV output on simulated results   
 
 show_IR = false              # if true and "read_IR" is true: overlay measured input pulse on plots
 
@@ -40,7 +40,7 @@ path_UV   = joinpath(in_dir, file_UV)        # sys. path to UV output pulse file
 gas = :Ar           # gas
 pres = 0.4          # central gas pressure [bar]
 p_ed = 1e-3         # edge gas pressure [bar]
-p_const = true     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
+p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when temporal beam profile is approximated as Gaussian)
 λ0 = 800e-9         # central wavelength [m]
 w0 = 65e-6          # beam waist [m]

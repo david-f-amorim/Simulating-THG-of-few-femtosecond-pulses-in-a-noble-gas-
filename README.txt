@@ -21,8 +21,6 @@ provided option to base input pulse on measured data ; provided
 option to feed in custom gas density profile (untested!) ; 
 provided option to overlay measured UV spectrum 
 	
-	FINISH PRESENTATION FOR JOSINA
-
 
 Stage 3: TO DO
 -----------------------------
@@ -37,7 +35,19 @@ Stage 3: TO DO
 
 		-> take more data ? (ask Josina if can join)	
 
-	- vary pressure, beam intensity [when changing beam energy, also change beam shape (file)??], etc. to study effect on THG efficiency [Luna parameter scans...] (Ar & Ne)
+	- vary pressure, beam intensity [when changing beam energy, also change beam spectrum (file)??], etc. to study effect on THG efficiency [Luna parameter scans...] (Ar & Ne)
 		-> try to reproduce measured pressure scans (saturation, pulse shape change, second spectral peak)
 			-->> conversion efficiency and pulse energy!
+
+				SO FAR: NONE OF THE THREE EFFECTS HAVE BEEN FOUND! SIMULATION INCOMPLETE ???
+
+				MAYBE GAS DENSITY APPROX. DOES NOT HOLD UP AT HIGH PRESSURES?
+						CHECK IF NOTABLE DIFFERENCE BETWEEN CONST. AND NON-CONST. DENS!!
+							-> at high pressures the const. approximation breaks down!
+
+				Look into more nonlinear effects: currently "Kerr_field", "PlasmaCumtrapz"				
+
+
+		IMPLEMENT LOOP STRUCTURE FOR DIFFERENT PRESSURES AND BEAM ENERGIES?
+			-> write spectra and beam energies to file to overlay with measured data ?
 
