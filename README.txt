@@ -27,13 +27,10 @@ Stage 3: TO DO
 
 	- do pressure scans (Ar & Ne) and try to reproduce signs of filamentation (saturation, pulse shape change, second spectral peak)
 
-			+ consider input pulses at 75mW, 150mw, and 300mW (currently only 150mW data available)
+			+ currently only 150mW and Ar data available
 			+ so far: filamentation effects could not be reproduced 
-				=> most likely due to gas density model breaking down at high pressures?
-
-				CAREFULLY EVALUATE PRESSURE SCANS AT LOW PRESSURES TO EVALUATE THIS HYPOTHESIS!!
-
-				look into using and improving COMSOL simulations 			
+				=> most likely due to gas density model breaking down at high (and low) pressures?
+				=> look into using and improving COMSOL simulations !			
 
 
 	- make simulation more realistic: 
