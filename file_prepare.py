@@ -19,7 +19,7 @@ use_UV  = True
 use_rho = False  
 
 in_IR   = "Ek.dat"
-in_UV   = "0.4bar_Subt2__0__17-05-45-008.txt"
+in_UV   = "1.0bar_Subt2__0__17-08-23-927.txt"
 in_rho  = "PUT_FILENAME_HERE"
 
 """ 

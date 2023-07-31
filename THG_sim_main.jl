@@ -13,7 +13,7 @@ show = true                  # if true, shows plots
 
 read_IR = true               # if true: read input IR pulse from file; if false: use Gaussian approximation 
 read_ρ  = false              # if true: read gas density profile from file; if false: use pressure gradient approximation 
-read_UV = false              # if true: overlay measured UV output on simulated results   
+read_UV = true              # if true: overlay measured UV output on simulated results   
 
 show_IR = false              # if true and "read_IR" is true: overlay measured input pulse on plots
 
@@ -38,7 +38,7 @@ path_UV   = joinpath(in_dir, file_UV)        # sys. path to UV output pulse file
 #       directly from file (see QUICK SETTINGS above)
 
 gas = :Ar           # gas
-pres = 0.4          # central gas pressure [bar]
+pres = 1.0          # central gas pressure [bar]
 p_ed = 1e-3         # edge gas pressure [bar]
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when temporal beam profile is approximated as Gaussian)
@@ -88,8 +88,9 @@ ionrate = Ionisation.ionrate_fun!_PPTcached(gas, λ0)        # set gas ionisatio
 linop = LinearOps.make_linop(grid, q, coren)                # generate linear operator for pulse-propagation equation  
 normfun = NonlinearRHS.norm_radial(grid, q, coren)          # generate normalisation function for radial symmetry 
 
-responses = (Nonlinear.Kerr_field(PhysData.γ3_gas(gas)),    # set nonlinear response of the gas: Kerr effect & plasma formation
-            Nonlinear.PlasmaCumtrapz(grid.to, grid.to, ionrate, ionpot))       
+responses = (Nonlinear.Kerr_field(PhysData.γ3_gas(gas)),      # set nonlinear response of the gas: Kerr effect & plasma formation 
+            Nonlinear.PlasmaCumtrapz(grid.to, grid.to, ionrate, ionpot))
+            #Nonlinear.Kerr_env(PhysData.γ3_gas(gas)))
 
 # ----------------- SET INPUT FIELD ----------------------------                                       
 
