@@ -25,6 +25,8 @@ provided option to overlay measured UV spectrum
 Stage 3: TO DO
 -----------------------------
 
+NOTE: blueshift of spectrum at z=L !!
+
 	- do pressure scans (Ar & Ne) and try to reproduce signs of filamentation (saturation, pulse shape change, second spectral peak)
 
 			+ currently only 150mW and Ar data available
