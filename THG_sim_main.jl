@@ -13,7 +13,7 @@ show = true                  # if true, shows plots
 
 read_IR = true               # if true: read input IR pulse from file; if false: use Gaussian approximation 
 read_ρ  = false              # if true: read gas density profile from file; if false: use pressure gradient approximation 
-read_UV = true              # if true: overlay measured UV output on simulated results   
+read_UV = false              # if true: overlay measured UV output on simulated results   
 
 show_IR = false              # if true and "read_IR" is true: overlay measured input pulse on plots
 
@@ -38,14 +38,14 @@ path_UV   = joinpath(in_dir, file_UV)        # sys. path to UV output pulse file
 #       directly from file (see QUICK SETTINGS above)
 
 gas = :Ar           # gas
-pres = 1.0          # central gas pressure [bar]
+pres = 0.1          # central gas pressure [bar]
 p_ed = 1e-3         # edge gas pressure [bar]
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when temporal beam profile is approximated as Gaussian)
 λ0 = 800e-9         # central wavelength [m]
 w0 = 65e-6          # beam waist [m]
 ϕ = 0.0             # central envelope offset (CEO) phase [rad]                                    -> can this be extracted from data?
-energy = 150e-6     # pulse energy [J]                                                             -> multiply by 1kHz (?) repetition rate for beam power
+energy = 300e-6     # pulse energy [J]                                                             -> multiply by 1kHz (?) repetition rate for beam power
 L = 2e-3            # propagation distance (cell length) [m]
 
 λ_lims = (200e-9, 1000e-9)      # wavelength limits of overall frequency window (both NIR and UV) [m,m]
@@ -237,7 +237,7 @@ plt.ylabel("r (mm)")
 plt.title("I(r,z; λ=$(round(Int,λ0/3*1e9))nm)")
 
 if save==true
-    plt.savefig(joinpath(out_path,"off-axis_intensity.pdf"))
+    plt.savefig(joinpath(out_path,"off-axis_intensity.png"))
 end    
     
 #+++++ PLOT 2:  fundamental and third harmonic intensities as functions of z at r=0
@@ -260,7 +260,7 @@ plt.ylabel("I(r=0) (arb. units)")
 plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
 
 if save==true
-    plt.savefig(joinpath(out_path,"on-axis_intensity.pdf"))
+    plt.savefig(joinpath(out_path,"on-axis_intensity.png"))
 end 
 
 #+++++ PLOT 3: gas number density and effective susceptibility along the cell 
@@ -287,7 +287,7 @@ plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
 plt.legend()
 
 if save==true
-    plt.savefig(joinpath(out_path,"density_and_susceptibility.pdf"))
+    plt.savefig(joinpath(out_path,"density_and_susceptibility.png"))
 end 
 
 #+++++ PLOT 4:  linear on-axis spectrum I(λ) at z=0 and z=L 
@@ -310,7 +310,7 @@ end
 plt.legend()
 
 if save==true
-    plt.savefig(joinpath(out_path,"full_on-axis_spectrum.pdf"))
+    plt.savefig(joinpath(out_path,"full_on-axis_spectrum.png"))
 end 
 
 #+++++ PLOT 5:  UV only linear on-axis spectrum I(λ) at z=0 and z=L 
@@ -329,7 +329,7 @@ end
 plt.legend()
 
 if save==true
-    plt.savefig(joinpath(out_path,"UV_on-axis_spectrum.pdf"))
+    plt.savefig(joinpath(out_path,"UV_on-axis_spectrum.png"))
 end 
 
 #+++++ PLOT 6:  log. on-axis spectrum I(λ) at z=0 and z=L 
@@ -351,7 +351,7 @@ plt.legend()
 
 
 if save==true
-    plt.savefig(joinpath(out_path,"on-axis_spectrum_log.pdf"))
+    plt.savefig(joinpath(out_path,"on-axis_spectrum_log.png"))
 end 
 
 #+++++ PLOT 7:  pulse energies and efficiency 
@@ -374,7 +374,7 @@ plt.title("UV pulse energy")
 plt.legend()
 
 if save==true
-    plt.savefig(joinpath(out_path,"pulse_energies.pdf"))
+    plt.savefig(joinpath(out_path,"pulse_energies.png"))
 end
 
 #+++++ PLOT 8: on-axis frequency evolution 
@@ -388,7 +388,7 @@ plt.ylabel("f (PHz)")
 plt.title("log. I(r=0, ω)")
 
 if save==true
-    plt.savefig(joinpath(out_path,"on-axis_frequency_evolution.pdf"))
+    plt.savefig(joinpath(out_path,"on-axis_frequency_evolution.png"))
 end
 
 #+++++ PLOT 9: time-domain plot of input pulse 
@@ -407,7 +407,7 @@ end
 plt.legend(loc="upper right")
 
 if save==true
-    plt.savefig(joinpath(out_path,"time_domain_input.pdf"))
+    plt.savefig(joinpath(out_path,"time_domain_input.png"))
 end
 
 #+++++ PLOT 10: time-domain plot of UV output pulse 
@@ -425,7 +425,7 @@ end
 plt.legend(loc="upper right")
 
 if save==true
-    plt.savefig(joinpath(out_path,"time_domain_UV_output.pdf"))
+    plt.savefig(joinpath(out_path,"time_domain_UV_output.png"))
 end
 
 if show==true

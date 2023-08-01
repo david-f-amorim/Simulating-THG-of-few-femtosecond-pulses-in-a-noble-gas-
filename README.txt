@@ -25,18 +25,21 @@ provided option to overlay measured UV spectrum
 Stage 3: TO DO
 -----------------------------
 
-NOTE: blueshift of spectrum at z=L !!
+wait for COMSOL: 
 
-	- do pressure scans (Ar & Ne) and try to reproduce signs of filamentation (saturation, pulse shape change, second spectral peak)
+Investigate CEO phase
+Turn off ionisation
+Investigate different beam energies, pressures and gases [does saturation ever set in?]
+		Rewrite code for scans [pdf -> png; loop structure]
+		read in spectral input data as well ?!
+ 
 
-			+ currently only 150mW and Ar data available
-			+ so far: filamentation effects could not be reproduced 
-				=> most likely due to gas density model breaking down at high (and low) pressures?
-				=> look into using and improving COMSOL simulations !			
+Read papers! -> find nonlinear effects ?!
+
+	maybe do look into Nonlinear effects on Luna again? (Kerr_field, Kerr_env, Kerr_field_nothg, Kerr_env_thg)!
+
+Email Luna team ?!
+	
 
 
-	- make simulation more realistic: 
-
-		+ set up non-Gaussian spatial profile 
-		+ input measured CEO phase value ?
 
