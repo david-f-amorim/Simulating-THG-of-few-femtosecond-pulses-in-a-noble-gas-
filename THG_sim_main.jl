@@ -8,13 +8,15 @@ using  DelimitedFiles
 
 # ----------------- QUICK SETTINGS -------------------------------
 
-save = true                  # if true, saves output plots and run parameters
-show = true                  # if true, shows plots
+save = true                  # if true, saves output plots, run parameters and UV spectrum
+show = true                  # if true, opens plots in GUI after run 
+txt_only = false              # if true, no plots are produced 
 
 read_IR = true               # if true: read input IR pulse from file; if false: use Gaussian approximation 
 read_ρ  = false              # if true: read gas density profile from file; if false: use pressure gradient approximation 
-read_UV = false              # if true: overlay measured UV output on simulated results   
+read_UV = true              # if true: overlay measured UV output on simulated results   
 
+IR_spec = false              # if true: reas input IR spectrum from file and overlay 
 show_IR = false              # if true and "read_IR" is true: overlay measured input pulse on plots
 
 # ----------------- INPUT HANDLING -------------------------------
@@ -29,8 +31,11 @@ path_IR   = joinpath(in_dir, file_IR)        # sys. path to IR input pulse file
 file_ρ    = "dens.dat"                       # name of density profile data file 
 path_ρ    = joinpath(in_dir, file_ρ)         # sys. path to density profile data file 
 
-file_UV   = "UVpulse.dat"                    # name of IR input pulse file 
+file_UV   = "UVpulse.dat"                    # name of UV output pulse file 
 path_UV   = joinpath(in_dir, file_UV)        # sys. path to UV output pulse file 
+
+file_IR_spec = "IRspec.dat"                   # name of IR input spectrum file 
+path_IR_spec = joinpath(in_dir, file_IR_spec) # sys. path to IR input spectrum file 
 
 # ------------------ SET MEASURED PARAMETERS ------------------------
 
@@ -45,11 +50,19 @@ p_const = false     # if true: set constant pressure profile P==(pres,pres,pres)
 λ0 = 800e-9         # central wavelength [m]
 w0 = 65e-6          # beam waist [m]
 ϕ = 0.0             # central envelope offset (CEO) phase [rad]                                    -> can this be extracted from data?
-energy = 300e-6     # pulse energy [J]                                                             -> multiply by 1kHz (?) repetition rate for beam power
+energy = 150e-6     # pulse energy [J]                                                             -> multiply by 1kHz (?) repetition rate for beam power
 L = 2e-3            # propagation distance (cell length) [m]
 
 λ_lims = (200e-9, 1000e-9)      # wavelength limits of overall frequency window (both NIR and UV) [m,m]
 λ_rangeUV = (200e-9, 360e-9)    # wavelength limits of UV region of interest [m,m]
+
+# ------------------ SET NONLINEAR PARAMS ------------------------
+
+kerr = "ff"         # set nonlinear Kerr effect: 
+                    #       must be "ff" [Kerr_field + Kerr_field_nothg], "ef" [Kerr_env + Kerr_field_nothg], 
+                    #       "f" [Kerr_field], "fe" [Kerr_field + Kerr_env] , or "e" [Kerr_env]
+ion = true          # if true: enable ionisation response
+
 
 # ----------------- SET PRESSURE PROFILE ---------------------------
 
@@ -71,9 +84,10 @@ end
 
 # ----------------- SET SIMULATION GRID ----------------------------
 
-R = 250e-6            # aperture radius for Hankel transform (assume field ≈0 for r>R ) [m]  ->> Josina's version: 1e-3 
+R = 250e-6            # aperture radius for Hankel transform (assume field ≈0 for r>R ) [m]  
 N = 1024              # sample size for Hankel tansform grid     [1]                         ->> WHY THIS VALUE?  WOULD CHOOSING N≫ IMPROVE ACCURACY?
 trange = 0.05e-12     # total extent of time window required [s]                             
+
 
 grid = Grid.RealGrid(L, λ0, λ_lims ,trange)   # set up time grid
 q = Hankel.QDHT(R, N, dim=2)                  # set up discrete Hankel transform matrix                        
@@ -88,9 +102,49 @@ ionrate = Ionisation.ionrate_fun!_PPTcached(gas, λ0)        # set gas ionisatio
 linop = LinearOps.make_linop(grid, q, coren)                # generate linear operator for pulse-propagation equation  
 normfun = NonlinearRHS.norm_radial(grid, q, coren)          # generate normalisation function for radial symmetry 
 
-responses = (Nonlinear.Kerr_field(PhysData.γ3_gas(gas)),      # set nonlinear response of the gas: Kerr effect & plasma formation 
-            Nonlinear.PlasmaCumtrapz(grid.to, grid.to, ionrate, ionpot))
-            #Nonlinear.Kerr_env(PhysData.γ3_gas(gas)))
+# * * * SET KERR EFFECT AND/OR PLASMA FORMATION 
+if (kerr=="ff") & (ion == true)
+    responses = (Nonlinear.Kerr_field(PhysData.γ3_gas(gas)),     
+            Nonlinear.PlasmaCumtrapz(grid.to, grid.to, ionrate, ionpot),
+            Nonlinear.Kerr_field_nothg(PhysData.γ3_gas(gas),length(grid.to))
+            )
+elseif (kerr=="ef") & (ion == true)
+    responses = (Nonlinear.PlasmaCumtrapz(grid.to, grid.to, ionrate, ionpot),
+            Nonlinear.Kerr_env(PhysData.γ3_gas(gas)),
+            Nonlinear.Kerr_field_nothg(PhysData.γ3_gas(gas),length(grid.to))
+            )
+elseif (kerr=="f") & (ion == true)
+    responses = (Nonlinear.Kerr_field(PhysData.γ3_gas(gas)),     
+            Nonlinear.PlasmaCumtrapz(grid.to, grid.to, ionrate, ionpot),
+            )
+elseif (kerr=="e") & (ion == true)
+    responses = (Nonlinear.PlasmaCumtrapz(grid.to, grid.to, ionrate, ionpot),
+            Nonlinear.Kerr_env(PhysData.γ3_gas(gas)),
+            )
+elseif (kerr=="fe") & (ion == true)
+    responses = (Nonlinear.Kerr_field(PhysData.γ3_gas(gas)),     
+            Nonlinear.PlasmaCumtrapz(grid.to, grid.to, ionrate, ionpot),
+            Nonlinear.Kerr_env(PhysData.γ3_gas(gas)),
+            )   
+elseif (kerr=="ff") & (ion == false)
+    responses = (Nonlinear.Kerr_field(PhysData.γ3_gas(gas)),     
+            Nonlinear.Kerr_field_nothg(PhysData.γ3_gas(gas),length(grid.to))
+            )
+elseif (kerr=="ef") & (ion == false)
+    responses = (Nonlinear.Kerr_env(PhysData.γ3_gas(gas)),
+            Nonlinear.Kerr_field_nothg(PhysData.γ3_gas(gas),length(grid.to))
+            )    
+elseif (kerr=="f") & (ion == false)
+    responses = (Nonlinear.Kerr_field(PhysData.γ3_gas(gas)),     
+            )    
+elseif (kerr=="e") & (ion == false)
+    responses = (Nonlinear.Kerr_env(PhysData.γ3_gas(gas)),
+            )    
+elseif (kerr=="fe") & (ion == false) 
+    responses = (Nonlinear.Kerr_field(PhysData.γ3_gas(gas)),     
+            Nonlinear.Kerr_env(PhysData.γ3_gas(gas)),
+            )
+end    
 
 # ----------------- SET INPUT FIELD ----------------------------                                       
 
@@ -187,18 +241,15 @@ end
 
 η_THG = UV_pulse_en[end]/tot_pulse_en[1]            # THG efficiency: initial total pulse energy / final UV pulse energy 
 
-# * * * PROCESS MEASURED INPUT DATA 
-if (read_IR & show_IR) == true
-    
-    # ADD CODE TO CONVERT TO FREQUENCY DOMAIN
+# * * * PROCESS MEASURED DATA FROM FILES 
+if IR_spec == true
+    λ_IR_spec = readdlm(path_IR_spec,' ', Float64, '\n')[:,1]             # read in IR input wavelength data 
+    I_IR_spec = readdlm(path_IR_spec,' ', Float64, '\n')[:,2]             # read in IR input spectral data 
 end
 
 if read_UV == true 
     λ_in    = readdlm(path_UV,' ', Float64, '\n')[:,1]                      # read in UV wavelength data
     I_in_UV = readdlm(path_UV,' ', Float64, '\n')[:,2]                      # read in UV intensity data 
-    
-    # ADD CODE TO CONVERT TO TIME DOMAIN
-
 end    
 
 # ----------------- OUTPUT HANDLING -------------------------
@@ -217,222 +268,264 @@ import PyPlot:pygui, plt
 close("all")
 pygui(true)
 
-#+++++ PLOT 1:  fundamental and third harmonic intensities as functions of z and r≠0
-plt.figure(figsize=[7.04, 5.28])
-plt.suptitle("Off-axis intensity of fundamental and third harmonic")
-plt.subplots_adjust(left=0.125, bottom=0.11, right=0.992, top=0.88, hspace=0.5)
+if txt_only == false 
 
-plt.subplot(2,1,1)
-plt.pcolormesh(zout*1e3, q.r*1e3, Iωr[ω0idx, :, :])
-plt.colorbar(label="arb. units")
-plt.ylabel("r (mm)")
-plt.xlabel("z (mm)")
-plt.title("I(r,z; λ=$(round(Int,λ0*1e9))nm)")    
+    #+++++ PLOT 1:  fundamental and third harmonic intensities as functions of z and r≠0
+    plt.figure(figsize=[7.04, 5.28])
+    plt.suptitle("Off-axis intensity of fundamental and third harmonic")
+    plt.subplots_adjust(left=0.125, bottom=0.11, right=0.992, top=0.88, hspace=0.5)
 
-plt.subplot(2,1,2)
-plt.pcolormesh(zout*1e3, q.r*1e3,Iωr[ωTHidx, :, :])
-plt.colorbar(label="arb. units")
-plt.xlabel("z (mm)")
-plt.ylabel("r (mm)")
-plt.title("I(r,z; λ=$(round(Int,λ0/3*1e9))nm)")
+    plt.subplot(2,1,1)
+    plt.pcolormesh(zout*1e3, q.r*1e3, Iωr[ω0idx, :, :])
+    plt.colorbar(label="arb. units")
+    plt.ylabel("r (mm)")
+    plt.xlabel("z (mm)")
+    plt.title("I(r,z; λ=$(round(Int,λ0*1e9))nm)")    
 
-if save==true
-    plt.savefig(joinpath(out_path,"off-axis_intensity.png"))
-end    
+    plt.subplot(2,1,2)
+    plt.pcolormesh(zout*1e3, q.r*1e3,Iωr[ωTHidx, :, :])
+    plt.colorbar(label="arb. units")
+    plt.xlabel("z (mm)")
+    plt.ylabel("r (mm)")
+    plt.title("I(r,z; λ=$(round(Int,λ0/3*1e9))nm)")
+
+    if save==true
+        plt.savefig(joinpath(out_path,"off-axis_intensity.png"),dpi=1000)
+    end    
+        
+    #+++++ PLOT 2:  fundamental and third harmonic intensities as functions of z at r=0
+    plt.figure(figsize=[7.04, 5.28])
+    plt.suptitle("On-axis intensity of fundamental and third harmonic")
+    plt.subplots_adjust(hspace=0.5)
+
+    plt.subplot(2,1,1)
+    plt.plot(zout*1e3,  Iω0[ω0idx,  :], color="red")
+    plt.title("λ=$(round(Int,λ0*1e9))nm")
+    plt.ylabel("I(r=0) (arb. units)")
+    plt.xlabel("z (mm)")
+    plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
+
+    plt.subplot(2,1,2)
+    plt.plot(zout*1e3,  Iω0[ωTHidx,  :], color="red")
+    plt.title("λ=$(round(Int,λ0/3*1e9))nm")
+    plt.xlabel("z (mm)")
+    plt.ylabel("I(r=0) (arb. units)")
+    plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
+
+    if save==true
+        plt.savefig(joinpath(out_path,"on-axis_intensity.png"),dpi=1000)
+    end 
+
+    #+++++ PLOT 3: gas number density and effective susceptibility along the cell 
+    plt.figure(figsize=[7.04, 5.28])
+    plt.suptitle("Initial gas properties")
+    plt.subplots_adjust(hspace=0.4)
+
+    plt.subplot(2,1,1)
+    plt.plot(zout*1e3, [dens(i) for i in zout] ./ PhysData.N_A, label="central pressure: P₀=$(pres) bar", color="red")
+    plt.ylabel("ρ (mol/m³)")
+    plt.xlabel("z (mm)")
+    plt.legend()
+
+    plt.subplot(2,1,2)
+
+    χ0  = [coren(ω[ω0idx],z=i)^2-1 for i in zout]
+    χTH = [coren(ω[ωTHidx],z=i)^2-1 for i in zout]
     
-#+++++ PLOT 2:  fundamental and third harmonic intensities as functions of z at r=0
-plt.figure(figsize=[7.04, 5.28])
-plt.suptitle("On-axis intensity of fundamental and third harmonic")
-plt.subplots_adjust(hspace=0.5)
+    plt.xlabel("z (mm)")
+    plt.ylabel("Effective linear χₑ")
+    plt.plot(zout*1e3, χ0, label="λ=$(round(Int,λ0*1e9))nm", color="grey")
+    plt.plot(zout*1e3, χTH, label="λ=$(round(Int,λ0/3*1e9))nm", color="red")
+    plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
+    plt.legend()
 
-plt.subplot(2,1,1)
-plt.plot(zout*1e3,  Iω0[ω0idx,  :], color="red")
-plt.title("λ=$(round(Int,λ0*1e9))nm")
-plt.ylabel("I(r=0) (arb. units)")
-plt.xlabel("z (mm)")
-plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
+    if save==true
+        plt.savefig(joinpath(out_path,"density_and_susceptibility.png"),dpi=1000)
+    end 
 
-plt.subplot(2,1,2)
-plt.plot(zout*1e3,  Iω0[ωTHidx,  :], color="red")
-plt.title("λ=$(round(Int,λ0/3*1e9))nm")
-plt.xlabel("z (mm)")
-plt.ylabel("I(r=0) (arb. units)")
-plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
+    #+++++ PLOT 4:  linear on-axis spectrum I(λ) at z=0 and z=L 
+    plt.figure(figsize=[7.04, 5.28])
+    plt.title("Linear on-axis beam spectrum")
+    plt.plot(λ[2:end]*1e9, Iω0[2:end,1], label="z=0mm", color="grey")
+    plt.plot(λ[2:end]*1e9, Iω0[2:end,end], label="z=$(L*1e3)mm", color="red")
+    plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
+    plt.xlabel("λ (nm)")
+    plt.ylabel("I(r=0, λ) (arb. units)")
 
-if save==true
-    plt.savefig(joinpath(out_path,"on-axis_intensity.png"))
-end 
+    if read_UV == true  # overlay measured UV output spectrum 
+        plt.plot(λ_in*1e9, maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(I_in_UV), color="purple", label="UV data (rescaled)")
+    end
 
-#+++++ PLOT 3: gas number density and effective susceptibility along the cell 
-plt.figure(figsize=[7.04, 5.28])
-plt.suptitle("Initial gas properties")
-plt.subplots_adjust(hspace=0.4)
+    if IR_spec == true 
+        plt.plot(λ_IR_spec*1e9, maximum(Iω0[2:end,1]).*Maths.normbymax(I_IR_spec), color="green", ls="--") 
+    end    
 
-plt.subplot(2,1,1)
-plt.plot(zout*1e3, [dens(i) for i in zout] ./ PhysData.N_A, label="central pressure: P₀=$(pres) bar", color="red")
-plt.ylabel("ρ (mol/m³)")
-plt.xlabel("z (mm)")
-plt.legend()
+    plt.legend()
 
-plt.subplot(2,1,2)
+    if save==true
+        plt.savefig(joinpath(out_path,"full_on-axis_spectrum.png"),dpi=1000)
+    end 
 
-χ0  = [coren(ω[ω0idx],z=i)^2-1 for i in zout]
-χTH = [coren(ω[ωTHidx],z=i)^2-1 for i in zout]
-   
-plt.xlabel("z (mm)")
-plt.ylabel("Effective linear χₑ")
-plt.plot(zout*1e3, χ0, label="λ=$(round(Int,λ0*1e9))nm", color="grey")
-plt.plot(zout*1e3, χTH, label="λ=$(round(Int,λ0/3*1e9))nm", color="red")
-plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
-plt.legend()
+    #+++++ PLOT 5:  UV only linear on-axis spectrum I(λ) at z=0 and z=L 
+    plt.figure(figsize=[7.04, 5.28])
+    plt.title("Linear on-axis UV spectrum")
+    plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,1], label="z=0mm", color="grey")
+    plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,end], label="z=$(L*1e3)mm", color="red")
+    plt.xlim(λ_rangeUV[1]*1e9, λ_rangeUV[2]*1e9)
+    plt.xlabel("λ (nm)")
+    plt.ylabel("I(r=0, λ) (arb. units)")
 
-if save==true
-    plt.savefig(joinpath(out_path,"density_and_susceptibility.png"))
-end 
+    if read_UV == true  # overlay measured UV output spectrum 
+        plt.plot(λ_in*1e9, maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(I_in_UV), color="purple", label="UV data (rescaled)")
+    end
 
-#+++++ PLOT 4:  linear on-axis spectrum I(λ) at z=0 and z=L 
-plt.figure(figsize=[7.04, 5.28])
-plt.title("Linear on-axis beam spectrum")
-plt.plot(λ[2:end]*1e9, Iω0[2:end,1], label="z=0mm", color="grey")
-plt.plot(λ[2:end]*1e9, Iω0[2:end,end], label="z=$(L*1e3)mm", color="red")
-plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
-plt.xlabel("λ (nm)")
-plt.ylabel("I(r=0, λ) (arb. units)")
+    if IR_spec == true 
+        plt.plot(λ_IR_spec*1e9, maximum(Iω0[λlowidx:λhighidx,1]).*Maths.normbymax(I_IR_spec), color="green", ls="--") 
+    end
 
-if read_UV == true  # overlay measured UV output spectrum 
-    plt.plot(λ_in*1e9, maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(I_in_UV), color="purple", label="UV data (rescaled)")
-end
+    plt.legend()
 
-if (read_IR & show_IR) == true 
-    # ADD CODE TO OVERLAY INPUT IR SPECTRUM 
+    if save==true
+        plt.savefig(joinpath(out_path,"UV_on-axis_spectrum.png"),dpi=1000)
+    end 
+
+    #+++++ PLOT 6:  log. on-axis spectrum I(λ) at z=0 and z=L 
+    Iω0log = log10.(Iω0)
+
+    plt.figure(figsize=[7.04, 5.28])
+    plt.title("Logarithmic on-axis beam spectrum")
+    plt.plot(λ[2:end]*1e9, Iω0log[2:end,1], label="z=0mm",  color="grey")
+    plt.plot(λ[2:end]*1e9, Iω0log[2:end,end], label="z=$(L*1e3)mm", color="red")
+    plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
+    plt.xlabel("λ (nm)")
+    plt.ylabel("I(r=0, λ) (arb. units)")
+
+    if read_UV == true  # overlay measured UV output spectrum 
+        plt.plot(λ_in*1e9, log10.(abs.(maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(I_in_UV))), color="purple", label="UV data (rescaled)")
+    end
+
+    if IR_spec == true 
+        plt.plot(λ_IR_spec*1e9, log10.(abs.(maximum(Iω0[2:end,1]).*Maths.normbymax(I_IR_spec))), color="green", ls="--") 
+    end
+
+    plt.legend()
+
+
+    if save==true
+        plt.savefig(joinpath(out_path,"on-axis_spectrum_log.png"),dpi=1000)
+    end 
+
+    #+++++ PLOT 7:  pulse energies and efficiency 
+    plt.figure(figsize=[7.04, 5.28])
+    plt.suptitle("THG conversion efficiency: η="*string(round(η_THG, digits=5) *100)*"%")
+    plt.subplots_adjust(hspace=0.5)
+
+    plt.subplot(2,1,1)
+    plt.plot(zout.*1e3, tot_pulse_en.*1e6, label="ΔE=-$(round(Int64, tot_pulse_en[1]*1e6-tot_pulse_en[end]*1e6))μJ", color="red")
+    plt.xlabel("z (mm)")
+    plt.ylabel("E (μJ)")
+    plt.title("Total pulse energy")
+    plt.legend()
+
+    plt.subplot(2,1,2)
+    plt.plot(zout.*1e3, UV_pulse_en.*1e9, label="ΔE=+$(round(Int64, UV_pulse_en[end]*1e9))nJ", color="red")
+    plt.xlabel("z (mm)")
+    plt.ylabel("E (nJ)")
+    plt.title("UV pulse energy")
+    plt.legend()
+
+    if save==true
+        plt.savefig(joinpath(out_path,"pulse_energies.png"),dpi=1000)
+    end
+
+    #+++++ PLOT 8: on-axis frequency evolution 
+    plt.figure(figsize=[7.04, 5.28])
+    plt.suptitle("On-axis frequency evolution")
+    plt.pcolormesh(zout*1e3, f*1e-15, log10.(Maths.normbymax(Iω0)))   
+    plt.colorbar(label="arb. units, normed")
+    plt.clim(0, -6)  
+    plt.xlabel("z (mm)")
+    plt.ylabel("f (PHz)")
+    plt.title("log. I(r=0, ω)")
+
+    if save==true
+        plt.savefig(joinpath(out_path,"on-axis_frequency_evolution.png"),dpi=1000)
+    end
+
+    #+++++ PLOT 9: time-domain plot of input pulse 
+    plt.figure(figsize=[7.04, 5.28]) 
+    plt.title("Time-domain representation of on-axis input pulse")
+    plt.xlabel("t (fs)")
+    plt.xlim(minimum(t)*1e15, maximum(t)*1e15)
+    plt.ylabel("I(t; r=0, z=0) (arb. units)")
+    plt.plot(t*1e15, It0[:,1] , color="red", label="FWHM pulse duration: τ="*string(round(τ_input*1e15, digits=1) )*"fs")
+    plt.plot(t*1e15,It0_envelope[:,1], color="black", ls="--")
+
+    if (read_IR & show_IR )==true  # overlay measured input pulse 
+        plt.plot(t_in*1e15,maximum(It0_envelope[:,1]).*Maths.normbymax(I_in), color="green")
+    end
+
+    plt.legend(loc="upper right")
+
+    if save==true
+        plt.savefig(joinpath(out_path,"time_domain_input.png"),dpi=1000)
+    end
+
+    #+++++ PLOT 10: time-domain plot of UV output pulse 
+    plt.figure(figsize=[7.04, 5.28]) 
+    plt.title("Time-domain representation of on-axis UV output pulse")
+    plt.xlabel("t (fs)")
+    plt.ylabel("I(t; r=0, z=L) (arb. units)")
+    plt.plot(t*1e15, It0_UV[:,end] , color="red", label="FWHM pulse duration: τ="*string(round(τ_UV*1e15, digits=1) )*"fs")
+    plt.plot(t*1e15,It0_UV_envelope[:,end], color="black", linestyle="--")
+
+    plt.legend(loc="upper right")
+
+    if save==true
+        plt.savefig(joinpath(out_path,"time_domain_UV_output.png"),dpi=1000)
+    end
+
+    #+++++ PLOT 11: time-domain pulse evolution 
+    plt.figure(figsize=[7.04, 5.28]) 
+    plt.title("Evolution of total time-domain pulse")
+    plt.xlabel("t (fs)")
+    plt.xlim(minimum(t)*1e15, maximum(t)*1e15)
+    plt.ylabel("I(t; r=0) (arb. units)")
+
+    c = [plt.get_cmap("viridis")(i) for i in range(0,1,5)]
+    
+    plt.plot(t*1e15,It0_envelope[:,1], label="z=0.0mm", color=c[5])
+    plt.plot(t*1e15,It0_envelope[:,Int(round(length(zout)/4))], label="z=$(1/4*L*1e3)mm", color=c[4])
+    plt.plot(t*1e15,It0_envelope[:,Int(2*round(length(zout)/4))], label="z=$(2/4*L*1e3)mm", color=c[3])
+    plt.plot(t*1e15,It0_envelope[:,Int(3*round(length(zout)/4))], label="z=$(3/4*L*1e3)mm", color=c[2])
+    plt.plot(t*1e15,It0_envelope[:,end], label="z=$(L*1e3)mm", color=c[1])
+
+    plt.legend(loc="upper right")
+
+    if save==true
+        plt.savefig(joinpath(out_path,"pulse_evolution.png"),dpi=1000)
+    end
+
+    #+++++ PLOT 12: time-domain UV pulse evolution 
+    plt.figure(figsize=[7.04, 5.28]) 
+    plt.title("Evolution of UV time-domain pulse")
+    plt.xlabel("t (fs)")
+    plt.xlim(minimum(t)*1e15, maximum(t)*1e15)
+    plt.ylabel("I(t; r=0) (arb. units)")
+    
+    plt.plot(t*1e15,It0_UV_envelope[:,1], label="z=0.0mm", color=c[5])
+    plt.plot(t*1e15,It0_UV_envelope[:,Int(round(length(zout)/4))], label="z=$(1/4*L*1e3)mm", color=c[4])
+    plt.plot(t*1e15,It0_UV_envelope[:,Int(2*round(length(zout)/4))], label="z=$(2/4*L*1e3)mm", color=c[3])
+    plt.plot(t*1e15,It0_UV_envelope[:,Int(3*round(length(zout)/4))], label="z=$(3/4*L*1e3)mm", color=c[2])
+    plt.plot(t*1e15,It0_UV_envelope[:,end], label="z=$(L*1e3)mm", color=c[1])
+
+    plt.legend(loc="upper right")
+
+    if save==true
+        plt.savefig(joinpath(out_path,"UV_pulse_evolution.png"),dpi=1000)
+    end
 end    
-
-plt.legend()
-
-if save==true
-    plt.savefig(joinpath(out_path,"full_on-axis_spectrum.png"))
-end 
-
-#+++++ PLOT 5:  UV only linear on-axis spectrum I(λ) at z=0 and z=L 
-plt.figure(figsize=[7.04, 5.28])
-plt.title("Linear on-axis UV spectrum")
-plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,1], label="z=0mm", color="grey")
-plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,end], label="z=$(L*1e3)mm", color="red")
-plt.xlim(λ_rangeUV[1]*1e9, λ_rangeUV[2]*1e9)
-plt.xlabel("λ (nm)")
-plt.ylabel("I(r=0, λ) (arb. units)")
-
-if read_UV == true  # overlay measured UV output spectrum 
-    plt.plot(λ_in*1e9, maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(I_in_UV), color="purple", label="UV data (rescaled)")
-end
-
-plt.legend()
-
-if save==true
-    plt.savefig(joinpath(out_path,"UV_on-axis_spectrum.png"))
-end 
-
-#+++++ PLOT 6:  log. on-axis spectrum I(λ) at z=0 and z=L 
-Iω0log = log10.(Iω0)
-
-plt.figure(figsize=[7.04, 5.28])
-plt.title("Logarithmic on-axis beam spectrum")
-plt.plot(λ[2:end]*1e9, Iω0log[2:end,1], label="z=0mm",  color="grey")
-plt.plot(λ[2:end]*1e9, Iω0log[2:end,end], label="z=$(L*1e3)mm", color="red")
-plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
-plt.xlabel("λ (nm)")
-plt.ylabel("I(r=0, λ) (arb. units)")
-
-if read_UV == true  # overlay measured UV output spectrum 
-    plt.plot(λ_in*1e9, log10.(abs.(maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(I_in_UV))), color="purple", label="UV data (rescaled)")
-end
-
-plt.legend()
-
-
-if save==true
-    plt.savefig(joinpath(out_path,"on-axis_spectrum_log.png"))
-end 
-
-#+++++ PLOT 7:  pulse energies and efficiency 
-plt.figure(figsize=[7.04, 5.28])
-plt.suptitle("THG conversion efficiency: η="*string(round(η_THG, digits=5) *100)*"%")
-plt.subplots_adjust(hspace=0.5)
-
-plt.subplot(2,1,1)
-plt.plot(zout.*1e3, tot_pulse_en.*1e6, label="ΔE=-$(round(Int64, tot_pulse_en[1]*1e6-tot_pulse_en[end]*1e6))μJ", color="red")
-plt.xlabel("z (mm)")
-plt.ylabel("E (μJ)")
-plt.title("Total pulse energy")
-plt.legend()
-
-plt.subplot(2,1,2)
-plt.plot(zout.*1e3, UV_pulse_en.*1e9, label="ΔE=+$(round(Int64, UV_pulse_en[end]*1e9-UV_pulse_en[1]*1e9))nJ", color="red")
-plt.xlabel("z (mm)")
-plt.ylabel("E (nJ)")
-plt.title("UV pulse energy")
-plt.legend()
-
-if save==true
-    plt.savefig(joinpath(out_path,"pulse_energies.png"))
-end
-
-#+++++ PLOT 8: on-axis frequency evolution 
-plt.figure(figsize=[7.04, 5.28])
-plt.suptitle("On-axis frequency evolution")
-plt.pcolormesh(zout*1e3, f*1e-15, log10.(Maths.normbymax(Iω0)))   
-plt.colorbar(label="arb. units, normed")
-plt.clim(0, -6)  
-plt.xlabel("z (mm)")
-plt.ylabel("f (PHz)")
-plt.title("log. I(r=0, ω)")
-
-if save==true
-    plt.savefig(joinpath(out_path,"on-axis_frequency_evolution.png"))
-end
-
-#+++++ PLOT 9: time-domain plot of input pulse 
-plt.figure(figsize=[7.04, 5.28]) 
-plt.title("Time-domain representation of on-axis input pulse")
-plt.xlabel("t (fs)")
-plt.xlim(minimum(t)*1e15, maximum(t)*1e15)
-plt.ylabel("I(t; r=0, z=0) (arb. units)")
-plt.plot(t*1e15, It0[:,1] , color="red", label="FWHM pulse duration: τ="*string(round(τ_input*1e15, digits=1) )*"fs")
-plt.plot(t*1e15,It0_envelope[:,1], color="black", ls="--")
-
-if (read_IR & show_IR )==true  # overlay measured input pulse 
-    plt.plot(t_in*1e15,maximum(It0_envelope[:,1]).*Maths.normbymax(I_in), color="grey")
-end
-
-plt.legend(loc="upper right")
-
-if save==true
-    plt.savefig(joinpath(out_path,"time_domain_input.png"))
-end
-
-#+++++ PLOT 10: time-domain plot of UV output pulse 
-plt.figure(figsize=[7.04, 5.28]) 
-plt.title("Time-domain representation of on-axis UV output pulse")
-plt.xlabel("t (fs)")
-plt.ylabel("I(t; r=0, z=L) (arb. units)")
-plt.plot(t*1e15, It0_UV[:,end] , color="red", label="FWHM pulse duration: τ="*string(round(τ_UV*1e15, digits=1) )*"fs")
-plt.plot(t*1e15,It0_UV_envelope[:,end], color="black", linestyle="--")
-
-if read_UV==true  # overlay measured UV output pulse 
-    # ADD CODE TO OVERLAY UV PULSE IN TIME DOMAIN
-end
-
-plt.legend(loc="upper right")
-
-if save==true
-    plt.savefig(joinpath(out_path,"time_domain_UV_output.png"))
-end
-
-if show==true
-    plt.show()
-end    
-
-# ----------------- WRITE PARAMS TO FILE ----------------------------
+# ----------------- WRITE PARAMS & UV SPECTRUM TO FILE ------------------
 
 if save == true 
     open(joinpath(out_path,"params.txt"), "w") do file
@@ -446,20 +539,37 @@ if save == true
         write(file, "ϕ       = "*string(ϕ)*"\n")
         write(file, "energy  = "*string(energy)*"\n")
         write(file, "L       = "*string(L)*"\n")
+        write(file, "kerr    = "*string(kerr)*"\n")
+        write(file, "ion     = "*string(ion)*"\n")
         
+        write(file, "\n")
+        write(file, "\n")
+        write(file, "E_out   = "*string(UV_pulse_en[end])*"\n")
+        write(file, "η       = "*string(η_THG)*"\n")
+
         if read_IR == true
             write(file, "\n")
-            write(file, "IR input beam read from: "*string(path_IR)*"\n")
+            write(file, "# IR input beam read from: "*string(path_IR)*"\n")
         end
 
         if read_ρ == true
             write(file, "\n")
-            write(file, "Gas density distribution read from: "*string(path_ρ)*"\n")
+            write(file, "# Gas density distribution read from: "*string(path_ρ)*"\n")
         end
 
         if read_UV == true
             write(file, "\n")
-            write(file, "UV output beam read from: "*string(path_UV)*"\n")
+            write(file, "# UV output beam read from: "*string(path_UV)*"\n")
         end
     end
+
+    open(joinpath(out_path,"UV_spectrum.txt"), "w") do file
+        writedlm(file, zip(λ[λlowidx:λhighidx], Iω0[λlowidx:λhighidx,end]))
+    end
 end
+
+# ----------------- SHOW PLOTS ----------------------------
+if (show & !txt_only)==true 
+    plt.show()
+end  
+

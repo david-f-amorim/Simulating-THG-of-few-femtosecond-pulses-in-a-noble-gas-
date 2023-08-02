@@ -15,11 +15,13 @@ in_dir  = "raw_input"
 out_dir = "input" 
 
 use_IR  = True
-use_UV  = True 
+use_UV  = True
+use_IR_spec = True 
 use_rho = False  
 
 in_IR   = "Ek.dat"
-in_UV   = "1.0bar_Subt2__0__17-08-23-927.txt"
+in_IR_spec = "Speck.dat"
+in_UV   = "0.1bar_Subt2__0__17-04-30-844.txt"
 in_rho  = "PUT_FILENAME_HERE"
 
 """ 
@@ -42,6 +44,27 @@ if use_IR:
     arr[:,0] *= 1e-15
 
     np.savetxt(os.path.join(out_dir, out_IR),arr)
+
+""" 
+IR PULSE FILES
+
+Should contain (at least) two columns:
+    - wavelength data in nm 
+    - spectral intensity data in arb. units 
+
+Delimiter: " "
+
+No headers or comments
+
+"""
+if use_IR_spec:
+
+    out_IR_spec = "IRspec.dat"
+
+    arr = np.loadtxt(os.path.join(in_dir, in_IR_spec), usecols=(0,1))
+    arr[:,0] *= 1e-9
+
+    np.savetxt(os.path.join(out_dir, out_IR_spec),arr)
 
 """ 
 UV PULSE FILES
