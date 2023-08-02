@@ -23,26 +23,21 @@ provided option to overlay measured UV spectrum
 Stage 3: IN PROGRESS [Weeks 3 -]
 --------------------------------  
 
-added different options for nonlinear model ; added visualisation
-of pulse self-steepening; added option to overlay input pulse 
-spectrum; 
+added different options for nonlinear model (use "ff" for now) ; 
+added visualisation of pulse self-steepening; added option to overlay
+input pulse spectrum; changed cell length to 3mm
 
-
-- improve density distribution model
-	+ wait for COMSOL data/access 
-	+ change length/geometry of cell?
 
 - adjust code
 	+ improve structure for parameter scans (add loop option? read from param files for pressure scans ?)
 	+ get access to Maxwell
 		
-- improve nonlinear effects
-	+ TEST DIFFERENT OPTIONS 
-		WHICH ONE IS BEST????!!!!    => JUST GO WITH ff FOR NOW!
-	+ read papers 
-
 - carry out parameter scans and see if filamentation effects (saturation, 
   second spectral peak, beam deformation) set in 
+
+		EFFECTS DO SET IN, JUST AT MUCH HIGHER PRESSURES AND WITH HIGHER UV ENERGY?
+
+			do proper pressure scans -> first set up better code structure ?
 	
 	+ vary pressure
 	+ vary gas 
@@ -53,7 +48,12 @@ spectrum;
 	=> find conditions to maximise conversion efficiency (and 
 	   minimise pulse duration?)
 
+- improve density distribution model
+	+ wait for COMSOL data/access 
+	+ change length/geometry of cell?
 
-
+- improve nonlinear effects
+	+ test different options => JUST GO WITH ff FOR NOW!
+	+ read papers 
 
 

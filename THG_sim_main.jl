@@ -14,7 +14,7 @@ txt_only = false              # if true, no plots are produced
 
 read_IR = true               # if true: read input IR pulse from file; if false: use Gaussian approximation 
 read_ρ  = false              # if true: read gas density profile from file; if false: use pressure gradient approximation 
-read_UV = true              # if true: overlay measured UV output on simulated results   
+read_UV = false              # if true: overlay measured UV output on simulated results   
 
 IR_spec = false              # if true: reas input IR spectrum from file and overlay 
 show_IR = false              # if true and "read_IR" is true: overlay measured input pulse on plots
@@ -43,15 +43,15 @@ path_IR_spec = joinpath(in_dir, file_IR_spec) # sys. path to IR input spectrum f
 #       directly from file (see QUICK SETTINGS above)
 
 gas = :Ar           # gas
-pres = 0.1          # central gas pressure [bar]
+pres = 0.4          # central gas pressure [bar]
 p_ed = 1e-3         # edge gas pressure [bar]
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when temporal beam profile is approximated as Gaussian)
 λ0 = 800e-9         # central wavelength [m]
 w0 = 65e-6          # beam waist [m]
-ϕ = 0.0             # central envelope offset (CEO) phase [rad]                                    -> can this be extracted from data?
+ϕ = π / 1.0         # central envelope offset (CEO) phase [rad]                                    -> can this be extracted from data?
 energy = 150e-6     # pulse energy [J]                                                             -> multiply by 1kHz (?) repetition rate for beam power
-L = 2e-3            # propagation distance (cell length) [m]
+L = 3e-3            # propagation distance (cell length) [m]
 
 λ_lims = (200e-9, 1000e-9)      # wavelength limits of overall frequency window (both NIR and UV) [m,m]
 λ_rangeUV = (200e-9, 360e-9)    # wavelength limits of UV region of interest [m,m]
@@ -417,7 +417,7 @@ if txt_only == false
 
     #+++++ PLOT 7:  pulse energies and efficiency 
     plt.figure(figsize=[7.04, 5.28])
-    plt.suptitle("THG conversion efficiency: η="*string(round(η_THG, digits=5) *100)*"%")
+    plt.suptitle("THG conversion efficiency: η="*string(round(η_THG, digits=4) *100)*"%")
     plt.subplots_adjust(hspace=0.5)
 
     plt.subplot(2,1,1)
@@ -496,7 +496,7 @@ if txt_only == false
     
     plt.plot(t*1e15,It0_envelope[:,1], label="z=0.0mm", color=c[5])
     plt.plot(t*1e15,It0_envelope[:,Int(round(length(zout)/4))], label="z=$(1/4*L*1e3)mm", color=c[4])
-    plt.plot(t*1e15,It0_envelope[:,Int(2*round(length(zout)/4))], label="z=$(2/4*L*1e3)mm", color=c[3])
+    plt.plot(t*1e15,It0_envelope[:,Int(2*round(length(zout)/4))], label="z="*string(round(2/4*L*1e3, digits=3))[1:4]*"mm", color=c[3])
     plt.plot(t*1e15,It0_envelope[:,Int(3*round(length(zout)/4))], label="z=$(3/4*L*1e3)mm", color=c[2])
     plt.plot(t*1e15,It0_envelope[:,end], label="z=$(L*1e3)mm", color=c[1])
 
@@ -515,7 +515,7 @@ if txt_only == false
     
     plt.plot(t*1e15,It0_UV_envelope[:,1], label="z=0.0mm", color=c[5])
     plt.plot(t*1e15,It0_UV_envelope[:,Int(round(length(zout)/4))], label="z=$(1/4*L*1e3)mm", color=c[4])
-    plt.plot(t*1e15,It0_UV_envelope[:,Int(2*round(length(zout)/4))], label="z=$(2/4*L*1e3)mm", color=c[3])
+    plt.plot(t*1e15,It0_UV_envelope[:,Int(2*round(length(zout)/4))], label="z="*string(round(2/4*L*1e3, digits=3))[1:4]*"mm", color=c[3])
     plt.plot(t*1e15,It0_UV_envelope[:,Int(3*round(length(zout)/4))], label="z=$(3/4*L*1e3)mm", color=c[2])
     plt.plot(t*1e15,It0_UV_envelope[:,end], label="z=$(L*1e3)mm", color=c[1])
 
