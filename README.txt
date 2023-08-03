@@ -46,7 +46,8 @@ to run pressure scans ;
 	=> first generate lots of scan data for general analysis, 
 	   then look at individual cases in more detail
 
-	WHICH SCAN TO RUN NEXT???!!!	
+	WHICH SCAN TO RUN NEXT???!!!
+		Ar, f, 0.0, ion at different energies?	
 	
 	+ vary pressure 
 	+ vary beam energy 

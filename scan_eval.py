@@ -85,7 +85,7 @@ if efficiency:
 if spectrum:
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Simulated UV spectra", fontsize=16)
-    plt.title(gas+"; {0}mW; {1:.2f}rad; ".format(beam_en*1e3, phi)+kerr+"; ion="+ion, fontsize=10)
+    plt.title(gas+"; {0}mW; {1:.2f}rad; ".format(beam_en*1e6, phi)+kerr+"; ion="+ion, fontsize=10)
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Wavelength (nm)")
 
