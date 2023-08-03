@@ -9,7 +9,7 @@ import os
 """
 
 
-scan_dir = "output\scan_150.0mW_Ar_0.0rad_f_ion" 
+scan_dir = "output\scan_75.0mW_Ar_0.0rad_f_ion" 
 
 energy     = True 
 efficiency = True 
@@ -86,7 +86,7 @@ if spectrum:
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Simulated UV spectra", fontsize=16)
     plt.title(gas+"; {0}mW; {1:.2f}rad; ".format(beam_en*1e6, phi)+kerr+"; ion="+ion, fontsize=10)
-    plt.ylabel("Energy (nJ)")
+    plt.ylabel("Intensity (arb. units)")
     plt.xlabel("Wavelength (nm)")
 
     cmap = plt.get_cmap("viridis")

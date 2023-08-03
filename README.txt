@@ -47,7 +47,9 @@ to run pressure scans ;
 	   then look at individual cases in more detail
 
 	WHICH SCAN TO RUN NEXT???!!!
-		Ar, f, 0.0, ion at different energies?	
+		Ar, f, 0.0, ion at different energies?! 
+				(75mW, 150mW, 300mW)
+		Then Neon? Or ion off? 	
 	
 	+ vary pressure 
 	+ vary beam energy 
