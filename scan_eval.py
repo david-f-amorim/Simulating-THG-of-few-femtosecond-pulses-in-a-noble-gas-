@@ -9,7 +9,7 @@ import os
 """
 
 
-scan_dir = "output\scan_75.0mW_Ar_0.0rad_f_ion" 
+scan_dir = "output\scan_75.0mW_Ar_0.0rad_f_no-ion" 
 
 energy     = True 
 efficiency = True 

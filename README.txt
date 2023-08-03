@@ -49,7 +49,22 @@ to run pressure scans ;
 	WHICH SCAN TO RUN NEXT???!!!
 		Ar, f, 0.0, ion at different energies?! 
 				(75mW, 150mW, 300mW)
-		Then Neon? Or ion off? 	
+		Then ion off for all three energies?
+		Then same thing for neon  
+
+		Then check if CEO phase has any impact (coarse, quick scan)
+
+		USE COMPUTER IN OFFICE ??!!
+
+
+		---------------
+		SATURATION AND PEAKS DO APPEAR -> JUST HIGHER PRESSURE AND ENERGIES
+			PRESSURE: MAYBE JUST UNDERESTIMATING PRESSURE AT CENTRE WHEN 					  MEASUREING (VINCENT DID SAY THAT THIS IS UNKOWN FACTOR)
+			
+			ENERGY: CONVERSION EFFICIENCY OF ~1% CERTAINLY NOT UNPHYSICAL..
+				->> WHY NOT MEASURED????
+
+	
 	
 	+ vary pressure 
 	+ vary beam energy 
@@ -57,7 +72,7 @@ to run pressure scans ;
 
 	+ vary gas 
 	+ turn ionisation on/off
-	+ vary kerr 
+	+ [vary kerr] -> f seems good enough for now  
 
 	=> find conditions to maximise conversion efficiency (and 
 	   minimise pulse duration?)
