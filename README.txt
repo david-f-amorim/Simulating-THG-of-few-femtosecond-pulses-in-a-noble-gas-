@@ -56,10 +56,10 @@ scan visualisations;
 
 7	Ne	75	 yes	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 		
 8	Ne	150	 yes	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 
-9	Ne	300	 yes	f	0.0	0.1-5.1	   yes	yes	done	 NO SAT 
+9	Ne	300	 yes	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 
 	
 
-12	Ne	300	 yes	f	0.0	5.1-10	   no	no	maxw	 COMBINE W 9 [don't delete en!]   WILL THERE BE SAT?
+
 
 13	Ne	75	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 
 14	Ne	150	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
@@ -74,10 +74,12 @@ scan visualisations;
 22	Ar	275	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
 		
 	
-		next steps: go higher in pressure for Ne? [larger steps!]
-			    investigate more energies (maybe in steps of 25?); 
-			    investigate CEO
+		next steps: - go higher in pressure for Ne? [larger steps!]
+			    - investigate more energies (maybe in steps of 25?); 
+			    - investigate CEO
 			    => adopt much higher step size to speed up process? (0.1 to 5.1 in steps of 0.5?)
+
+			LOOK INTO OTHER SERVER!
 
 - plan analysis of pressure scan outputs
 	+ for the different cases, look at beam at saturation point in more detail 
