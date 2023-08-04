@@ -21,7 +21,7 @@ show_IR = false              # if true and "read_IR" is true: overlay measured i
 
 # ------------------ SET MEASURED PARAMETERS ------------------------
 
-gas = :Ar           # gas
+gas = :Ne           # gas
 pres = 3.0          # central gas pressure [bar]   (ignored if p_scan is true)
 p_ed = 1e-3         # edge gas pressure [bar]
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
@@ -40,7 +40,7 @@ L = 3e-3            # propagation distance (cell length) [m]
 kerr = "f"         # set nonlinear Kerr effect: 
                     #       must be "ff" [Kerr_field + Kerr_field_nothg], "ef" [Kerr_env + Kerr_field_nothg], 
                     #       "f" [Kerr_field], "fe" [Kerr_field + Kerr_env] , or "e" [Kerr_env]
-ion = false          # if true: enable ionisation response
+ion = true          # if true: enable ionisation response
 
 # ---------------- SET SCAN PARAMETERS ------------------------
 
