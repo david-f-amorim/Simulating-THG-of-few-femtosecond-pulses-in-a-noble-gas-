@@ -46,22 +46,22 @@ scan visualisations;
 
 	Gas	Energy   ion	kerr	phi	p_range	  Git?	Sync	Status	Notes
 	------------------------------------------------------------------------------
-1	Ar	75	 yes	f	0.0	0.1-5.1	   yes	yes	done	 - 		
-2	Ar	150	 yes	f	0.0	0.1-5.1	   yes	yes	done	 - 
-3	Ar	300	 yes	f	0.0	0.1-1.4	   yes	yes	done	 DIES AT 1.5 AND UPWARDS
-4	Ar	75	 no	f	0.0	0.1-5.1	   yes	yes	done	 - 		
-5	Ar	150	 no	f	0.0	0.1-5.1	   yes	yes	done	 - 
-6	Ar	300	 no	f	0.0	0.1-5.1	   yes	yes	done	 -
-7	Ne	75	 yes	f	0.0	0.1-5.1	   yes	yes	done	 NO SAT 		
-8	Ne	150	 yes	f	0.0	0.1-5.1	   yes	yes	done	 NO SAT 
+1	Ar	75	 yes	f	0.0	0.1-5.1	   yes	yes	done	 SAT 		
+2	Ar	150	 yes	f	0.0	0.1-5.1	   yes	yes	done	 SAT 
+3	Ar	300	 yes	f	0.0	0.1-1.4	   yes	yes	done	 DIES AT 1.5 AND UPWARDS; SIGNS OF SAT
+4	Ar	75	 no	f	0.0	0.1-5.1	   yes	yes	done	 SAT 		
+5	Ar	150	 no	f	0.0	0.1-5.1	   yes	yes	done	 SAT 
+6	Ar	300	 no	f	0.0	0.1-5.1	   yes	yes	done	 SAT
+7	Ne	75	 yes	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 		
+8	Ne	150	 yes	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 
 9	Ne	300	 yes	f	0.0	0.1-5.1	   yes	yes	done	 NO SAT 
-10	Ne	75	 yes	f	0.0	5.1-10	   yes	yes	done	 NO SAT		
+	
 
-11	Ne	150	 yes	f	0.0	5.1-10	   no	yes	done	     WILL THERE BE SAT?
 12	Ne	300	 yes	f	0.0	5.1-10	   no	no	maxw	 COMBINE W 9 [don't delete en!]   WILL THERE BE SAT?
-13	Ne	75	 no	f	0.0	0.1-10	   no	no	maxw	 - 		WILL THERE BE SAT? 
-14	Ne	150	 no	f	0.0	0.1-10	   no	no	maxw	 - 		WILL THERE BE SAT?
-15	Ne	300	 no	f	0.0	0.1-10	   no	no	maxw	 -		WILL THERE BE SAT?
+
+13	Ne	75	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 
+14	Ne	150	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
+15	Ne	300	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
 
 16	Ar	100	 yes	f	0.0	0.1-5.1	   no	no	maxw	 - 		
 17	Ar	125	 yes	f	0.0	0.1-5.1	   no	no	maxw	 -
