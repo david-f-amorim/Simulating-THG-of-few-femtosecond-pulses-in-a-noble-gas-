@@ -32,6 +32,7 @@ scan visualisations;
 
 - read papers before meeting!
 
+
 - visualise pressure scan results:
 	+ add options to compare energy/efficiency output from different scans 
 	+ fix spectrum plot to only show ~10-15 pressure plots at once 
@@ -52,6 +53,7 @@ scan visualisations;
 4	Ar	75	 no	f	0.0	0.1-5.1	   yes	yes	done	 SAT 		
 5	Ar	150	 no	f	0.0	0.1-5.1	   yes	yes	done	 SAT 
 6	Ar	300	 no	f	0.0	0.1-5.1	   yes	yes	done	 SAT
+
 7	Ne	75	 yes	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 		
 8	Ne	150	 yes	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 
 9	Ne	300	 yes	f	0.0	0.1-5.1	   yes	yes	done	 NO SAT 
@@ -63,13 +65,13 @@ scan visualisations;
 14	Ne	150	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
 15	Ne	300	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
 
-16	Ar	100	 yes	f	0.0	0.1-5.1	   no	no	maxw	 - 		
-17	Ar	125	 yes	f	0.0	0.1-5.1	   no	no	maxw	 -
-18	Ar	175	 yes	f	0.0	0.1-5.1	   no	no	maxw	 -
-19	Ar	200	 yes	f	0.0	0.1-5.1	   no	no	maxw	 -
-20	Ar	225	 yes	f	0.0	0.1-5.1	   no	no	maxw	 -
-21	Ar	250	 yes	f	0.0	0.1-5.1	   no	no	maxw	 -
-22	Ar	275	 yes	f	0.0	0.1-5.1	   no	no	maxw	 -
+16	Ar	100	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED 		
+17	Ar	125	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
+18	Ar	175	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
+19	Ar	200	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
+20	Ar	225	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
+21	Ar	250	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
+22	Ar	275	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
 		
 	
 		next steps: go higher in pressure for Ne? [larger steps!]
@@ -80,6 +82,7 @@ scan visualisations;
 - plan analysis of pressure scan outputs
 	+ for the different cases, look at beam at saturation point in more detail 
 		(e.g. beam shape; self-steepening: leading or trailing edge...)	
+			=> re-write self-steepening code: show IR only! [asked Josina for wavelength range]
 	+ see if relationship can be found between beam energy/CEO phase and saturation pressure/energy 
 	+ study effect of ionisation (compare on/off)
 

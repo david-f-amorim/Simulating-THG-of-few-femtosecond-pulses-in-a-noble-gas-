@@ -6,7 +6,7 @@ import Dates
 using  DelimitedFiles         
 
 # ----------------- QUICK SETTINGS -------------------------------
-p_scan = true                # if true, run is counted as part of a pressure scan 
+p_scan = false                # if true, run is counted as part of a pressure scan 
 
 save = true                  # if true, saves output plots, run parameters and UV spectrum
 show = true                  # if true, opens plots in GUI after run 
@@ -21,15 +21,15 @@ show_IR = false              # if true and "read_IR" is true: overlay measured i
 
 # ------------------ SET MEASURED PARAMETERS ------------------------
 
-gas = :Ne           # gas
-pres = 3.0          # central gas pressure [bar]   (ignored if p_scan is true)
+gas = :Ar          # gas
+pres = 1.7          # central gas pressure [bar]   (ignored if p_scan is true)
 p_ed = 1e-3         # edge gas pressure [bar]
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when temporal beam profile is approximated as Gaussian)
 λ0 = 800e-9         # central wavelength [m]
 w0 = 65e-6          # beam waist [m]
 ϕ = 0.0             # carrier-envelope offset (CEO) phase [rad]                                    -> can this be extracted from data?
-energy = 300e-6     # pulse energy [J]                                                             -> multiply by 1kHz (?) repetition rate for beam power
+energy = 150e-6     # pulse energy [J]                                                             -> multiply by 1kHz (?) repetition rate for beam power
 L = 3e-3            # propagation distance (cell length) [m]
 
 λ_lims = (200e-9, 1000e-9)      # wavelength limits of overall frequency window (both NIR and UV) [m,m]
@@ -66,14 +66,16 @@ path_UV   = joinpath(in_dir, file_UV)        # sys. path to UV output pulse file
 file_IR_spec = "IRspec.dat"                   # name of IR input spectrum file 
 path_IR_spec = joinpath(in_dir, file_IR_spec) # sys. path to IR input spectrum file 
 
-function THG_main(pres=pres) 
-    
-    # ----------------- MAKE ARRANGEMENTS FOR PRESSURE SCAN -----------
+# ----------------- MAKE ARRANGEMENTS FOR PRESSURE SCAN -----------
 
-    if p_scan == true  
-        txt_only = true 
-        save     = true 
-    end    
+if p_scan == true  
+    txt_only = true 
+    save     = true 
+end    
+
+# ----------------- DEFINE MAIN FUNCTION -----------
+
+function THG_main(pres=pres) 
 
     # ----------------- SET PRESSURE PROFILE ---------------------------
 
