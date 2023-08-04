@@ -54,17 +54,26 @@ scan visualisations;
 6	Ar	300	 no	f	0.0	0.1-5.1	   yes	yes	done	 -
 7	Ne	75	 yes	f	0.0	0.1-5.1	   yes	yes	done	 NO SAT 		
 8	Ne	150	 yes	f	0.0	0.1-5.1	   yes	yes	done	 NO SAT 
-9	Ne	300	 yes	f	0.0	0.1-5.1	   no	no	own	 NO SAT 
+9	Ne	300	 yes	f	0.0	0.1-5.1	   yes	yes	done	 NO SAT 
+10	Ne	75	 yes	f	0.0	5.1-10	   yes	yes	done	 NO SAT		
 
-10	Ne	75	 yes	f	0.0	5.1-10	   no	yes	done	 NO SAT		
-11	Ne	150	 yes	f	0.0	5.1-10	   no	no	maxw	 COMBINE W 8 [don't delete en!]    WILL THERE BE SAT?
+11	Ne	150	 yes	f	0.0	5.1-10	   no	yes	done	     WILL THERE BE SAT?
 12	Ne	300	 yes	f	0.0	5.1-10	   no	no	maxw	 COMBINE W 9 [don't delete en!]   WILL THERE BE SAT?
 13	Ne	75	 no	f	0.0	0.1-10	   no	no	maxw	 - 		WILL THERE BE SAT? 
 14	Ne	150	 no	f	0.0	0.1-10	   no	no	maxw	 - 		WILL THERE BE SAT?
 15	Ne	300	 no	f	0.0	0.1-10	   no	no	maxw	 -		WILL THERE BE SAT?
+
+16	Ar	100	 yes	f	0.0	0.1-5.1	   no	no	maxw	 - 		
+17	Ar	125	 yes	f	0.0	0.1-5.1	   no	no	maxw	 -
+18	Ar	175	 yes	f	0.0	0.1-5.1	   no	no	maxw	 -
+19	Ar	200	 yes	f	0.0	0.1-5.1	   no	no	maxw	 -
+20	Ar	225	 yes	f	0.0	0.1-5.1	   no	no	maxw	 -
+21	Ar	250	 yes	f	0.0	0.1-5.1	   no	no	maxw	 -
+22	Ar	275	 yes	f	0.0	0.1-5.1	   no	no	maxw	 -
 		
 	
-		next steps: investigate more energies (maybe in steps of 25?); 
+		next steps: go higher in pressure for Ne? [larger steps!]
+			    investigate more energies (maybe in steps of 25?); 
 			    investigate CEO
 			    => adopt much higher step size to speed up process? (0.1 to 5.1 in steps of 0.5?)
 
@@ -81,5 +90,5 @@ scan visualisations;
 
 
 - improve density distribution model
-	+ start looking at COMSOL -> need to use higher version than 5.2 (check software folder!)
+	+ start looking at COMSOL [open file]
 
