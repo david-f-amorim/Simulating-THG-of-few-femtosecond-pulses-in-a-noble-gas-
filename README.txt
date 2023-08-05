@@ -62,7 +62,7 @@ scan visualisations;
 12	Ne	300	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
 
 13	Ar	100	 yes	f	0.0	0.1-5.1	   yes	yes	done	 SAT		
-14	Ar	125	 yes	f	0.0	0.1-5.1	   no	no	maxw	 RUNNING
+14	Ar	125	 yes	f	0.0	0.1-5.1	   yes	yes	done	 SAT
 15	Ar	175	 yes	f	0.0	0.1-5.1	   no	no	maxw	 RUNNING
 16	Ar	200	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
 18	Ar	225	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
