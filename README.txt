@@ -50,6 +50,8 @@ scan visualisations;
 1	Ar	75	 yes	f	0.0	0.1-5.1	   yes	yes	done	 SAT 		
 2	Ar	150	 yes	f	0.0	0.1-5.1	   yes	yes	done	 SAT 
 3	Ar	300	 yes	f	0.0	0.1-1.4	   yes	yes	done	 DIES AT 1.5 AND UPWARDS; SIGNS OF SAT
+
+
 4	Ar	75	 no	f	0.0	0.1-5.1	   yes	yes	done	 SAT 		
 5	Ar	150	 no	f	0.0	0.1-5.1	   yes	yes	done	 SAT 
 6	Ar	300	 no	f	0.0	0.1-5.1	   yes	yes	done	 SAT
@@ -63,11 +65,11 @@ scan visualisations;
 
 13	Ar	100	 yes	f	0.0	0.1-5.1	   yes	yes	done	 SAT		
 14	Ar	125	 yes	f	0.0	0.1-5.1	   yes	yes	done	 SAT
-15	Ar	175	 yes	f	0.0	0.1-4.4	   yes	yes	maxw	 SAT; DIES AT 4.5!
-16	Ar	200	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
-18	Ar	225	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
-19	Ar	250	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
-20	Ar	275	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
+15	Ar	175	 yes	f	0.0	0.1-4.4	   yes	yes	done	 SAT; DIES AT 4.5!
+16	Ar	200	 yes	f	0.0	0.1-3.1	   no	yes	done     SAT; DIES AT 3.2	 
+18	Ar	225	 yes	f	0.0	0.1-2.7	   no	yes	done     SAT; DIES AT 2.8	 
+19	Ar	250	 yes	f	0.0	0.1-1.5	   no	yes	done	 SAT; DIES AT 1.6 
+20	Ar	275	 yes	f	0.0	0.1-1.7	   no	yes	done	 SAT; DIES AT 1.8
 		
 	
 		next steps: - go higher in pressure for Ne? [10.0-15.0 in steps of 1.0?]
