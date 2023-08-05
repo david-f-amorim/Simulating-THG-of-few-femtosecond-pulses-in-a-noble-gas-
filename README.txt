@@ -63,7 +63,7 @@ scan visualisations;
 
 13	Ar	100	 yes	f	0.0	0.1-5.1	   yes	yes	done	 SAT		
 14	Ar	125	 yes	f	0.0	0.1-5.1	   yes	yes	done	 SAT
-15	Ar	175	 yes	f	0.0	0.1-5.1	   no	no	maxw	 RUNNING
+15	Ar	175	 yes	f	0.0	0.1-4.4	   yes	yes	maxw	 SAT; DIES AT 4.5!
 16	Ar	200	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
 18	Ar	225	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
 19	Ar	250	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
