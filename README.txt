@@ -57,25 +57,21 @@ scan visualisations;
 7	Ne	75	 yes	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 		
 8	Ne	150	 yes	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 
 9	Ne	300	 yes	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 
-	
+10	Ne	75	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 
+11	Ne	150	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
+12	Ne	300	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
 
-
-
-13	Ne	75	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 
-14	Ne	150	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
-15	Ne	300	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
-
-16	Ar	100	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED 		
-17	Ar	125	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
-18	Ar	175	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
-19	Ar	200	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
-20	Ar	225	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
-21	Ar	250	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
-22	Ar	275	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
+13	Ar	100	 yes	f	0.0	0.1-5.1	   yes	yes	done	 SAT		
+14	Ar	125	 yes	f	0.0	0.1-5.1	   no	no	maxw	 RUNNING
+15	Ar	175	 yes	f	0.0	0.1-5.1	   no	no	maxw	 RUNNING
+16	Ar	200	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
+18	Ar	225	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
+19	Ar	250	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
+20	Ar	275	 yes	f	0.0	0.1-5.1	   no	no	maxw	 INTERRUPTED
 		
 	
-		next steps: - go higher in pressure for Ne? [larger steps!]
-			    - investigate more energies (maybe in steps of 25?); 
+		next steps: - go higher in pressure for Ne? [10.0-15.0 in steps of 1.0?]
+			    - investigate more energies (maybe in steps of 25? or 50? go higher for Ne! also larger pressure steps!); 
 			    - investigate CEO
 			    => adopt much higher step size to speed up process? (0.1 to 5.1 in steps of 0.5?)
 
