@@ -48,8 +48,15 @@ scan visualisations;
 	Gas	Energy   ion	kerr	phi	p_range	  Git?	Sync	Status	Notes
 	------------------------------------------------------------------------------
 1	Ar	75	 yes	f	0.0	0.1-5.1	   yes	yes	done	 SAT 		
-2	Ar	150	 yes	f	0.0	0.1-5.1	   yes	yes	done	 SAT 
-3	Ar	300	 yes	f	0.0	0.1-1.4	   yes	yes	done	 DIES AT 1.5 AND UPWARDS; SIGNS OF SAT
+2	Ar	100	 yes	f	0.0	0.1-5.1	   yes	yes	done	 SAT		
+3	Ar	150	 yes	f	0.0	0.1-5.1	   yes	yes	done	 SAT 
+4	Ar	125	 yes	f	0.0	0.1-5.1	   yes	yes	done	 SAT
+5	Ar	175	 yes	f	0.0	0.1-4.4	   yes	yes	done	 SAT; DIES AT 4.5!
+6	Ar	200	 yes	f	0.0	0.1-3.1	   yes	yes	done     SAT; DIES AT 3.2	 
+7	Ar	225	 yes	f	0.0	0.1-2.7	   yes	yes	done     SAT; DIES AT 2.8	 
+8	Ar	250	 yes	f	0.0	0.1-1.5	   yes	yes	done	 SAT; DIES AT 1.6 
+9	Ar	275	 yes	f	0.0	0.1-1.7	   yes	yes	done	 SAT; DIES AT 1.8
+10	Ar	300	 yes	f	0.0	0.1-1.4	   yes	yes	done	 SIGNS OF SAT; DIES AT 1.5 
 
 
 4	Ar	75	 no	f	0.0	0.1-5.1	   yes	yes	done	 SAT 		
@@ -58,33 +65,34 @@ scan visualisations;
 
 7	Ne	75	 yes	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 		
 8	Ne	150	 yes	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 
-9	Ne	300	 yes	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 
+9	Ne	300	 yes	f	0.0	0.1-20.1   yes	yes	done	 SAT 
+
+7	Ne	75	 yes	f	0.0	10.1-35.1   no	no	maxw	 SAT ; ADD TO EXISTING DIR; UPDATE EN&EF 		
+8	Ne	150	 yes	f	0.0	10.1-30.1   no	no	maxw	 SAT ; ADD TO EXISTING DIR; UPDATE EN&EF 
+9	Ne	300	 yes	f	0.0	10.1-20.1   no	no	done	 SAT ; ADD TO EXISTING DIR; UPDATE EN&EF
+
+7	Ne	200	 yes	f	0.0	0.1-20.1    no	no	maxw     SAT	 		
+8	Ne	400	 yes	f	0.0	0.1-20.1    no	no	maxw	 SAT ; DIES AT 16.1
+
+
 10	Ne	75	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 
 11	Ne	150	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
 12	Ne	300	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
 
-13	Ar	100	 yes	f	0.0	0.1-5.1	   yes	yes	done	 SAT		
-14	Ar	125	 yes	f	0.0	0.1-5.1	   yes	yes	done	 SAT
-15	Ar	175	 yes	f	0.0	0.1-4.4	   yes	yes	done	 SAT; DIES AT 4.5!
-16	Ar	200	 yes	f	0.0	0.1-3.1	   no	yes	done     SAT; DIES AT 3.2	 
-18	Ar	225	 yes	f	0.0	0.1-2.7	   no	yes	done     SAT; DIES AT 2.8	 
-19	Ar	250	 yes	f	0.0	0.1-1.5	   no	yes	done	 SAT; DIES AT 1.6 
-20	Ar	275	 yes	f	0.0	0.1-1.7	   no	yes	done	 SAT; DIES AT 1.8
-		
-	
-		next steps: - go higher in pressure for Ne? [10.0-15.0 in steps of 1.0?]
-			    - investigate more energies (maybe in steps of 25? or 50? go higher for Ne! also larger pressure steps!); 
-			    - investigate CEO
-			    => adopt much higher step size to speed up process? (0.1 to 5.1 in steps of 0.5?)
 
-			LOOK INTO OTHER SERVER!
+		next steps: - try to get Neon to saturate!! [find peak with 0.1 accuracy]
+			    - investigate CEO: 150mW Ar f ion, 0.1 to 5.1 step 0.5 ; phi vals: pi/4, pi/2, 3pi/4, pi, 5pi/4, 3pi/2, 7pi/4 ,2pi
+			   
 
 - plan analysis of pressure scan outputs
-	+ for the different cases, look at beam at saturation point in more detail 
+	+ for the different cases, look at beam at saturation point in more detail (and at breakdown point! also compare to non-ionised
+	  case to see difference -> which effects are due to ionisation?)
 		(e.g. beam shape; self-steepening: leading or trailing edge...)	
 			=> re-write self-steepening code: show IR only! [asked Josina for wavelength range]
 	+ see if relationship can be found between beam energy/CEO phase and saturation pressure/energy 
-	+ study effect of ionisation (compare on/off)
+			- fit curves: beam energy vs peak pressure; beam energy vs peak energy; same for CEO phase
+	+ study effect of ionisation (compare on/off) -> probably only use once interesting effect has been found in ionised case,
+          to check if effect due to ionisation or not; also make large-scale comparison with existing non-ion data 
 
 	+ Thoughts so far:
 		@ filamentation effects to appear, just at higher pressures and energies than expected 
