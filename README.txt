@@ -63,21 +63,20 @@ scan visualisations;
 5	Ar	150	 no	f	0.0	0.1-5.1	   yes	yes	done	 SAT 
 6	Ar	300	 no	f	0.0	0.1-5.1	   yes	yes	done	 SAT
 
-7	Ne	75	 yes	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 		
-8	Ne	150	 yes	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 
+7	Ne	75	 yes	f	0.0	0.1-35.1   yes	yes	done	 SAT 		
+8	Ne	150	 yes	f	0.0	0.1-30.1   yes	yes	done	 SAT 
 9	Ne	300	 yes	f	0.0	0.1-20.1   yes	yes	done	 SAT 
 
-7	Ne	75	 yes	f	0.0	10.1-35.1   no	no	maxw	 SAT ; ADD TO EXISTING DIR; UPDATE EN&EF 		
-8	Ne	150	 yes	f	0.0	10.1-30.1   no	no	maxw	 SAT ; ADD TO EXISTING DIR; UPDATE EN&EF 
-9	Ne	300	 yes	f	0.0	10.1-20.1   no	no	done	 SAT ; ADD TO EXISTING DIR; UPDATE EN&EF
 
-7	Ne	200	 yes	f	0.0	0.1-20.1    no	no	maxw     SAT	 		
-8	Ne	400	 yes	f	0.0	0.1-20.1    no	no	maxw	 SAT ; DIES AT 16.1
+7	Ne	75	 yes	f	0.0	10.1-35.1   no	no	done	 SAT ; ADD TO EXISTING DIR; UPDATE EN&EF 		
+8	Ne	150	 yes	f	0.0	10.1-30.1   no	no	done	 SAT ; ADD TO EXISTING DIR; UPDATE EN&EF 
+10	Ne	200	 yes	f	0.0	0.1-20.1    no	no	maxw     SAT	 		
+11	Ne	400	 yes	f	0.0	0.1-20.1    no	no	maxw	 SAT ; DIES AT 16.1
 
 
-10	Ne	75	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 
-11	Ne	150	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
-12	Ne	300	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
+12	Ne	75	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 
+13	Ne	150	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
+14	Ne	300	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
 
 
 		next steps: - try to get Neon to saturate!! [find peak with 0.1 accuracy]
@@ -92,7 +91,9 @@ scan visualisations;
 	+ see if relationship can be found between beam energy/CEO phase and saturation pressure/energy 
 			- fit curves: beam energy vs peak pressure; beam energy vs peak energy; same for CEO phase
 	+ study effect of ionisation (compare on/off) -> probably only use once interesting effect has been found in ionised case,
-          to check if effect due to ionisation or not; also make large-scale comparison with existing non-ion data 
+          to check if effect due to ionisation or not; also make large-scale comparison with existing non-ion data
+
+	+ compare Neon to Argon (different behaviour during saturation?) 
 
 	+ Thoughts so far:
 		@ filamentation effects to appear, just at higher pressures and energies than expected 
