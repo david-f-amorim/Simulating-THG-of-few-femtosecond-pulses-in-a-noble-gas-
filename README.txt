@@ -58,28 +58,24 @@ scan visualisations;
 9	Ar	275	 yes	f	0.0	0.1-1.7	   yes	yes	done	 SAT; DIES AT 1.8
 10	Ar	300	 yes	f	0.0	0.1-1.4	   yes	yes	done	 SIGNS OF SAT; DIES AT 1.5 
 
+11	Ar	75	 no	f	0.0	0.1-5.1	   yes	yes	done	 SAT 		
+12	Ar	150	 no	f	0.0	0.1-5.1	   yes	yes	done	 SAT 
+13	Ar	300	 no	f	0.0	0.1-5.1	   yes	yes	done	 SAT
 
-4	Ar	75	 no	f	0.0	0.1-5.1	   yes	yes	done	 SAT 		
-5	Ar	150	 no	f	0.0	0.1-5.1	   yes	yes	done	 SAT 
-6	Ar	300	 no	f	0.0	0.1-5.1	   yes	yes	done	 SAT
+14	Ne	75	 yes	f	0.0	0.1-35.1   yes	yes	done	 SAT 		
+15	Ne	150	 yes	f	0.0	0.1-30.1   yes	yes	done	 SAT 
+16	Ne	200	 yes	f	0.0	0.1-20.1   yes	yes	done     SAT
+17	Ne	300	 yes	f	0.0	0.1-20.1   yes	yes	done	 SAT 
+18	Ne	400	 yes	f	0.0	0.1-20.1   yes	yes	done	 SAT ; DIES AT 16.1 
 
-7	Ne	75	 yes	f	0.0	0.1-35.1   yes	yes	done	 SAT 		
-8	Ne	150	 yes	f	0.0	0.1-30.1   yes	yes	done	 SAT 
-9	Ne	300	 yes	f	0.0	0.1-20.1   yes	yes	done	 SAT 
+19	Ne	75	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 
+20	Ne	150	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
+21	Ne	300	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
 
-
-10	Ne	200	 yes	f	0.0	0.1-20.1    no	yes	maxw     SAT	 		
-11	Ne	400	 yes	f	0.0	0.1-20.1    no	no	maxw	 SAT ; DIES AT 16.1
-
-
-12	Ne	75	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT 
-13	Ne	150	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
-14	Ne	300	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
-
-5	Ar	150	 yes	f	0.785   0.1-5.1	   no	no	maxw	
-5	Ar	150	 yes	f	1.5707  0.1-5.1	   no	no	maxw 
-5	Ar	150	 yes	f	2.356   0.1-5.1	   no	no	maxw 
-5	Ar	150	 yes	f	3.1415  0.1-5.1	   no	no	maxw
+22	Ar	150	 yes	f	0.785   0.1-5.1	   no	no	maxw	
+23	Ar	150	 yes	f	1.5707  0.1-5.1	   no	no	maxw 
+24	Ar	150	 yes	f	2.356   0.1-5.1	   no	no	maxw 
+25	Ar	150	 yes	f	3.1415  0.1-5.1	   no	no	maxw
 
 
 		next steps: - try to get Neon to saturate!! [find peak with 0.1 accuracy]
