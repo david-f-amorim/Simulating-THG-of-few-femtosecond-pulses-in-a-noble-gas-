@@ -68,9 +68,7 @@ scan visualisations;
 9	Ne	300	 yes	f	0.0	0.1-20.1   yes	yes	done	 SAT 
 
 
-7	Ne	75	 yes	f	0.0	10.1-35.1   no	no	done	 SAT ; ADD TO EXISTING DIR; UPDATE EN&EF 		
-8	Ne	150	 yes	f	0.0	10.1-30.1   no	no	done	 SAT ; ADD TO EXISTING DIR; UPDATE EN&EF 
-10	Ne	200	 yes	f	0.0	0.1-20.1    no	no	maxw     SAT	 		
+10	Ne	200	 yes	f	0.0	0.1-20.1    no	yes	maxw     SAT	 		
 11	Ne	400	 yes	f	0.0	0.1-20.1    no	no	maxw	 SAT ; DIES AT 16.1
 
 
@@ -78,10 +76,15 @@ scan visualisations;
 13	Ne	150	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
 14	Ne	300	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
 
+5	Ar	150	 yes	f	0.785   0.1-5.1	   no	no	maxw	
+5	Ar	150	 yes	f	1.5707  0.1-5.1	   no	no	maxw 
+5	Ar	150	 yes	f	2.356   0.1-5.1	   no	no	maxw 
+5	Ar	150	 yes	f	3.1415  0.1-5.1	   no	no	maxw
+
 
 		next steps: - try to get Neon to saturate!! [find peak with 0.1 accuracy]
-			    - investigate CEO: 150mW Ar f ion, 0.1 to 5.1 step 0.5 ; phi vals: pi/4, pi/2, 3pi/4, pi, 5pi/4, 3pi/2, 7pi/4 ,2pi
-			   
+			    - investigate CEO: 150mW Ar f ion, 0.1 to 5.1 step 0.5 ; phi vals: 5pi/4, 3pi/2, 7pi/4 ,2pi
+			   		-> first half running ! (up to pi)
 
 - plan analysis of pressure scan outputs
 	+ for the different cases, look at beam at saturation point in more detail (and at breakdown point! also compare to non-ionised
