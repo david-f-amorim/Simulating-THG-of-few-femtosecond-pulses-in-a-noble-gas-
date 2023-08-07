@@ -72,10 +72,16 @@ scan visualisations;
 20	Ne	150	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
 21	Ne	300	 no	f	0.0	0.1-10.0   yes	yes	done	 NO SAT
 
-22	Ar	150	 yes	f	0.785   0.1-5.1	   no	no	maxw	
-23	Ar	150	 yes	f	1.5707  0.1-5.1	   no	no	maxw 
-24	Ar	150	 yes	f	2.356   0.1-5.1	   no	no	maxw 
-25	Ar	150	 yes	f	3.1415  0.1-5.1	   no	no	maxw
+22	Ar	150	 yes	f	0.785   0.1-5.1	   no	yes	done     SAT	
+23	Ar	150	 yes	f	1.571   0.1-5.1	   no	yes	done     SAT
+24	Ar	150	 yes	f	2.356   0.1-5.1	   no	yes	done     SAT 
+25	Ar	150	 yes	f	3.142   0.1-5.1	   no	yes	done     SAT
+22	Ar	150	 yes	f	3.927   0.1-5.1	   no	yes	done     SAT	
+23	Ar	150	 yes	f	4.712   0.1-5.1	   no	yes	done     SAT
+24	Ar	150	 yes	f	5.498   0.1-5.1	   no	yes	done     SAT 
+25	Ar	150	 yes	f	6.283   0.1-5.1	   no	yes	done     SAT
+
+REST RUNNING AS WELL!
 
 
 		next steps: - try to get Neon to saturate!! [find peak with 0.1 accuracy]
