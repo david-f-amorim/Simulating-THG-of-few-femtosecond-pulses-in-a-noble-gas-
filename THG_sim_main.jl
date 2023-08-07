@@ -22,7 +22,7 @@ show_IR = false              # if true and "read_IR" is true: overlay measured i
 # ------------------ SET MEASURED PARAMETERS ------------------------
 
 gas = :Ar          # gas
-pres = 1.7          # central gas pressure [bar]   (ignored if p_scan is true)
+pres = 0.4          # central gas pressure [bar]   (ignored if p_scan is true)
 p_ed = 1e-3         # edge gas pressure [bar]
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when temporal beam profile is approximated as Gaussian)
@@ -32,8 +32,9 @@ w0 = 65e-6          # beam waist [m]
 energy = 150e-6     # pulse energy [J]                                                             -> multiply by 1kHz (?) repetition rate for beam power
 L = 3e-3            # propagation distance (cell length) [m]
 
-λ_lims = (200e-9, 1000e-9)      # wavelength limits of overall frequency window (both NIR and UV) [m,m]
-λ_rangeUV = (200e-9, 360e-9)    # wavelength limits of UV region of interest [m,m]
+λ_lims = (200e-9, 1000e-9)       # wavelength limits of overall frequency window (both NIR and UV) [m,m]
+λ_rangeUV = (200e-9, 360e-9)     # wavelength limits of UV region of interest [m,m]
+λ_rangeIR = (600e-9, 1000e-9)    # wavelength limits of IR region of interest [m,m]
 
 # ------------------ SET NONLINEAR PARAMS ------------------------
 
@@ -202,6 +203,9 @@ function THG_main(pres=pres)
     ωTHidx        = argmin(abs.(ω .- 2π*PhysData.c/(λ0/3)))               # index X such that ω[X]=3ω0 (TH)
     ωhighUVidx    = argmin(abs.(ω .- 2π*PhysData.c/λ_rangeUV[1]))         # index X such that ω[X]=ω_maxUV 
     ωlowUVidx     = argmin(abs.(ω .- 2π*PhysData.c/λ_rangeUV[2]))         # index X such that ω[X]=ω_minUV
+    ωhighIRidx    = argmin(abs.(ω .- 2π*PhysData.c/λ_rangeIR[1]))         # index X such that ω[X]=ω_maxIR 
+    ωlowIRidx     = argmin(abs.(ω .- 2π*PhysData.c/λ_rangeIR[2]))         # index X such that ω[X]=ω_minIR
+
 
     λhighidx    = argmin(abs.(λ .- λ_rangeUV[1]))         # index X such that λ[X]=λ_maxUV 
     λlowidx     = argmin(abs.(λ .-λ_rangeUV[2]))          # index X such that λ[X]=λ_minUV
@@ -233,11 +237,19 @@ function THG_main(pres=pres)
         filter_onaxis[ωhighUVidx:end,:].=0;        # filters out ω > ω_max  
 
         Et0_UV =FFTW.irfft(filter_onaxis, length(t), 1)    # time-domain real field amplitude of UV pulse at r=0
-        It0_UV = abs2.(Et0_UV)                           # intensity of on-axis UV pulse at 
+        It0_UV = abs2.(Et0_UV)                           # intensity of on-axis UV pulse at r=0
 
+        # * * * FILTER FOR IR FIELD (r=0)
+        filter_onaxis_IR = FFTW.rfft(Et0, 1)          # set up filter array
+        filter_onaxis_IR[1:ωlowIRidx,:].=0;           # filters out ω < ω_min
+        filter_onaxis_IR[ωhighIRidx:end,:].=0;        # filters out ω > ω_max  
+
+        Et0_IR =FFTW.irfft(filter_onaxis_IR, length(t), 1)    # time-domain real field amplitude of IR pulse at r=0
+    
         # * * * EXTRACT INTENSITY ENVELOPES 
         It0_envelope = abs2.(Maths.hilbert(Et0))          # envelope modulating It0
-        It0_UV_envelope = abs2.(Maths.hilbert(Et0_UV))    # envelope modulating It0_UV 
+        It0_UV_envelope = abs2.(Maths.hilbert(Et0_UV))    # envelope modulating It0_UV
+        It0_IR_envelope = abs2.(Maths.hilbert(Et0_IR))    # envelope modulating It0_IR 
 
         # * * * CALCULATE PULSE DURATIONS
         τ_input = Maths.fwhm(t, It0_envelope[:,1])             # FWHM input pulse duration     [s]
@@ -539,6 +551,25 @@ function THG_main(pres=pres)
 
         if save==true
             plt.savefig(joinpath(out_path,"UV_pulse_evolution.png"),dpi=1000)
+        end
+
+        #+++++ PLOT 13: time-domain UV pulse evolution 
+        plt.figure(figsize=[7.04, 5.28]) 
+        plt.title("Evolution of IR time-domain pulse")
+        plt.xlabel("t (fs)")
+        plt.xlim(minimum(t)*1e15, maximum(t)*1e15)
+        plt.ylabel("I(t; r=0) (arb. units)")
+        
+        plt.plot(t*1e15,It0_IR_envelope[:,1], label="z=0.0mm", color=c[5])
+        plt.plot(t*1e15,It0_IR_envelope[:,Int(round(length(zout)/4))], label="z=$(1/4*L*1e3)mm", color=c[4])
+        plt.plot(t*1e15,It0_IR_envelope[:,Int(2*round(length(zout)/4))], label="z="*string(round(2/4*L*1e3, digits=3))*"mm", color=c[3])
+        plt.plot(t*1e15,It0_IR_envelope[:,Int(3*round(length(zout)/4))], label="z=$(3/4*L*1e3)mm", color=c[2])
+        plt.plot(t*1e15,It0_IR_envelope[:,end], label="z=$(L*1e3)mm", color=c[1])
+
+        plt.legend(loc="upper right")
+
+        if save==true
+            plt.savefig(joinpath(out_path,"IR_pulse_evolution.png"),dpi=1000)
         end
     end    
     # ----------------- WRITE PARAMS & UV SPECTRUM TO FILE ------------------
