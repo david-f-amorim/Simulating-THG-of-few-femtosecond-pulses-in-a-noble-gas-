@@ -32,8 +32,8 @@ w0 = 65e-6          # beam waist [m]
 energy = 150e-6     # pulse energy [J]                                                             -> multiply by 1kHz (?) repetition rate for beam power
 L = 3e-3            # propagation distance (cell length) [m]
 
-λ_lims = (200e-9, 1000e-9)       # wavelength limits of overall frequency window (both NIR and UV) [m,m]
-λ_rangeUV = (200e-9, 360e-9)     # wavelength limits of UV region of interest [m,m]
+λ_lims = (100e-9, 1000e-9)       # wavelength limits of overall frequency window (both NIR and UV) [m,m]
+λ_rangeUV = (100e-9, 360e-9)     # wavelength limits of UV region of interest [m,m]
 λ_rangeIR = (600e-9, 1000e-9)    # wavelength limits of IR region of interest [m,m]
 
 # ------------------ SET NONLINEAR PARAMS ------------------------

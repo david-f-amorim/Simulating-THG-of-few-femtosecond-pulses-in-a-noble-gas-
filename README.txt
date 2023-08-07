@@ -27,29 +27,23 @@ added different options for nonlinear model (use "ff" for now) ;
 added visualisation of pulse self-steepening; added option to overlay
 input pulse spectrum; changed cell length to 3mm ; implemented option 
 to run pressure scans; started data collection; implemented 
-scan visualisations;  
+scan visualisations;  extended wavelength grid to start at 100nm (from 200nm); 
 
 
-- read papers before meeting!
+- read papers before meeting!!!
 
-- extend grid: from 100nm!
 
-- interpret scan analysis!
+- interpret scan analysis & work on PP
 	
-- plan analysis of pressure scan outputs
 	+ for the different cases, look at beam at saturation point in more detail (and at breakdown point! also compare to non-ionised
 	  case to see difference -> which effects are due to ionisation?)
 		(e.g. beam shape; self-steepening: leading or trailing edge...)	
-		
+			-> spectra, beam shape, self-steepening (leading or trailing edge...)!
+
+
+Stage 4: TO DO [Weeks 4? -]
+-------------------------------- 		
 	
-	+ compare Neon to Argon (different behaviour during saturation?) 
-
-	+ Thoughts so far:
-		@ filamentation [don't use this term!] effects do appear, just at higher pressures and energies than expected 
-		@ the higher pressure (~x4) can be explained by inaccurate pressure measurements 
-		@ the higher energy is not unphysical but difficult to explain?
-
-
 - improve density distribution model
 	+ start looking at COMSOL [open file]
 

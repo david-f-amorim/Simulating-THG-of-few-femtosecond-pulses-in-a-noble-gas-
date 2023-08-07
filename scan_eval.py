@@ -14,8 +14,8 @@ sup_dir    = "scans"
 out_dir    = "scan_analysis"
 
 
-single_dir = "scans\scan_150.0mW_Ne_0.0rad_f_ion" 
-single = False 
+single_dir = "scans\scan_300.0mW_Ar_0.0rad_f_ion" 
+single = True 
 n = 15
 
 # ---------- FILE EXTRACTION --------------------------------------
@@ -190,7 +190,7 @@ def reduce_spectra(path,n):
     N = len(data[:,0])
 
     if N <= n:
-        return data 
+        return data, p_arr 
 
     data_cut = np.empty(shape=(n,3), dtype="object")
     p_cut = np.empty(n)
@@ -250,6 +250,9 @@ def plot_single(single_dir, n=15):
     data, p_cut = reduce_spectra(single_dir, n)
     cidx = p_cut / np.max(p_cut) 
     
+    if N<=n:
+        n=N
+
     for i in np.arange(n):
         plt.plot(data[i,1]*1e9, data[i,2], color=cmap(cidx[i]), label="{0}bar".format(data[i,0]))
     plt.legend(loc="upper right")
