@@ -14,7 +14,7 @@ sup_dir    = "scans"
 out_dir    = "scan_analysis"
 
 
-single_dir = "scans\scan_300.0mW_Ar_0.0rad_f_ion" 
+single_dir = "scans\scan_300.0mW_Ar_0.0rad_f_no-ion" 
 single = True 
 n = 15
 
