@@ -22,7 +22,7 @@ show_IR = false              # if true and "read_IR" is true: overlay measured i
 # ------------------ SET MEASURED PARAMETERS ------------------------
 
 gas = :Ar          # gas
-pres = 5.0          # central gas pressure [bar]   (ignored if p_scan is true)
+pres = 0.4         # central gas pressure [bar]   (ignored if p_scan is true)
 p_ed = 1e-3         # edge gas pressure [bar]
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when temporal beam profile is approximated as Gaussian)

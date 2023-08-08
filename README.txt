@@ -28,18 +28,14 @@ added visualisation of pulse self-steepening; added option to overlay
 input pulse spectrum; changed cell length to 3mm ; implemented option 
 to run pressure scans; started data collection; implemented 
 scan visualisations;  extended wavelength grid to start at 100nm (from 200nm); 
+analysed scan results 
 
 
 - read papers before meeting!!!
 
 
-- interpret scan analysis & work on PP
+- practice PP and upload to Sync&Share
 	
-	+ for the different cases, look at beam at saturation point in more detail (and at breakdown point! also compare to non-ionised
-	  case to see difference -> which effects are due to ionisation?)
-		(e.g. beam shape; self-steepening: leading or trailing edge...)	
-			-> spectra, beam shape, self-steepening (leading or trailing edge...)!
-
 
 Stage 4: TO DO [Weeks 4? -]
 -------------------------------- 		
