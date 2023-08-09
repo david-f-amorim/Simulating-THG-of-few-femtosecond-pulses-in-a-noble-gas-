@@ -6,13 +6,13 @@ GOAL:     simulate THG of a few-femtosecond IR laser beam in a
 	  input beam conditions for desired UV output beam;   
 		 
 
-Stage 1: DONE [Weeks 1-2]
+Week 1
 --------------------------
 	
 did background reading ; cleaned up existing code ; 
 provided visualisation functions ; provided output handling 
 
-Stage 2: DONE [Week 2]
+Week 2
 ----------------------------------
 
 provided option to base input pulse on measured data ; provided 
@@ -20,7 +20,7 @@ option to feed in custom gas density profile (untested!) ;
 provided option to overlay measured UV spectrum 
 	
 
-Stage 3: IN PROGRESS [Weeks 3 -]
+Week 3
 --------------------------------  
 
 added different options for nonlinear model (use "ff" for now) ; 
@@ -30,16 +30,12 @@ to run pressure scans; started data collection; implemented
 scan visualisations;  extended wavelength grid to start at 100nm (from 200nm); 
 analysed scan results 
 
-
-- read papers before meeting!!!
-
-
-- practice PP and upload to Sync&Share
 	
-
-Stage 4: TO DO [Weeks 4? -]
+Week 4 [IN PROGRESS]
 -------------------------------- 		
 	
+- look into spectral and temporal input beam profile disagreeing
+
 - improve density distribution model
 	+ start looking at COMSOL [open file]
 
