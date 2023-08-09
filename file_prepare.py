@@ -18,11 +18,13 @@ use_IR  = True
 use_UV  = True
 use_IR_spec = True 
 use_rho = False  
+use_IR_spec_exp = True 
 
 in_IR   = "Ek.dat"
 in_IR_spec = "Speck.dat"
 in_UV   = "0.1bar_Subt2__0__17-04-30-844.txt"
 in_rho  = "PUT_FILENAME_HERE"
+in_IR_spec_exp = "1.2bar_2.21e-1mbar_1308032U1.txt"
 
 """ 
 IR PULSE FILES
@@ -46,7 +48,28 @@ if use_IR:
     np.savetxt(os.path.join(out_dir, out_IR),arr)
 
 """ 
-IR PULSE FILES
+IR SPEC EXP FILES [SPECTRUM AS MEASURED BY SPECTROMETER]
+
+Should contain (at least) five columns:
+    - wavelength data in nm (col 0)
+    - spectral intensity data in arb. units (col 4)
+
+Delimiter: " "
+
+8 lines of header; no comments
+
+"""
+if use_IR_spec_exp:
+
+    out_IR_spec_exp = "IRspec_exp.dat"
+
+    arr = np.loadtxt(os.path.join(in_dir, in_IR_spec_exp), usecols=(0,4), skiprows=8, delimiter=";")
+    arr[:,0] *= 1e-9
+
+    np.savetxt(os.path.join(out_dir, out_IR_spec_exp),arr)
+
+""" 
+IR SPEC FILES
 
 Should contain (at least) two columns:
     - wavelength data in nm 
@@ -64,7 +87,7 @@ if use_IR_spec:
     arr = np.loadtxt(os.path.join(in_dir, in_IR_spec), usecols=(0,1))
     arr[:,0] *= 1e-9
 
-    np.savetxt(os.path.join(out_dir, out_IR_spec),arr)
+    np.savetxt(os.path.join(out_dir, out_IR_spec),arr)    
 
 """ 
 UV PULSE FILES

@@ -16,13 +16,14 @@ read_IR = true               # if true: read input IR pulse from file; if false:
 read_ρ  = false              # if true: read gas density profile from file; if false: use pressure gradient approximation 
 read_UV = false              # if true: overlay measured UV output on simulated results   
 
-IR_spec = false              # if true: read input IR spectrum from file and overlay 
-show_IR = false              # if true and "read_IR" is true: overlay measured input pulse on plots
+IR_spec = false               # if true: read input IR FROG spectrum from file and overlay 
+show_IR = false              # if true and "read_IR" is true: overlay measured time-domain input pulse on plots
+IR_spec_exp = false           # if true: read input IR spectrometer spectrum from file and overlay 
 
 # ------------------ SET MEASURED PARAMETERS ------------------------
 
 gas = :Ar          # gas
-pres = 0.4         # central gas pressure [bar]   (ignored if p_scan is true)
+pres = 1.0         # central gas pressure [bar]   (ignored if p_scan is true)
 p_ed = 1e-3         # edge gas pressure [bar]
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when temporal beam profile is approximated as Gaussian)
@@ -31,6 +32,11 @@ w0 = 65e-6          # beam waist [m]
 ϕ = 0.0             # carrier-envelope offset (CEO) phase [rad]                                    -> can this be extracted from data?
 energy = 150e-6     # pulse energy [J]                                                             -> multiply by 1kHz (?) repetition rate for beam power
 L = 3e-3            # propagation distance (cell length) [m]
+
+zr = π*w0^2/λ0      # Rayleigh length [m]
+propz = -L/2        # propagation distance from the waist [m]
+z_vals =L .* [0, 0.33, 0.75, 1]     # points along the cell at which to investigate beam evolution [m] (Note: only the first four are used for spatiotemporal plots!)
+
 
 λ_lims = (100e-9, 1000e-9)       # wavelength limits of overall frequency window (both NIR and UV) [m,m]
 λ_rangeUV = (100e-9, 360e-9)     # wavelength limits of UV region of interest [m,m]
@@ -41,7 +47,7 @@ L = 3e-3            # propagation distance (cell length) [m]
 kerr = "f"         # set nonlinear Kerr effect: 
                     #       must be "ff" [Kerr_field + Kerr_field_nothg], "ef" [Kerr_env + Kerr_field_nothg], 
                     #       "f" [Kerr_field], "fe" [Kerr_field + Kerr_env] , or "e" [Kerr_env]
-ion = true          # if true: enable ionisation response
+ion = true         # if true: enable ionisation response
 
 # ---------------- SET SCAN PARAMETERS ------------------------
 
@@ -64,8 +70,11 @@ path_ρ    = joinpath(in_dir, file_ρ)         # sys. path to density profile da
 file_UV   = "UVpulse.dat"                    # name of UV output pulse file 
 path_UV   = joinpath(in_dir, file_UV)        # sys. path to UV output pulse file 
 
-file_IR_spec = "IRspec.dat"                   # name of IR input spectrum file 
-path_IR_spec = joinpath(in_dir, file_IR_spec) # sys. path to IR input spectrum file 
+file_IR_spec = "IRspec.dat"                   # name of IR FROG input spectrum file 
+path_IR_spec = joinpath(in_dir, file_IR_spec) # sys. path to IR FROG input spectrum file 
+
+file_IR_spec_exp = "IRspec_exp.dat"                   # name of IR input spectrometer spectrum file 
+path_IR_spec_exp = joinpath(in_dir, file_IR_spec_exp) # sys. path to IR input spectrometer spectrum file 
 
 # ----------------- MAKE ARRANGEMENTS FOR PRESSURE SCAN -----------
 
@@ -217,11 +226,13 @@ function THG_main(pres=pres)
 
     Etout = FFTW.irfft(Erout, length(t), 1)     # time-domain real field amplitude at r≠0
     Et0 = FFTW.irfft(Er0, length(t),1)          # time-domain real field amplitude at r=0
+    Et = Maths.hilbert(Etout)                   # time-domain real field amplitude of envelope at r≠0
 
     # * * * CONVERT TO INTENSITIES:
     Iωr = abs2.(Erout)                               #  intensity at r≠0 in frequency domain  [arbitrary units]
     Iω0 = abs2.(Er0)                                 #  intensity at r=0 in frequency domain  [arbitrary units]
     It0 = abs2.(Et0)                                 #  intensity at r=0 in time domain [arbitrary units]
+    It = abs2.(Maths.hilbert(Etout))                 #  intensity of envelope at r≠0 in time domain [arbitrary units]
 
     # * * * FILTER FOR UV FIELD (r≠0):
     filter=FFTW.rfft(Etout, 1)        # set up filter array 
@@ -229,6 +240,7 @@ function THG_main(pres=pres)
     filter[ωhighUVidx:end,:,:].=0;    # filters out ω > ω_max 
 
     Etout_UV=FFTW.irfft(filter, length(t), 1)    # time-domain real field amplitude of UV pulse 
+    Et_UV = Maths.hilbert(Etout_UV)              # time-domain real field amplitude of UV envelope
 
     if txt_only == false 
         # * * * FILTER FOR UV FIELD (r=0)
@@ -236,8 +248,16 @@ function THG_main(pres=pres)
         filter_onaxis[1:ωlowUVidx,:].=0;           # filters out ω < ω_min
         filter_onaxis[ωhighUVidx:end,:].=0;        # filters out ω > ω_max  
 
-        Et0_UV =FFTW.irfft(filter_onaxis, length(t), 1)    # time-domain real field amplitude of UV pulse at r=0
-        It0_UV = abs2.(Et0_UV)                           # intensity of on-axis UV pulse at r=0
+        Et0_UV =FFTW.irfft(filter_onaxis, length(t), 1)     # time-domain real field amplitude of UV pulse at r=0
+        It0_UV = abs2.(Et0_UV)                              # intensity of on-axis UV pulse at r=0
+
+        # * * * FILTER FOR IR FIELD (r≠0):
+        filter_IR=FFTW.rfft(Etout, 1)        # set up filter array 
+        filter_IR[1:ωlowIRidx,:,:].=0;       # filters out ω < ω_min
+        filter_IR[ωhighIRidx:end,:,:].=0;    # filters out ω > ω_max 
+
+        Etout_IR=FFTW.irfft(filter_IR, length(t), 1)    # time-domain real field amplitude of IR pulse
+        Et_IR = Maths.hilbert(Etout_IR)                 # time-domain real field amplitude of IR envelope
 
         # * * * FILTER FOR IR FIELD (r=0)
         filter_onaxis_IR = FFTW.rfft(Et0, 1)          # set up filter array
@@ -269,8 +289,13 @@ function THG_main(pres=pres)
 
     # * * * PROCESS MEASURED DATA FROM FILES 
     if (IR_spec == true) & (txt_only == false)
-        λ_IR_spec = readdlm(path_IR_spec,' ', Float64, '\n')[:,1]             # read in IR input wavelength data 
-        I_IR_spec = readdlm(path_IR_spec,' ', Float64, '\n')[:,2]             # read in IR input spectral data 
+        λ_IR_spec = readdlm(path_IR_spec,' ', Float64, '\n')[:,1]             # read in IR input wavelength data [FROG]
+        I_IR_spec = readdlm(path_IR_spec,' ', Float64, '\n')[:,2]             # read in IR input spectral data [FROG]
+    end
+
+    if (IR_spec_exp == true) & (txt_only == false)
+        λ_IR_spec_exp = readdlm(path_IR_spec_exp,' ', Float64, '\n')[:,1]             # read in IR input wavelength data [spectrometer]
+        I_IR_spec_exp = readdlm(path_IR_spec_exp,' ', Float64, '\n')[:,2]             # read in IR input spectral data [spectrometer]
     end
 
     if (read_UV == true) & (txt_only == false) 
@@ -385,8 +410,12 @@ function THG_main(pres=pres)
         end
 
         if IR_spec == true 
-            plt.plot(λ_IR_spec*1e9, maximum(Iω0[2:end,1]).*Maths.normbymax(I_IR_spec), color="green", ls="--") 
-        end    
+            plt.plot(λ_IR_spec*1e9, maximum(Iω0[2:end,1]).*Maths.normbymax(I_IR_spec), color="green", ls="--", label="IR spectrum FROG") 
+        end   
+        
+        if IR_spec == true 
+            plt.plot(λ_IR_spec_exp*1e9, maximum(Iω0[2:end,1]).*Maths.normbymax(I_IR_spec_exp), color="blue", ls="--", label="IR spectrum spectrometer") 
+        end 
 
         plt.legend()
 
@@ -408,7 +437,11 @@ function THG_main(pres=pres)
         end
 
         if IR_spec == true 
-            plt.plot(λ_IR_spec*1e9, maximum(Iω0[λlowidx:λhighidx,1]).*Maths.normbymax(I_IR_spec), color="green", ls="--") 
+            plt.plot(λ_IR_spec*1e9, maximum(Iω0[λlowidx:λhighidx,1]).*Maths.normbymax(I_IR_spec), color="green", ls="--", label="IR spectrum FROG") 
+        end
+
+        if IR_spec_exp == true 
+            plt.plot(λ_IR_spec_exp*1e9, maximum(Iω0[λlowidx:λhighidx,1]).*Maths.normbymax(I_IR_spec_exp), color="blue", ls="--",label="IR spectrum spectrometer") 
         end
 
         plt.legend()
@@ -433,7 +466,11 @@ function THG_main(pres=pres)
         end
 
         if IR_spec == true 
-            plt.plot(λ_IR_spec*1e9, log10.(abs.(maximum(Iω0[2:end,1]).*Maths.normbymax(I_IR_spec))), color="green", ls="--") 
+            plt.plot(λ_IR_spec*1e9, log10.(abs.(maximum(Iω0[2:end,1]).*Maths.normbymax(I_IR_spec))), color="green", ls="--", label="IR spectrum FROG") 
+        end
+
+        if IR_spec_exp == true 
+            plt.plot(λ_IR_spec_exp*1e9, log10.(abs.(maximum(Iω0[2:end,1]).*Maths.normbymax(I_IR_spec_exp))), color="blue", ls="--", label="IR spectrum spectrometer") 
         end
 
         plt.legend()
@@ -513,63 +550,86 @@ function THG_main(pres=pres)
             plt.savefig(joinpath(out_path,"time_domain_UV_output.png"),dpi=1000)
         end
 
-        #+++++ PLOT 11: time-domain pulse evolution 
-        plt.figure(figsize=[7.04, 5.28]) 
-        plt.title("Evolution of total time-domain pulse")
-        plt.xlabel("t (fs)")
-        plt.xlim(minimum(t)*1e15, maximum(t)*1e15)
-        plt.ylabel("I(t; r=0) (arb. units)")
-
-        c = [plt.get_cmap("viridis")(i) for i in range(0,1,5)]
+        #+++++ PLOT 11: plot spatiotemporal pulse evolution (total beam) 
+        rsym = Hankel.Rsymmetric(q)
+        idcs = [argmin(abs.(zout .- k)) for k in z_vals]   
+        jw = Plotting.cmap_white("jet"; n=10)   
         
-        plt.plot(t*1e15,It0_envelope[:,1], label="z=0.0mm", color=c[5])
-        plt.plot(t*1e15,It0_envelope[:,Int(round(length(zout)/4))], label="z=$(1/4*L*1e3)mm", color=c[4])
-        plt.plot(t*1e15,It0_envelope[:,Int(2*round(length(zout)/4))], label="z="*string(round(2/4*L*1e3, digits=3))*"mm", color=c[3])
-        plt.plot(t*1e15,It0_envelope[:,Int(3*round(length(zout)/4))], label="z=$(3/4*L*1e3)mm", color=c[2])
-        plt.plot(t*1e15,It0_envelope[:,end], label="z=$(L*1e3)mm", color=c[1])
+        plt.figure(figsize=[7.04, 5.28]) 
+        plt.suptitle("Spatiotemporal evolution of total pulse")
+        plt.subplots_adjust(hspace=0.5, wspace=0.55)
 
-        plt.legend(loc="upper right")
-
+        for i in 1:4
+            plt.subplot(2,2,i)
+            plt.title("z="*string(round(z_vals[i]*1e3, digits=3))*"mm")
+            plt.xlabel("t (fs)")
+            plt.ylabel("r (mm)")
+            plt.ylim(minimum(rsym*1e3)/2, maximum(rsym*1e3)/2)
+            plt.xlim(minimum(grid.t*1e15)/2, maximum(grid.t*1e15)/2)
+            plt.pcolormesh(grid.t*1e15, rsym*1e3, abs2.(Hankel.symmetric(Et[:, :, idcs[i]], q)'), cmap=jw)
+            plt.colorbar(label="I (arb. units)")
+        end
+        
         if save==true
             plt.savefig(joinpath(out_path,"pulse_evolution.png"),dpi=1000)
         end
 
-        #+++++ PLOT 12: time-domain UV pulse evolution 
+        #+++++ PLOT 12: plot spatiotemporal UV pulse evolution 
         plt.figure(figsize=[7.04, 5.28]) 
-        plt.title("Evolution of UV time-domain pulse")
-        plt.xlabel("t (fs)")
-        plt.xlim(minimum(t)*1e15, maximum(t)*1e15)
-        plt.ylabel("I(t; r=0) (arb. units)")
+        plt.suptitle("Spatiotemporal evolution of UV pulse")
+        plt.subplots_adjust(hspace=0.5, wspace=0.55)
+
+        for i in 1:4
+            plt.subplot(2,2,i)
+            plt.title("z="*string(round(z_vals[i]*1e3, digits=3))*"mm")
+            plt.xlabel("t (fs)")
+            plt.ylabel("r (mm)")
+            plt.ylim(minimum(rsym*1e3)/2, maximum(rsym*1e3)/2)
+            plt.xlim(minimum(grid.t*1e15)/2, maximum(grid.t*1e15)/2)
+            plt.pcolormesh(grid.t*1e15, rsym*1e3, abs2.(Hankel.symmetric(Et_UV[:, :, idcs[i]], q)'), cmap=jw)
+            plt.colorbar(label="I (arb. units)")
+        end
         
-        plt.plot(t*1e15,It0_UV_envelope[:,1], label="z=0.0mm", color=c[5])
-        plt.plot(t*1e15,It0_UV_envelope[:,Int(round(length(zout)/4))], label="z=$(1/4*L*1e3)mm", color=c[4])
-        plt.plot(t*1e15,It0_UV_envelope[:,Int(2*round(length(zout)/4))], label="z="*string(round(2/4*L*1e3, digits=3))*"mm", color=c[3])
-        plt.plot(t*1e15,It0_UV_envelope[:,Int(3*round(length(zout)/4))], label="z=$(3/4*L*1e3)mm", color=c[2])
-        plt.plot(t*1e15,It0_UV_envelope[:,end], label="z=$(L*1e3)mm", color=c[1])
-
-        plt.legend(loc="upper right")
-
         if save==true
             plt.savefig(joinpath(out_path,"UV_pulse_evolution.png"),dpi=1000)
         end
 
-        #+++++ PLOT 13: time-domain UV pulse evolution 
+        #+++++ PLOT 13: plot spatiotemporal IR pulse evolution 
         plt.figure(figsize=[7.04, 5.28]) 
-        plt.title("Evolution of IR time-domain pulse")
-        plt.xlabel("t (fs)")
-        plt.xlim(minimum(t)*1e15, maximum(t)*1e15)
-        plt.ylabel("I(t; r=0) (arb. units)")
-        
-        plt.plot(t*1e15,It0_IR_envelope[:,1], label="z=0.0mm", color=c[5])
-        plt.plot(t*1e15,It0_IR_envelope[:,Int(round(length(zout)/4))], label="z=$(1/4*L*1e3)mm", color=c[4])
-        plt.plot(t*1e15,It0_IR_envelope[:,Int(2*round(length(zout)/4))], label="z="*string(round(2/4*L*1e3, digits=3))*"mm", color=c[3])
-        plt.plot(t*1e15,It0_IR_envelope[:,Int(3*round(length(zout)/4))], label="z=$(3/4*L*1e3)mm", color=c[2])
-        plt.plot(t*1e15,It0_IR_envelope[:,end], label="z=$(L*1e3)mm", color=c[1])
+        plt.suptitle("Spatiotemporal evolution of IR pulse")
+        plt.subplots_adjust(hspace=0.5, wspace=0.55)
+
+        for i in 1:4
+            plt.subplot(2,2,i)
+            plt.title("z="*string(round(z_vals[i]*1e3, digits=3))*"mm")
+            plt.xlabel("t (fs)")
+            plt.ylabel("r (mm)")
+            plt.ylim(minimum(rsym*1e3)/2, maximum(rsym*1e3)/2)
+            plt.xlim(minimum(grid.t*1e15)/2, maximum(grid.t*1e15)/2)
+            plt.pcolormesh(grid.t*1e15, rsym*1e3, abs2.(Hankel.symmetric(Et_IR[:, :, idcs[i]], q)'), cmap=jw)
+            plt.colorbar(label="I (arb. units)")
+        end
+
+        if save==true
+            plt.savefig(joinpath(out_path,"IR_pulse_evolution.png"),dpi=1000)
+        end
+
+        #+++++ PLOT 14: UV spectral evolution
+        c = [plt.get_cmap("viridis")(i) for i in range(0,1,length(z_vals))]
+
+        plt.figure(figsize=[7.04, 5.28])
+        plt.title("UV beam spectral evolution")
+        for i in 1:length(z_vals)
+            plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,idcs[i]], label="z="*string(round(z_vals[i]*1e3, digits=3))*"mm", color=c[i])
+        end
+        plt.xlim(λ_rangeUV[1]*1e9, λ_rangeUV[2]*1e9)
+        plt.xlabel("λ (nm)")
+        plt.ylabel("I(r=0, λ) (arb. units)")
 
         plt.legend(loc="upper right")
 
         if save==true
-            plt.savefig(joinpath(out_path,"IR_pulse_evolution.png"),dpi=1000)
+            plt.savefig(joinpath(out_path,"UV_spectral_evolution.png"),dpi=1000)
         end
     end    
     # ----------------- WRITE PARAMS & UV SPECTRUM TO FILE ------------------
@@ -590,6 +650,7 @@ function THG_main(pres=pres)
             write(file, "L       = "*string(L)*"\n")
             write(file, "kerr    = "*string(kerr)*"\n")
             write(file, "ion     = "*string(ion)*"\n")
+            write(file, "propz   = "*string(propz)*"\n")
             
             if p_scan == false
                 write(file, "\n")
