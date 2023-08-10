@@ -23,7 +23,7 @@ IR_spec_exp = false           # if true: read input IR spectrometer spectrum fro
 # ------------------ SET MEASURED PARAMETERS ------------------------
 
 gas = :Ar           # gas
-pres = 1.7          # central gas pressure [bar]  (if read_ρ==true: must be 2,4,6,8 * 1.013 !)
+pres = 1.7          # central gas pressure [bar]  (if read_ρ==true: must be 2,4,6,8 *  1.01325 !)
 p_ed = 1e-3         # edge gas pressure [bar]
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when temporal beam profile is approximated as Gaussian)
@@ -34,7 +34,7 @@ energy = 150e-6     # pulse energy [J]                                          
 L = 3e-3            # propagation distance (cell length) [m]
 
 zr = π*w0^2/λ0      # Rayleigh length [m]
-propz = -L/2        # propagation distance from the waist [m]
+propz = -L/2        # propagation distance from the waist [m] (z_centre - z_waist ?)
 z_vals =L .* [0, 0.33, 0.75, 1]     # points along the cell at which to investigate beam evolution [m] (Note: only the first four are used for spatiotemporal plots!)
 
 
@@ -64,8 +64,8 @@ in_dir    = "input"                          # directory of input files
 file_IR   = "IRpulse.dat"                    # name of IR input pulse file 
 path_IR   = joinpath(in_dir, file_IR)        # sys. path to IR input pulse file 
 
-file_ρ    = "dens_$(floor(Int,pres/1.013))atm.dat"  # name of density profile data file 
-path_ρ    = joinpath(in_dir, file_ρ)                # sys. path to density profile data file 
+file_ρ    = "dens_$(floor(Int,pres/1.01325))atm.dat"  # name of density profile data file 
+path_ρ    = joinpath(in_dir, file_ρ)                  # sys. path to density profile data file 
 
 file_UV   = "UVpulse.dat"                    # name of UV output pulse file 
 path_UV   = joinpath(in_dir, file_UV)        # sys. path to UV output pulse file 
@@ -402,8 +402,8 @@ function THG_main(pres=pres)
         #+++++ PLOT 4:  linear on-axis spectrum I(λ) at z=0 and z=L 
         plt.figure(figsize=[7.04, 5.28])
         plt.title("Linear on-axis beam spectrum")
-        plt.plot(λ[2:end]*1e9, Iω0[2:end,1], label="z=$(round(zout[1]*1e3,2))mm", color="grey")
-        plt.plot(λ[2:end]*1e9, Iω0[2:end,end], label="z=$(round(zout[end]*1e3,2))mm", color="red")
+        plt.plot(λ[2:end]*1e9, Iω0[2:end,1], label="z=$(round(zout[1]*1e3,digits=2))mm", color="grey")
+        plt.plot(λ[2:end]*1e9, Iω0[2:end,end], label="z=$(round(zout[end]*1e3,digits=2))mm", color="red")
         plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
         plt.xlabel("λ (nm)")
         plt.ylabel("I(r=0, λ) (arb. units)")
@@ -429,8 +429,8 @@ function THG_main(pres=pres)
         #+++++ PLOT 5:  UV only linear on-axis spectrum I(λ) at z=0 and z=L 
         plt.figure(figsize=[7.04, 5.28])
         plt.title("Linear on-axis UV spectrum")
-        plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,1], label="z=$(round(zout[1]*1e3,2))mm", color="grey")
-        plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,end], label="z=$(round(zout[end]*1e3,2))mm", color="red")
+        plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,1], label="z=$(round(zout[1]*1e3,digits=2))mm", color="grey")
+        plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,end], label="z=$(round(zout[end]*1e3,digits=2))mm", color="red")
         plt.xlim(λ_rangeUV[1]*1e9, λ_rangeUV[2]*1e9)
         plt.xlabel("λ (nm)")
         plt.ylabel("I(r=0, λ) (arb. units)")
@@ -458,8 +458,8 @@ function THG_main(pres=pres)
 
         plt.figure(figsize=[7.04, 5.28])
         plt.title("Logarithmic on-axis beam spectrum")
-        plt.plot(λ[2:end]*1e9, Iω0log[2:end,1], label="z=$(round(zout[1]*1e3,2))mm",  color="grey")
-        plt.plot(λ[2:end]*1e9, Iω0log[2:end,end], label="z=$(round(zout[end]*1e3,2))mm", color="red")
+        plt.plot(λ[2:end]*1e9, Iω0log[2:end,1], label="z=$(round(zout[1]*1e3,digits=2))mm",  color="grey")
+        plt.plot(λ[2:end]*1e9, Iω0log[2:end,end], label="z=$(round(zout[end]*1e3,digits=2))mm", color="red")
         plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
         plt.xlabel("λ (nm)")
         plt.ylabel("I(r=0, λ) (arb. units)")

@@ -41,6 +41,8 @@ Week 4 [IN PROGRESS]
 	
 - for next round of pressure scans:
 	+ state 1/e^2 intensity [W/m^2] in addition to beam power (started on this)
+		- FIX TITLE/PARAMS (PADDING ETC)
+                - WRONG ORDER OF MAGNITUDE?? PEAK INTENSITY ??? CUBIC ???
 	+ give ratio of saturation pressures and beam energies for Ar and Ne
 	+ potentially add scan analysis for different beam focus values 
 	=> wait until next round discussion with Vincent & Josina
