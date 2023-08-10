@@ -17,13 +17,13 @@ out_dir = "input"
 use_IR  = True
 use_UV  = True
 use_IR_spec = True 
-use_rho = False  
+use_rho = True  
 use_IR_spec_exp = True 
 
 in_IR   = "Ek.dat"
 in_IR_spec = "Speck.dat"
 in_UV   = "0.1bar_Subt2__0__17-04-30-844.txt"
-in_rho  = "PUT_FILENAME_HERE"
+in_rho  = "Plot_Data_Version4.txt"
 in_IR_spec_exp = "1.2bar_2.21e-1mbar_1308032U1.txt"
 
 """ 
@@ -119,14 +119,14 @@ Should contain (at least) two columns:
 
 Delimiter: " "
 
-No headers or comments
+Header comments beginning with %
 
 """
 if use_rho: 
 
-    out_rho = "dens.dat"
+    out_rho = "dens_2atm.dat"
 
-    arr = np.loadtxt(os.path.join(in_dir, in_rho), usecols=(0,1))
+    arr = np.loadtxt(os.path.join(in_dir, in_rho), usecols=(0,1), comments="%")
 
     np.savetxt(os.path.join(out_dir, out_rho), arr)
 

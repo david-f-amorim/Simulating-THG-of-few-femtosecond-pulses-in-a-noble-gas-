@@ -23,7 +23,7 @@ IR_spec_exp = false           # if true: read input IR spectrometer spectrum fro
 # ------------------ SET MEASURED PARAMETERS ------------------------
 
 gas = :Ar           # gas
-pres = 1.7          # central gas pressure [bar]   (ignored if p_scan is true)
+pres = 1.7          # central gas pressure [bar]  (if read_ρ==true: must be 2,4,6,8 * 1.013 !)
 p_ed = 1e-3         # edge gas pressure [bar]
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when temporal beam profile is approximated as Gaussian)
@@ -64,8 +64,8 @@ in_dir    = "input"                          # directory of input files
 file_IR   = "IRpulse.dat"                    # name of IR input pulse file 
 path_IR   = joinpath(in_dir, file_IR)        # sys. path to IR input pulse file 
 
-file_ρ    = "dens.dat"                       # name of density profile data file 
-path_ρ    = joinpath(in_dir, file_ρ)         # sys. path to density profile data file 
+file_ρ    = "dens_$(floor(Int,pres/1.013))atm.dat"  # name of density profile data file 
+path_ρ    = joinpath(in_dir, file_ρ)                # sys. path to density profile data file 
 
 file_UV   = "UVpulse.dat"                    # name of UV output pulse file 
 path_UV   = joinpath(in_dir, file_UV)        # sys. path to UV output pulse file 
@@ -112,8 +112,11 @@ function THG_main(pres=pres)
     N = 1024              # sample size for Hankel tansform grid     [1]                         ->> WHY THIS VALUE?  WOULD CHOOSING N≫ IMPROVE ACCURACY?
     trange = 0.05e-12     # total extent of time window required [s]                             
 
-
-    grid = Grid.RealGrid(L, λ0, λ_lims ,trange)   # set up time grid
+    if read_ρ==true 
+        grid = Grid.RealGrid(maximum(z_in)-minimum(z_in), λ0, λ_lims ,trange)   # set up time & space grid
+    else 
+        grid = Grid.RealGrid(L, λ0, λ_lims ,trange)   # set up time & space grid
+    end
     q = Hankel.QDHT(R, N, dim=2)                  # set up discrete Hankel transform matrix                        
 
     energyfun, _ = Fields.energyfuncs(grid, q)    # "energyfun" gives total energy in a field E(t)    
@@ -185,11 +188,11 @@ function THG_main(pres=pres)
         end
 
         inputs = Fields.SpatioTemporalField(λ0, energy, ϕ, 0.0,           # models input beam based off measured data
-        (t, r) -> beam_profile(t, r), -L/2)  
+        (t, r) -> beam_profile(t, r), propz)  
 
     else 
         inputs = Fields.GaussGaussField(λ0=λ0, τfwhm=τ,                   # models input beam as Gaussian 
-                energy=energy, w0=w0, propz=-L/2)
+                energy=energy, w0=w0, propz=propz)
     end            
 
     # ----------------- RUN SIMULATION ----------------------------
@@ -399,8 +402,8 @@ function THG_main(pres=pres)
         #+++++ PLOT 4:  linear on-axis spectrum I(λ) at z=0 and z=L 
         plt.figure(figsize=[7.04, 5.28])
         plt.title("Linear on-axis beam spectrum")
-        plt.plot(λ[2:end]*1e9, Iω0[2:end,1], label="z=0mm", color="grey")
-        plt.plot(λ[2:end]*1e9, Iω0[2:end,end], label="z=$(L*1e3)mm", color="red")
+        plt.plot(λ[2:end]*1e9, Iω0[2:end,1], label="z=$(round(zout[1]*1e3,2))mm", color="grey")
+        plt.plot(λ[2:end]*1e9, Iω0[2:end,end], label="z=$(round(zout[end]*1e3,2))mm", color="red")
         plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
         plt.xlabel("λ (nm)")
         plt.ylabel("I(r=0, λ) (arb. units)")
@@ -426,8 +429,8 @@ function THG_main(pres=pres)
         #+++++ PLOT 5:  UV only linear on-axis spectrum I(λ) at z=0 and z=L 
         plt.figure(figsize=[7.04, 5.28])
         plt.title("Linear on-axis UV spectrum")
-        plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,1], label="z=0mm", color="grey")
-        plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,end], label="z=$(L*1e3)mm", color="red")
+        plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,1], label="z=$(round(zout[1]*1e3,2))mm", color="grey")
+        plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,end], label="z=$(round(zout[end]*1e3,2))mm", color="red")
         plt.xlim(λ_rangeUV[1]*1e9, λ_rangeUV[2]*1e9)
         plt.xlabel("λ (nm)")
         plt.ylabel("I(r=0, λ) (arb. units)")
@@ -455,8 +458,8 @@ function THG_main(pres=pres)
 
         plt.figure(figsize=[7.04, 5.28])
         plt.title("Logarithmic on-axis beam spectrum")
-        plt.plot(λ[2:end]*1e9, Iω0log[2:end,1], label="z=0mm",  color="grey")
-        plt.plot(λ[2:end]*1e9, Iω0log[2:end,end], label="z=$(L*1e3)mm", color="red")
+        plt.plot(λ[2:end]*1e9, Iω0log[2:end,1], label="z=$(round(zout[1]*1e3,2))mm",  color="grey")
+        plt.plot(λ[2:end]*1e9, Iω0log[2:end,end], label="z=$(round(zout[end]*1e3,2))mm", color="red")
         plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
         plt.xlabel("λ (nm)")
         plt.ylabel("I(r=0, λ) (arb. units)")
