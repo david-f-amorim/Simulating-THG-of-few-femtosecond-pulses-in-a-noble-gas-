@@ -137,7 +137,17 @@ def get_params(path):
     kerr = params[9,1]
     ion = params[10,1]
 
-    return gas[1:], phi, beam_en, ion[1:], kerr[1:]  
+    return gas[1:], phi, beam_en, ion[1:], kerr[1:] 
+
+# auxiliary function: get 1/e^2 intensity in W/m^2
+def get_intensity(path):
+
+    params = np.loadtxt(os.path.join(path,"params.txt"),dtype="str", delimiter="=", comments="#")
+    beam_en = float(params[7,1])
+    w0 = float(params[5,1])
+    I = beam_en / (np.pi * w0**2)
+
+    return I 
 
 # extract pressures, energies, and efficiencies of a scan 
 # directory at 'path'
@@ -216,7 +226,7 @@ def plot_single(single_dir, n=15):
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Simulated UV energies", fontsize=16)
-    plt.title("Gas: "+gas+"; beam energy: {0}mW; CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi)+"response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.2e}W/m^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir) )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10)
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, en_arr*1e9, color="blue")
@@ -228,7 +238,7 @@ def plot_single(single_dir, n=15):
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Simulated THG efficiencies", fontsize=16)
-    plt.title("Gas: "+gas+"; beam energy: {0}mW; CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi)+"response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.2e}W/m^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir) )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10)
     plt.ylabel("Efficiency (%)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, ef_arr*1e2, color="blue")
@@ -241,7 +251,7 @@ def plot_single(single_dir, n=15):
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.85)
     plt.suptitle("Simulated UV spectra", fontsize=16)
-    plt.title("Gas: "+gas+"; beam energy: {0}mW; CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi)+"response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=18)
+    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.2e}W/m^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir) )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=18)
     plt.ylabel("Intensity (arb. units)")
     plt.xlabel("Wavelength (nm)")
 
@@ -288,7 +298,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
     
     for i in np.arange(len(path_arr)):
         p_arr, en_arr, _ = get_PrEnEf(path_arr[i])
-        plt.scatter(p_arr, en_arr*1e9, color=cmap(cidx[i]), label="{0}mW".format(beam_en_arr[i]*1e6))
+        plt.scatter(p_arr, en_arr*1e9, color=cmap(cidx[i]), label="{0}mW (I={1:.2e}W/m^2)".format(beam_en_arr[i]*1e6, get_intensity(path_arr[i])))
         plt.plot(p_arr, en_arr*1e9, color=cmap(cidx[i]))
 
     plt.legend()
@@ -304,7 +314,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
     
     for i in np.arange(len(path_arr)):
         p_arr, _, ef_arr = get_PrEnEf(path_arr[i])
-        plt.scatter(p_arr, ef_arr*1e2, color=cmap(cidx[i]), label="{0}mW".format(beam_en_arr[i]*1e6))
+        plt.scatter(p_arr, ef_arr*1e2, color=cmap(cidx[i]), label="{0}mW (I={1:.2e}W/m^2)".format(beam_en_arr[i]*1e6, get_intensity(path_arr[i])))
         plt.plot(p_arr, ef_arr*1e2, color=cmap(cidx[i]))
 
     plt.legend()
@@ -379,11 +389,11 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
     
     for i in np.arange(len(path_arr_ion)):
         p_arr, en_arr, _ = get_PrEnEf(path_arr_ion[i])
-        plt.scatter(p_arr, en_arr*1e9, color=cmap(cidx[i]), label="{0}mW (ion.)".format(beam_en_arr[i]*1e6))
+        plt.scatter(p_arr, en_arr*1e9, color=cmap(cidx[i]), label="{0}mW [I={1:.2e W/m^2}] (ion.)".format(beam_en_arr[i]*1e6, get_intensity(path_arr_ion[i])))
         plt.plot(p_arr, en_arr*1e9, color=cmap(cidx[i]))
 
         p_arr, en_arr, _ = get_PrEnEf(path_arr_no_ion[i])
-        plt.scatter(p_arr, en_arr*1e9, color=cmap(cidx[i]), label="{0}mW (no ion.)".format(beam_en_arr[i]*1e6), marker="+")
+        plt.scatter(p_arr, en_arr*1e9, color=cmap(cidx[i]), label="{0}mW [I={1:.2e W/m^2}] (no ion.)".format(beam_en_arr[i]*1e6,get_intensity(path_arr_no_ion[i])), marker="+")
         plt.plot(p_arr, en_arr*1e9, color=cmap(cidx[i]), ls="--")
 
     plt.legend()
@@ -399,11 +409,11 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
     
     for i in np.arange(len(path_arr_ion)):
         p_arr, _, ef_arr = get_PrEnEf(path_arr_ion[i])
-        plt.scatter(p_arr, ef_arr*1e2, color=cmap(cidx[i]), label="{0}mW (ion.)".format(beam_en_arr[i]*1e6))
+        plt.scatter(p_arr, ef_arr*1e2, color=cmap(cidx[i]), label="{0}mW [I={1:.2e}W/m^2]  (ion.)".format(beam_en_arr[i]*1e6,get_intensity(path_arr_ion[i])))
         plt.plot(p_arr, ef_arr*1e2, color=cmap(cidx[i]))
 
         p_arr, _, ef_arr = get_PrEnEf(path_arr_no_ion[i])
-        plt.scatter(p_arr, ef_arr*1e2, color=cmap(cidx[i]), label="{0}mW (no ion.)".format(beam_en_arr[i]*1e6), marker="+")
+        plt.scatter(p_arr, ef_arr*1e2, color=cmap(cidx[i]), label="{0}mW [I={1:.2e}W/m^2] (no ion.)".format(beam_en_arr[i]*1e6,get_intensity(path_arr_no_ion[i])), marker="+")
         plt.plot(p_arr, ef_arr*1e2, color=cmap(cidx[i]), ls='--')
 
     plt.legend()

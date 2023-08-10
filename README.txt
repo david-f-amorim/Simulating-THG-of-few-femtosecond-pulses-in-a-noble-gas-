@@ -31,35 +31,19 @@ scan visualisations;  extended wavelength grid to start at 100nm (from 200nm);
 analysed scan results; added spatiotemporal plots ;  
 
 
-
-- reproduce Reiter plots [see old code]
-	-> RUN WITH/WITHOUT IONISATION AND COMPARE
-	-> PUT ON PP!
-
-
-
-- run scans with different focus values
-	ADDED PARAMETER [ANNOTATE ON PLOTS?]
-
-MOSTLY LABELLING ISSUE?
-- give saturation pressures and beam energies in ratios of Ar/Ne 
-- change beam power to intensity 
-
-
-DONE!
-
-- list points for discussion w Chris (Luna)
-		+ documentation for nonlinear functions
-		+ phase information
-- look into spectral and temporal input beam profile disagreeing [compare Luna, Speck.dat, experimental] 
-		
+- start testing Josina's COMSOl data 
+- start investigating different beam focus values (propz)
 
 
 	
 Week 4 [IN PROGRESS]
 -------------------------------- 		
 	
-
+- for next round of pressure scans:
+	+ state 1/e^2 intensity [W/m^2] in addition to beam power (started on this)
+	+ give ratio of saturation pressures and beam energies for Ar and Ne
+	+ potentially add scan analysis for different beam focus values 
+	=> wait until next round discussion with Vincent & Josina
 
 - improve density distribution model
 	+ start looking at COMSOL [open file]
