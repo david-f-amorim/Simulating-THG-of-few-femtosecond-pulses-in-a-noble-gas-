@@ -23,14 +23,14 @@ IR_spec_exp = false           # if true: read input IR spectrometer spectrum fro
 # ------------------ SET MEASURED PARAMETERS ------------------------
 
 gas = :Ar           # gas
-pres = 1.7          # central gas pressure [bar]  (if read_ρ==true: must be 2,4,6,8 *  1.01325 !)
+pres = 3.0          # central gas pressure [bar]  (if read_ρ==true: must be 2,4,6,8 *  1.01325 !)
 p_ed = 1e-3         # edge gas pressure [bar]
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when temporal beam profile is approximated as Gaussian)
 λ0 = 800e-9         # central wavelength [m]
 w0 = 65e-6          # beam waist [m]
 ϕ = 0.0             # carrier-envelope offset (CEO) phase [rad]                                    -> can this be extracted from data?
-energy = 150e-6     # pulse energy [J]                                                             -> multiply by 1kHz (?) repetition rate for beam power
+energy = 300e-6     # pulse energy [J]                                                             -> multiply by 1kHz (?) repetition rate for beam power
 L = 3e-3            # propagation distance (cell length) [m]
 
 zr = π*w0^2/λ0      # Rayleigh length [m]

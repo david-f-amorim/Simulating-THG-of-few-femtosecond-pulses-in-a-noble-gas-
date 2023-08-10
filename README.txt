@@ -20,7 +20,7 @@ option to feed in custom gas density profile (untested!) ;
 provided option to overlay measured UV spectrum 
 	
 
-Week 3 & 4
+Week 3
 --------------------------------  
 
 added different options for nonlinear model (use "ff" for now) ; 
@@ -28,16 +28,24 @@ added visualisation of pulse self-steepening; added option to overlay
 input pulse spectrum; changed cell length to 3mm ; implemented option 
 to run pressure scans; started data collection; implemented 
 scan visualisations;  extended wavelength grid to start at 100nm (from 200nm); 
-analysed scan results; added spatiotemporal plots ;  
-
-
-- start testing Josina's COMSOl data 
-- start investigating different beam focus values (propz)
-
+analysed scan results;  
 
 	
 Week 4 [IN PROGRESS]
--------------------------------- 		
+-------------------------------- 
+		
+added spatiotemporal plots ; 
+
+
+- work on powerpoint
+- start testing Josina's COMSOl data 
+	DOES NOT SEEM TO ACCEPT z<0 ???
+- start investigating different beam focus values (propz)
+
+- CHANGE IONISATION??!!!
+	ADK instead of PPT? [adk seems to be quasistatic limit of PPT?]
+		-> does not seem to make a big difference? BUT potentially fixes blow-up?
+
 	
 - for next round of pressure scans:
 	+ state 1/e^2 intensity [W/m^2] in addition to beam power (started on this)
