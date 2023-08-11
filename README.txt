@@ -44,8 +44,11 @@ avoid DomainError issues; added beam focus position as parameter
 
 - reproduce original plots with overlayed measured UV spectra
 
-- look into different gases
+- look into different gases (:He, :Kr, :Xe, :Air, :N2, :H2, :O2, :CH4, :SF6, :N2O, :D2)
+	started on Maxwell :Ar, :Ne, :Kr 
+		[300muJ, 1.0bar]
 
+- prepare question for conversation with Chris
 
 - for next round of pressure scans:
 	+ state 1/e^2 intensity [W/m^2] in addition to beam power (started on this)

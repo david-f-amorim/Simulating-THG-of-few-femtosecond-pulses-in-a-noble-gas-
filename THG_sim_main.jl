@@ -20,7 +20,7 @@ IR_spec = false               # if true: read input IR FROG spectrum from file a
 show_IR = false              # if true and "read_IR" is true: overlay measured time-domain input pulse on plots
 IR_spec_exp = false           # if true: read input IR spectrometer spectrum from file and overlay 
 
-show_focus = true           # if true: indicate position of beam focus 
+show_focus = false           # if true: indicate position of beam focus  # NOTE: disable when running on Maxwell! Outdated julia version!
 
 # ------------------ SET MEASURED PARAMETERS ------------------------
 
