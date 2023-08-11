@@ -38,17 +38,21 @@ added spatiotemporal plots ; changed to ADK ionisation from PPT ionisation to
 avoid DomainError issues; added beam focus position as parameter
 
 
+- change fundamental lam to 730!
 
 - start testing Josina's COMSOl data 
 	DOES NOT SEEM TO ACCEPT z<0 ???
 
-- reproduce original plots with overlayed measured UV spectra
+- reproduce original plots with overlayed measured UV spectra [realistically at higher pressures!]
 
-- look into different gases (:He, :Kr, :Xe, :Air, :N2, :H2, :O2, :CH4, :SF6, :N2O, :D2)
-	started on Maxwell :Ar, :Ne, :Kr 
+- look into different gases (:He, :Kr, :Xe, :N2, :H2, :O2, :CH4, :SF6, :N2O, :D2)
+	started on Maxwell :Ar, :Ne, :Kr, :Xe, :He, :N2, :H2, :O2, :CH4 
 		[300muJ, 1.0bar]
+		-> put on Sync&Share once done! [sim output/ gas scan]
 
 - prepare question for conversation with Chris
+
+- give saturation pressures and energies as ratios for Ar/Ne
 
 - for next round of pressure scans:
 	+ state 1/e^2 intensity [W/m^2] in addition to beam power (started on this)
