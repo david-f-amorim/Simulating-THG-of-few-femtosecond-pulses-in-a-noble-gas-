@@ -126,7 +126,7 @@ function THG_main(pres=pres)
     # ----------------- SET NONLINEAR EFFECTS ----------------------------
 
     ionpot = PhysData.ionisation_potential(gas)                 # set gas ionisation potential   
-    ionrate = Ionisation.ionrate_fun!_PPTcached(gas, λ0)        # set gas ionisation rate 
+    ionrate = Ionisation.ionrate_fun!_ADK(gas, λ0)        # set gas ionisation rate 
 
     linop = LinearOps.make_linop(grid, q, coren)                # generate linear operator for pulse-propagation equation  
     normfun = NonlinearRHS.norm_radial(grid, q, coren)          # generate normalisation function for radial symmetry 
