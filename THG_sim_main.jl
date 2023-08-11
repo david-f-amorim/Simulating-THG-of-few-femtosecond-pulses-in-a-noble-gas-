@@ -20,19 +20,19 @@ IR_spec = false               # if true: read input IR FROG spectrum from file a
 show_IR = false              # if true and "read_IR" is true: overlay measured time-domain input pulse on plots
 IR_spec_exp = false           # if true: read input IR spectrometer spectrum from file and overlay 
 
-show_focus = false           # if true: indicate position of beam focus 
+show_focus = true           # if true: indicate position of beam focus 
 
 # ------------------ SET MEASURED PARAMETERS ------------------------
 
 gas = :Ar           # gas
-pres = 3.0          # central gas pressure [bar]  (if read_ρ==true: must be 2,4,6,8 *  1.01325 !)
+pres = 1.0          # central gas pressure [bar]  (if read_ρ==true: must be 2,4,6,8 *  1.01325 !)
 p_ed = 1e-3         # edge gas pressure [bar]
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when temporal beam profile is approximated as Gaussian)
 λ0 = 800e-9         # central wavelength [m]
 w0 = 65e-6          # beam waist [m]
 ϕ = 0.0             # carrier-envelope offset (CEO) phase [rad]                                    -> can this be extracted from data?
-energy = 300e-6     # pulse energy [J]                                                             -> multiply by 1kHz (?) repetition rate for beam power
+energy = 150e-6     # pulse energy [J]                                                             -> multiply by 1kHz (?) repetition rate for beam power
 L = 3e-3            # propagation distance (cell length) [m]
 
 zr = π*w0^2/λ0      # Rayleigh length [m]
@@ -126,7 +126,7 @@ function THG_main(pres=pres)
     # ----------------- SET NONLINEAR EFFECTS ----------------------------
 
     ionpot = PhysData.ionisation_potential(gas)                 # set gas ionisation potential   
-    ionrate = Ionisation.ionrate_fun!_ADK(gas, λ0)        # set gas ionisation rate 
+    ionrate = Ionisation.ionrate_fun!_ADK(gas)        # set gas ionisation rate 
 
     linop = LinearOps.make_linop(grid, q, coren)                # generate linear operator for pulse-propagation equation  
     normfun = NonlinearRHS.norm_radial(grid, q, coren)          # generate normalisation function for radial symmetry 
@@ -364,7 +364,7 @@ function THG_main(pres=pres)
         plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
         
         if (show_focus==true) & (propz <= 0)
-            plt.axvlines(-propz*1e3, ls="--", color="k", label="beam focus")
+            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2] ,ls="--", color="k", label="beam focus")
             plt.legend()
         end    
 
@@ -376,7 +376,7 @@ function THG_main(pres=pres)
         plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
 
         if (show_focus==true) & (propz <= 0)
-            plt.axvlines(-propz*1e3, ls="--", color="k", label="beam focus")
+            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="k", label="beam focus")
             plt.legend()
         end
 
@@ -396,7 +396,7 @@ function THG_main(pres=pres)
         plt.legend()
 
         if (show_focus==true) & (propz <= 0)
-            plt.axvlines(-propz*1e3, ls="--", color="k", label="beam focus")
+            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="k", label="beam focus")
         end
 
         plt.subplot(2,1,2)
@@ -412,7 +412,7 @@ function THG_main(pres=pres)
         plt.legend()
 
         if (show_focus==true) & (propz <= 0)
-            plt.axvlines(-propz*1e3, ls="--", color="k", label="beam focus")
+            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="k", label="beam focus")
         end
 
         if save==true
@@ -516,7 +516,7 @@ function THG_main(pres=pres)
         plt.legend()
 
         if (show_focus==true) & (propz <= 0)
-            plt.axvlines(-propz*1e3, ls="--", color="k", label="beam focus")
+            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="k", label="beam focus")
         end
 
         plt.subplot(2,1,2)
@@ -527,7 +527,7 @@ function THG_main(pres=pres)
         plt.legend()
 
         if (show_focus==true) & (propz <= 0)
-            plt.axvlines(-propz*1e3, ls="--", color="k", label="beam focus")
+            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="k", label="beam focus")
         end
 
         if save==true
