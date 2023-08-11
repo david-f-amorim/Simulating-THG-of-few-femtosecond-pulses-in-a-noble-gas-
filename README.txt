@@ -35,15 +35,16 @@ Week 4 [IN PROGRESS]
 -------------------------------- 
 		
 added spatiotemporal plots ; changed to ADK ionisation from PPT ionisation to 
-avoid DomainError issues
+avoid DomainError issues; added beam focus position as parameter
 
 
-- work on powerpoint
+
 - start testing Josina's COMSOl data 
 	DOES NOT SEEM TO ACCEPT z<0 ???
 
-- start investigating different beam focus values (propz)
-	beam focus position can now be plotted!
+- reproduce original plots with overlayed measured UV spectra
+
+- look into different gases
 
 
 - for next round of pressure scans:
@@ -54,6 +55,5 @@ avoid DomainError issues
 	+ potentially add scan analysis for different beam focus values 
 	=> wait until next round discussion with Vincent & Josina
 
-- improve density distribution model
-	+ start looking at COMSOL [open file]
+
 
