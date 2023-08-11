@@ -38,8 +38,6 @@ added spatiotemporal plots ; changed to ADK ionisation from PPT ionisation to
 avoid DomainError issues
 
 
-- Run old code again and compare (spatiotemporal, energy....) WAS IT ALWAYS BAD???
-
 - work on powerpoint
 - start testing Josina's COMSOl data 
 	DOES NOT SEEM TO ACCEPT z<0 ???
@@ -48,7 +46,6 @@ avoid DomainError issues
 	beam focus position can now be plotted!
 
 
-	
 - for next round of pressure scans:
 	+ state 1/e^2 intensity [W/m^2] in addition to beam power (started on this)
 		- FIX TITLE/PARAMS (PADDING ETC)

@@ -364,7 +364,7 @@ function THG_main(pres=pres)
         plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
         
         if (show_focus==true) & (propz <= 0)
-            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2] ,ls="--", color="k", label="beam focus")
+            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2] ,ls="--", color="black", label="beam focus")
             plt.legend()
         end    
 
@@ -376,7 +376,7 @@ function THG_main(pres=pres)
         plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
 
         if (show_focus==true) & (propz <= 0)
-            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="k", label="beam focus")
+            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="black", label="beam focus")
             plt.legend()
         end
 
@@ -396,7 +396,7 @@ function THG_main(pres=pres)
         plt.legend()
 
         if (show_focus==true) & (propz <= 0)
-            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="k", label="beam focus")
+            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="black", label="beam focus")
         end
 
         plt.subplot(2,1,2)
@@ -412,7 +412,7 @@ function THG_main(pres=pres)
         plt.legend()
 
         if (show_focus==true) & (propz <= 0)
-            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="k", label="beam focus")
+            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="black", label="beam focus")
         end
 
         if save==true
@@ -516,7 +516,7 @@ function THG_main(pres=pres)
         plt.legend()
 
         if (show_focus==true) & (propz <= 0)
-            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="k", label="beam focus")
+            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="black", label="beam focus")
         end
 
         plt.subplot(2,1,2)
@@ -527,7 +527,7 @@ function THG_main(pres=pres)
         plt.legend()
 
         if (show_focus==true) & (propz <= 0)
-            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="k", label="beam focus")
+            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="black", label="beam focus")
         end
 
         if save==true
