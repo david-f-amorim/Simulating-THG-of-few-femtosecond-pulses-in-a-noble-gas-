@@ -34,17 +34,19 @@ analysed scan results;
 Week 4 [IN PROGRESS]
 -------------------------------- 
 		
-added spatiotemporal plots ; 
+added spatiotemporal plots ; changed to ADK ionisation from PPT ionisation to 
+avoid DomainError issues
 
+
+- Run old code again and compare (spatiotemporal, energy....) WAS IT ALWAYS BAD???
 
 - work on powerpoint
 - start testing Josina's COMSOl data 
 	DOES NOT SEEM TO ACCEPT z<0 ???
-- start investigating different beam focus values (propz)
 
-- CHANGE IONISATION??!!!
-	ADK instead of PPT? [adk seems to be quasistatic limit of PPT?]
-		-> does not seem to make a big difference? BUT potentially fixes blow-up?
+- start investigating different beam focus values (propz)
+	beam focus position can now be plotted!
+
 
 	
 - for next round of pressure scans:
