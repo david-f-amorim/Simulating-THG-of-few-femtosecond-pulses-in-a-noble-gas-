@@ -46,9 +46,17 @@ avoid DomainError issues; added beam focus position as parameter
 - reproduce original plots with overlayed measured UV spectra [realistically at higher pressures!]
 
 - look into different gases (:He, :Kr, :Xe, :N2, :H2, :O2, :CH4, :SF6, :N2O, :D2)
-	started on Maxwell :Ar, :Ne, :Kr, :Xe, :He, :N2, :H2, :O2, :CH4 
+	started on Maxwell :Ar, :Ne, :Kr, :Xe, :He, :N2, :H2, :O2, :CH4, :SF6, :N2O 
 		[300muJ, 1.0bar]
 		-> put on Sync&Share once done! [sim output/ gas scan]
+		=> ALL DONE!
+	DOWNLOAD!!
+
+		to compare: -plot all UV spectra on top of each other 
+			    - plot "bar charts" with pulse duratons and 
+				UV energies
+				=> also plot IR beam depletion as measure of ion.?
+			put other plots on PP?	
 
 - prepare question for conversation with Chris
 
@@ -58,6 +66,7 @@ avoid DomainError issues; added beam focus position as parameter
 	+ state 1/e^2 intensity [W/m^2] in addition to beam power (started on this)
 		- FIX TITLE/PARAMS (PADDING ETC)
                 - WRONG ORDER OF MAGNITUDE?? PEAK INTENSITY ??? CUBIC ???
+			-> use peak intensity in W/cm^2 instead? or PW/cm^2 
 	+ give ratio of saturation pressures and beam energies for Ar and Ne
 	+ potentially add scan analysis for different beam focus values 
 	=> wait until next round discussion with Vincent & Josina
