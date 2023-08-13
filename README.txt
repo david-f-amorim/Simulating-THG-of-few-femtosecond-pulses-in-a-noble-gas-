@@ -31,45 +31,36 @@ scan visualisations;  extended wavelength grid to start at 100nm (from 200nm);
 analysed scan results;  
 
 	
-Week 4 [IN PROGRESS]
+Week 4 & 5
 -------------------------------- 
 		
 added spatiotemporal plots ; changed to ADK ionisation from PPT ionisation to 
-avoid DomainError issues; added beam focus position as parameter
+avoid DomainError issues; added beam focus position as parameter; changed 
+fundamental wavelength to 730nm; added peak intensity information to pressure scans ; 
+prepared table of relative Ne/Ar saturation pressures and energies ; 
 
 
-- change fundamental lam to 730!
+RESPOND TO JOSINA'S EMAIL!
 
-- start testing Josina's COMSOl data 
-	DOES NOT SEEM TO ACCEPT z<0 ???
+
+- start testing Josina's COMSOl data [new and old] 
+	DOES NOT SEEM TO ACCEPT z<0, shift data!
 
 - reproduce original plots with overlayed measured UV spectra [realistically at higher pressures!]
 
-- look into different gases (:He, :Kr, :Xe, :N2, :H2, :O2, :CH4, :SF6, :N2O, :D2)
-	started on Maxwell :Ar, :Ne, :Kr, :Xe, :He, :N2, :H2, :O2, :CH4, :SF6, :N2O 
-		[300muJ, 1.0bar]
-		-> put on Sync&Share once done! [sim output/ gas scan]
-		=> ALL DONE!
-	DOWNLOAD!!
-
+- look into different gases (:He, :Kr, :Xe, :N2, :H2, :O2, :CH4, :SF6, :N2O, :D2) [300muJ, 1.0bar]
+		
 		to compare: -plot all UV spectra on top of each other 
 			    - plot "bar charts" with pulse duratons and 
 				UV energies
 				=> also plot IR beam depletion as measure of ion.?
 			put other plots on PP?	
 
-- prepare question for conversation with Chris
+- prepare questions for conversation with Chris [Wed]
 
-- give saturation pressures and energies as ratios for Ar/Ne
 
-- for next round of pressure scans:
-	+ state 1/e^2 intensity [W/m^2] in addition to beam power (started on this)
-		- FIX TITLE/PARAMS (PADDING ETC)
-                - WRONG ORDER OF MAGNITUDE?? PEAK INTENSITY ??? CUBIC ???
-			-> use peak intensity in W/cm^2 instead? or PW/cm^2 
-	+ give ratio of saturation pressures and beam energies for Ar and Ne
-	+ potentially add scan analysis for different beam focus values 
-	=> wait until next round discussion with Vincent & Josina
 
+	
+	
 
 

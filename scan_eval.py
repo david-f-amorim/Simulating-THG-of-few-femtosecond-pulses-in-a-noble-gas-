@@ -15,7 +15,7 @@ out_dir    = "scan_analysis"
 
 
 single_dir = "scans\scan_300.0mW_Ar_0.0rad_f_no-ion" 
-single = False 
+single = True 
 n = 15
 
 # ---------- FILE EXTRACTION --------------------------------------
@@ -31,7 +31,7 @@ def power_comp(sup_dir, gas, phi,ion, kerr):
 
         if os.path.isdir(os.path.join(sup_dir,dir)):
             
-            gas0, phi0, beam_en, ion0, kerr0, w0 = get_params(os.path.join(sup_dir,dir))
+            gas0, phi0, beam_en, ion0, kerr0, w0, tau = get_params(os.path.join(sup_dir,dir))
 
             cond = (gas0==gas) & (phi0 == phi) & (kerr0 == kerr) & (ion0 == ion) 
 
@@ -44,7 +44,7 @@ def power_comp(sup_dir, gas, phi,ion, kerr):
     beam_en_arr = beam_en_arr[beam_en_arr.argsort()]
              
 
-    return path_arr, beam_en_arr, w0 
+    return path_arr, beam_en_arr, w0, tau 
 
 # get paths to all files in super directory with different 
 # CEO phases and all other parameters equal
@@ -57,7 +57,7 @@ def phi_comp(sup_dir, gas, beam_en, ion,kerr):
 
         if os.path.isdir(os.path.join(sup_dir,dir)):
             
-            gas0, phi, beam_en0, ion0, kerr0, _ = get_params(os.path.join(sup_dir,dir))
+            gas0, phi, beam_en0, ion0, kerr0, _, _ = get_params(os.path.join(sup_dir,dir))
 
             cond = (gas0==gas) & (beam_en0 == beam_en) & (kerr0 == kerr) & (ion0 == ion) 
 
@@ -81,7 +81,7 @@ def gas_comp(sup_dir,phi,beam_en,ion, kerr):
 
     for dir in os.listdir(sup_dir):
         if os.path.isdir(os.path.join(sup_dir,dir)):
-            _,phi0, beam_en0, ion0, kerr0, _ = get_params(os.path.join(sup_dir,dir))
+            _,phi0, beam_en0, ion0, kerr0, _, _ = get_params(os.path.join(sup_dir,dir))
 
             cond = (beam_en0==beam_en) & (phi0 == phi) & (kerr0 == kerr) & (ion0 == ion) 
 
@@ -101,7 +101,7 @@ def ion_comp(sup_dir, gas, phi, kerr):
 
     for dir in os.listdir(sup_dir):
         if os.path.isdir(os.path.join(sup_dir,dir)):
-            gas0, phi0, beam_en, ion, kerr0, _ = get_params(os.path.join(sup_dir,dir))
+            gas0, phi0, beam_en, ion, kerr0, w, tau = get_params(os.path.join(sup_dir,dir))
 
             cond = (gas0==gas) & (phi0 == phi) & (kerr0 == kerr) & (ion=="false")
 
@@ -111,7 +111,7 @@ def ion_comp(sup_dir, gas, phi, kerr):
 
     for dir in os.listdir(sup_dir):
         if os.path.isdir(os.path.join(sup_dir,dir)):
-            gas0, phi0, beam_en, ion, kerr0, _ = get_params(os.path.join(sup_dir,dir))
+            gas0, phi0, beam_en, ion, kerr0, w, tau = get_params(os.path.join(sup_dir,dir))
 
             cond = (gas0==gas) & (phi0 == phi) & (kerr0 == kerr) & (ion=="true") & (beam_en in beam_en_arr)
 
@@ -123,7 +123,7 @@ def ion_comp(sup_dir, gas, phi, kerr):
     path_arr_ion = path_arr_ion[beam_en_arr.argsort()]
     beam_en_arr = beam_en_arr[beam_en_arr.argsort()]
 
-    return path_arr_no_ion, path_arr_ion, beam_en_arr 
+    return path_arr_no_ion, path_arr_ion, beam_en_arr, w, tau 
 
 # ---------- DATA EXTRACTION --------------------------------------
 
@@ -138,16 +138,18 @@ def get_params(path):
     kerr = params[9,1]
     ion = params[10,1]
     w0 = float(params[5,1])
+    tau = float(params[3,1])
 
-    return gas[1:], phi, beam_en, ion[1:], kerr[1:], w0 
+    return gas[1:], phi, beam_en, ion[1:], kerr[1:], w0, tau 
 
-# auxiliary function: get 1/e^2 intensity in W/m2
+# auxiliary function: get 1/e^2 intensity in W/cm^2
 def get_intensity(path):
 
     params = np.loadtxt(os.path.join(path,"params.txt"),dtype="str", delimiter="=", comments="#")
     beam_en = float(params[7,1])
-    w0 = float(params[5,1])
-    I = beam_en * 1e3 / (np.pi * w0**2)
+    w0 = float(params[5,1]) *1e2 # in cm
+    tau = float(params[3,1]) 
+    I = beam_en  / (np.pi * w0**2 * tau)
 
     return I 
 
@@ -223,11 +225,12 @@ def plot_single(single_dir, n=15):
 
     p_arr, en_arr, ef_arr = get_PrEnEf(single_dir)
     p_peak, en_peak, ef_peak = get_peaks(single_dir)
-    gas, phi, beam_en, ion, kerr, _ = get_params(single_dir)
+    gas, phi, beam_en, ion, kerr, _, _ = get_params(single_dir)
 
     plt.figure(figsize=[7.04, 5.28]) 
+    plt.subplots_adjust(top=0.84)
     plt.suptitle("Simulated UV energies", fontsize=16)
-    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.0e}W/m2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir) )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.1f}PW/cm^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=10)
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, en_arr*1e9, color="blue")
@@ -238,8 +241,9 @@ def plot_single(single_dir, n=15):
     plt.show()
 
     plt.figure(figsize=[7.04, 5.28]) 
+    plt.subplots_adjust(top=0.84)
     plt.suptitle("Simulated THG efficiencies", fontsize=16)
-    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.0e}W/m2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir) )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.1f}PW/cm^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=10)
     plt.ylabel("Efficiency (%)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, ef_arr*1e2, color="blue")
@@ -250,9 +254,9 @@ def plot_single(single_dir, n=15):
     plt.show()
 
     plt.figure(figsize=[7.04, 5.28]) 
-    plt.subplots_adjust(top=0.85)
+    plt.subplots_adjust(top=0.82)
     plt.suptitle("Simulated UV spectra", fontsize=16)
-    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.0e}W/m2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir) )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=18)
+    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.1f}PW/cm^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=18)
     plt.ylabel("Intensity (arb. units)")
     plt.xlabel("Wavelength (nm)")
 
@@ -285,14 +289,14 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
         os.mkdir(out_path)
 
     # get data 
-    path_arr, beam_en_arr, w0 = power_comp(sup_dir, gas, phi,ion, kerr)
+    path_arr, beam_en_arr, w0, tau = power_comp(sup_dir, gas, phi,ion, kerr)
 
-    # auxiliary functions (beam_en in mW, I in W/m^2):
+    # auxiliary functions (beam_en in mW, I in PW/cm^2):
     def p2i(beam_en):
-        return beam_en *1e-3 / (np.pi * w0**2)
+        return beam_en *1e-6 / (np.pi * (w0*1e2)**2 * tau ) * 1e-15
 
     def i2p(I):
-        return I * (np.pi * w0**2) *1e3
+        return I * (np.pi * (w0*1e2)**2 * tau ) *1e15 *1e6
 
     # PLOT 1: energy vs pressure 
     cmap = plt.get_cmap("viridis")
@@ -306,7 +310,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
     
     for i in np.arange(len(path_arr)):
         p_arr, en_arr, _ = get_PrEnEf(path_arr[i])
-        plt.scatter(p_arr, en_arr*1e9, color=cmap(cidx[i]), label="{0}mW (I={1:.0e}W/m2)".format(beam_en_arr[i]*1e6, get_intensity(path_arr[i])))
+        plt.scatter(p_arr, en_arr*1e9, color=cmap(cidx[i]), label="{0}mW (I={1:.1f}PW/cm^2)".format(beam_en_arr[i]*1e6, 1e-15* get_intensity(path_arr[i])))
         plt.plot(p_arr, en_arr*1e9, color=cmap(cidx[i]))
 
     plt.legend()
@@ -322,7 +326,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
     
     for i in np.arange(len(path_arr)):
         p_arr, _, ef_arr = get_PrEnEf(path_arr[i])
-        plt.scatter(p_arr, ef_arr*1e2, color=cmap(cidx[i]), label="{0}mW (I={1:.0e}W/m2)".format(beam_en_arr[i]*1e6, get_intensity(path_arr[i])))
+        plt.scatter(p_arr, ef_arr*1e2, color=cmap(cidx[i]), label="{0}mW (I={1:.1f}PW/cm^2)".format(beam_en_arr[i]*1e6,1e-15* get_intensity(path_arr[i])))
         plt.plot(p_arr, ef_arr*1e2, color=cmap(cidx[i]))
 
     plt.legend()
@@ -339,14 +343,14 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
         peak_arr[i,2] = en_peak 
         peak_arr[i,3] = ef_peak 
 
-    fig, ax = plt.subplots(layout='constrained',figsize=[7.04, 5.28])
+    fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
     ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion, fontsize=10)
     plt.suptitle("Simulated peak UV energies", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Peak UV energy (nJ)")
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
-    secax.set_xlabel('Irradiance (W/m^2)')
+    secax.set_xlabel('Peak intensity (PW/cm^2)')
 
     ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,2]*1e9, color="blue")
     ax.plot(peak_arr[:,0]*1e6, peak_arr[:,2]*1e9, color="blue")
@@ -354,7 +358,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
     plt.savefig(os.path.join(out_path,"peak_en_vs_beam_power.png"),dpi=1000)
     plt.show()
 
-    fig, ax = plt.subplots(layout='constrained',figsize=[7.04, 5.28])
+    fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
     ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion, fontsize=10)
     plt.suptitle("Simulated peak UV efficiencies", fontsize=16)
@@ -363,12 +367,12 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
     ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,3]*1e2, color="blue")
     ax.plot(peak_arr[:,0]*1e6, peak_arr[:,3]*1e2, color="blue")
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
-    secax.set_xlabel('Irradiance (W/m^2)')
+    secax.set_xlabel('Peak intensity (PW/cm^2)')
 
     plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
     plt.show()
 
-    fig, ax = plt.subplots(layout='constrained',figsize=[7.04, 5.28])
+    fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
     ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion, fontsize=10)
     plt.suptitle("Simulated saturation pressures", fontsize=16)
@@ -377,7 +381,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
     ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,1], color="blue")
     ax.plot(peak_arr[:,0]*1e6, peak_arr[:,1], color="blue")
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
-    secax.set_xlabel('Irradiance (W/m^2)')
+    secax.set_xlabel('Peak intensity (PW/cm^2)')
 
     plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
     plt.show()
@@ -393,7 +397,14 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
         os.mkdir(out_path)
 
     # get data 
-    path_arr_no_ion, path_arr_ion, beam_en_arr = ion_comp(sup_dir, gas, phi, kerr)
+    path_arr_no_ion, path_arr_ion, beam_en_arr, w0, tau = ion_comp(sup_dir, gas, phi, kerr)
+
+     # auxiliary functions (beam_en in mW, I in PW/cm^2):
+    def p2i(beam_en):
+        return beam_en *1e-6 / (np.pi * (w0*1e2)**2 * tau ) * 1e-15
+
+    def i2p(I):
+        return I * (np.pi * (w0*1e2)**2 * tau ) *1e15 *1e6
 
     # PLOT 1: energy vs pressure 
     cmap = plt.get_cmap("viridis")
@@ -407,11 +418,11 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
     
     for i in np.arange(len(path_arr_ion)):
         p_arr, en_arr, _ = get_PrEnEf(path_arr_ion[i])
-        plt.scatter(p_arr, en_arr*1e9, color=cmap(cidx[i]), label="{0}mW [I={1:.0e} W/m2] (ion.)".format(beam_en_arr[i]*1e6, get_intensity(path_arr_ion[i])))
+        plt.scatter(p_arr, en_arr*1e9, color=cmap(cidx[i]), label="{0}mW [I={1:.1f} PW/cm^2] (ion.)".format(beam_en_arr[i]*1e6, 1e-15*get_intensity(path_arr_ion[i])))
         plt.plot(p_arr, en_arr*1e9, color=cmap(cidx[i]))
 
         p_arr, en_arr, _ = get_PrEnEf(path_arr_no_ion[i])
-        plt.scatter(p_arr, en_arr*1e9, color=cmap(cidx[i]), label="{0}mW [I={1:.0e} W/m2] (no ion.)".format(beam_en_arr[i]*1e6,get_intensity(path_arr_no_ion[i])), marker="+")
+        plt.scatter(p_arr, en_arr*1e9, color=cmap(cidx[i]), label="{0}mW [I={1:.1f} PW/cm^2] (no ion.)".format(beam_en_arr[i]*1e6, 1e-15*get_intensity(path_arr_no_ion[i])), marker="+")
         plt.plot(p_arr, en_arr*1e9, color=cmap(cidx[i]), ls="--")
 
     plt.legend()
@@ -427,11 +438,11 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
     
     for i in np.arange(len(path_arr_ion)):
         p_arr, _, ef_arr = get_PrEnEf(path_arr_ion[i])
-        plt.scatter(p_arr, ef_arr*1e2, color=cmap(cidx[i]), label="{0}mW [I={1:.0e}W/m2]  (ion.)".format(beam_en_arr[i]*1e6,get_intensity(path_arr_ion[i])))
+        plt.scatter(p_arr, ef_arr*1e2, color=cmap(cidx[i]), label="{0}mW [I={1:.1f} PW/cm^2]  (ion.)".format(beam_en_arr[i]*1e6,1e-15*get_intensity(path_arr_ion[i])))
         plt.plot(p_arr, ef_arr*1e2, color=cmap(cidx[i]))
 
         p_arr, _, ef_arr = get_PrEnEf(path_arr_no_ion[i])
-        plt.scatter(p_arr, ef_arr*1e2, color=cmap(cidx[i]), label="{0}mW [I={1:.0e}W/m2] (no ion.)".format(beam_en_arr[i]*1e6,get_intensity(path_arr_no_ion[i])), marker="+")
+        plt.scatter(p_arr, ef_arr*1e2, color=cmap(cidx[i]), label="{0}mW [I={1:.1f} PW/cm^2] (no ion.)".format(beam_en_arr[i]*1e6,1e-15*get_intensity(path_arr_no_ion[i])), marker="+")
         plt.plot(p_arr, ef_arr*1e2, color=cmap(cidx[i]), ls='--')
 
     plt.legend()
@@ -455,44 +466,53 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
         peak_arr_no_ion[i,2] = en_peak 
         peak_arr_no_ion[i,3] = ef_peak 
 
-    plt.figure(figsize=[7.04, 5.28])
-    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr, fontsize=10)
+    fig, ax = plt.subplots(figsize=[7.04, 5.28])
+    plt.subplots_adjust(top=0.8, right=0.9)
+    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr, fontsize=10)
     plt.suptitle("Simulated peak UV energies", fontsize=16)
-    plt.xlabel("Beam power (mW)")
-    plt.ylabel("Peak UV energy (nJ)")
-    plt.scatter(peak_arr_ion[:,0]*1e6, peak_arr_ion[:,2]*1e9, color="blue", label="ion.")
-    plt.plot(peak_arr_ion[:,0]*1e6, peak_arr_ion[:,2]*1e9, color="blue")
-    plt.scatter(peak_arr_no_ion[:,0]*1e6, peak_arr_no_ion[:,2]*1e9, color="red", label="no ion.")
-    plt.plot(peak_arr_no_ion[:,0]*1e6, peak_arr_no_ion[:,2]*1e9, color="red")
+    ax.set_xlabel("Beam power (mW)")
+    ax.set_ylabel("Peak UV energy (nJ)")
+    ax.scatter(peak_arr_ion[:,0]*1e6, peak_arr_ion[:,2]*1e9, color="blue", label="ion.")
+    ax.plot(peak_arr_ion[:,0]*1e6, peak_arr_ion[:,2]*1e9, color="blue")
+    ax.scatter(peak_arr_no_ion[:,0]*1e6, peak_arr_no_ion[:,2]*1e9, color="red", label="no ion.")
+    ax.plot(peak_arr_no_ion[:,0]*1e6, peak_arr_no_ion[:,2]*1e9, color="red")
+    secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
+    secax.set_xlabel('Peak intensity (PW/cm^2)')
 
     plt.legend()
 
     plt.savefig(os.path.join(out_path,"peak_en_vs_beam_power.png"),dpi=1000)
     plt.show()
 
-    plt.figure(figsize=[7.04, 5.28])
-    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr, fontsize=10)
+    fig, ax = plt.subplots(figsize=[7.04, 5.28])
+    plt.subplots_adjust(top=0.8, right=0.9)
+    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr, fontsize=10)
     plt.suptitle("Simulated peak UV efficiencies", fontsize=16)
-    plt.xlabel("Beam power (mW)")
-    plt.ylabel("Efficiency (%)")
-    plt.scatter(peak_arr_ion[:,0]*1e6, peak_arr_ion[:,3]*1e2, color="blue", label="ion.")
-    plt.plot(peak_arr_ion[:,0]*1e6, peak_arr_ion[:,3]*1e2, color="blue")
-    plt.scatter(peak_arr_no_ion[:,0]*1e6, peak_arr_no_ion[:,3]*1e2, color="red", label="no ion.")
-    plt.plot(peak_arr_no_ion[:,0]*1e6, peak_arr_no_ion[:,3]*1e2, color="red")
+    ax.set_xlabel("Beam power (mW)")
+    ax.set_ylabel("Efficiency (%)")
+    ax.scatter(peak_arr_ion[:,0]*1e6, peak_arr_ion[:,3]*1e2, color="blue", label="ion.")
+    ax.plot(peak_arr_ion[:,0]*1e6, peak_arr_ion[:,3]*1e2, color="blue")
+    ax.scatter(peak_arr_no_ion[:,0]*1e6, peak_arr_no_ion[:,3]*1e2, color="red", label="no ion.")
+    ax.plot(peak_arr_no_ion[:,0]*1e6, peak_arr_no_ion[:,3]*1e2, color="red")
+    secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
+    secax.set_xlabel('Peak intensity (PW/cm^2)')
     plt.legend()
 
     plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
     plt.show()
 
-    plt.figure(figsize=[7.04, 5.28])
-    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr, fontsize=10)
+    fig, ax = plt.subplots(figsize=[7.04, 5.28])
+    plt.subplots_adjust(top=0.8, right=0.9)
+    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr, fontsize=10)
     plt.suptitle("Simulated saturation pressures", fontsize=16)
-    plt.xlabel("Beam power (mW)")
-    plt.ylabel("Saturation pressure (bar)")
-    plt.scatter(peak_arr_ion[:,0]*1e6, peak_arr_ion[:,1], color="blue", label="ion.")
-    plt.plot(peak_arr_ion[:,0]*1e6, peak_arr_ion[:,1], color="blue")
-    plt.scatter(peak_arr_no_ion[:,0]*1e6, peak_arr_no_ion[:,1], color="red", label="no ion.")
-    plt.plot(peak_arr_no_ion[:,0]*1e6, peak_arr_no_ion[:,1], color="red")
+    ax.set_xlabel("Beam power (mW)")
+    ax.set_ylabel("Saturation pressure (bar)")
+    ax.scatter(peak_arr_ion[:,0]*1e6, peak_arr_ion[:,1], color="blue", label="ion.")
+    ax.plot(peak_arr_ion[:,0]*1e6, peak_arr_ion[:,1], color="blue")
+    ax.scatter(peak_arr_no_ion[:,0]*1e6, peak_arr_no_ion[:,1], color="red", label="no ion.")
+    ax.plot(peak_arr_no_ion[:,0]*1e6, peak_arr_no_ion[:,1], color="red")
+    secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
+    secax.set_xlabel('Peak intensity (PW/cm^2)')
 
     plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
     plt.show()    
@@ -519,7 +539,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Simulated UV energies", fontsize=16)
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.0e}W/m2); ".format(beam_en*1e6, I)+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+"response function: "+kerr+"; ionisation: "+ion, fontsize=10)
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
     
@@ -535,7 +555,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
     # PLOT 2: efficiency vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Simulated THG efficiencies", fontsize=16)
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.0e}W/m2); ".format(beam_en*1e6, I)+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion, fontsize=10)
     plt.ylabel("Efficiency (%)")
     plt.xlabel("Central pressure (bar)")
     
@@ -559,7 +579,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
         peak_arr[i,3] = ef_peak 
 
     plt.figure(figsize=[7.04, 5.28])
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.0e}W/m2); ".format(beam_en*1e6, I)+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion, fontsize=10)
     plt.suptitle("Simulated peak UV energies", fontsize=16)
     plt.xlabel("CEO phase (rad)")
     plt.ylabel("Peak UV energy (nJ)")
@@ -570,7 +590,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
     plt.show()
 
     plt.figure(figsize=[7.04, 5.28])
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.0e}W/m2); ".format(beam_en*1e6, I)+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion, fontsize=10)
     plt.suptitle("Simulated peak UV efficiencies", fontsize=16)
     plt.xlabel("CEO phase (rad)")
     plt.ylabel("Efficiency (%)")
@@ -581,7 +601,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
     plt.show()
 
     plt.figure(figsize=[7.04, 5.28])
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.0e}W/m2); ".format(beam_en*1e6, I)+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion, fontsize=10)
     plt.suptitle("Simulated saturation pressures", fontsize=16)
     plt.xlabel("CEO phase (rad)")
     plt.ylabel("Saturation pressure (bar)")

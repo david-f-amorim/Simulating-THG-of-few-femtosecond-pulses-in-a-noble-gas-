@@ -29,7 +29,7 @@ pres = 1.0          # central gas pressure [bar]  (if read_ρ==true: must be 2,4
 p_ed = 1e-3         # edge gas pressure [bar]
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when temporal beam profile is approximated as Gaussian)
-λ0 = 800e-9         # central wavelength [m]
+λ0 = 730e-9         # central wavelength [m]
 w0 = 65e-6          # beam waist [m]
 ϕ = 0.0             # carrier-envelope offset (CEO) phase [rad]                                    -> can this be extracted from data?
 energy = 150e-6     # pulse energy [J]                                                             -> multiply by 1kHz (?) repetition rate for beam power
@@ -673,7 +673,7 @@ function THG_main(pres=pres)
             end    
             write(file, "p_ed    = "*string(p_ed)*"\n")
             write(file, "p_const = "*string(p_const)*"\n")
-            write(file, "τ       = "*string(τ)*"\n")
+            write(file, "τ       = "*string(τ_input)*"\n")
             write(file, "λ0      = "*string(λ0)*"\n")
             write(file, "w0      = "*string(w0)*"\n")
             write(file, "ϕ       = "*string(ϕ)*"\n")
