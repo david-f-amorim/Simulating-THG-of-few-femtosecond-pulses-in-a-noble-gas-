@@ -264,7 +264,7 @@ def plot_single(single_dir, n=15):
     plt.ylabel("Pulse duration (fs)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, tau_arr*1e15, color="blue")
-    plt.scatter(p_arr, tau_arr*1e15, color="blue", label="Minimum: {0:.2f}% at {1}bar".format(tau_peak*1e15, min_tau_p))
+    plt.scatter(p_arr, tau_arr*1e15, color="blue", label="Minimum: {0:.2f}fs at {1}bar".format(tau_peak*1e15, min_tau_p))
     plt.legend()
 
     plt.savefig(os.path.join(single_dir,"efficiencies.png"),dpi=1000)
@@ -277,7 +277,7 @@ def plot_single(single_dir, n=15):
     plt.ylabel("Position (mm)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, zpeak_arr*1e3, color="blue")
-    plt.scatter(p_arr, zpeak_arr*1e3, color="blue", label="Minimum: {0:.2f}% at {1}bar".format(tau_peak*1e15, min_tau_p))
+    plt.scatter(p_arr, zpeak_arr*1e3, color="blue", label="Maximum: {0:.2f}mm at {1}bar".format(np.max(zpeak_arr)*1e3,p_arr[np.where(zpeak_arr == np.max(zpeak_arr) )][0]))
     plt.legend()
 
     plt.savefig(os.path.join(single_dir,"z_peak.png"),dpi=1000)

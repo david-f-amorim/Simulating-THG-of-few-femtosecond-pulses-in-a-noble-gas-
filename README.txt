@@ -52,7 +52,7 @@ UV energy;
 		+ varied variables:
 			* beam power (50mW, 100mW, 150mW,..., 500mW) [10]
 			* pressure (0.1bar, 0.2bar,...,5.1bar) [50]
-			* gas (Ne, Ar, Xe, Kr, He, N2, CO2, N2O) [8]
+			* gas (Ne, Ar, Xe, Kr, He, N2, N2O) [7]
                         * ionisation on/off [2]
 			* COMSOL data/gradient data [2] (maybe only with Ar/Ne for now?)
 		+ in scan_eval: 
@@ -61,6 +61,9 @@ UV energy;
 	
 
 		CARRY OUT LAST TESTS AND THEN START RUNNING SCANS!
+
+		started: 
+			- 150mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O   
 
 
 - continue writing report 
