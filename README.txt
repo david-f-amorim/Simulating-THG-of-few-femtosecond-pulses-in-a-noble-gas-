@@ -57,9 +57,11 @@ UV energy;
 			* COMSOL data/gradient data [2] (maybe only with Ar/Ne for now?)
 		+ in scan_eval: 
 			* replace phi scan with gas scan 
+			* make distinction between coms and grad
 	
 
 		CARRY OUT LAST TESTS AND THEN START RUNNING SCANS!
+
 
 - continue writing report 
 	NOTE: startlight not actually part of beamline!!

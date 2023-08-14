@@ -260,39 +260,37 @@ function THG_main(pres=pres)
     Etout_UV=FFTW.irfft(filter, length(t), 1)    # time-domain real field amplitude of UV pulse 
     Et_UV = Maths.hilbert(Etout_UV)              # time-domain real field amplitude of UV envelope
 
-    if txt_only == false 
-        # * * * FILTER FOR UV FIELD (r=0)
-        filter_onaxis = FFTW.rfft(Et0, 1)          # set up filter array
-        filter_onaxis[1:ωlowUVidx,:].=0;           # filters out ω < ω_min
-        filter_onaxis[ωhighUVidx:end,:].=0;        # filters out ω > ω_max  
+    # * * * FILTER FOR UV FIELD (r=0)
+    filter_onaxis = FFTW.rfft(Et0, 1)          # set up filter array
+    filter_onaxis[1:ωlowUVidx,:].=0;           # filters out ω < ω_min
+    filter_onaxis[ωhighUVidx:end,:].=0;        # filters out ω > ω_max  
 
-        Et0_UV =FFTW.irfft(filter_onaxis, length(t), 1)     # time-domain real field amplitude of UV pulse at r=0
-        It0_UV = abs2.(Et0_UV)                              # intensity of on-axis UV pulse at r=0
+    Et0_UV =FFTW.irfft(filter_onaxis, length(t), 1)     # time-domain real field amplitude of UV pulse at r=0
+    It0_UV = abs2.(Et0_UV)                              # intensity of on-axis UV pulse at r=0
 
-        # * * * FILTER FOR IR FIELD (r≠0):
-        filter_IR=FFTW.rfft(Etout, 1)        # set up filter array 
-        filter_IR[1:ωlowIRidx,:,:].=0;       # filters out ω < ω_min
-        filter_IR[ωhighIRidx:end,:,:].=0;    # filters out ω > ω_max 
+    # * * * FILTER FOR IR FIELD (r≠0):
+    filter_IR=FFTW.rfft(Etout, 1)        # set up filter array 
+    filter_IR[1:ωlowIRidx,:,:].=0;       # filters out ω < ω_min
+    filter_IR[ωhighIRidx:end,:,:].=0;    # filters out ω > ω_max 
 
-        Etout_IR=FFTW.irfft(filter_IR, length(t), 1)    # time-domain real field amplitude of IR pulse
-        Et_IR = Maths.hilbert(Etout_IR)                 # time-domain real field amplitude of IR envelope
+    Etout_IR=FFTW.irfft(filter_IR, length(t), 1)    # time-domain real field amplitude of IR pulse
+    Et_IR = Maths.hilbert(Etout_IR)                 # time-domain real field amplitude of IR envelope
 
-        # * * * FILTER FOR IR FIELD (r=0)
-        filter_onaxis_IR = FFTW.rfft(Et0, 1)          # set up filter array
-        filter_onaxis_IR[1:ωlowIRidx,:].=0;           # filters out ω < ω_min
-        filter_onaxis_IR[ωhighIRidx:end,:].=0;        # filters out ω > ω_max  
+    # * * * FILTER FOR IR FIELD (r=0)
+    filter_onaxis_IR = FFTW.rfft(Et0, 1)          # set up filter array
+    filter_onaxis_IR[1:ωlowIRidx,:].=0;           # filters out ω < ω_min
+    filter_onaxis_IR[ωhighIRidx:end,:].=0;        # filters out ω > ω_max  
 
-        Et0_IR =FFTW.irfft(filter_onaxis_IR, length(t), 1)    # time-domain real field amplitude of IR pulse at r=0
-    
-        # * * * EXTRACT INTENSITY ENVELOPES 
-        It0_envelope = abs2.(Maths.hilbert(Et0))          # envelope modulating It0
-        It0_UV_envelope = abs2.(Maths.hilbert(Et0_UV))    # envelope modulating It0_UV
-        It0_IR_envelope = abs2.(Maths.hilbert(Et0_IR))    # envelope modulating It0_IR 
+    Et0_IR =FFTW.irfft(filter_onaxis_IR, length(t), 1)    # time-domain real field amplitude of IR pulse at r=0
 
-        # * * * CALCULATE PULSE DURATIONS
-        τ_input = Maths.fwhm(t, It0_envelope[:,1])             # FWHM input pulse duration     [s]
-        τ_UV    = Maths.fwhm(t, It0_UV_envelope[:,end])        # FWHM UV output pulse duration [s]
-    end
+    # * * * EXTRACT INTENSITY ENVELOPES 
+    It0_envelope = abs2.(Maths.hilbert(Et0))          # envelope modulating It0
+    It0_UV_envelope = abs2.(Maths.hilbert(Et0_UV))    # envelope modulating It0_UV
+    It0_IR_envelope = abs2.(Maths.hilbert(Et0_IR))    # envelope modulating It0_IR 
+
+    # * * * CALCULATE PULSE DURATIONS
+    τ_input = Maths.fwhm(t, It0_envelope[:,1])             # FWHM input pulse duration     [s]
+    τ_UV    = Maths.fwhm(t, It0_UV_envelope[:,end])        # FWHM UV output pulse duration [s]
 
     # * * * CALCULATE PULSE ENERGIES:
     tot_pulse_en = zeros(length(zout))                   # set up array for total pulse energy 
