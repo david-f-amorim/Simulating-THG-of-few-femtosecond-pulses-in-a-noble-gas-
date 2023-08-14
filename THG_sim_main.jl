@@ -721,7 +721,7 @@ function THG_main(pres=pres)
 
     # ----------------- RETURN OUTPUT ----------------------------
     if p_scan == true 
-        return UV_pulse_en[end], η_THG, τ_UV
+        return UV_pulse_en[end], η_THG, τ_UV, z_peak
     end
 end    
 
@@ -740,7 +740,7 @@ if p_scan == true
     for i in range(1,length(pres_arr)) 
         printstyled("Starting run "*string(i)*"/"*string(length(pres_arr))*" at "*Dates.format(Dates.now(), "HH:MM:SS")*"\n", bold=true, color=:green)
 
-        E_UV, η = THG_main(pres_arr[i])
+        E_UV, η, τ_UV, z_peak = THG_main(pres_arr[i])
 
         open(joinpath(out_path,"energy_efficiency_time_zpeak.txt"), "a") do file
             writedlm(file, zip(pres_arr[i], E_UV, η, τ_UV, z_peak))
