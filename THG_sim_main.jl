@@ -574,7 +574,8 @@ function THG_main(pres=pres)
         if read_ρ==true 
             z_vals_local =[L_total/2,L_total/2+L*0.5,L_total/2+L,L_total] # re-define zvals 
         else 
-            z_vals_local = z_vals    
+            z_vals_local = z_vals 
+        end       
         
         rsym = Hankel.Rsymmetric(q)
         idcs = [argmin(abs.(zout .- k)) for k in z_vals_local]   
