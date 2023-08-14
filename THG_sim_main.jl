@@ -101,10 +101,11 @@ function THG_main(pres=pres)
         
         coren(ω; z) = sqrt(1 + γ(wlfreq(ω)*1e6)*dens(z))      # calculate refractive index along the cell   
 
-        propz += maximum(z_in)/2                              # shift propz to new coordinate system 
-        z_vals = [maximum(z_in)/2,maximum(z_in)/2 +L*0.5,maximum(z_in)/2 +L, maximum(z_in)] # re-define zvals 
-        L = maximum(z_in)                                     # overwrite total propagation distance 
-
+        L_total = maximum(z_in)                               # get total propagation distance 
+        propz +=L_total/2                              # shift propz to new coordinate system 
+        
+        z_vals = [L_total/2,L_total/2 +L*0.5,L_total/2 +L,L_total] # re-define zvals 
+        L = L_total                                    # overwrite total propagation distance 
 
     else   
         Z= (0, L/2, L)                                        # define points for pressure gradient
