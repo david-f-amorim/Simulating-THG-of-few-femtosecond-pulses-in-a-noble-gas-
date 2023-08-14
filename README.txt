@@ -54,11 +54,24 @@ PLAN: integrate COMSOL data; then run another round of scans!
 
 	UPDATED SCAN_EVAL IN PREPARATION FOR NEW ROUND OF SCANS!
 
-	WRITE SCAN_EVAL FOR PROPZ?? 
 
 	test COMSOL data
 
-	FIX REFERENCE TO PROPZ IN LINE 105 & to L in 107
+	FIX REFERENCE TO scan_eval 575!
+
+	SHOW z position with max. UV energy 
+
+
+
+beam power (up to 700mW)
+pressure (up to 5 bar)
+gases (noble, helium, n2, c02, n2O)
+ionisation on/off
+
+
++ use COMSOL for Ne or Ar 
+
+
 
 	
 	

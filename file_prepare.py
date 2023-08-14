@@ -14,16 +14,17 @@ import scipy.constants
 in_dir  = "raw_input" 
 out_dir = "input" 
 
-use_IR  = True
-use_UV  = True
-use_IR_spec = True 
+use_IR  = False
+use_UV  = False
+use_IR_spec = False 
 use_rho = True  
-use_IR_spec_exp = True 
+use_IR_spec_exp = False 
 
+
+in_rho  = "COMSOL_pressure_scan.txt"
 in_IR   = "Ek.dat"
 in_IR_spec = "Speck.dat"
 in_UV   = "0.1bar_Subt2__0__17-04-30-844.txt"
-in_rho  = "Plot_Data_Version4.txt"
 in_IR_spec_exp = "1.2bar_2.21e-1mbar_1308032U1.txt"
 
 """ 
@@ -124,11 +125,16 @@ Header comments beginning with %
 """
 if use_rho: 
 
-    out_rho = "dens_8atm.dat"
-
-    arr = np.loadtxt(os.path.join(in_dir, in_rho), usecols=(0,4), comments="%")
-
+    arr = np.loadtxt(os.path.join(in_dir, in_rho), comments="%", delimiter=",")
     arr[:,0] += np.max(arr[:,0])
+    arr[:,0] *= 1e-3 
 
-    np.savetxt(os.path.join(out_dir, out_rho), arr)
+    for i in np.arange(arr.shape[1]-1)+1:
+        dens = arr[:,i]
+        out_rho="dens_{0:.1f}bar.dat".format(0.1+(i-1)*0.1)
+        out_arr =np.empty(shape=(len(dens),2))
+        out_arr[:,0]= arr[:,0]
+        out_arr[:,1]= dens 
+    
+        np.savetxt(os.path.join(out_dir, out_rho),out_arr)
 

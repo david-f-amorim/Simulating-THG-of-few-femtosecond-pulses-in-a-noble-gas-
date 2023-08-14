@@ -23,7 +23,7 @@ IR_spec_exp = false           # if true: read input IR spectrometer spectrum fro
 # ------------------ SET MEASURED PARAMETERS ------------------------
 
 gas = :Ar           # gas
-pres = 2.0*1.01325  # central gas pressure [bar]  (if read_ρ==true: must be 2,4,6,8 *  1.01325 !)
+pres = 2.0          # central gas pressure [bar] 
 p_ed = 1e-3         # edge gas pressure [bar]
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when temporal beam profile is approximated as Gaussian)
@@ -65,9 +65,6 @@ in_dir    = "input"                          # directory of input files
 file_IR   = "IRpulse.dat"                    # name of IR input pulse file 
 path_IR   = joinpath(in_dir, file_IR)        # sys. path to IR input pulse file 
 
-file_ρ    = "dens_$(floor(Int,pres/1.01325))atm.dat"  # name of density profile data file 
-path_ρ    = joinpath(in_dir, file_ρ)                  # sys. path to density profile data file 
-
 file_UV   = "UVpulse.dat"                    # name of UV output pulse file 
 path_UV   = joinpath(in_dir, file_UV)        # sys. path to UV output pulse file 
 
@@ -91,6 +88,10 @@ function THG_main(pres=pres)
     # ----------------- SET PRESSURE PROFILE ---------------------------
 
     if read_ρ == true 
+
+        file_ρ    = "dens_$(pres)bar.dat"  # name of density profile data file 
+        path_ρ    = joinpath(in_dir, file_ρ)                  # sys. path to density profile data file 
+    
         z_in = readdlm(path_ρ,' ', Float64, '\n')[:,1]        # read in spatial points 
         ρ_in = readdlm(path_ρ,' ', Float64, '\n')[:,2]        # read in density data 
         
@@ -100,7 +101,6 @@ function THG_main(pres=pres)
         coren(ω; z) = sqrt(1 + γ(wlfreq(ω)*1e6)*dens(z))      # calculate refractive index along the cell   
 
         L_total = maximum(z_in)                               # get total propagation distance 
-        z_vals =[L_total/2,L_total/2+L*0.5,L_total/2+L,L_total] # re-define zvals 
         
     else   
         Z= (0, L/2, L)                                        # define points for pressure gradient
@@ -571,8 +571,13 @@ function THG_main(pres=pres)
         end
 
         #+++++ PLOT 11: plot spatiotemporal pulse evolution (total beam) 
+        if read_ρ==true 
+            z_vals_local =[L_total/2,L_total/2+L*0.5,L_total/2+L,L_total] # re-define zvals 
+        else 
+            z_vals_local = z_vals    
+        
         rsym = Hankel.Rsymmetric(q)
-        idcs = [argmin(abs.(zout .- k)) for k in z_vals]   
+        idcs = [argmin(abs.(zout .- k)) for k in z_vals_local]   
         jw = Plotting.cmap_white("jet"; n=10)   
         
         plt.figure(figsize=[7.04, 5.28]) 
@@ -581,7 +586,7 @@ function THG_main(pres=pres)
 
         for i in 1:4
             plt.subplot(2,2,i)
-            plt.title("z="*string(round(z_vals[i]*1e3, digits=3))*"mm")
+            plt.title("z="*string(round(z_vals_local[i]*1e3, digits=3))*"mm")
             plt.xlabel("t (fs)")
             plt.ylabel("r (mm)")
             plt.ylim(minimum(rsym*1e3)/2, maximum(rsym*1e3)/2)
@@ -601,7 +606,7 @@ function THG_main(pres=pres)
 
         for i in 1:4
             plt.subplot(2,2,i)
-            plt.title("z="*string(round(z_vals[i]*1e3, digits=3))*"mm")
+            plt.title("z="*string(round(z_vals_local[i]*1e3, digits=3))*"mm")
             plt.xlabel("t (fs)")
             plt.ylabel("r (mm)")
             plt.ylim(minimum(rsym*1e3)/2, maximum(rsym*1e3)/2)
@@ -621,7 +626,7 @@ function THG_main(pres=pres)
 
         for i in 1:4
             plt.subplot(2,2,i)
-            plt.title("z="*string(round(z_vals[i]*1e3, digits=3))*"mm")
+            plt.title("z="*string(round(z_vals_local[i]*1e3, digits=3))*"mm")
             plt.xlabel("t (fs)")
             plt.ylabel("r (mm)")
             plt.ylim(minimum(rsym*1e3)/2, maximum(rsym*1e3)/2)
@@ -635,12 +640,12 @@ function THG_main(pres=pres)
         end
 
         #+++++ PLOT 14: UV spectral evolution
-        c = [plt.get_cmap("viridis")(i) for i in range(0,1,length(z_vals))]
+        c = [plt.get_cmap("viridis")(i) for i in range(0,1,length(z_vals_local))]
 
         plt.figure(figsize=[7.04, 5.28])
         plt.title("UV beam spectral evolution")
-        for i in 1:length(z_vals)
-            plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,idcs[i]], label="z="*string(round(z_vals[i]*1e3, digits=3))*"mm", color=c[i])
+        for i in 1:length(z_vals_local)
+            plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,idcs[i]], label="z="*string(round(z_vals_local[i]*1e3, digits=3))*"mm", color=c[i])
         end
         plt.xlim(λ_rangeUV[1]*1e9, λ_rangeUV[2]*1e9)
         plt.xlabel("λ (nm)")
