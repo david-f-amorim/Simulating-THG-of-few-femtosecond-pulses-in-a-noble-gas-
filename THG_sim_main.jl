@@ -51,7 +51,7 @@ ion = true         # if true: enable ionisation response
 
 # ---------------- SET SCAN PARAMETERS ------------------------
 
-scan_dir = "scan_"*string(energy*1e6)*"mW_"*string(gas)*"_"*string(round(ϕ; digits=3))*"rad_"*string(kerr)*"_"*string(ion ? "ion" : "no-ion")  # name of scan output directory 
+scan_dir = "scan_"*string(energy*1e6)*"mW_"*string(gas)*"_"*string(round(ϕ; digits=3))*"rad_"*string(kerr)*"_"*string(ion ? "ion" : "no-ion")*"_"*string(read_ρ ? "coms" : "grad")  # name of scan output directory 
 
 pres_arr = range(start= 0.1, stop= 5.1, step= 0.1)  # pressure range [bar]
          # [2,4,6,8] .*  1.01325
@@ -305,7 +305,7 @@ function THG_main(pres=pres)
 
     η_THG = UV_pulse_en[end]/tot_pulse_en[1]            # THG efficiency: initial total pulse energy / final UV pulse energy 
 
-    z_peak = z_out[findmax(UV_pulse_en)[2]]             # z-coordinate of peak UV energy
+    z_peak = zout[findmax(UV_pulse_en)[2]]             # z-coordinate of peak UV energy
 
     # * * * PROCESS MEASURED DATA FROM FILES 
     if (IR_spec == true) & (txt_only == false)
@@ -686,7 +686,7 @@ function THG_main(pres=pres)
                 write(file, "E_out   = "*string(UV_pulse_en[end])*"\n")
                 write(file, "η       = "*string(η_THG)*"\n")
                 write(file, "τ_UV    = "*string(τ_UV)*"\n")
-                write(file, "z_peak  = "*string(zpeak)*"\n")
+                write(file, "z_peak  = "*string(z_peak)*"\n")
             end    
 
             if read_IR == true
@@ -745,7 +745,7 @@ if p_scan == true
         E_UV, η = THG_main(pres_arr[i])
 
         open(joinpath(out_path,"energy_efficiency_time_zpeak.txt"), "a") do file
-            writedlm(file, zip(pres_arr[i], E_UV, η, τ_UV, zpeak))
+            writedlm(file, zip(pres_arr[i], E_UV, η, τ_UV, z_peak))
         end
     end 
     

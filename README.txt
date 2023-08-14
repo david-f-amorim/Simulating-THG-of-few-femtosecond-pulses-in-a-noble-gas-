@@ -43,28 +43,26 @@ added option to feed in COMSOL data; extended scan_eval to also investigate posi
 UV energy; 
 
 
-- reproduce original plots with overlayed measured UV spectra [realistically at higher pressures!]
-
-			
+- reproduce original plots with overlayed measured UV spectra [realistically at higher pressures!]			
 - prepare questions for conversation with Chris [Wed]
 
-PLAN: integrate COMSOL data; then run another round of scans!
 
+	- carry out new round of pressure scans
+
+		+ varied variables:
+			* beam power (50mW, 100mW, 150mW,..., 500mW) [10]
+			* pressure (0.1bar, 0.2bar,...,5.1bar) [50]
+			* gas (Ne, Ar, Xe, Kr, He, N2, CO2, N2O) [8]
+                        * ionisation on/off [2]
+			* COMSOL data/gradient data [2] (maybe only with Ar/Ne for now?)
+		+ in scan_eval: 
+			* replace phi scan with gas scan 
 	
 
-	in scan_eval: replace phi scan with gas scan!
+		CARRY OUT LAST TESTS AND THEN START RUNNING SCANS!
 
-
-
-beam power (up to 700mW)
-pressure (up to 5 bar)
-gases (noble, helium, n2, c02, n2O)
-ionisation on/off
-
-
-+ use COMSOL for Ne or Ar 
-
-
+- continue writing report 
+	NOTE: startlight not actually part of beamline!!
 
 	
 	
