@@ -20,8 +20,6 @@ IR_spec = false               # if true: read input IR FROG spectrum from file a
 show_IR = false              # if true and "read_IR" is true: overlay measured time-domain input pulse on plots
 IR_spec_exp = false           # if true: read input IR spectrometer spectrum from file and overlay 
 
-show_focus = false           # if true: indicate position of beam focus  # NOTE: disable when running on Maxwell! Outdated julia version!
-
 # ------------------ SET MEASURED PARAMETERS ------------------------
 
 gas = :Ar           # gas
@@ -103,8 +101,7 @@ function THG_main(pres=pres)
 
         L_total = maximum(z_in)                               # get total propagation distance 
         z_vals =[L_total/2,L_total/2+L*0.5,L_total/2+L,L_total] # re-define zvals 
-        propz = propz + L_total /2                            # shift propz to the appropriate coordinate system
-
+        
     else   
         Z= (0, L/2, L)                                        # define points for pressure gradient
         p_const ? P=(pres,pres,pres) : P= (p_ed, pres, p_ed)  # define values for pressure gradient (see "p_const" above)
@@ -195,12 +192,22 @@ function THG_main(pres=pres)
         beam_spline.(t) .* Maths.gauss.(r, w0/2)'                      # models spatial beam profile as Gaussian  
         end
 
-        inputs = Fields.SpatioTemporalField(λ0, energy, ϕ, 0.0,           # models input beam based off measured data
-        (t, r) -> beam_profile(t, r), propz)  
+        if read_ρ==false 
+            inputs = Fields.SpatioTemporalField(λ0, energy, ϕ, 0.0,           # models input beam based off measured data
+            (t, r) -> beam_profile(t, r), propz)  
+        else 
+            inputs = Fields.SpatioTemporalField(λ0, energy, ϕ, 0.0,           # models input beam based off measured data
+            (t, r) -> beam_profile(t, r), propz+L_total/2)
+        end 
 
     else 
-        inputs = Fields.GaussGaussField(λ0=λ0, τfwhm=τ,                   # models input beam as Gaussian 
-                energy=energy, w0=w0, propz=propz)
+        if read_ρ==false 
+            inputs = Fields.GaussGaussField(λ0=λ0, τfwhm=τ,                   # models input beam as Gaussian 
+                    energy=energy, w0=w0, propz=propz)
+        else 
+            inputs = Fields.GaussGaussField(λ0=λ0, τfwhm=τ,                   # models input beam as Gaussian 
+            energy=energy, w0=w0, propz=propz+L_total/2)
+        end                
     end            
 
     # ----------------- RUN SIMULATION ----------------------------
@@ -369,11 +376,7 @@ function THG_main(pres=pres)
         plt.xlabel("z (mm)")
         plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
         
-        if (show_focus==true) & (propz <= 0)
-            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2] ,ls="--", color="black", label="beam focus")
-            plt.legend()
-        end    
-
+          
         plt.subplot(2,1,2)
         plt.plot(zout*1e3,  Iω0[ωTHidx,  :], color="red")
         plt.title("λ=$(round(Int,λ0/3*1e9))nm")
@@ -381,11 +384,7 @@ function THG_main(pres=pres)
         plt.ylabel("I(r=0) (arb. units)")
         plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
 
-        if (show_focus==true) & (propz <= 0)
-            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="black", label="beam focus")
-            plt.legend()
-        end
-
+    
         if save==true
             plt.savefig(joinpath(out_path,"on-axis_intensity.png"),dpi=1000)
         end 
@@ -401,10 +400,6 @@ function THG_main(pres=pres)
         plt.xlabel("z (mm)")
         plt.legend()
 
-        if (show_focus==true) & (propz <= 0)
-            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="black", label="beam focus")
-        end
-
         plt.subplot(2,1,2)
 
         χ0  = [coren(ω[ω0idx],z=i)^2-1 for i in zout]
@@ -416,10 +411,6 @@ function THG_main(pres=pres)
         plt.plot(zout*1e3, χTH, label="λ=$(round(Int,λ0/3*1e9))nm", color="red")
         plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
         plt.legend()
-
-        if (show_focus==true) & (propz <= 0)
-            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="black", label="beam focus")
-        end
 
         if save==true
             plt.savefig(joinpath(out_path,"density_and_susceptibility.png"),dpi=1000)
@@ -521,20 +512,12 @@ function THG_main(pres=pres)
         plt.title("Total pulse energy")
         plt.legend()
 
-        if (show_focus==true) & (propz <= 0)
-            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="black", label="beam focus")
-        end
-
         plt.subplot(2,1,2)
         plt.plot(zout.*1e3, UV_pulse_en.*1e9, label="ΔE=+$(round(Int64, UV_pulse_en[end]*1e9))nJ", color="red")
         plt.xlabel("z (mm)")
         plt.ylabel("E (nJ)")
         plt.title("UV pulse energy")
         plt.legend()
-
-        if (show_focus==true) & (propz <= 0)
-            plt.vlines(-propz*1e3,plt.ylim()[1],plt.ylim()[2], ls="--", color="black", label="beam focus")
-        end
 
         if save==true
             plt.savefig(joinpath(out_path,"pulse_energies.png"),dpi=1000)
@@ -688,7 +671,7 @@ function THG_main(pres=pres)
             write(file, "kerr    = "*string(kerr)*"\n")
             write(file, "ion     = "*string(ion)*"\n")
             write(file, "propz   = "*string(propz)*"\n")
-            
+
             if p_scan == false
                 write(file, "\n")
                 write(file, "\n")
