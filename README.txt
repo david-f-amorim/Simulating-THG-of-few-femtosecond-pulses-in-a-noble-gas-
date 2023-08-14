@@ -58,6 +58,8 @@ PLAN: integrate COMSOL data; then run another round of scans!
 
 	test COMSOL data
 
+	FIX REFERENCE TO PROPZ IN LINE 105 & to L in 107
+
 	
 	
 

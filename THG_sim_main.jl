@@ -13,7 +13,7 @@ show = true                  # if true, opens plots in GUI after run
 txt_only = false             # if true, no plots are produced 
 
 read_IR = true               # if true: read input IR pulse from file; if false: use Gaussian approximation 
-read_ρ  = false              # if true: read gas density profile from file; if false: use pressure gradient approximation 
+read_ρ  = true              # if true: read gas density profile from file; if false: use pressure gradient approximation 
 read_UV = false              # if true: overlay measured UV output on simulated results   
 
 IR_spec = false               # if true: read input IR FROG spectrum from file and overlay 
@@ -25,7 +25,7 @@ show_focus = false           # if true: indicate position of beam focus  # NOTE:
 # ------------------ SET MEASURED PARAMETERS ------------------------
 
 gas = :Ar           # gas
-pres = 1.0          # central gas pressure [bar]  (if read_ρ==true: must be 2,4,6,8 *  1.01325 !)
+pres = 2.0*1.01325  # central gas pressure [bar]  (if read_ρ==true: must be 2,4,6,8 *  1.01325 !)
 p_ed = 1e-3         # edge gas pressure [bar]
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when temporal beam profile is approximated as Gaussian)
@@ -102,10 +102,8 @@ function THG_main(pres=pres)
         coren(ω; z) = sqrt(1 + γ(wlfreq(ω)*1e6)*dens(z))      # calculate refractive index along the cell   
 
         L_total = maximum(z_in)                               # get total propagation distance 
-        propz +=L_total/2                              # shift propz to new coordinate system 
-        
-        z_vals = [L_total/2,L_total/2 +L*0.5,L_total/2 +L,L_total] # re-define zvals 
-        L = L_total                                    # overwrite total propagation distance 
+        z_vals =[L_total/2,L_total/2+L*0.5,L_total/2+L,L_total] # re-define zvals 
+        propz = propz + L_total /2                            # shift propz to the appropriate coordinate system
 
     else   
         Z= (0, L/2, L)                                        # define points for pressure gradient
@@ -121,8 +119,12 @@ function THG_main(pres=pres)
     N = 1024              # sample size for Hankel tansform grid     [1]                         ->> WHY THIS VALUE?  WOULD CHOOSING N≫ IMPROVE ACCURACY?
     trange = 0.05e-12     # total extent of time window required [s]                             
 
-    grid = Grid.RealGrid(L, λ0, λ_lims ,trange)   # set up time & space grid
-    
+    if read_ρ==true 
+        grid = Grid.RealGrid(maximum(z_in), λ0, λ_lims ,trange)   # set up time & space grid
+    else    
+        grid = Grid.RealGrid(L, λ0, λ_lims ,trange)   # set up time & space grid
+    end
+
     q = Hankel.QDHT(R, N, dim=2)                  # set up discrete Hankel transform matrix                        
 
     energyfun, _ = Fields.energyfuncs(grid, q)    # "energyfun" gives total energy in a field E(t)    
