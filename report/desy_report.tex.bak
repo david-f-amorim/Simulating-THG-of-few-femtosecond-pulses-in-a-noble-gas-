@@ -1,0 +1,73 @@
+\documentclass[a4paper]{jpconf}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[UKenglish]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\hypersetup{colorlinks=false, bookmarks=true}
+\usepackage{float}
+\usepackage{comment}
+\usepackage{caption}
+\usepackage[skip=0.5ex]{subcaption}
+
+
+\begin{document}
+%\maketitle
+
+\pagenumbering{arabic}
+\title{Modelling of nonlinear light up-conversion from intense femtosecond laser pulses}
+\author{David Amorim (University of Glasgow)}
+\address{DESY Summer Student Programme 2023 \\ Group:  Attosecond Science (CFEL-ATTO) \\ Institute: Centre for Free-Electron Laser Science (CFEL)\\ Supervisor: Josina Hahne}
+
+\thispagestyle{plain}
+\pagestyle{plain}
+\setlength{\footskip}{5pt}
+
+\begin{abstract}
+XXX
+\end{abstract}
+
+
+\section{Introduction}
+The electronic motion associated with chemical reactions or atomic energy transitions takes place on femotsecond to attosecond time scales. Time-resolved imaging of molecular dynamics therefore requires ultrashort laser pulses in the few-femtoseconds regime. A biochemically especially important type of electronic motion is that excited by the absorption of ultraviolet (UV) radiation. A variety of important processes, such as DNA damage, are known to be caused by UV excitation. Generating few-femtosecond UV pulses for time-resolved measurements of UV-excited molecules plays a crucial part in further understanding and eventually controlling these biochemically relevant effects. \par 
+The CFEL-ATTO group's STARLIGHT beamline produces few-femtosecond UV  pulses by third-harmonic-generation (THG) of a near-infra-red (NIR) input pulse in a noble gas. The THG of an intense ultrashort laser pulse is sensitive to a large range of parameters, including gas pressure, gas density distribution, input beam power, beam focus position, and carrier-envelop-offset (CEO) phase. In order to optimise key properties of the UV output pulse, such as spectrum, energy, and duration, it is therefore advantageous to use theoretical considerations to guide the experimental set-up. This report outlines how, as part of a DESY Summer Student Project, numerical simulations of the THG process were produced using the software package \emph{Luna}. The goal hereby was, in the first instance, to reproduce the experimental conditions of the STARLIGHT beamline and to then carry out various parameter scans in order to find optimal conditions for UV generation. These conditions were then investigated experimentally. \par  
+MENTION WHAT HAS BEEN ACHIEVED
+
+\section{Theoretical Background}
+This section gives an overview of....
+
+\subsection{Nonlinear Optics}
+For most materials, the polarisation response $\mathbf{P}(t)$ to a moderate electric field $\mathbf{E}(t)$ is linear: $\mathbf{P}(t) = \epsilon_0 \chi \mathbf{E}(t)$, where the linear susceptibility $\chi$ is material-specific and generally frequency-dependent. Stronger field amplitudes result in a nonlinear polarisation response, which can be pertubatively expanded in $\mathbf{E}(t)$:
+\begin{equation}\label{eq:P(E)_expansion}
+\mathbf{P}(t) = \epsilon_0 \left( \chi^{(1)}|\mathbf{E(t)}| + \chi^{(2)}|\mathbf{E(t)}|^2 +  \chi^{(3)}|\mathbf{E(t)}|^3 + ...  \right) \frac{\mathbf{E}(t)}{|\mathbf{E}(t)|}.
+\end{equation}
+In the above, $\chi^{(n)}$ corresponds to the $n$-th order electric susceptibility. For simplicity, equation \eqref{eq:P(E)_expansion} leaves the spatial dependence of the polarisation and the driving field implicit. It further treats the $\chi^{(n)}$, which generally are frequency-dependent tensors, as constant scalars. This approximation is valid for isotropic media such as the noble gases considered here [!!!?? SOURCE]. Note that since gases are centrosymmetric, the second-order susceptibility necessarily vanishes, $\chi^{(2)}=0$, so that the third-order response becomes the dominant nonlinear term. 
+
+-------------------------------------------------------------------------------------
+MENTION:
+	- how if E is driven at a frequency omega, then clearly frequency multiples generated ->> THG 
+	- how P is split up into $P^L$ and $P^{NL}$
+	- how $P^{NL}$ can be split up into perturbative (Kerr) effects and nonperturbative ionisation/plasma effects 
+	- mention: intensity-dependent refractive index; self-steepening; self-phase modulation....
+\subsection{Ultrashort Laser Pulses}
+
+\subsection{The Unidirectional Pulse Propagation Equation }
+MENTION LUNA...ALSO MENTION DIFFICULTIES IN NUMERICALLY SOLVING EQUATIONS DUE TO SLOWLY-VARYING ENVELOPE APPROXIMATIONS NOT HOLDING....
+
+\section{The STARLIGHT Beamline}
+
+\section{Simulation Results}
+
+\section{Experimental Results}
+
+\section{Discussion}
+
+\section{Conclusion}
+
+\section*{Acknowledgments}
+
+\section*{References}
+\bibliographystyle{osa}
+\bibliography{refs.bib}
+
+\end{document}

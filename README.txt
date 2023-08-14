@@ -38,24 +38,18 @@ added spatiotemporal plots ; changed to ADK ionisation from PPT ionisation to
 avoid DomainError issues; added beam focus position as parameter; changed 
 fundamental wavelength to 730nm; added peak intensity information to pressure scans ; 
 prepared table of relative Ne/Ar saturation pressures and energies ; 
+compared performance of different gases
 
 
-RESPOND TO JOSINA'S EMAIL!
-
+-RESPOND TO JOSINA'S EMAIL!
+- upload H2 folder to S&S
 
 - start testing Josina's COMSOl data [new and old] 
 	DOES NOT SEEM TO ACCEPT z<0, shift data!
 
 - reproduce original plots with overlayed measured UV spectra [realistically at higher pressures!]
 
-- look into different gases (:He, :Kr, :Xe, :N2, :H2, :O2, :CH4, :SF6, :N2O, :D2) [300muJ, 1.0bar]
-		
-		to compare: -plot all UV spectra on top of each other 
-			    - plot "bar charts" with pulse duratons and 
-				UV energies
-				=> also plot IR beam depletion as measure of ion.?
-			put other plots on PP?	
-
+			
 - prepare questions for conversation with Chris [Wed]
 
 
