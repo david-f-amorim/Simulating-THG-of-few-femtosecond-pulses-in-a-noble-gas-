@@ -6,7 +6,7 @@ import Dates
 using  DelimitedFiles         
 
 # ----------------- QUICK SETTINGS -------------------------------
-p_scan = false                # if true, run is counted as part of a pressure scan 
+p_scan = false               # if true, run is counted as part of a pressure scan 
 
 save = true                  # if true, saves output plots, run parameters and UV spectrum
 show = true                  # if true, opens plots in GUI after run 
@@ -36,8 +36,8 @@ energy = 150e-6     # pulse energy [J]                                          
 L = 3e-3            # propagation distance (cell length) [m]
 
 zr = π*w0^2/λ0      # Rayleigh length [m]
-propz = -L/2        # propagation distance from the waist [m] (z_centre - z_waist ?)
-z_vals =L .* [0, 0.33, 0.75, 1]     # points along the cell at which to investigate beam evolution [m] (Note: only the first four are used for spatiotemporal plots!)
+propz = -L/2        # propagation distance from the waist [m] (NOTE: always specified in a coordinate system where the cell starts at z=0!)
+z_vals =L .* [1.0/4, 1.0/3, 3.0/4, 1.0]     # points along the cell at which to investigate beam evolution [m] (Note: only the first four are used for spatiotemporal plots!)
 
 
 λ_lims = (100e-9, 1000e-9)       # wavelength limits of overall frequency window (both NIR and UV) [m,m]
@@ -56,6 +56,7 @@ ion = true         # if true: enable ionisation response
 scan_dir = "scan_"*string(energy*1e6)*"mW_"*string(gas)*"_"*string(round(ϕ; digits=3))*"rad_"*string(kerr)*"_"*string(ion ? "ion" : "no-ion")  # name of scan output directory 
 
 pres_arr = range(start= 0.1, stop= 5.1, step= 0.1)  # pressure range [bar]
+         # [2,4,6,8] .*  1.01325
 
 # ----------------- INPUT HANDLING -------------------------------
 
@@ -100,6 +101,11 @@ function THG_main(pres=pres)
         
         coren(ω; z) = sqrt(1 + γ(wlfreq(ω)*1e6)*dens(z))      # calculate refractive index along the cell   
 
+        propz += maximum(z_in)/2                              # shift propz to new coordinate system 
+        z_vals = [maximum(z_in)/2,maximum(z_in)/2 +L*0.5,maximum(z_in)/2 +L, maximum(z_in)] # re-define zvals 
+        L = maximum(z_in)                                     # overwrite total propagation distance 
+
+
     else   
         Z= (0, L/2, L)                                        # define points for pressure gradient
         p_const ? P=(pres,pres,pres) : P= (p_ed, pres, p_ed)  # define values for pressure gradient (see "p_const" above)
@@ -114,11 +120,8 @@ function THG_main(pres=pres)
     N = 1024              # sample size for Hankel tansform grid     [1]                         ->> WHY THIS VALUE?  WOULD CHOOSING N≫ IMPROVE ACCURACY?
     trange = 0.05e-12     # total extent of time window required [s]                             
 
-    if read_ρ==true 
-        grid = Grid.RealGrid(maximum(z_in)-minimum(z_in), λ0, λ_lims ,trange)   # set up time & space grid
-    else 
-        grid = Grid.RealGrid(L, λ0, λ_lims ,trange)   # set up time & space grid
-    end
+    grid = Grid.RealGrid(L, λ0, λ_lims ,trange)   # set up time & space grid
+    
     q = Hankel.QDHT(R, N, dim=2)                  # set up discrete Hankel transform matrix                        
 
     energyfun, _ = Fields.energyfuncs(grid, q)    # "energyfun" gives total energy in a field E(t)    
@@ -688,6 +691,7 @@ function THG_main(pres=pres)
                 write(file, "\n")
                 write(file, "E_out   = "*string(UV_pulse_en[end])*"\n")
                 write(file, "η       = "*string(η_THG)*"\n")
+                write(file, "τ_UV    = "*string(τ_UV)*"\n")
             end    
 
             if read_IR == true
@@ -724,7 +728,7 @@ function THG_main(pres=pres)
 
     # ----------------- RETURN OUTPUT ----------------------------
     if p_scan == true 
-        return UV_pulse_en[end], η_THG
+        return UV_pulse_en[end], η_THG, τ_UV
     end
 end    
 
@@ -745,8 +749,8 @@ if p_scan == true
 
         E_UV, η = THG_main(pres_arr[i])
 
-        open(joinpath(out_path,"energy_efficiency.txt"), "a") do file
-            writedlm(file, zip(pres_arr[i], E_UV, η))
+        open(joinpath(out_path,"energy_efficiency_time.txt"), "a") do file
+            writedlm(file, zip(pres_arr[i], E_UV, η, τ_UV))
         end
     end 
     

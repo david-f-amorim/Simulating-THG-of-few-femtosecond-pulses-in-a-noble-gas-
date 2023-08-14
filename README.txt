@@ -41,18 +41,22 @@ prepared table of relative Ne/Ar saturation pressures and energies ;
 compared performance of different gases
 
 
--RESPOND TO JOSINA'S EMAIL!
 - upload H2 folder to S&S
 
-- start testing Josina's COMSOl data [new and old] 
-	DOES NOT SEEM TO ACCEPT z<0, shift data!
+- compare output times as well!
 
 - reproduce original plots with overlayed measured UV spectra [realistically at higher pressures!]
 
 			
 - prepare questions for conversation with Chris [Wed]
 
+PLAN: integrate COMSOL data; then run another round of scans!
 
+	UPDATED SCAN_EVAL IN PREPARATION FOR NEW ROUND OF SCANS!
+
+	WRITE SCAN_EVAL FOR PROPZ?? 
+
+	test COMSOL data
 
 	
 	

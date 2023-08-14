@@ -114,7 +114,7 @@ if use_UV:
 DENSITY FILES
 
 Should contain (at least) two columns:
-    - cell spatial data on the interval [0,L] in m 
+    - cell spatial data in m; symmetric about zero! 
     - number density in 1/m^3 
 
 Delimiter: " "
@@ -124,9 +124,11 @@ Header comments beginning with %
 """
 if use_rho: 
 
-    out_rho = "dens_2atm.dat"
+    out_rho = "dens_8atm.dat"
 
-    arr = np.loadtxt(os.path.join(in_dir, in_rho), usecols=(0,1), comments="%")
+    arr = np.loadtxt(os.path.join(in_dir, in_rho), usecols=(0,4), comments="%")
+
+    arr[:,0] += np.max(arr[:,0])
 
     np.savetxt(os.path.join(out_dir, out_rho), arr)
 

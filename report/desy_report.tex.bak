@@ -41,13 +41,16 @@ For most materials, the polarisation response $\mathbf{P}(t)$ to a moderate elec
 \begin{equation}\label{eq:P(E)_expansion}
 \mathbf{P}(t) = \epsilon_0 \left( \chi^{(1)}|\mathbf{E(t)}| + \chi^{(2)}|\mathbf{E(t)}|^2 +  \chi^{(3)}|\mathbf{E(t)}|^3 + ...  \right) \frac{\mathbf{E}(t)}{|\mathbf{E}(t)|}.
 \end{equation}
-In the above, $\chi^{(n)}$ corresponds to the $n$-th order electric susceptibility. For simplicity, equation \eqref{eq:P(E)_expansion} leaves the spatial dependence of the polarisation and the driving field implicit. It further treats the $\chi^{(n)}$, which generally are frequency-dependent tensors, as constant scalars. This approximation is valid for isotropic media such as the noble gases considered here [!!!?? SOURCE]. Note that since gases are centrosymmetric, the second-order susceptibility necessarily vanishes, $\chi^{(2)}=0$, so that the third-order response becomes the dominant nonlinear term. 
+In the above, $\chi^{(n)}$ corresponds to the $n$-th order electric susceptibility. For simplicity, equation \eqref{eq:P(E)_expansion} leaves the spatial dependence of the polarisation and the driving field implicit. It further treats the $\chi^{(n)}$, which generally are frequency-dependent tensors, as constant scalars. This approximation is valid for isotropic media such as the noble gases considered here [!!!?? SOURCE]. Note that since gases are centrosymmetric all even-order susceptibilities necessarily vanish, e.g. $\chi^{(2)}=0$, so that the third-order response becomes the dominant nonlinear term. 
 
 -------------------------------------------------------------------------------------
 MENTION:
-	- how if E is driven at a frequency omega, then clearly frequency multiples generated ->> THG 
+	- how if E is driven at a frequency omega, then clearly frequency multiples generated ->> THG ; also explain up-sonversion!
 	- how P is split up into $P^L$ and $P^{NL}$
 	- how $P^{NL}$ can be split up into perturbative (Kerr) effects and nonperturbative ionisation/plasma effects 
+				-> Kerr-effects umbrella term for third-order effects; 
+					dominant since lowest-order term; fifth-order and higher can to good approximation be neglected (chi^5 very small!!)
+					
 	- mention: intensity-dependent refractive index; self-steepening; self-phase modulation....
 \subsection{Ultrashort Laser Pulses}
 
