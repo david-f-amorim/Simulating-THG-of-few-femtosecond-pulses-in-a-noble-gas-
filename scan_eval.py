@@ -157,20 +157,21 @@ def get_intensity(path):
 # directory at 'path'
 def get_PrEnEf(path):
 
-    arr    = np.loadtxt(os.path.join(path,"energy_efficiency_time.txt"))
+    arr    = np.loadtxt(os.path.join(path,"energy_efficiency_time_zpeak.txt"))
     arr    = arr[arr[:, 0].argsort()]
     p_arr  = arr[:,0] 
     en_arr = arr[:,1]
     ef_arr = arr[:,2]
     tau_arr= arr[:,3]
+    zpeak_arr= arr[:,4]
 
-    return p_arr, en_arr, ef_arr, tau_arr 
+    return p_arr, en_arr, ef_arr, tau_arr, zpeak_arr 
 
 # extract peak pressure, peak energy, and peak efficiency of 
 # a scan directory at 'path'
 def get_peaks(path):
 
-    p_arr, en_arr, ef_arr, tau_arr = get_PrEnEf(path)
+    p_arr, en_arr, ef_arr, tau_arr, _ = get_PrEnEf(path)
 
     peak_en = np.max(en_arr)
     peak_ef = np.max(ef_arr)
@@ -183,7 +184,7 @@ def get_peaks(path):
 # extract spectra from scan directory at 'path'
 def get_spectra(path):
 
-    p_arr, _, _, _ = get_PrEnEf(path)
+    p_arr, _, _, _, _ = get_PrEnEf(path)
     N = len(p_arr)
     data = np.empty(shape=(N,3), dtype="object")
 
@@ -226,7 +227,7 @@ def reduce_spectra(path,n):
 # single scan 
 def plot_single(single_dir, n=15):
 
-    p_arr, en_arr, ef_arr, tau_arr = get_PrEnEf(single_dir)
+    p_arr, en_arr, ef_arr, tau_arr, zpeak_arr = get_PrEnEf(single_dir)
     p_peak, en_peak, ef_peak, tau_peak, min_tau_p = get_peaks(single_dir)
     gas, phi, beam_en, ion, kerr, _, _ = get_params(single_dir)
 
@@ -267,6 +268,19 @@ def plot_single(single_dir, n=15):
     plt.legend()
 
     plt.savefig(os.path.join(single_dir,"efficiencies.png"),dpi=1000)
+    plt.show()
+
+    plt.figure(figsize=[7.04, 5.28]) 
+    plt.subplots_adjust(top=0.84)
+    plt.suptitle("Position of peak UV energy", fontsize=16)
+    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.1f}PW/cm^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=10)
+    plt.ylabel("Position (mm)")
+    plt.xlabel("Central pressure (bar)")
+    plt.plot(p_arr, zpeak_arr*1e3, color="blue")
+    plt.scatter(p_arr, zpeak_arr*1e3, color="blue", label="Minimum: {0:.2f}% at {1}bar".format(tau_peak*1e15, min_tau_p))
+    plt.legend()
+
+    plt.savefig(os.path.join(single_dir,"z_peak.png"),dpi=1000)
     plt.show()
 
     plt.figure(figsize=[7.04, 5.28]) 
@@ -325,7 +339,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
     plt.xlabel("Central pressure (bar)")
     
     for i in np.arange(len(path_arr)):
-        p_arr, en_arr, _,_ = get_PrEnEf(path_arr[i])
+        p_arr, en_arr, _,_,_ = get_PrEnEf(path_arr[i])
         plt.scatter(p_arr, en_arr*1e9, color=cmap(cidx[i]), label="{0}mW (I={1:.1f}PW/cm^2)".format(beam_en_arr[i]*1e6, 1e-15* get_intensity(path_arr[i])))
         plt.plot(p_arr, en_arr*1e9, color=cmap(cidx[i]))
 
@@ -341,7 +355,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
     plt.xlabel("Central pressure (bar)")
     
     for i in np.arange(len(path_arr)):
-        p_arr, _, ef_arr, _ = get_PrEnEf(path_arr[i])
+        p_arr, _, ef_arr, _, _ = get_PrEnEf(path_arr[i])
         plt.scatter(p_arr, ef_arr*1e2, color=cmap(cidx[i]), label="{0}mW (I={1:.1f}PW/cm^2)".format(beam_en_arr[i]*1e6,1e-15* get_intensity(path_arr[i])))
         plt.plot(p_arr, ef_arr*1e2, color=cmap(cidx[i]))
 
@@ -357,9 +371,25 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
     plt.xlabel("Central pressure (bar)")
     
     for i in np.arange(len(path_arr)):
-        p_arr, _, _, tau_arr = get_PrEnEf(path_arr[i])
+        p_arr, _, _, tau_arr,_ = get_PrEnEf(path_arr[i])
         plt.scatter(p_arr, tau_arr*1e15, color=cmap(cidx[i]), label="{0}mW (I={1:.1f}PW/cm^2)".format(beam_en_arr[i]*1e6,1e-15* get_intensity(path_arr[i])))
         plt.plot(p_arr, tau_arr*1e15, color=cmap(cidx[i]))
+
+    plt.legend()
+    plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
+    plt.show()
+
+    # PLOT 4: z_peak vs pressure 
+    plt.figure(figsize=[7.04, 5.28]) 
+    plt.suptitle("Position of peak UV energy", fontsize=16)
+    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.ylabel("Position (mm)")
+    plt.xlabel("Central pressure (bar)")
+    
+    for i in np.arange(len(path_arr)):
+        p_arr, _, _, _,z_peak_arr = get_PrEnEf(path_arr[i])
+        plt.scatter(p_arr, z_peak_arr*1e3, color=cmap(cidx[i]), label="{0}mW (I={1:.1f}PW/cm^2)".format(beam_en_arr[i]*1e6,1e-15* get_intensity(path_arr[i])))
+        plt.plot(p_arr, z_peak_arr*1e3, color=cmap(cidx[i]))
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
@@ -479,11 +509,11 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
     plt.xlabel("Central pressure (bar)")
     
     for i in np.arange(len(path_arr_ion)):
-        p_arr, en_arr, _, _ = get_PrEnEf(path_arr_ion[i])
+        p_arr, en_arr, _, _, _ = get_PrEnEf(path_arr_ion[i])
         plt.scatter(p_arr, en_arr*1e9, color=cmap(cidx[i]), label="{0}mW [I={1:.1f} PW/cm^2] (ion.)".format(beam_en_arr[i]*1e6, 1e-15*get_intensity(path_arr_ion[i])))
         plt.plot(p_arr, en_arr*1e9, color=cmap(cidx[i]))
 
-        p_arr, en_arr, _, _ = get_PrEnEf(path_arr_no_ion[i])
+        p_arr, en_arr, _, _, _ = get_PrEnEf(path_arr_no_ion[i])
         plt.scatter(p_arr, en_arr*1e9, color=cmap(cidx[i]), label="{0}mW [I={1:.1f} PW/cm^2] (no ion.)".format(beam_en_arr[i]*1e6, 1e-15*get_intensity(path_arr_no_ion[i])), marker="+")
         plt.plot(p_arr, en_arr*1e9, color=cmap(cidx[i]), ls="--")
 
@@ -499,11 +529,11 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
     plt.xlabel("Central pressure (bar)")
     
     for i in np.arange(len(path_arr_ion)):
-        p_arr, _, ef_arr,_ = get_PrEnEf(path_arr_ion[i])
+        p_arr, _, ef_arr,_, _ = get_PrEnEf(path_arr_ion[i])
         plt.scatter(p_arr, ef_arr*1e2, color=cmap(cidx[i]), label="{0}mW [I={1:.1f} PW/cm^2]  (ion.)".format(beam_en_arr[i]*1e6,1e-15*get_intensity(path_arr_ion[i])))
         plt.plot(p_arr, ef_arr*1e2, color=cmap(cidx[i]))
 
-        p_arr, _, ef_arr, _ = get_PrEnEf(path_arr_no_ion[i])
+        p_arr, _, ef_arr, _, _ = get_PrEnEf(path_arr_no_ion[i])
         plt.scatter(p_arr, ef_arr*1e2, color=cmap(cidx[i]), label="{0}mW [I={1:.1f} PW/cm^2] (no ion.)".format(beam_en_arr[i]*1e6,1e-15*get_intensity(path_arr_no_ion[i])), marker="+")
         plt.plot(p_arr, ef_arr*1e2, color=cmap(cidx[i]), ls='--')
 
@@ -519,11 +549,11 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
     plt.xlabel("Central pressure (bar)")
     
     for i in np.arange(len(path_arr_ion)):
-        p_arr, _, _,tau_arr = get_PrEnEf(path_arr_ion[i])
+        p_arr, _, _,tau_arr, _ = get_PrEnEf(path_arr_ion[i])
         plt.scatter(p_arr, tau_arr*1e15, color=cmap(cidx[i]), label="{0}mW [I={1:.1f} PW/cm^2]  (ion.)".format(beam_en_arr[i]*1e6,1e-15*get_intensity(path_arr_ion[i])))
         plt.plot(p_arr, tau_arr*1e15, color=cmap(cidx[i]))
 
-        p_arr, _, _, tau_arr = get_PrEnEf(path_arr_no_ion[i])
+        p_arr, _, _, tau_arr, _ = get_PrEnEf(path_arr_no_ion[i])
         plt.scatter(p_arr, tau_arr*1e15, color=cmap(cidx[i]), label="{0}mW [I={1:.1f} PW/cm^2] (no ion.)".format(beam_en_arr[i]*1e6,1e-15*get_intensity(path_arr_no_ion[i])), marker="+")
         plt.plot(p_arr, tau_arr*1e15, color=cmap(cidx[i]), ls='--')
 
@@ -531,7 +561,27 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
     plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
     plt.show()
 
-    # PLOTS 4-8: peak investigation 
+    # PLOT 3: efficiency vs pressure 
+    plt.figure(figsize=[7.04, 5.28]) 
+    plt.suptitle("Position of peak UV energy", fontsize=16)
+    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr, fontsize=10)
+    plt.ylabel("Position (mm)")
+    plt.xlabel("Central pressure (bar)")
+    
+    for i in np.arange(len(path_arr_ion)):
+        p_arr, _, _,_, z_peak_arr = get_PrEnEf(path_arr_ion[i])
+        plt.scatter(p_arr, z_peak_arr*1e3, color=cmap(cidx[i]), label="{0}mW [I={1:.1f} PW/cm^2]  (ion.)".format(beam_en_arr[i]*1e6,1e-15*get_intensity(path_arr_ion[i])))
+        plt.plot(p_arr, z_peak_arr*1e3, color=cmap(cidx[i]))
+
+        p_arr, _, _, _, z_peak_arr = get_PrEnEf(path_arr_no_ion[i])
+        plt.scatter(p_arr, z_peak_arr*1e3, color=cmap(cidx[i]), label="{0}mW [I={1:.1f} PW/cm^2] (no ion.)".format(beam_en_arr[i]*1e6,1e-15*get_intensity(path_arr_no_ion[i])), marker="+")
+        plt.plot(p_arr, z_peak_arr*1e3, color=cmap(cidx[i]), ls='--')
+
+    plt.legend()
+    plt.savefig(os.path.join(out_path,"z_peak.png"),dpi=1000)
+    plt.show()
+
+    # PLOTS 5-9: peak investigation 
     peak_arr_ion = np.empty((len(path_arr_ion),6))
     peak_arr_no_ion = np.empty((len(path_arr_ion),6))
 
@@ -662,7 +712,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
     plt.xlabel("Central pressure (bar)")
     
     for i in np.arange(len(path_arr)):
-        p_arr, en_arr, _, _ = get_PrEnEf(path_arr[i])
+        p_arr, en_arr, _, _, _ = get_PrEnEf(path_arr[i])
         plt.scatter(p_arr, en_arr*1e9, color=cmap(cidx[i]), label="{0:.3f} rad".format(phi_arr[i]))
         plt.plot(p_arr, en_arr*1e9, color=cmap(cidx[i]))
 
@@ -678,7 +728,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
     plt.xlabel("Central pressure (bar)")
     
     for i in np.arange(len(path_arr)):
-        p_arr, _, ef_arr, _ = get_PrEnEf(path_arr[i])
+        p_arr, _, ef_arr, _, _ = get_PrEnEf(path_arr[i])
         plt.scatter(p_arr, ef_arr*1e2, color=cmap(cidx[i]), label="{0:.3f} rad".format(phi_arr[i]))
         plt.plot(p_arr, ef_arr*1e2, color=cmap(cidx[i]))
 
@@ -694,7 +744,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
     plt.xlabel("Central pressure (bar)")
     
     for i in np.arange(len(path_arr)):
-        p_arr, _, _, tau_arr = get_PrEnEf(path_arr[i])
+        p_arr, _, _, tau_arr, _ = get_PrEnEf(path_arr[i])
         plt.scatter(p_arr, tau_arr*1e15, color=cmap(cidx[i]), label="{0:.3f} rad".format(phi_arr[i]))
         plt.plot(p_arr, tau_arr*1e15, color=cmap(cidx[i]))
 
@@ -702,7 +752,23 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
     plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
     plt.show()
 
-    # PLOTS 4-8: peak investigation 
+    # PLOT 4: z_peak vs pressure 
+    plt.figure(figsize=[7.04, 5.28]) 
+    plt.suptitle("Position of peak UV energy", fontsize=16)
+    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.ylabel("Position (mm)")
+    plt.xlabel("Central pressure (bar)")
+    
+    for i in np.arange(len(path_arr)):
+        p_arr, _, _, _, z_peak_arr = get_PrEnEf(path_arr[i])
+        plt.scatter(p_arr, z_peak_arr*1e3, color=cmap(cidx[i]), label="{0:.3f} rad".format(phi_arr[i]))
+        plt.plot(p_arr,z_peak_arr*1e3, color=cmap(cidx[i]))
+
+    plt.legend()
+    plt.savefig(os.path.join(out_path,"z_peak.png"),dpi=1000)
+    plt.show()
+
+    # PLOTS 5-9: peak investigation 
     peak_arr = np.empty((len(path_arr),6))
 
     for i in np.arange(len(path_arr)):

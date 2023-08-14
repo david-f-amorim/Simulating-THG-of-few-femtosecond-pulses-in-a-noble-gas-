@@ -38,12 +38,10 @@ added spatiotemporal plots ; changed to ADK ionisation from PPT ionisation to
 avoid DomainError issues; added beam focus position as parameter; changed 
 fundamental wavelength to 730nm; added peak intensity information to pressure scans ; 
 prepared table of relative Ne/Ar saturation pressures and energies ; 
-compared performance of different gases
+compared performance of different gases; extended scan_eval to also investigate pulse duration; 
+added option to feed in COMSOL data; extended scan_eval to also investigate position of peak
+UV energy; 
 
-
-- upload H2 folder to S&S
-
-- compare output times as well!
 
 - reproduce original plots with overlayed measured UV spectra [realistically at higher pressures!]
 
@@ -52,14 +50,9 @@ compared performance of different gases
 
 PLAN: integrate COMSOL data; then run another round of scans!
 
-	UPDATED SCAN_EVAL IN PREPARATION FOR NEW ROUND OF SCANS!
+	
 
-
-	test COMSOL data
-
-	FIX REFERENCE TO scan_eval 575!
-
-	SHOW z position with max. UV energy 
+	in scan_eval: replace phi scan with gas scan!
 
 
 

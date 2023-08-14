@@ -305,6 +305,8 @@ function THG_main(pres=pres)
 
     η_THG = UV_pulse_en[end]/tot_pulse_en[1]            # THG efficiency: initial total pulse energy / final UV pulse energy 
 
+    z_peak = z_out[findmax(UV_pulse_en)[2]]             # z-coordinate of peak UV energy
+
     # * * * PROCESS MEASURED DATA FROM FILES 
     if (IR_spec == true) & (txt_only == false)
         λ_IR_spec = readdlm(path_IR_spec,' ', Float64, '\n')[:,1]             # read in IR input wavelength data [FROG]
@@ -684,6 +686,7 @@ function THG_main(pres=pres)
                 write(file, "E_out   = "*string(UV_pulse_en[end])*"\n")
                 write(file, "η       = "*string(η_THG)*"\n")
                 write(file, "τ_UV    = "*string(τ_UV)*"\n")
+                write(file, "z_peak  = "*string(zpeak)*"\n")
             end    
 
             if read_IR == true
@@ -741,8 +744,8 @@ if p_scan == true
 
         E_UV, η = THG_main(pres_arr[i])
 
-        open(joinpath(out_path,"energy_efficiency_time.txt"), "a") do file
-            writedlm(file, zip(pres_arr[i], E_UV, η, τ_UV))
+        open(joinpath(out_path,"energy_efficiency_time_zpeak.txt"), "a") do file
+            writedlm(file, zip(pres_arr[i], E_UV, η, τ_UV, zpeak))
         end
     end 
     
