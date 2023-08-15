@@ -156,7 +156,7 @@ Note that the real-space-time domain field $\mathbf{E}(t, \mathbf{r}_\perp, z)$ 
 Hence, once the operators $\mathcal{L}$ and $\mathcal{P}_\text{nl}$ as well as appropriate definitions of the transverse (reciprocal) space $\mathbf{k}_\perp$ and associated transform $\mathcal{T}_\perp$ are known, the UPPE can be solved as an initial value problem in $z$, using appropriate cycles of transforms at each step. \par 
 The choice of $\mathbf{k}_\perp$ and $\mathcal{T}_\perp$ is mostly a matter of the modal expansion of the field in terms of a set of orthogonal spatial modes. These may be waveguide modes or, in the present case, free space modes. The frequency-domain field can be expanded as 
 \begin{equation}
-\mathbf{E}(\omega, \mathbf{r}_\perp, z) = \sum_j \tilde{E}_j (\omega,z)  \hat{\mathbf{e}}_j (\omega, \mathbf{r}_\perp),
+\mathbf{E}(\omega, \mathbf{r}_\perp, z) = \sum_j \tilde{E}_j (\omega,z)  \hat{\mathbf{e}}_j (\mathbf{r}_\perp, z),
 \end{equation}
 where $\hat{\mathbf{e}}_j (\mathbf{r}_\perp, z)$ is the orthonormal transverse field distribution of the $j$th mode and $\tilde{E}_j (\omega,z)$ is the frequency-domain field in mode $j$. The modes are normalised via $N_{j, \text{nl}}$ to ensure that $|\tilde{E}(\omega,z)_j|^2$ represents the spectral power density in the $j$th mode. \par 
 Given an input field $\mathbf{E}(t, \mathbf{r}_\perp, z)$ the modal decomposition can be calculated via 
@@ -176,16 +176,28 @@ The linear operator acting on the $j$th mode can be described as
 \mathcal{L}_j(\omega, z) = i \left( \frac{\omega}{c} n_{\text{eff}}(\omega,z) - \frac{\omega}{v} \right),
 \end{equation}
 where $n_\text{eff}$ is the complex effective index (whose real part represents the effective refractive index [not taking into account IDRI?!] and whose imaginary part gives the attenuation coefficient), $c$ the speed of light in vacuum, and $v$ is the velocity of an arbitrary reference frame. Here, $v$ is taken to be the group velocity at the central wavelength $\lambda_0$. \par 
-
+For the present case of pulse propagation in free-space (`free-space' as opposed to in waveguide or fibre; does propagate through gas, not vacuum) the appropriate reciprocal transform $\mathcal{T}_\perp$ is the (zeroth-order) Hankel transform, defined by
+\begin{equation}
+\mathcal{H} \equiv \int_0^\infty dr J_0 (kr)r
+\end{equation},
+where $J_0$ is the zeroth-order Bessel function. DEFINE THIS IN APPLICATION TO E OR P. Thus, $\mathbf{r}_\perp = (r, \theta)$ and $\mathbf{k}_\perp = (k, \theta)$ where any theta-dependence can be dropped due to the cylindrical symmetry. 
+...
+Note that this assumes radial symmetry about the propagation axis, which is justified due to the relevant gemoetry of the gas cell. THUS, ONE-DIMENSIONAL TRANSFORM ONLY IN r?!
 
 ---------------------------------------------------------------------------------------------
-DERIVE THIS FROM MAXWELL'S EQUATIONS???
+THERE MIGHT ACTUALLY NOT BE A RELATION BETWEEN MODAL EXPANSION AND HANKEL TRANSFORM??
 
 
+RELATE UPPE TO MAXWELL'S EQUATIONS!
 
-MENTION LUNA...ALSO MENTION DIFFICULTIES IN NUMERICALLY SOLVING EQUATIONS DUE TO SLOWLY-VARYING ENVELOPE APPROXIMATIONS NOT HOLDING....
+MENTION LUNA!!!
 
-ALSO show how polarisation can be a source for E waves?!
+WRITE ABOUT Pkerr, Pion ,....
+
+MENTION HANKEL TRANSFORM! -> find out more! which order zeroth order?? which spatial modes does this correspond to? bessel? -> one dimensional Hankel transform essentially?
+
+HOW TO FIND THE SPATIAL MODE VECTORS???
+	MAYBE VECTORS NOT REALLY SPATIAL!??
 
 POTENTIALLY START WITH THIS SECTION?
 

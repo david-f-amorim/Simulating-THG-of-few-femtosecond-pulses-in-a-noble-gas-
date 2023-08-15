@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  15 AUG 2023 17:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  15 AUG 2023 18:29
 entering extended mode
 **./desy_report.tex
 (desy_report.tex
@@ -450,7 +450,7 @@ Underfull \hbox (badness 3568) in paragraph at lines 75--76
 
 [3] [4]
 No file desy_report.bbl.
-[5] (desy_report.aux)
+[5] [6] (desy_report.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.78749pt have occurred.
@@ -459,8 +459,8 @@ Package rerunfilecheck Info: File `desy_report.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 11288 strings out of 478864
- 170450 string characters out of 2848660
+ 11290 strings out of 478864
+ 170469 string characters out of 2848660
  503610 words of memory out of 3000000
  29027 multiletter control sequences out of 15000+600000
  410566 words of font info for 53 fonts, out of 8000000 for 9000
@@ -482,9 +482,9 @@ cm/cmr9.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/am
 sfonts/cm/cmsy10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/
 public/amsfonts/cm/cmsy8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/font
 s/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on desy_report.pdf (5 pages, 220012 bytes).
+Output written on desy_report.pdf (6 pages, 222473 bytes).
 PDF statistics:
- 136 PDF objects out of 1000 (max. 8388607)
- 36 named destinations out of 1000 (max. 500000)
+ 144 PDF objects out of 1000 (max. 8388607)
+ 38 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
