@@ -40,17 +40,19 @@ fundamental wavelength to 730nm; added peak intensity information to pressure sc
 prepared table of relative Ne/Ar saturation pressures and energies ; 
 compared performance of different gases; extended scan_eval to also investigate pulse duration; 
 added option to feed in COMSOL data; extended scan_eval to also investigate position of peak
-UV energy; 
+UV energy; started exhaustive new round of parameter scans; 
 
 
 - reproduce original plots with overlayed measured UV spectra [realistically at higher pressures!]			
 - prepare questions for conversation with Chris [Wed]
+	* documentation on nonlinear responses
+	* modal decomposition for radially symmetric free-space [mathcal{T} is Hankel transform? Bessel modes?]
 
 
 	- carry out new round of pressure scans
 
-		+ varied variables:
-			* beam power (50mW, 100mW, 150mW,..., 500mW) [10]
+		+ varied variables: [140 total scans, i.e. 7000 simulations]
+			* beam power (75mW, 150mW,200mW, 300mW, 400mW) [5]
 			* pressure (0.1bar, 0.2bar,...,5.1bar) [50]
 			* gas (Ne, Ar, Xe, Kr, He, N2, N2O) [7]
                         * ionisation on/off [2]
@@ -62,8 +64,17 @@ UV energy;
 
 		CARRY OUT LAST TESTS AND THEN START RUNNING SCANS!
 
-		started: 
-			- 150mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O   
+		started: [20 rows]
+		    1	- 075mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all done; upload to Sync&Share + GitHub]
+		    2	- 150mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all done; upload to Sync&Share + GitHub]
+   		    3	- 200mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [done: He, Ne, Ar]
+		    4	- 300mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [done: Ne, He,  ]
+		    5	- 400mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    
+		
+		    6   - 075mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O 
+		    7   - 150mW; ion; grad;    Ar, Ne, Kr, Xe, He,  
+
+		    NOTE: two died! "bus error"; one at 27/51 and one at 40/51; find out which!
 
 
 - continue writing report 

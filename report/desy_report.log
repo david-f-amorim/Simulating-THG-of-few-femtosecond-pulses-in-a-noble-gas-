@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  14 AUG 2023 08:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  15 AUG 2023 17:46
 entering extended mode
 **./desy_report.tex
 (desy_report.tex
@@ -429,38 +429,28 @@ LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <18.06749> not available
 LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <18.06749> not available
 (Font)              size <17.28> substituted on input line 18.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 40.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 44.
 
 (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 40.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 44.
 
 
 (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-! Missing $ inserted.
-<inserted text> 
-                $
-l.52 ...n to good approximation be neglected (chi^
-                                                  5 very small!!)
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
-! Missing $ inserted.
-<inserted text> 
-                $
-l.53 					
-          
-I've inserted a begin-math/end-math symbol since I think
-you left one out. Proceed, with fingers crossed.
-
 [1
 
-{C:/Users/david/AppData/Local/MiKTeX/pdftex/config/pdftex.map}]
+{C:/Users/david/AppData/Local/MiKTeX/pdftex/config/pdftex.map}] [2]
+Underfull \hbox (badness 3568) in paragraph at lines 75--76
+[]\OT1/cmr/m/n/10.95 ALSO MENTION THAT $\OML/cmm/m/it/10.95 $ \OT1/cmr/m/n/10.
+95 IS PRORTIONAL TO MOLAR SUSCEPTIBLITY, HENCE
+ []
+
+[3] [4]
 No file desy_report.bbl.
-[2] (desy_report.aux)
+[5] (desy_report.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.78749pt have occurred.
@@ -469,29 +459,32 @@ Package rerunfilecheck Info: File `desy_report.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 11267 strings out of 478864
- 170205 string characters out of 2848660
- 502552 words of memory out of 3000000
- 29026 multiletter control sequences out of 15000+600000
+ 11288 strings out of 478864
+ 170450 string characters out of 2848660
+ 503610 words of memory out of 3000000
+ 29027 multiletter control sequences out of 15000+600000
  410566 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 60i,5n,66p,1056b,339s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,8n,66p,1056b,353s stack positions out of 5000i,500n,10000p,200000b,80000s
 <C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
 cmbx10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
 fonts/cm/cmbx12.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/p
 ublic/amsfonts/cm/cmbx9.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts
 /type1/public/amsfonts/cm/cmex10.pfb><C:/Users/david/AppData/Local/Programs/MiK
 TeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/david/AppData/Local/Pro
-grams/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/david/AppData/L
-ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/david/A
-ppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/
-david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9.pfb><C:
-/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy1
-0.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts
-/cm/cmti10.pfb>
-Output written on desy_report.pdf (2 pages, 154302 bytes).
+grams/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/david/AppData/L
+ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/david/A
+ppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users
+/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C
+:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8
+.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/
+cm/cmr9.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/am
+sfonts/cm/cmsy10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/
+public/amsfonts/cm/cmsy8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/font
+s/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on desy_report.pdf (5 pages, 220012 bytes).
 PDF statistics:
- 87 PDF objects out of 1000 (max. 8388607)
- 16 named destinations out of 1000 (max. 500000)
+ 136 PDF objects out of 1000 (max. 8388607)
+ 36 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

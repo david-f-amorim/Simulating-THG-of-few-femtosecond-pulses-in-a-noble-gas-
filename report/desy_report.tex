@@ -32,32 +32,166 @@ XXX
 The electronic motion associated with chemical reactions or atomic energy transitions takes place on femotsecond to attosecond time scales. Time-resolved imaging of molecular dynamics therefore requires ultrashort laser pulses in the few-femtoseconds regime. A biochemically especially important type of electronic motion is that excited by the absorption of ultraviolet (UV) radiation. A variety of important processes, such as DNA damage, are known to be caused by UV excitation. Generating few-femtosecond UV pulses for time-resolved measurements of UV-excited molecules plays a crucial part in further understanding and eventually controlling these biochemically relevant effects. \par 
 The CFEL-ATTO group's STARLIGHT beamline produces few-femtosecond UV  pulses by third-harmonic-generation (THG) of a near-infra-red (NIR) input pulse in a noble gas. The THG of an intense ultrashort laser pulse is sensitive to a large range of parameters, including gas pressure, gas density distribution, input beam power, beam focus position, and carrier-envelop-offset (CEO) phase. In order to optimise key properties of the UV output pulse, such as spectrum, energy, and duration, it is therefore advantageous to use theoretical considerations to guide the experimental set-up. This report outlines how, as part of a DESY Summer Student Project, numerical simulations of the THG process were produced using the software package \emph{Luna}. The goal hereby was, in the first instance, to reproduce the experimental conditions of the STARLIGHT beamline and to then carry out various parameter scans in order to find optimal conditions for UV generation. These conditions were then investigated experimentally. \par  
 MENTION WHAT HAS BEEN ACHIEVED
+MENTION THAT FOCUS IN SIMULATIONS ON PARAMETERS THAT CAN BE EXPERIMENTALLY CONTROLLED AT THIS MOMENT (beam power, central pressure, gas) 
 
 \section{Theoretical Background}
 This section gives an overview of....
+- key properties of ultrashort (few-cycle) laser pulses
+- the governing propagation equation 
+- relevant nonlinear optical effects/polarisation response
 
-\subsection{Nonlinear Optics}
+\subsection{Nonlinear Optics and THG}
 For most materials, the polarisation response $\mathbf{P}(t)$ to a moderate electric field $\mathbf{E}(t)$ is linear: $\mathbf{P}(t) = \epsilon_0 \chi \mathbf{E}(t)$, where the linear susceptibility $\chi$ is material-specific and generally frequency-dependent. Stronger field amplitudes result in a nonlinear polarisation response, which can be pertubatively expanded in $\mathbf{E}(t)$:
 \begin{equation}\label{eq:P(E)_expansion}
-\mathbf{P}(t) = \epsilon_0 \left( \chi^{(1)}|\mathbf{E(t)}| + \chi^{(2)}|\mathbf{E(t)}|^2 +  \chi^{(3)}|\mathbf{E(t)}|^3 + ...  \right) \frac{\mathbf{E}(t)}{|\mathbf{E}(t)|}.
+\mathbf{P}(t) = \epsilon_0 \left( \chi^{(1)}|\mathbf{E}(t)| + \chi^{(2)}|\mathbf{E}(t)|^2 +  \chi^{(3)}|\mathbf{E}(t)|^3 + ...  \right) \frac{\mathbf{E}(t)}{|\mathbf{E}(t)|}.
 \end{equation}
-In the above, $\chi^{(n)}$ corresponds to the $n$-th order electric susceptibility. For simplicity, equation \eqref{eq:P(E)_expansion} leaves the spatial dependence of the polarisation and the driving field implicit. It further treats the $\chi^{(n)}$, which generally are frequency-dependent tensors, as constant scalars. This approximation is valid for isotropic media such as the noble gases considered here [!!!?? SOURCE]. Note that since gases are centrosymmetric all even-order susceptibilities necessarily vanish, e.g. $\chi^{(2)}=0$, so that the third-order response becomes the dominant nonlinear term. 
+In the above, $\chi^{(n)}$ corresponds to the $n$-th order electric susceptibility. For simplicity, equation \eqref{eq:P(E)_expansion} leaves the spatial dependence of the polarisation and the driving field implicit. It further treats the $\chi^{(n)}$, which generally are frequency-dependent tensors, as constant scalars. This approximation is valid for isotropic media such as the noble gases considered here [!!!?? SOURCE]. Note that since gases are centrosymmetric all even-order susceptibilities necessarily vanish, e.g. $\chi^{(2)}=0$, so that the third-order response becomes the dominant nonlinear term. Due to the small magnitudes of $\chi^{(5)}$ and the other higher-order odd susceptibilities [INCLUDE TABLE OF VALUES!], in the following only the linear and third-order terms of the expansion $\mathbf{P}(\mathbf{E}(t))$ will be considered. \par 
+It is evident from \eqref{eq:P(E)_expansion} how an oscillating electric field in a nonlinear medium results in the generation of co-propagating fields with new frequency components: consider $\mathbf{E}^{(\omega)}(t) = \tilde{\mathbf{E}} \cos(\omega t)$, where all spatial dependence and phase terms have been absorbed into the complex amplitude  $\tilde{\mathbf{E}}$. The resulting polarisation response, due to the linear and third-order term, is then given by 
+\begin{equation}\label{eq:int_dep_n}
+\mathbf{P}(t) = \epsilon_0 \left( \chi^{(1)} \cos(\omega t) \tilde{\mathbf{E}} + \chi^{(3)} \cos(\omega t)^3 |\tilde{\mathbf{E}}|^2 \tilde{\mathbf{E}}  \right) = \epsilon_0 \left( \left[ \chi^{(1)} + \frac{3}{4} \chi^{(3)} |\tilde{\mathbf{E}}|^2\right] \cos(\omega t) + \frac{1}{4} \chi^{(3)} \cos(3 \omega t) \right)  \tilde{\mathbf{E}}
+\end{equation}
+Thus, the effect of the third-order susceptibility is two-fold: a field contribution $\mathbf{P}^{(3\omega)}(t)$ oscillating at $3\omega$ is generated and an additional term in $\chi^{(3)} |\tilde{\mathbf{E}}|^2$ is added to the polarisation response  $\mathbf{P}^{(\omega)}(t)$ at the fundamental frequency. The former process can be identified as THG: a driving electric field oscillating at some frequency will generate a frequency-tripled co-propagating field due to third-order nonlinear interactions in the medium. This is one instance of a range of related nonlinear effects which result in the generation of a higher-frequency field component, known as frequency up-conversion. \par 
+Note that a third-harmonic contribution is generated in-phase and co-propagating with the driving wave at each point of the nonlinear medium. Due to dispersion, $k=k(\omega)$, the third-harmonic and the fundamental will generally experience different phase shifts on propagation, resulting in a phase mismatch $\Delta k = k(3 \omega)- 3k (\omega)$ between the different third-harmonic components generated at different points along the axis of propagation. This can result in destructive interference of the individual $3\omega$ components. Thus, the phase-mismatch parameter $\Delta k$, or, equivalently, the GVD [DEFINE THIS], are important determinants of the achievable THG conversion efficiency $\eta_{THG}$, a measure of the energy of the generated third-harmonic relative to the input pulse energy.  \par 
+The latter process [REWRITE THIS, REFERENCE TOO FAR BACK] is equivalent to an intensity-dependent contribution being added to the refractive index of the medium. The refractive index, $n$, of a linear medium is commonly defined as $n = \sqrt{1+ \mathbf{P}(t)/[\epsilon_0 \mathbf{E}(t)]} = \sqrt{1 + \chi}$. Analogously, the effective refractive index $n_{\text{eff}}$ in a nonlinear medium can be defined as
+\begin{equation}
+n = \sqrt{1+ \frac{\mathbf{P^{(\omega)}}(t)}{\epsilon_0 \mathbf{E^{(\omega)}}(t)}},
+\end{equation}
+where $\mathbf{P}^{(\omega)}(t)$ is the polarisation response to $\mathbf{E}^{(\omega)}(t)$ oscillating at the fundamental frequency. Due to the presence of the third-order term, and taking into account that $\chi^{(1)} \gg \frac{3}{4} \chi^{(3)} |\tilde{\mathbf{E}}|^2$ :
+\begin{equation}
+n_\text{eff} = \sqrt{1 + \chi^{(1)} + \frac{3}{4} \chi^{(3)} |\tilde{\mathbf{E}}|^2} \approx n + \frac{3}{8n} \chi^{(3)} |\tilde{\mathbf{E}}|^2 \equiv n + \Delta n I = n_0 + n_2 I,
+\end{equation}
+where $I = |\tilde{\mathbf{E}}|^2/[2Z_0]$ is the intensity of the driving field, $Z_0$ the impedance of the wave in the medium, and $\Delta n$ is the intensity-dependent change in effective refractive index. \par 
+This intensity-dependent refractive index has important implications for the propagation of laser pulses in nonlinear media. An important consequence is self-phase modulation (SPM): since the intensity of a beam is significantly higher at its peak than towards the wings, the centre of the beam will experience a higher effective refractive index, and therefore phase-shift on propagation, than off-peak components. This can result in spectral broadening of the pulse [MORE DETAIL???] [IN TIME DOMAIN;]. The intensity-dependent refractive index is also related to effects like self-focussing [SAME THING BUT SPATIAL]. \par 
+Note that the umbrella term `Kerr effects' is commonly used to refer to processes associated with $\chi^{(3)}$, including THG, and this practice will be adopted here. \par 
+For the present context, there is a further relevant group of nonlinear effects that is highly non-perturbative and therefore cannot be captured by the expansion \eqref{eq:P(E)_expansion}. These are photo-ionisation effects: at sufficiently high field amplitudes, the atoms or molecules in the nonlinear medium become ionised, which affects their interaction with the driving field and generated third-harmonic. Particularly the values of the $\chi^{(n)}$ and the absorption coefficients are affected. The effects of ionisation on the polarisation response of a quasistatic gas cell are captured by the ADK model. While ionisation limits the achievable third-harmonic pulse energy due to absorption, it affects the spatio-temporal pulse profile and can result in spectral broadening, as is discussed later. \par 
+The total polarisation response $\mathbf{P}$ in a nonlinear medium can thus be split up into a linear and non-linear part, $\mathbf{P} = \mathbf{P}^L + \mathbf{P}^{NL}$, where the latter can further be subdivided into Kerr and ionisation effects: $\mathbf{P}^{NL} = \mathbf{P}^{\text{Kerr}} + \mathbf{P}^{\text{ion}}.$ MENTION HOW LATER THIS IS IMPLEMENTED IN THE UPPE?
 
--------------------------------------------------------------------------------------
-MENTION:
-	- how if E is driven at a frequency omega, then clearly frequency multiples generated ->> THG ; also explain up-sonversion!
-	- how P is split up into $P^L$ and $P^{NL}$
-	- how $P^{NL}$ can be split up into perturbative (Kerr) effects and nonperturbative ionisation/plasma effects 
-				-> Kerr-effects umbrella term for third-order effects; 
-					dominant since lowest-order term; fifth-order and higher can to good approximation be neglected (chi^5 very small!!)
-					
-	- mention: intensity-dependent refractive index; self-steepening; self-phase modulation....
+
+MAKE SURE THAT IT IS CLEAR THAT ALL MATERIALS ARE NONLINEAR AS LONG AS E IS HIGH ENOUGH!!
+
+SAY SOMEWHERE THAT FOCUSSING ON GAS!! BC OF LOW GVD 
+
+
+ALSO MENTION THAT $\chi$ IS PRORTIONAL TO MOLAR SUSCEPTIBLITY, HENCE INCREASING DENSITY INCREASES CHI
+
+
+NOTE: since intensity highest at centre of beam, THG efficiency is more efficient there, so that the THG pulse is narrower, both in space and in time, than the input pulse. Temporally, this is exepcted to by by $\sim \sqrt{3}$ shorter. 
+
+
+USE n0, n2 notation?
+
+
+SELF-STEEPENING: due to IDRI, peak of pulse experiences higher refractive index and hence (assuming normal dispersion) a slower group velocity than the wings. This results in the leading edge (or trailing edge, for anomalous dispersion) getting steeper. Self-steepening is associated with spectral broadening ?!. 
+
 \subsection{Ultrashort Laser Pulses}
+An ultrashort laser pulse can be modelled as a carrier wave at central frequency $\omega_0$ modulated by an envelope function. In the femtosecond regime envelope may only contain a few cycles of the carrier wave. \par 
+For simplicity, the following treatment will focus on the temporal and spectral beam profile and neglect spatial contributions. The electric field amplitude of the pulse is then given by 
+\begin{equation}
+\mathcal{E}(t)= \frac{1}{2} \sqrt{I(t)} e^{i [\omega_0 t - \phi(t)]} + \text{ complex conjugate},
+\end{equation}
+where $I(t)$ is the temporal intensity and $\phi(t)$ the temporal phase. It is often more convenient to drop the complex conjugate (analytic signal approximation) and the rapidly oscillating carrier wave phase contribution $e^{i \omega_0 t}$ and work directly with the complex amplitude
+\begin{equation}
+E(t) = \sqrt{I(t)}e^{- i \phi(t)}.
+\end{equation}
+In the frequency-domain, the pulse is described as the Fourier transform of the time-domain field: $\mathcal{E}(\omega) = \mathcal{F}[\mathcal{E}(t)] \equiv \int_{-\infty}^\infty \mathcal{E}(t) e^{-iwt} dt$, given by 
+\begin{equation}
+\mathcal{E}(\omega) = \sqrt{S(\omega)} e^{-i \varphi(\omega)},
+\end{equation}
+where $S(\omega)$ is the spectral intensity, or spectrum, and $\varphi(\omega)$ the spectral phase. Since $\mathcal{E}(t)$ is real, the negative frequency regions of $\mathcal{E}(\omega)$ can be neglected. \par 
+The temporal and spectral pulse are often expanded as Taylor-series of the form 
+\begin{align}
+\phi(t) &= \phi_0 + t \phi_1 + \frac{1}{2} t^2 \phi_2 + ...  \\
+\varphi(\omega) &= \varphi_0 + \omega \varphi_1 + \frac{1}{2} \omega^2 \varphi_2 + ...
+\end{align}
+where $\phi_n \equiv \frac{\partial^n \phi}{\partial t^n}$ and $\varphi_n \equiv \frac{\partial^n \varphi}{\partial \omega^n}$. It is straight-forward to see from the Fourier transform that the zero-order spectral and temporal phases are the same: $\phi_0 = \varphi_0$. They correspond to what is known as the carrier-envelope-offset (CEO) phase, representing the relative phase between the envelope and the carrier wave. The CEO phase is especially relevant for few-cycle pulses. \par 
+The effects of $\phi_1$ and $\varphi_1$ are spectral and temporal shifts, respectively. Further, $\phi_1$ is used to define the instantaneous angular frequency 
+\begin{equation}
+\omega_\text{inst}(t) = \omega - \phi_1,
+\end{equation}  
+while $\varphi_1$ is used to define the group delay $t_\text{group}(\omega) = \varphi_1$. \par 
+The term $\phi_2$ corresponds to quadratic variations in the temporal phase and hence to a linear variation in the instantaneous frequency with time. This is known as a linear chirp. If the pulse is positively chirped, the frequency increases with time while in a negatively chirped pulse the frequency decreases. Thus, the leading edge of a positively chirped pulse is of a lower frequency than the trailing edge and vice-versa for negatively chirped pulses.  In regions of normal dispersion this results in a positively chirped pulse being extended in time and negatively chirped pulses being compressed. The reverse hold in regions of anomalous dispersion. \par 
+Thus, nonlinear variations of the temporal phase result in spectral broadening by inducing chirp, which may also affect the pulse duration, if dispersion is present. One such nonlinear variation of the phase in time is given by effects of the intensity-dependent refractive index (IDRI), which results in a larger nonlinear phase increase at the (temporal) centre of the pulse and hence in chirp and spectral broadening if the pulse was initially unchirped. May also lead to spectral compression if the initial pulse was chirped oppositely.  \par 
+As can be seen from Fourier analysis, the (temporal) pulse length (or pulse width) is inversely related to the spectral bandwidth. Note that the `pulse length' commonly refers to the full-width-half-maximum (FWHM) length of the pulse, i.e. the time between the most-separated points that are at half of the peak intensity. 
 
-\subsection{The Unidirectional Pulse Propagation Equation }
+
+
+-----------------------------------------------------------
+mention dispersion...., GVD,... HERE?
+
+mention how high peak intensities are sufficient in ultrashort pulses to make nonlinear effects relevant 
+
+mention bandwith theorem
+
+chirp etc...
+
+GVD
+
+We can expand the dispersion relation $k(\omega)$ around the carrier frequency $\omega_0$:
+\begin{equation}
+k(\omega) = k(\omega_0) + (\omega - \omega_0) \frac{\partial k}{\partial \omega} + \frac{1}{2} (\omega-\omega_0)^2 \frac{\partial^2 k}{\partial \omega^2} + ...
+\end{equation}
+The first-order coefficienct $\frac{\partial k}{\partial \omega}$ can be identified as the inverse of the group velocity $v_g = \left( \frac{\partial k}{\partial \omega} \right)^{-1}$ while the second-order coefficient $\frac{\partial^2 k}{\partial \omega^2} = \frac{\partial}{\partial \omega} \frac{1}{v_g}$ is kown as the group velocity dispersion (GVD). 
+
+USE k1, k2,.. notation?
+
+GVD IS THE SAME AS BETA2??
+
+
+We choose $k(\omega) = \frac{n(\omega)}{c} \omega$ (neff??)
+
+The spectral phase acquired by propagating a distance $z$ is: $\phi(\omega; z) = \phi(\omega; 0)+ k z \equiv \phi(\omega; 0) + n(\omega) \frac{\omega}{c}z. $
+
+\subsection{The Unidirectional Pulse Propagation Equation and \emph{Luna} }
+The governing equation of ultrafast pulse propagation is the unidirectional pulse propagation equation (UPPE). Several variations exist but its general form for a pulse of frequency $\omega$ travelling in the $z$-direction is 
+\begin{equation}
+\frac{\partial}{\partial z} \mathbf{E}(\omega, \mathbf{k}_\perp, z)= \mathcal{L}(\omega, \mathbf{k}_\perp, z)\mathbf{E}(\omega, \mathbf{k}_\perp, z) + \frac{i \omega}{N_{\text{nl}}} \mathbf{P}_\text{nl}(\omega, \mathbf{k}_\perp, z),
+\end{equation}
+where $\mathbf{E}(\omega, \mathbf{k}_\perp, z)$ is reciprocal-space electric field amplitude in the frequency domain, $\mathbf{k}_\perp$ is a generalised transverse wavevector,  $\mathcal{L}(\omega, \mathbf{k}_\perp, z)$ is a linear operator describing dispersion, diffraction, and absorption, while $\mathbf{P}_\text{nl}$ is the nonlinear polarisation with normalisation factor $N_\text{nl}$. \par 
+The nonlinear polarisation response to a given electric field is computed most easily in real space and the time domain: $\mathbf{P}(t, \mathbf{r}_\perp,z) = \mathcal{P}_\text{nl}(\mathbf{E}(t,\mathbf{r}_\perp,z))$, where $t$ is time, $\mathcal{P}_\text{nl}$ is an appropriate operator [RELATE TO Pnl ABOVE?!] and $\mathbf{r}_\perp = (r, \theta)$ represents the transverse spatial coordinate. The real-space-time domain representation of $\mathbf{P}_\text{nl}$ can then be related to the reciprocal-space-frequency domain version via a temporal Fourier transform, $\mathcal{F}$, as well as an appropriate transverse spatial transform, $\mathcal{T}_\perp$:
+\begin{equation}
+\mathbf{P}(\omega, \mathbf{k}_\perp,z) = \mathcal{F}\left[ \mathcal{T}_\perp \left[ \mathbf{P}(t, \mathbf{r}_\perp,z) \right](t, \mathbf{k}_\perp, z)  \right]. 
+\end{equation}
+Note that the real-space-time domain field $\mathbf{E}(t, \mathbf{r}_\perp, z)$ can be recovered from $\mathbf{E}(\omega, \mathbf{k}_\perp, z)$ via the appropriate inverse transformations $\mathcal{F}^{-1}$ and $\mathcal{T}^{-1}_\perp$. \par 
+
+Hence, once the operators $\mathcal{L}$ and $\mathcal{P}_\text{nl}$ as well as appropriate definitions of the transverse (reciprocal) space $\mathbf{k}_\perp$ and associated transform $\mathcal{T}_\perp$ are known, the UPPE can be solved as an initial value problem in $z$, using appropriate cycles of transforms at each step. \par 
+The choice of $\mathbf{k}_\perp$ and $\mathcal{T}_\perp$ is mostly a matter of the modal expansion of the field in terms of a set of orthogonal spatial modes. These may be waveguide modes or, in the present case, free space modes. The frequency-domain field can be expanded as 
+\begin{equation}
+\mathbf{E}(\omega, \mathbf{r}_\perp, z) = \sum_j \tilde{E}_j (\omega,z)  \hat{\mathbf{e}}_j (\omega, \mathbf{r}_\perp),
+\end{equation}
+where $\hat{\mathbf{e}}_j (\mathbf{r}_\perp, z)$ is the orthonormal transverse field distribution of the $j$th mode and $\tilde{E}_j (\omega,z)$ is the frequency-domain field in mode $j$. The modes are normalised via $N_{j, \text{nl}}$ to ensure that $|\tilde{E}(\omega,z)_j|^2$ represents the spectral power density in the $j$th mode. \par 
+Given an input field $\mathbf{E}(t, \mathbf{r}_\perp, z)$ the modal decomposition can be calculated via 
+\begin{equation}
+\tilde{E}_j (\omega,z) = \mathcal{F}\left[ \int_S \hat{\mathbf{e}}_j(\mathbf{r}_\perp,z) \cdot \mathbf{E}(t, \mathbf{r}_\perp, z) d^2 \mathbf{r}_\perp \right],
+\end{equation}
+where $S$ is the cross-sectional area of the gas cell. Modal decomposition can be used to solve  a scalar version of the UPPE for each $\tilde{E}_j(\omega,z)$:
+\begin{equation}
+\frac{\partial}{\partial z} \tilde{E}_j(\omega,z) = \mathcal{L}_j (\omega,z) \tilde{E}_j(\omega,z)+ i\frac{\omega}{N_{j, \text{nl}}} \tilde{P}_{j,\text{nl}},
+\end{equation}
+where $\tilde{P}_{j,\text{nl}}$ represents the projection of the polarisation onto the $j$th mode:
+\begin{equation}
+\tilde{P}_{j, \text{nl}} = \int_S \hat{\mathbf{e}}_j(\omega,z) \cdot \mathbf{P}_{\text{nl}}(\omega, \mathbf{r}_\perp, z) d^2 \mathbf{r}_\perp.
+\end{equation}
+The linear operator acting on the $j$th mode can be described as 
+\begin{equation}
+\mathcal{L}_j(\omega, z) = i \left( \frac{\omega}{c} n_{\text{eff}}(\omega,z) - \frac{\omega}{v} \right),
+\end{equation}
+where $n_\text{eff}$ is the complex effective index (whose real part represents the effective refractive index [not taking into account IDRI?!] and whose imaginary part gives the attenuation coefficient), $c$ the speed of light in vacuum, and $v$ is the velocity of an arbitrary reference frame. Here, $v$ is taken to be the group velocity at the central wavelength $\lambda_0$. \par 
+
+
+---------------------------------------------------------------------------------------------
+DERIVE THIS FROM MAXWELL'S EQUATIONS???
+
+
+
 MENTION LUNA...ALSO MENTION DIFFICULTIES IN NUMERICALLY SOLVING EQUATIONS DUE TO SLOWLY-VARYING ENVELOPE APPROXIMATIONS NOT HOLDING....
 
+ALSO show how polarisation can be a source for E waves?!
+
+POTENTIALLY START WITH THIS SECTION?
+
 \section{The STARLIGHT Beamline}
+
+NOTE THAT WE CAN ASSUME LINEARLY POLARISED BEAM
 
 \section{Simulation Results}
 
