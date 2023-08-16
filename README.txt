@@ -47,6 +47,7 @@ UV energy; started exhaustive new round of parameter scans;
 - prepare questions for conversation with Chris [Wed]
 	* documentation on nonlinear responses
 	* modal decomposition for radially symmetric free-space [mathcal{T} is Hankel transform? Bessel modes?]
+	* phase output? seems to work with real fields tho
 
 
 	- carry out new round of pressure scans
@@ -67,14 +68,18 @@ UV energy; started exhaustive new round of parameter scans;
 		started: [20 rows]
 		    1	- 075mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all done; upload to Sync&Share + GitHub]
 		    2	- 150mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all done; upload to Sync&Share + GitHub]
-   		    3	- 200mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [done: He, Ne, Ar]
-		    4	- 300mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [done: Ne, He,  ]
-		    5	- 400mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    
+   		    3	- 200mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all but Xe  ]
+		    4	- 300mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all but Xe   ]
+		    5	- 400mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [done: He, N2, Ne]
 		
-		    6   - 075mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O 
-		    7   - 150mW; ion; grad;    Ar, Ne, Kr, Xe, He,  
+		    6   - 075mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O   [done: Ar,He, N2, Ne ]  
+		    7   - 150mW; ion; grad;    Ar, Ne, Kr,                              
+                    8   - 200mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O   
+		    9   - 300mW; ion; grad; 
+		    10  - 400mW; ion; grad;        
 
-		    NOTE: two died! "bus error"; one at 27/51 and one at 40/51; find out which!
+		  
+		  [17 sessions running!]
 
 
 - continue writing report 

@@ -169,7 +169,7 @@ where $S$ is the cross-sectional area of the gas cell. Modal decomposition can b
 \end{equation}
 where $\tilde{P}_{j,\text{nl}}$ represents the projection of the polarisation onto the $j$th mode:
 \begin{equation}
-\tilde{P}_{j, \text{nl}} = \int_S \hat{\mathbf{e}}_j(\omega,z) \cdot \mathbf{P}_{\text{nl}}(\omega, \mathbf{r}_\perp, z) d^2 \mathbf{r}_\perp.
+\tilde{P}_{j, \text{nl}} = \int_S \hat{\mathbf{e}}_j(\mathbf{r}_\perp,z) \cdot \mathbf{P}_{\text{nl}}(\omega, \mathbf{r}_\perp, z) d^2 \mathbf{r}_\perp.
 \end{equation}
 The linear operator acting on the $j$th mode can be described as 
 \begin{equation}
@@ -185,7 +185,21 @@ where $J_0$ is the zeroth-order Bessel function. DEFINE THIS IN APPLICATION TO E
 Note that this assumes radial symmetry about the propagation axis, which is justified due to the relevant gemoetry of the gas cell. THUS, ONE-DIMENSIONAL TRANSFORM ONLY IN r?!
 
 ---------------------------------------------------------------------------------------------
+NOTE: small e should be changed to mathcal E or something to avoid confusion! not basis vector but field! orthogonal with respect to int dr, not dot product!
+$\int_S \hat{\mathbf{e}_j} \cdot \hat{\mathbf{e}}_k d^2 \mathbf{r}_\perp = \delta_{jk}$
+
+DUE TO CYLINDRICAL SYMMETRY: expanding on Bessel function basis, not plane waves? Apart from that, free-space transverse modes?
+
+I GUESS CYLINDRICAL WAVEGUIDE MODES? BESSEL FUNCTIONS...
+		-> free space modes?!
+		
+		IMPORTANCE OF SPATIAL TRANSFORM: comes in during UPPE derivatioin?
+
+THERE MIGHT ACTUALLY NOT BE A RELATION BETWEEN MODAL EXPANSION AND HANKEL TRANSFORM??
+
+
 RELATE UPPE TO MAXWELL'S EQUATIONS!
+		-> UPPE CAN BE DERIVED FROM MAXWELL based on a modal expansion  -> thus slightly different forms for different contexts [link paper]
 
 MENTION LUNA!!!
 
@@ -204,13 +218,31 @@ NOTE THAT WE CAN ASSUME LINEARLY POLARISED BEAM
 
 \section{Simulation Results}
 
+The simulations were carried out with \emph{Luna}, as described above. The simulation parameters were set up to match the experimental parameters are closely as possible. \par 
+ The gas cell was modelled as a 3mm long radially symmetric chamber with a 0.5mm diameter. The spatial profile of the input beam was taken to be a Gaussian with a 65$\mu$m waist size focussed at the centre of the cell, based on measurements of the spatial beam profile. The input NIR pulse was fed in based on spectral measurements (FROG) of its temporal profile [SENTENCE MAKES NO SENSE]. The central wavelength was taken to be 730nm, based on NIR input pulse measurements, whereas the pulse length of the input pulse was 5.9fs. The pressure at the cell edges was taken to be 1mbar. The total wavelength window considered ranged from 100nm to 1000nm, with the range 100-360nm considered as the UV component and 600-1000nm as the IR component. The nonlinear effects considered where the Kerr effect as well as ADK ionisation, although the latter was turned off in some cases, in order to isolate the effects of ionisation. The CEO phase of the input beam was set to zero without measurement, as simulations showed little impact of the CEO phase on the simulation output, since the input pulse involves sufficient cycles. \par 
+Note that two different models for the gas density profile were considered. The first one considered only the cell itself, with a simple density gradient constructed based on specifying the central pressure as well as the edge pressure. The second model was more sophisticated and based on simulations produced with the COMSOL Multiphysics software. It took into account not only the gas cell itself but also the geometry of the 7mm glass chip surrounding it, as well as the effects of the differential pumping system. \par 
+The simulations were focussed on investigating parameters that could be experimentally controlled. These were the gas, the central gas pressure, and the input beam power. The gases considered were Argon, Neon, Helium, Krypton, Xenon, Nitrogen, and Nitrous Oxide (N$_2$O). The beam powers considered were 75mW, 150mW, 200mW, 300mW, and 400mW. The simulated central pressures ranged from 0.1bar to 5.1 bar in 0.1bar increments. \par 
+The simulation output included the UV spectrum at the end of the cell (or chip), the total output UV energy, the THG conversion efficiency, the pulse duration of the UV pulse, and the cell (or chip) position at which the UV energy intensity peaked. Additionally, the option to visualise the results in more detail was included, with plots such as: time-domain IR pulse profile, time-domain UV pulse profile, spatiotemporal UV beam evolution, spatiotemporal IR beam evolution, on-axis frequency evolution, UV spectral evolution, on- and off-axis UV and IR intensity profiles, UV and IR energy profiles along z, various spectra. \par 
+
+
 \section{Experimental Results}
 
 \section{Discussion}
+Comparison with results at times difficult: pressure and energy of output beam hard to measure
+
+
+Many more factors to be investigated (beam focus position, beam size, higher beam powers...)
+
+
+Improve simulations by improving COMSOL gas density model (need to use high Mach number model instead, current model does not take into account gas interaction). 
 
 \section{Conclusion}
 
 \section*{Acknowledgments}
+Thank Josina Hahne for supervision and Vincent Wanie for additional help and guidance (both CFEL-ATTo). Also thank Chris Brahms (Heriot-Watt University, co-creator of Luna) for help. Additional thanks to Olaf Behnke and Andreas Przystawik (DESY) for organising the DESy summe programme.  
+
+
+\cite{brahms2023}
 
 \section*{References}
 \bibliographystyle{osa}

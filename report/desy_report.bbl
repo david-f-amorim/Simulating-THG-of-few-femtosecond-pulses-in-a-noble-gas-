@@ -1,0 +1,11 @@
+\begin{thebibliography}{1}
+\newcommand{\enquote}[1]{``#1''}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{}\fi
+
+\bibitem{brahms2023}
+C.~Brahms and J.~C. Travers, \enquote{Luna.jl,}  (2023).
+\newline https://doi.org/10.5281/zenodo.8242646
+
+\end{thebibliography}
