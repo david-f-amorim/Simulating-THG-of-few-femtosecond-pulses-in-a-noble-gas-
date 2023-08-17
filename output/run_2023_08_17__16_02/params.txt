@@ -1,0 +1,25 @@
+gas     = Ar
+pres    = 1.0
+p_ed    = 0.001
+p_const = false
+τ       = 6.140914135627119e-15
+λ0      = 7.3e-7
+w0      = 6.5e-5
+ϕ       = 0.0
+energy  = 0.00015
+L       = 0.003
+kerr    = f
+ion     = true
+propz   = -0.0015
+
+
+E_out   = 6.242054482338444e-8
+η       = 0.0004162108484511922
+τ_UV    = 4.366310419506863e-15
+z_peak  = 0.06830999999999997
+
+# IR input beam read from: input\IRpulse.dat
+
+# Gas density distribution read from: input\dens_1.0bar.dat
+
+# UV output beam read from: input\UVpulse.dat

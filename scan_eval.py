@@ -1413,10 +1413,16 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
 if single:
     plot_single(single_dir, n)
 else:
-    #plot_beamP_scan(sup_dir, "Xe", 0.0, "true", "f", "coms") 
-    #plot_beamP_scan(sup_dir, "Xe", 0.0, "true", "f", "grad") 
-    #plot_singlePg_model_comp(sup_dir, "Ar", 300e-3)
+   #for gas in ["Ar", "Ne", "He", "N2", "Kr", "N2O", "Xe"]: 
+    #    plot_beamP_scan(sup_dir, gas, 0.0, "true", "f", "coms") 
+     #   plot_beamP_scan(sup_dir, gas, 0.0, "true", "f", "grad") 
+         #plot_multiP_singleg_model_comp(sup_dir, gas)
+   
+    #beam_power = 400*1e-3
+
+    #for gas in ["Ar", "Ne", "He", "N2", "Kr", "N2O", "Xe"]:   
+     #   plot_singlePg_model_comp(sup_dir, gas, beam_power)
     #plot_multiP_singleg_model_comp(sup_dir, "Ne")
     #plot_gas_comp_singleP(sup_dir,75e-3,"grad")
-    plot_gas_comp_multiP(sup_dir,"grad", ["Xe", "Kr", "He", "N2O", "N2"])
-
+    #plot_gas_comp_multiP(sup_dir,"grad", ["Xe", "Kr", "N2O", "N2"])
+    plot_singlePg_model_comp(sup_dir, "N2O", 400*1e-3)

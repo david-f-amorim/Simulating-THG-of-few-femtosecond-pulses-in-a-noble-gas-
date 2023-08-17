@@ -40,30 +40,20 @@ fundamental wavelength to 730nm; added peak intensity information to pressure sc
 prepared table of relative Ne/Ar saturation pressures and energies ; 
 compared performance of different gases; extended scan_eval to also investigate pulse duration; 
 added option to feed in COMSOL data; extended scan_eval to also investigate position of peak
-UV energy; started exhaustive new round of parameter scans; compared COMSOL density profile to grad profile; compared density profiles of different gases; 
+UV energy; started exhaustive new round of parameter scans; compared COMSOL density profile to grad profile; compared density profiles of different gases; extended scan_eval to compare different gases as well as COMSOL vs grad; 
 
 
-- reproduce original plots with overlayed measured UV spectra [realistically at higher pressures!]
+- carry out new round of pressure scans
 
-	- carry out new round of pressure scans
-
-		+ varied variables: [140 total scans, i.e. 7000 simulations]
+		+ varied variables: 
 			* beam power (75mW, 150mW,200mW, 300mW, 400mW) [5]
 			* pressure (0.1bar, 0.2bar,...,5.1bar) [50]
 			* gas (Ne, Ar, Xe, Kr, He, N2, N2O) [7]
-                        * ionisation on/off [2]
-			* COMSOL data/gradient data [2] (maybe only with Ar/Ne for now?)
-		+ in scan_eval: 
-			* replace phi scan with gas scan 
-			* make distinction between coms and grad  
-			* make distinction between ADK and PPT (based on ion/non-ion code?)
+			* COMSOL data/gradient data [2] 
 	
-
-		CARRY OUT LAST TESTS AND THEN START RUNNING SCANS!
-
-		started: [20 rows]
-		    1	- 075mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all done; upload to Sync&Share + GitHub]
-		    2	- 150mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all done; upload to Sync&Share + GitHub]
+		started: [with ADK ionisation!]
+		    1	- 075mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all done]
+		    2	- 150mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all done]
    		    3	- 200mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all done]
 		    4	- 300mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all but Xe]
 		    5	- 400mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all but Xe]
@@ -72,27 +62,33 @@ UV energy; started exhaustive new round of parameter scans; compared COMSOL dens
 		    7   - 150mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O                             
                     8   - 200mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O   
 		    9   - 300mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O
-		    10  - 400mW; ion; grad;    Ar, Ne,         He, N2, N2O    
+		    10  - 400mW; ion; grad;    Ar, Ne, Kr,     He, N2, N2O    
 
 		  
 		  [17 sessions running!]
+		  [one process died! find out which!]
 
-			one process died!!
+- wait until simulations are done and then upload to S&S and GitHub			
 
-	note: Xe and Kr, especially Xe, take a very long time to run!
+- compare gases 
+- identify conditions of interest
+	FINISH TABLE [TABLET!!]
+
+- email PP to vincent and josina in advance?!
+
+	          
+Week 6
+--------------------------------
 
 
-STOP USING ADK!! SWITCH BACK TO PPt!!
-		-> repeat sim??!!!   -> FOR NOW: AT LEAST DO THAT FOR AR AND NE
-		-> change dir name to make sure there is no overlap
-
-		Note: ADD suppresses multi photon ionisation; less computationally expensive but also less accurate at 
-			low pressures!
 
 
-ADD CHIRP FUNCTIONS!!! DO CHIRP SCAN!!  ->> prop material [give material and thickness], prop taylor [specify chirp in terms of taylor series]
+- reproduce original plots with overlayed measured UV spectra [realistically at higher pressures!]
+- switch back to PPT eventually
+- add chirp functions and do chirp scan (prop_material, prop_taylor)
 
-prepare scan_analysis for meeting Friday!   
+
+
 
 	
 	

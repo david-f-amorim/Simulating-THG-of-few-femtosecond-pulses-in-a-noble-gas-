@@ -15,16 +15,16 @@ in_dir  = "raw_input"
 out_dir = "input" 
 
 use_IR  = False
-use_UV  = False
+use_UV  = True
 use_IR_spec = False 
-use_rho = True  
+use_rho = False 
 use_IR_spec_exp = False 
 
 
 in_rho  = "COMSOL_pressure_scan.txt"
 in_IR   = "Ek.dat"
 in_IR_spec = "Speck.dat"
-in_UV   = "0.1bar_Subt2__0__17-04-30-844.txt"
+in_UV   = "1.0bar_Subt2__0__17-08-23-927.txt"
 in_IR_spec_exp = "1.2bar_2.21e-1mbar_1308032U1.txt"
 
 """ 

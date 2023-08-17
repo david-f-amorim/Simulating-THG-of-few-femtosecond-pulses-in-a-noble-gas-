@@ -9,12 +9,12 @@ using  DelimitedFiles
 p_scan = false               # if true, run is counted as part of a pressure scan 
 
 save = true                  # if true, saves output plots, run parameters and UV spectrum
-show = true                  # if true, opens plots in GUI after run 
+show = false                  # if true, opens plots in GUI after run 
 txt_only = false             # if true, no plots are produced 
 
 read_IR = true               # if true: read input IR pulse from file; if false: use Gaussian approximation 
-read_ρ  = true              # if true: read gas density profile from file; if false: use pressure gradient approximation 
-read_UV = false              # if true: overlay measured UV output on simulated results   
+read_ρ  = false              # if true: read gas density profile from file; if false: use pressure gradient approximation 
+read_UV = true              # if true: overlay measured UV output on simulated results   
 
 IR_spec = false               # if true: read input IR FROG spectrum from file and overlay 
 show_IR = false              # if true and "read_IR" is true: overlay measured time-domain input pulse on plots
@@ -23,7 +23,7 @@ IR_spec_exp = false           # if true: read input IR spectrometer spectrum fro
 # ------------------ SET MEASURED PARAMETERS ------------------------
 
 gas = :Ar           # gas
-pres = 2.0          # central gas pressure [bar] 
+pres = 1.0          # central gas pressure [bar] 
 p_ed = 1e-3         # edge gas pressure [bar]
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when temporal beam profile is approximated as Gaussian)
