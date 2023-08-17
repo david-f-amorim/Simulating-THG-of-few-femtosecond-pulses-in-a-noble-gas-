@@ -1268,7 +1268,7 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
         plt.plot(p_arr, z_peak_arr*1e3, color=colour_cycle[i])
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"peak positions.png"),dpi=1000)
+    plt.savefig(os.path.join(out_path,"peak_positions.png"),dpi=1000)
     plt.show()
 
 # multi power, single dens model gas comparison 
@@ -1423,6 +1423,6 @@ else:
     #for gas in ["Ar", "Ne", "He", "N2", "Kr", "N2O", "Xe"]:   
      #   plot_singlePg_model_comp(sup_dir, gas, beam_power)
     #plot_multiP_singleg_model_comp(sup_dir, "Ne")
-    plot_gas_comp_singleP(sup_dir,400e-3,"coms")
-    #plot_gas_comp_multiP(sup_dir,"coms", [])
+    #plot_gas_comp_singleP(sup_dir,400e-3,"coms")
+    plot_gas_comp_multiP(sup_dir,"coms", [])
     #plot_singlePg_model_comp(sup_dir, "N2O", 400*1e-3)
