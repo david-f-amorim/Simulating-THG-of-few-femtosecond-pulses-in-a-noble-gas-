@@ -55,7 +55,7 @@ UV energy; started exhaustive new round of parameter scans; compared COMSOL dens
 			* COMSOL data/gradient data [2] (maybe only with Ar/Ne for now?)
 		+ in scan_eval: 
 			* replace phi scan with gas scan 
-			* make distinction between coms and grad  -> based on ion scan?!
+			* make distinction between coms and grad  
 			* make distinction between ADK and PPT (based on ion/non-ion code?)
 	
 
@@ -72,10 +72,12 @@ UV energy; started exhaustive new round of parameter scans; compared COMSOL dens
 		    7   - 150mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O                             
                     8   - 200mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O   
 		    9   - 300mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O
-		    10  - 400mW; ion; grad;    Ar, Ne,         He, N2,     
+		    10  - 400mW; ion; grad;    Ar, Ne,         He, N2, N2O    
 
 		  
 		  [17 sessions running!]
+
+			one process died!!
 
 	note: Xe and Kr, especially Xe, take a very long time to run!
 
@@ -83,6 +85,9 @@ UV energy; started exhaustive new round of parameter scans; compared COMSOL dens
 STOP USING ADK!! SWITCH BACK TO PPt!!
 		-> repeat sim??!!!   -> FOR NOW: AT LEAST DO THAT FOR AR AND NE
 		-> change dir name to make sure there is no overlap
+
+		Note: ADD suppresses multi photon ionisation; less computationally expensive but also less accurate at 
+			low pressures!
 
 
 ADD CHIRP FUNCTIONS!!! DO CHIRP SCAN!!  ->> prop material [give material and thickness], prop taylor [specify chirp in terms of taylor series]
