@@ -71,8 +71,7 @@ UV energy; started exhaustive new round of parameter scans; compared COMSOL dens
 - wait until simulations are done and then upload to S&S and GitHub			
 
 - compare gases 
-- identify conditions of interest
-	FINISH TABLE [TABLET!!]
+     => finish PP
 
 - email PP to vincent and josina in advance?!
 
