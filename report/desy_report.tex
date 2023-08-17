@@ -142,7 +142,7 @@ We choose $k(\omega) = \frac{n(\omega)}{c} \omega$ (neff??)
 The spectral phase acquired by propagating a distance $z$ is: $\phi(\omega; z) = \phi(\omega; 0)+ k z \equiv \phi(\omega; 0) + n(\omega) \frac{\omega}{c}z. $
 
 \subsection{The Unidirectional Pulse Propagation Equation and \emph{Luna} }
-The governing equation of ultrafast pulse propagation is the unidirectional pulse propagation equation (UPPE). Several variations exist but its general form for a pulse of frequency $\omega$ travelling in the $z$-direction is 
+There is a variety of differential equations that can be used to describe the propagation of an ultrashort laser pulse in a waveguide or free space. As is shown in [ref], most of these can be derived from the z-propagated unidirectional pulse propagation equation (UPPE). Several variations exist but its general form for a pulse of frequency $\omega$ travelling in the $z$-direction is 
 \begin{equation}
 \frac{\partial}{\partial z} \mathbf{E}(\omega, \mathbf{k}_\perp, z)= \mathcal{L}(\omega, \mathbf{k}_\perp, z)\mathbf{E}(\omega, \mathbf{k}_\perp, z) + \frac{i \omega}{N_{\text{nl}}} \mathbf{P}_\text{nl}(\omega, \mathbf{k}_\perp, z),
 \end{equation}
@@ -154,7 +154,7 @@ The nonlinear polarisation response to a given electric field is computed most e
 Note that the real-space-time domain field $\mathbf{E}(t, \mathbf{r}_\perp, z)$ can be recovered from $\mathbf{E}(\omega, \mathbf{k}_\perp, z)$ via the appropriate inverse transformations $\mathcal{F}^{-1}$ and $\mathcal{T}^{-1}_\perp$. \par 
 
 Hence, once the operators $\mathcal{L}$ and $\mathcal{P}_\text{nl}$ as well as appropriate definitions of the transverse (reciprocal) space $\mathbf{k}_\perp$ and associated transform $\mathcal{T}_\perp$ are known, the UPPE can be solved as an initial value problem in $z$, using appropriate cycles of transforms at each step. \par 
-The choice of $\mathbf{k}_\perp$ and $\mathcal{T}_\perp$ is mostly a matter of the modal expansion of the field in terms of a set of orthogonal spatial modes. These may be waveguide modes or, in the present case, free space modes. The frequency-domain field can be expanded as 
+The choice of $\mathbf{k}_\perp$ and $\mathcal{T}_\perp$ is mostly a matter of the modal expansion of the field in terms of a set of orthogonal spatial modes [the choice of the transform also affects the shape of the linear operator; Note: UPPE derived from Maxwell's equation by substituting a modal expansion!]. These may be waveguide modes or, in the present case, free space modes. The frequency-domain field can be expanded as 
 \begin{equation}
 \mathbf{E}(\omega, \mathbf{r}_\perp, z) = \sum_j \tilde{E}_j (\omega,z)  \hat{\mathbf{e}}_j (\mathbf{r}_\perp, z),
 \end{equation}
@@ -184,6 +184,27 @@ where $J_0$ is the zeroth-order Bessel function. DEFINE THIS IN APPLICATION TO E
 ...
 Note that this assumes radial symmetry about the propagation axis, which is justified due to the relevant gemoetry of the gas cell. THUS, ONE-DIMENSIONAL TRANSFORM ONLY IN r?!
 
+-----------------------------------------------------------------------------------------------------
+The total nonlinear polarisation can be calculated from the total electric field while separating Kerr and ionisation contributions (ignoring higher-order terms of \eqref{eq:P(E)_expansion}):
+\begin{equation}
+\mathbf{P}_\textbf{nl} (t, \mathbf{r}_\perp, z) = \mathbf{P}_\text{Kerr}(\mathbf{E}) + \mathbf{P}_\text{ion} (\mathbf{E}).
+\end{equation}
+Assuming that $\chi^{(3)}$ is not dependent of frequency, and hence that THG is instantaneous, as well as approximating the third-order susceptibility as a scalar due to the isotropy of the gas, the Kerr term can be written as 
+\begin{equation}
+\mathbf{P}_\text{Kerr}(t, \mathbf{r}_\perp, z) = \epsilon_0 \chi^{(3)} |\mathbf{E}(t, \mathbf{r}_\perp, z)|^2\mathbf{E}(t, \mathbf{r}_\perp, z).
+\end{equation}
+At sufficiently high intensities, photoionisation effects set in. This affects pulse propagation as the freed electrons are polarisable and as energy is lost to the ionisation potential. [NOTE; the following two things should be $n_0$ and $n_e$] If $a_0$ is the original number of neutral atoms and $a_e(t, \mathbf{r}_\perp, z)$ the number of free electrons at a given point in time and space then $a_e$ can be calculated via
+\begin{equation}
+\frac{\partial}{\partial t} a_e = (a_0 - a_e) W(\mathbf{E})
+\end{equation}
+where $W(\mathbf{E})$ is the ionisation rate. The ionisation rate can be found via THE ADK MODEL?? [link papers]. Given $a_e$, the induced nonlinear polarisation due to ionisation can be shown to be 
+\begin{equation}
+\frac{\partial}{\partial t} \mathbf{P}_\text{Ion}(t, \mathbf{r}_\perp, z) = \mathbf{E}(t, \mathbf{r}_\perp, z) \frac{I_p}{|\mathbf{E}(t, \mathbf{r}_\perp, z)|^2} \frac{\partial}{\partial t} a_e (t, \mathbf{r}_\perp, z ) + \frac{e^2}{m_e^2} \int_{-\infty}^t a_e (t', \mathbf{r}_\perp, z) \mathbf{E}(t', \mathbf{r}_\perp, z) dt',
+\end{equation}
+where $I_p$ is the ionisation energy, $e$ and $m_e$ are the electronic charge and mass.  
+-------------------------------------------------------------------------------------------------------------------------
+
+
 ---------------------------------------------------------------------------------------------
 NOTE: small e should be changed to mathcal E or something to avoid confusion! not basis vector but field! orthogonal with respect to int dr, not dot product!
 $\int_S \hat{\mathbf{e}_j} \cdot \hat{\mathbf{e}}_k d^2 \mathbf{r}_\perp = \delta_{jk}$
@@ -211,6 +232,10 @@ HOW TO FIND THE SPATIAL MODE VECTORS???
 	MAYBE VECTORS NOT REALLY SPATIAL!??
 
 POTENTIALLY START WITH THIS SECTION?
+
+Hankel transofmr is used instead of eq 9 for modal decomposition! Hankel transform essentially 2D Fourier transform for radially symmetric function
+
+STILL PLANE WAVES!!
 
 \section{The STARLIGHT Beamline}
 

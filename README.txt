@@ -40,15 +40,10 @@ fundamental wavelength to 730nm; added peak intensity information to pressure sc
 prepared table of relative Ne/Ar saturation pressures and energies ; 
 compared performance of different gases; extended scan_eval to also investigate pulse duration; 
 added option to feed in COMSOL data; extended scan_eval to also investigate position of peak
-UV energy; started exhaustive new round of parameter scans; 
+UV energy; started exhaustive new round of parameter scans; compared COMSOL density profile to grad profile; compared density profiles of different gases; 
 
 
-- reproduce original plots with overlayed measured UV spectra [realistically at higher pressures!]			
-- prepare questions for conversation with Chris [Wed]
-	* documentation on nonlinear responses
-	* modal decomposition for radially symmetric free-space [mathcal{T} is Hankel transform? Bessel modes?]
-	* phase output? seems to work with real fields tho
-
+- reproduce original plots with overlayed measured UV spectra [realistically at higher pressures!]
 
 	- carry out new round of pressure scans
 
@@ -60,7 +55,8 @@ UV energy; started exhaustive new round of parameter scans;
 			* COMSOL data/gradient data [2] (maybe only with Ar/Ne for now?)
 		+ in scan_eval: 
 			* replace phi scan with gas scan 
-			* make distinction between coms and grad
+			* make distinction between coms and grad  -> based on ion scan?!
+			* make distinction between ADK and PPT (based on ion/non-ion code?)
 	
 
 		CARRY OUT LAST TESTS AND THEN START RUNNING SCANS!
@@ -68,22 +64,30 @@ UV energy; started exhaustive new round of parameter scans;
 		started: [20 rows]
 		    1	- 075mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all done; upload to Sync&Share + GitHub]
 		    2	- 150mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all done; upload to Sync&Share + GitHub]
-   		    3	- 200mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all but Xe  ]
-		    4	- 300mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all but Xe   ]
-		    5	- 400mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [done: He, N2, Ne]
+   		    3	- 200mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all done]
+		    4	- 300mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all but Xe]
+		    5	- 400mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all but Xe]
 		
-		    6   - 075mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O   [done: Ar,He, N2, Ne ]  
-		    7   - 150mW; ion; grad;    Ar, Ne, Kr,                              
+		    6   - 075mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O   [all but Kr, Xe ]  
+		    7   - 150mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O                             
                     8   - 200mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O   
-		    9   - 300mW; ion; grad; 
-		    10  - 400mW; ion; grad;        
+		    9   - 300mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O
+		    10  - 400mW; ion; grad;    Ar, Ne,         He, N2,     
 
 		  
 		  [17 sessions running!]
 
+	note: Xe and Kr, especially Xe, take a very long time to run!
 
-- continue writing report 
-	NOTE: startlight not actually part of beamline!!
+
+STOP USING ADK!! SWITCH BACK TO PPt!!
+		-> repeat sim??!!!   -> FOR NOW: AT LEAST DO THAT FOR AR AND NE
+		-> change dir name to make sure there is no overlap
+
+
+ADD CHIRP FUNCTIONS!!! DO CHIRP SCAN!!  ->> prop material [give material and thickness], prop taylor [specify chirp in terms of taylor series]
+
+prepare scan_analysis for meeting Friday!   
 
 	
 	

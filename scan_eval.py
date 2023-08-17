@@ -10,11 +10,11 @@ import os
 
 # ---------- EXECUTION SETTINGS --------------------------------------
 
-sup_dir    = "scans_new"
+sup_dir    = "scan_new_prelims"
 out_dir    = "new_scan_analysis"
 
 
-single_dir = "scans\scan_300.0mW_Ar_0.0rad_f_no-ion" 
+single_dir = "scan_new_prelims\\scan_150.0mW_Ar_0.0rad_f_ion_coms" 
 single = False 
 n = 15
 
@@ -22,14 +22,14 @@ n = 15
 
 # get paths to all files in super directory with different 
 # beam powers and all other parameters equal
-def power_comp(sup_dir, gas, phi,ion, kerr):
+def power_comp(sup_dir, gas, phi,ion, kerr, dens_mod):
 
     path_arr =np.array([])
     beam_en_arr = np.array([])
 
     for dir in os.listdir(sup_dir):
 
-        if os.path.isdir(os.path.join(sup_dir,dir)):
+        if os.path.isdir(os.path.join(sup_dir,dir)) and (dir[-4:]==dens_mod):
             
             gas0, phi0, beam_en, ion0, kerr0, w0, tau = get_params(os.path.join(sup_dir,dir))
 
@@ -48,14 +48,14 @@ def power_comp(sup_dir, gas, phi,ion, kerr):
 
 # get paths to all files in super directory with different 
 # CEO phases and all other parameters equal
-def phi_comp(sup_dir, gas, beam_en, ion,kerr):
+def phi_comp(sup_dir, gas, beam_en, ion,kerr, dens_mod):
 
     path_arr =np.array([])
     phi_arr = np.array([])
 
     for dir in os.listdir(sup_dir):
 
-        if os.path.isdir(os.path.join(sup_dir,dir)):
+        if os.path.isdir(os.path.join(sup_dir,dir)) and (dir[-4:]==dens_mod):
             
             gas0, phi, beam_en0, ion0, kerr0, _, _ = get_params(os.path.join(sup_dir,dir))
 
@@ -75,11 +75,11 @@ def phi_comp(sup_dir, gas, beam_en, ion,kerr):
 
 # get paths to all files in super directory with different 
 # beam energies and all other parameters equal
-def gas_comp(sup_dir,phi,beam_en,ion, kerr):
+def gas_comp(sup_dir,phi,beam_en,ion, kerr, dens_mod):
 
     path_arr = []
 
-    for dir in os.listdir(sup_dir):
+    for dir in os.listdir(sup_dir) and (dir[-4:]==dens_mod):
         if os.path.isdir(os.path.join(sup_dir,dir)):
             _,phi0, beam_en0, ion0, kerr0, _, _ = get_params(os.path.join(sup_dir,dir))
 
@@ -93,14 +93,14 @@ def gas_comp(sup_dir,phi,beam_en,ion, kerr):
 # get paths to all files in super directory with different 
 # ionisation and all other parameters [apart from power!] equal
 # (only get path to ion file if corresponding non-ion file exists)
-def ion_comp(sup_dir, gas, phi, kerr):
+def ion_comp(sup_dir, gas, phi, kerr, dens_mod):
 
     path_arr_no_ion = np.array([])
     beam_en_arr = np.array([])
     path_arr_ion = np.array([])
 
     for dir in os.listdir(sup_dir):
-        if os.path.isdir(os.path.join(sup_dir,dir)):
+        if os.path.isdir(os.path.join(sup_dir,dir)) and (dir[-4:]==dens_mod):
             gas0, phi0, beam_en, ion, kerr0, w, tau = get_params(os.path.join(sup_dir,dir))
 
             cond = (gas0==gas) & (phi0 == phi) & (kerr0 == kerr) & (ion=="false")
@@ -110,7 +110,7 @@ def ion_comp(sup_dir, gas, phi, kerr):
                 beam_en_arr = np.append(beam_en_arr,beam_en)
 
     for dir in os.listdir(sup_dir):
-        if os.path.isdir(os.path.join(sup_dir,dir)):
+        if os.path.isdir(os.path.join(sup_dir,dir)) and (dir[-4:]==dens_mod):
             gas0, phi0, beam_en, ion, kerr0, w, tau = get_params(os.path.join(sup_dir,dir))
 
             cond = (gas0==gas) & (phi0 == phi) & (kerr0 == kerr) & (ion=="true") & (beam_en in beam_en_arr)
@@ -124,6 +124,58 @@ def ion_comp(sup_dir, gas, phi, kerr):
     beam_en_arr = beam_en_arr[beam_en_arr.argsort()]
 
     return path_arr_no_ion, path_arr_ion, beam_en_arr, w, tau 
+
+# for a single gas and a single power [in mW] show both dens models
+def singlePg_model_comp(sup_dir, gas, beam_p):
+
+    for dir in os.listdir(sup_dir):
+        if os.path.isdir(os.path.join(sup_dir,dir)):
+            gas0, _, beam_en, _, _, w, tau = get_params(os.path.join(sup_dir,dir))
+
+            cond_coms = (gas0==gas) & (beam_en*1e3==beam_p) & (dir[-4:]=="coms")
+            cond_grad = (gas0==gas) & (beam_en*1e3==beam_p) & (dir[-4:]=="grad")
+
+            if cond_coms:
+                path_coms =os.path.join(sup_dir,dir)
+            elif cond_grad:
+                path_grad =os.path.join(sup_dir,dir)
+             
+
+    return path_coms, path_grad, beam_en, w, tau      
+
+# compare power scans of single gas with different dens models 
+def multiP_singleg_model_comp(sup_dir, gas):
+
+    path_arr_coms = np.array([])
+    beam_en_arr = np.array([])
+    path_arr_grad = np.array([])
+
+    for dir in os.listdir(sup_dir):
+        if os.path.isdir(os.path.join(sup_dir,dir)):
+            gas0, _, beam_en, _, _, w, tau = get_params(os.path.join(sup_dir,dir))
+
+            cond = (gas0==gas)  & (dir[-4:]=="coms") & (beam_en in beam_en_arr)
+
+            if cond:
+                path_arr_no_ion = np.append(path_arr_no_ion,os.path.join(sup_dir,dir))
+                beam_en_arr = np.append(beam_en_arr,beam_en)
+
+    for dir in os.listdir(sup_dir):
+        if os.path.isdir(os.path.join(sup_dir,dir)):
+            gas0, _, beam_en, _, _, w, tau = get_params(os.path.join(sup_dir,dir))
+
+            cond = (gas0==gas)  & (dir[-4:]=="grad") & (beam_en in beam_en_arr)
+
+            if cond:
+                path_arr_ion =np.append(path_arr_ion,os.path.join(sup_dir,dir))
+           
+
+    path_arr_no_coms = path_arr_coms[beam_en_arr.argsort()] 
+    path_arr_grad = path_arr_grad[beam_en_arr.argsort()]
+    beam_en_arr = beam_en_arr[beam_en_arr.argsort()]
+
+    return path_arr_grad, path_arr_coms, beam_en_arr, w, tau 
+
 
 # ---------- DATA EXTRACTION --------------------------------------
 
@@ -222,6 +274,7 @@ def reduce_spectra(path,n):
     return data_cut, p_cut     
 
 # ---------- VISUALISATION --------------------------------------
+colour_cycle = ["grey", "black", "red", "blue", "purple", "green", "cyan"]
 
 # plot UV energy, THG conversion efficiency and UV spectra for a 
 # single scan 
@@ -231,10 +284,12 @@ def plot_single(single_dir, n=15):
     p_peak, en_peak, ef_peak, tau_peak, min_tau_p = get_peaks(single_dir)
     gas, phi, beam_en, ion, kerr, _, _ = get_params(single_dir)
 
+    dens_mod = single_dir[-4:]
+
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.84)
     plt.suptitle("Simulated UV energies", fontsize=16)
-    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.1f}PW/cm^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=10)
+    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.1f}PW/cm^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10, pad=10)
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, en_arr*1e9, color="blue")
@@ -247,7 +302,7 @@ def plot_single(single_dir, n=15):
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.84)
     plt.suptitle("Simulated THG efficiencies", fontsize=16)
-    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.1f}PW/cm^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=10)
+    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.1f}PW/cm^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10, pad=10)
     plt.ylabel("Efficiency (%)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, ef_arr*1e2, color="blue")
@@ -260,20 +315,20 @@ def plot_single(single_dir, n=15):
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.84)
     plt.suptitle("Simulated pulse durations", fontsize=16)
-    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.1f}PW/cm^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=10)
+    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.1f}PW/cm^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10, pad=10)
     plt.ylabel("Pulse duration (fs)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, tau_arr*1e15, color="blue")
     plt.scatter(p_arr, tau_arr*1e15, color="blue", label="Minimum: {0:.2f}fs at {1}bar".format(tau_peak*1e15, min_tau_p))
     plt.legend()
 
-    plt.savefig(os.path.join(single_dir,"efficiencies.png"),dpi=1000)
+    plt.savefig(os.path.join(single_dir,"durations.png"),dpi=1000)
     plt.show()
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.84)
     plt.suptitle("Position of peak UV energy", fontsize=16)
-    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.1f}PW/cm^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=10)
+    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.1f}PW/cm^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10, pad=10)
     plt.ylabel("Position (mm)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, zpeak_arr*1e3, color="blue")
@@ -286,7 +341,7 @@ def plot_single(single_dir, n=15):
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.82)
     plt.suptitle("Simulated UV spectra", fontsize=16)
-    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.1f}PW/cm^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=18)
+    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.1f}PW/cm^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10, pad=18)
     plt.ylabel("Intensity (arb. units)")
     plt.xlabel("Wavelength (nm)")
 
@@ -305,8 +360,76 @@ def plot_single(single_dir, n=15):
     plt.savefig(os.path.join(single_dir,"spectra.png"),dpi=1000)
     plt.show()
 
+# compare single gas, single beam power, two dens models
+def plot_singlePg_model_comp(sup_dir, gas, beam_p):
+
+    path_coms, path_grad, beam_en, w, tau = singlePg_model_comp(sup_dir, gas, beam_p)
+
+    p_arr_coms, en_arr_coms, ef_arr_coms, tau_arr_coms, zpeak_arr_coms = get_PrEnEf(path_coms)
+    p_peak_coms, en_peak_coms, ef_peak_coms, tau_peak_coms, min_tau_p_coms = get_peaks(path_coms)
+    p_arr_grad, en_arr_grad, ef_arr_grad, tau_arr_grad, zpeak_arr_grad = get_PrEnEf(path_grad)
+    p_peak_grad, en_peak_grad, ef_peak_grad, tau_peak_grad, min_tau_p_grad = get_peaks(path_grad)
+
+    gas, phi, beam_en, ion, kerr, _, _ = get_params(path_coms)
+
+
+    plt.figure(figsize=[7.04, 5.28]) 
+    plt.subplots_adjust(top=0.84)
+    plt.suptitle("Simulated UV energies", fontsize=16)
+    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.1f}PW/cm^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=10)
+    plt.ylabel("Energy (nJ)")
+    plt.xlabel("Central pressure (bar)")
+    plt.plot(p_arr_coms, en_arr_coms*1e9, color="blue")
+    plt.scatter(p_arr_coms, en_arr_coms*1e9, color="blue", label="COMSOL (peak: {0:.1f}nJ at {1}bar)".format(en_peak_coms*1e9, p_peak_coms))
+    plt.plot(p_arr_grad, en_arr_grad*1e9, color="red")
+    plt.scatter(p_arr_grad, en_arr_grad*1e9, color="red", label="gradient (peak: {0:.1f}nJ at {1}bar)".format(en_peak_grad*1e9, p_peak_grad))
+    plt.legend()
+
+    plt.savefig(os.path.join(path_coms,"energies.png"),dpi=1000)
+    plt.savefig(os.path.join(path_grad,"energies.png"),dpi=1000)
+    plt.show()
+
+    plt.figure(figsize=[7.04, 5.28]) 
+    plt.subplots_adjust(top=0.84)
+    plt.suptitle("Simulated THG efficiencies", fontsize=16)
+    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.1f}PW/cm^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=10)
+    plt.ylabel("Efficiency (%)")
+    plt.xlabel("Central pressure (bar)")
+    plt.plot(p_arr_coms, ef_arr_coms*1e2, color="blue")
+    plt.scatter(p_arr_coms, ef_arr_coms*1e2, color="blue", label="COMSOL (peak: {0:.2f}% at {1}bar)".format(ef_peak_coms*1e2, p_peak_coms))
+    plt.plot(p_arr_grad, ef_arr_grad*1e2, color="red")
+    plt.scatter(p_arr_grad, ef_arr_grad*1e2, color="red", label="gradient (peak: {0:.2f}% at {1}bar)".format(ef_peak_grad*1e2, p_peak_grad))
+    plt.legend()
+
+    plt.savefig(os.path.join(path_coms,"efficiencies.png"),dpi=1000)
+    plt.savefig(os.path.join(path_grad,"efficiencies.png"),dpi=1000)
+    plt.show()
+
+    plt.figure(figsize=[7.04, 5.28]) 
+    plt.subplots_adjust(top=0.84)
+    plt.suptitle("Simulated pulse durations", fontsize=16)
+    plt.title("Gas: "+gas+"; beam energy: {0}mW (I= {2:.1f}PW/cm^2); CEO phase: {1:.2f}rad; ".format(beam_en*1e6, phi, get_intensity(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=10)
+    plt.ylabel("Pulse duration (fs)")
+    plt.xlabel("Central pressure (bar)")
+    plt.plot(p_arr_coms, tau_arr_coms*1e15, color="blue")
+    plt.scatter(p_arr_coms, tau_arr_coms*1e15, color="blue", label="COMSOL (minimum: {0:.2f}fs at {1}bar)".format(tau_peak_coms*1e15, min_tau_p_coms))
+    plt.plot(p_arr_grad, tau_arr_grad*1e15, color="red")
+    plt.scatter(p_arr_grad, tau_arr_grad*1e15, color="red", label="gradient (minimum: {0:.2f}fs at {1}bar)".format(tau_peak_grad*1e15, min_tau_p_grad))
+    plt.legend()
+
+    plt.savefig(os.path.join(path_coms,"durations.png"),dpi=1000)
+    plt.savefig(os.path.join(path_grad,"durations.png"),dpi=1000)
+    plt.show()
+
+# peak investigations for multi power, single gas, dens model comparison 
+def plot_multiP_singleg_model_comp(sup_dir, gas):
+
+    out_path = os.path.join(out_dir, "beamP_scan_"+gas+"_dens_comp")
+    if not os.path.isdir(out_path): 
+        os.mkdir(out_path)
+
 # plot UV energy and THG conversion efficiency for different beam power
-def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
+def plot_beamP_scan(sup_dir, gas, phi, ion, kerr, dens_mod):
 
     # create output directory
     if ion=="true":
@@ -314,12 +437,12 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
     else:    
         ion_string="no-ion"    
 
-    out_path = os.path.join(out_dir, "beamP_scan_"+gas+"_"+str(phi)+"rad_"+kerr+"_"+ion_string)
+    out_path = os.path.join(out_dir, "beamP_scan_"+gas+"_"+str(phi)+"rad_"+kerr+"_"+ion_string+"_"+dens_mod)
     if not os.path.isdir(out_path): 
         os.mkdir(out_path)
 
     # get data 
-    path_arr, beam_en_arr, w0, tau = power_comp(sup_dir, gas, phi,ion, kerr)
+    path_arr, beam_en_arr, w0, tau = power_comp(sup_dir, gas, phi,ion, kerr, dens_mod)
 
     # auxiliary functions (beam_en in mW, I in PW/cm^2):
     def p2i(beam_en):
@@ -334,7 +457,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Simulated UV energies", fontsize=16)
-    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
     
@@ -350,7 +473,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
     # PLOT 2: efficiency vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Simulated THG efficiencies", fontsize=16)
-    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Efficiency (%)")
     plt.xlabel("Central pressure (bar)")
     
@@ -366,7 +489,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
     # PLOT 3: pulse duration vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Simulated UV pulse durations", fontsize=16)
-    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Pulse duration (fs)")
     plt.xlabel("Central pressure (bar)")
     
@@ -382,7 +505,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
     # PLOT 4: z_peak vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Position of peak UV energy", fontsize=16)
-    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Position (mm)")
     plt.xlabel("Central pressure (bar)")
     
@@ -409,7 +532,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
-    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.suptitle("Simulated peak UV energies", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Peak UV energy (nJ)")
@@ -424,7 +547,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
-    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.suptitle("Simulated peak UV efficiencies", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Efficiency (%)")
@@ -438,7 +561,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
-    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.suptitle("Simulated saturation pressures", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Saturation pressure (bar)")
@@ -452,7 +575,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
-    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.suptitle("Simulated UV pulse durations", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Minimum pulse duration (fs)")
@@ -466,7 +589,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
-    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.suptitle("Simulated minimal pulse duration pressure", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Minimum pulse duration pressure (bar)")
@@ -480,16 +603,16 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr):
 
 # plot UV energy and THG conversion efficiency for different beam powers
 # with and without ionisation
-def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
+def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
 
     # create output directory    
 
-    out_path = os.path.join(out_dir, "beamP_ion_scan_"+gas+"_"+str(phi)+"rad_"+kerr)
+    out_path = os.path.join(out_dir, "beamP_ion_scan_"+gas+"_"+str(phi)+"rad_"+kerr+"_"+dens_mod)
     if not os.path.isdir(out_path): 
         os.mkdir(out_path)
 
     # get data 
-    path_arr_no_ion, path_arr_ion, beam_en_arr, w0, tau = ion_comp(sup_dir, gas, phi, kerr)
+    path_arr_no_ion, path_arr_ion, beam_en_arr, w0, tau = ion_comp(sup_dir, gas, phi, kerr, dens_mod)
 
      # auxiliary functions (beam_en in mW, I in PW/cm^2):
     def p2i(beam_en):
@@ -524,7 +647,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
     # PLOT 2: efficiency vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Simulated THG efficiencies", fontsize=16)
-    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr, fontsize=10)
+    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Efficiency (%)")
     plt.xlabel("Central pressure (bar)")
     
@@ -544,7 +667,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
     # PLOT 3: efficiency vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Simulated UV pulse duration", fontsize=16)
-    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr, fontsize=10)
+    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Pulse duration (fs)")
     plt.xlabel("Central pressure (bar)")
     
@@ -564,7 +687,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
     # PLOT 3: efficiency vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Position of peak UV energy", fontsize=16)
-    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr, fontsize=10)
+    plt.title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Position (mm)")
     plt.xlabel("Central pressure (bar)")
     
@@ -604,7 +727,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
-    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr, fontsize=10)
+    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; model: "+dens_mod, fontsize=10)
     plt.suptitle("Simulated peak UV energies", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Peak UV energy (nJ)")
@@ -622,7 +745,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
-    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr, fontsize=10)
+    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; model: "+dens_mod, fontsize=10)
     plt.suptitle("Simulated peak UV efficiencies", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Efficiency (%)")
@@ -639,7 +762,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
-    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr, fontsize=10)
+    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; model: "+dens_mod, fontsize=10)
     plt.suptitle("Simulated saturation pressures", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Saturation pressure (bar)")
@@ -655,7 +778,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
-    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr, fontsize=10)
+    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; model: "+dens_mod, fontsize=10)
     plt.suptitle("Simulated UV pulse durations ", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Mininum pulse duration (fs)")
@@ -671,7 +794,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
-    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr, fontsize=10)
+    ax.set_title("Gas: "+gas+"; CEO phase: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; model: "+dens_mod, fontsize=10)
     plt.suptitle("Simulated minimum pulse duration pressures", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Mininum pulse duration pressure (bar)")
@@ -686,7 +809,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr):
     plt.show()   
 
 # plot UV energy and THG conversion efficiency for different beam power
-def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
+def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr, dens_mod):
 
     # create output directory
     if ion=="true":
@@ -694,12 +817,12 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
     else:    
         ion_string="no-ion"    
 
-    out_path = os.path.join(out_dir, "phi_scan_"+gas+"_{0}mW_".format(beam_en*1e6)+kerr+"_"+ion_string)
+    out_path = os.path.join(out_dir, "phi_scan_"+gas+"_{0}mW_".format(beam_en*1e6)+kerr+"_"+ion_string+"_"+dens_mod)
     if not os.path.isdir(out_path): 
         os.mkdir(out_path)
 
     # get data 
-    path_arr, phi_arr, I = phi_comp(sup_dir, gas, beam_en,ion, kerr)
+    path_arr, phi_arr, I = phi_comp(sup_dir, gas, beam_en,ion, kerr, dens_mod)
 
     # PLOT 1: energy vs pressure 
     cmap = plt.get_cmap("viridis")
@@ -707,7 +830,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Simulated UV energies", fontsize=16)
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+"response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
     
@@ -723,7 +846,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
     # PLOT 2: efficiency vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Simulated THG efficiencies", fontsize=16)
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Efficiency (%)")
     plt.xlabel("Central pressure (bar)")
     
@@ -739,7 +862,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
     # PLOT 3: pulse duration vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Simulated UV pulse durations", fontsize=16)
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Pulse duration (fs)")
     plt.xlabel("Central pressure (bar)")
     
@@ -755,7 +878,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
     # PLOT 4: z_peak vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Position of peak UV energy", fontsize=16)
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Position (mm)")
     plt.xlabel("Central pressure (bar)")
     
@@ -781,7 +904,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
         peak_arr[i,5] = min_tau_p 
 
     plt.figure(figsize=[7.04, 5.28])
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.suptitle("Simulated peak UV energies", fontsize=16)
     plt.xlabel("CEO phase (rad)")
     plt.ylabel("Peak UV energy (nJ)")
@@ -792,7 +915,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
     plt.show()
 
     plt.figure(figsize=[7.04, 5.28])
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.suptitle("Simulated peak UV efficiencies", fontsize=16)
     plt.xlabel("CEO phase (rad)")
     plt.ylabel("Efficiency (%)")
@@ -803,7 +926,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
     plt.show()
 
     plt.figure(figsize=[7.04, 5.28])
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.suptitle("Simulated saturation pressures", fontsize=16)
     plt.xlabel("CEO phase (rad)")
     plt.ylabel("Saturation pressure (bar)")
@@ -839,14 +962,9 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr):
 if single:
     plot_single(single_dir, n)
 else:
-    plot_beamP_scan(sup_dir, "Ar", 0.0, "true", "f") 
-    plot_beamP_scan(sup_dir, "Ar", 0.0, "false", "f") 
-    plot_beamP_ion_scan(sup_dir, "Ar", 0.0, "f") 
-    plot_phi_scan(sup_dir,"Ar", 150e-6, "true", "f")
-
-    plot_beamP_scan(sup_dir, "Ne", 0.0, "true", "f") 
-    plot_beamP_scan(sup_dir, "Ne", 0.0, "false", "f") 
-    plot_beamP_ion_scan(sup_dir, "Ne", 0.0, "f") 
+    #plot_beamP_scan(sup_dir, "Xe", 0.0, "true", "f", "coms") 
+    #plot_beamP_scan(sup_dir, "Xe", 0.0, "true", "f", "grad") 
+    plot_singlePg_model_comp(sup_dir, "Ar", 300e-3)
     
 
 

@@ -1,0 +1,16 @@
+gas     = N2O
+p_ed    = 0.001
+p_const = false
+τ       = 6.140914135627119e-15
+λ0      = 7.3e-7
+w0      = 6.5e-5
+ϕ       = 0.0
+energy  = 0.00015
+L       = 0.003
+kerr    = f
+ion     = true
+propz   = -0.0015
+
+# IR input beam read from: input/IRpulse.dat
+
+# Gas density distribution read from: input/dens_5.1bar.dat
