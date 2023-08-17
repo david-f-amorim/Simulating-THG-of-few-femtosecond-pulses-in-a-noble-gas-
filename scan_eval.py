@@ -14,8 +14,8 @@ sup_dir    = "scan_new_prelims"
 out_dir    = "new_scan_analysis"
 
 
-single_dir = "scan_new_prelims\\scan_150.0mW_Ar_0.0rad_f_ion_coms" 
-single = False 
+single_dir = "scan_new_prelims\\scan_300.0mW_Ar_0.0rad_f_ion_grad" 
+single = False
 n = 15
 
 # ---------- FILE EXTRACTION --------------------------------------
@@ -336,7 +336,7 @@ def plot_single(single_dir, n=15):
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, en_arr*1e9, color="blue")
     plt.scatter(p_arr, en_arr*1e9, color="blue", label="Peak: {0:.1f}nJ at {1}bar".format(en_peak*1e9, p_peak))
-    plt.legend(location="upper left")
+    plt.legend(loc="upper left")
 
     plt.savefig(os.path.join(single_dir,"energies.png"),dpi=1000)
     plt.show()
@@ -741,7 +741,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr, dens_mod):
         plt.plot(p_arr, z_peak_arr*1e3, color=cmap(cidx[i]))
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
+    plt.savefig(os.path.join(out_path,"peak_positions.png"),dpi=1000)
     plt.show()
 
     # PLOTS 4-7: peak investigation 
@@ -1268,7 +1268,7 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
         plt.plot(p_arr, z_peak_arr*1e3, color=colour_cycle[i])
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
+    plt.savefig(os.path.join(out_path,"peak positions.png"),dpi=1000)
     plt.show()
 
 # multi power, single dens model gas comparison 
@@ -1418,11 +1418,11 @@ else:
      #   plot_beamP_scan(sup_dir, gas, 0.0, "true", "f", "grad") 
          #plot_multiP_singleg_model_comp(sup_dir, gas)
    
-    #beam_power = 400*1e-3
+    beam_power = 400*1e-3
 
     #for gas in ["Ar", "Ne", "He", "N2", "Kr", "N2O", "Xe"]:   
      #   plot_singlePg_model_comp(sup_dir, gas, beam_power)
     #plot_multiP_singleg_model_comp(sup_dir, "Ne")
-    #plot_gas_comp_singleP(sup_dir,75e-3,"grad")
-    #plot_gas_comp_multiP(sup_dir,"grad", ["Xe", "Kr", "N2O", "N2"])
-    plot_singlePg_model_comp(sup_dir, "N2O", 400*1e-3)
+    plot_gas_comp_singleP(sup_dir,400e-3,"coms")
+    #plot_gas_comp_multiP(sup_dir,"coms", [])
+    #plot_singlePg_model_comp(sup_dir, "N2O", 400*1e-3)

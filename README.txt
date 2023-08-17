@@ -62,10 +62,10 @@ UV energy; started exhaustive new round of parameter scans; compared COMSOL dens
 		    7   - 150mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O                             
                     8   - 200mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O   
 		    9   - 300mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O
-		    10  - 400mW; ion; grad;    Ar, Ne, Kr,     He, N2, N2O    
+		    10  - 400mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O    
 
 		  
-		  [17 sessions running!]
+		  [17 sessions running; now 15]
 		  [one process died! find out which!]
 
 - wait until simulations are done and then upload to S&S and GitHub			
