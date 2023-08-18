@@ -45,30 +45,32 @@ UV energy; started exhaustive new round of parameter scans; compared COMSOL dens
 
 - carry out new round of pressure scans
 
-		+ varied variables: 
-			* beam power (75mW, 150mW,200mW, 300mW, 400mW) [5]
-			* pressure (0.1bar, 0.2bar,...,5.1bar) [50]
-			* gas (Ne, Ar, Xe, Kr, He, N2, N2O) [7]
-			* COMSOL data/gradient data [2] 
-	
-		started: [with ADK ionisation!]
-		    1	- 075mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all done]
-		    2	- 150mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all done]
-   		    3	- 200mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all done]
-		    4	- 300mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all but Xe]
-		    5	- 400mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O    [all but Xe]
 		
-		    6   - 075mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O   [all but Kr, Xe ]  
+		started: [with ADK ionisation!]
+		    1	- 075mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6  
+		    2	- 150mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6       
+   		    3	- 200mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6        
+		    4	- 300mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O        
+		    5	- 400mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O        
+		
+		    6   - 075mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O         
 		    7   - 150mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O                             
                     8   - 200mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O   
 		    9   - 300mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O
 		    10  - 400mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O    
 
-		  
-		  [17 sessions running; now 15]
 		  [one process died! find out which!]
+		  [run O2 & SF6 over the weekend]
 
-- wait until simulations are done and then upload to S&S and GitHub			
+                 => wait until simulations are done and then upload to S&S and GitHub			
+
+- chirp scans with Neon; [+- 8fs ?]; 5bar; 400mW -> pulse duration; pulse energy; SPECTRUM!!
+
+
+
+- get COMSOL model of old cell
+
+- Monday 4th: presentation 
 
 	          
 Week 6
@@ -76,8 +78,6 @@ Week 6
 
 
 
-
-- reproduce original plots with overlayed measured UV spectra [realistically at higher pressures!]
 - switch back to PPT eventually
 - add chirp functions and do chirp scan (prop_material, prop_taylor)
 

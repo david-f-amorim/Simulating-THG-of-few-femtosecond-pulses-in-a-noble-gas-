@@ -14,7 +14,7 @@ txt_only = false             # if true, no plots are produced
 
 read_IR = true               # if true: read input IR pulse from file; if false: use Gaussian approximation 
 read_ρ  = false              # if true: read gas density profile from file; if false: use pressure gradient approximation 
-read_UV = true              # if true: overlay measured UV output on simulated results   
+read_UV = false              # if true: overlay measured UV output on simulated results   
 
 IR_spec = false               # if true: read input IR FROG spectrum from file and overlay 
 show_IR = false              # if true and "read_IR" is true: overlay measured time-domain input pulse on plots
@@ -23,14 +23,14 @@ IR_spec_exp = false           # if true: read input IR spectrometer spectrum fro
 # ------------------ SET MEASURED PARAMETERS ------------------------
 
 gas = :Ar           # gas
-pres = 1.0          # central gas pressure [bar] 
+pres = 5.0          # central gas pressure [bar] 
 p_ed = 1e-3         # edge gas pressure [bar]
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when temporal beam profile is approximated as Gaussian)
 λ0 = 730e-9         # central wavelength [m]
 w0 = 65e-6          # beam waist [m]
 ϕ = 0.0             # carrier-envelope offset (CEO) phase [rad]                                    -> can this be extracted from data?
-energy = 150e-6     # pulse energy [J]                                                             -> multiply by 1kHz (?) repetition rate for beam power
+energy = 400e-6     # pulse energy [J]                                                             -> multiply by 1kHz (?) repetition rate for beam power
 L = 3e-3            # propagation distance (cell length) [m]
 
 zr = π*w0^2/λ0      # Rayleigh length [m]
@@ -41,6 +41,11 @@ z_vals =L .* [1.0/4, 1.0/3, 3.0/4, 1.0]     # points along the cell at which to 
 λ_lims = (100e-9, 1000e-9)       # wavelength limits of overall frequency window (both NIR and UV) [m,m]
 λ_rangeUV = (100e-9, 360e-9)     # wavelength limits of UV region of interest [m,m]
 λ_rangeIR = (600e-9, 1000e-9)    # wavelength limits of IR region of interest [m,m]
+
+material = :SiO2     # material of the optics the beam propagates through (for chirp compensation)
+thickness= 0*1e-3    # thickness of the material [m] (for chirp compensation)
+
+ϕs = [0,0,+11.31*1e30,0]     # Taylor-series coefficients for spectral phase; used to introduce additional chirp
 
 # ------------------ SET NONLINEAR PARAMS ------------------------
 
@@ -54,7 +59,6 @@ ion = true         # if true: enable ionisation response
 scan_dir = "scan_"*string(energy*1e6)*"mW_"*string(gas)*"_"*string(round(ϕ; digits=3))*"rad_"*string(kerr)*"_"*string(ion ? "ion" : "no-ion")*"_"*string(read_ρ ? "coms" : "grad")  # name of scan output directory 
 
 pres_arr = range(start= 0.1, stop= 5.1, step= 0.1)  # pressure range [bar]
-         # [2,4,6,8] .*  1.01325
 
 # ----------------- INPUT HANDLING -------------------------------
 
@@ -210,9 +214,19 @@ function THG_main(pres=pres)
         end                
     end            
 
-    # ----------------- RUN SIMULATION ----------------------------
+    # ---------------- SET UP SIMULATION -------------------
 
     Eω, transform, FT = Luna.setup(grid, q, dens, normfun, responses, inputs)  # set-up propagation 
+
+    # ----------------- ADD CHIRP ----------------------------
+
+    Fields.prop_material!(Eω, grid, material, thickness, λ0)              # compensate chirp due to mirror
+    Fields.prop_taylor!(Eω, grid, ϕs, λ0)                                 # add chirp using spectral phase Taylor coefficients ϕs
+
+
+    # ----------------- RUN SIMULATION ----------------------------
+
+    
     output = Output.MemoryOutput(0, grid.zmax, 201)                            # configure output      ->> WHY THESE VALUES ???!!!!
     Luna.run(Eω, grid, linop, transform, FT, output)                           # run simulation  
 
@@ -685,6 +699,7 @@ function THG_main(pres=pres)
                 write(file, "η       = "*string(η_THG)*"\n")
                 write(file, "τ_UV    = "*string(τ_UV)*"\n")
                 write(file, "z_peak  = "*string(z_peak)*"\n")
+                write(file, "ϕ2      = "*string(ϕs[3])*"\n")
             end    
 
             if read_IR == true

@@ -103,15 +103,20 @@ The temporal and spectral pulse are often expanded as Taylor-series of the form
 \phi(t) &= \phi_0 + t \phi_1 + \frac{1}{2} t^2 \phi_2 + ...  \\
 \varphi(\omega) &= \varphi_0 + \omega \varphi_1 + \frac{1}{2} \omega^2 \varphi_2 + ...
 \end{align}
-where $\phi_n \equiv \frac{\partial^n \phi}{\partial t^n}$ and $\varphi_n \equiv \frac{\partial^n \varphi}{\partial \omega^n}$. It is straight-forward to see from the Fourier transform that the zero-order spectral and temporal phases are the same: $\phi_0 = \varphi_0$. They correspond to what is known as the carrier-envelope-offset (CEO) phase, representing the relative phase between the envelope and the carrier wave. The CEO phase is especially relevant for few-cycle pulses. \par 
+where $\phi_n \equiv \frac{\partial^n \phi}{\partial t^n}$ and $\varphi_n \equiv \frac{\partial^n \varphi}{\partial \omega^n}$. It is straight-forward to see from the Fourier transform that the zero-order spectral and temporal phases are the same: $\phi_0 = \varphi_0$. They correspond to what is known as the carrier-envelope-offset (CEO) phase, representing the relative phase between the envelope and the carrier wave. The CEO phase is especially relevant for few-cycle pulses. ALSO KNOWN AS CEP OR ABSOLUTE PHASE \par 
 The effects of $\phi_1$ and $\varphi_1$ are spectral and temporal shifts, respectively. Further, $\phi_1$ is used to define the instantaneous angular frequency 
 \begin{equation}
 \omega_\text{inst}(t) = \omega - \phi_1,
 \end{equation}  
 while $\varphi_1$ is used to define the group delay $t_\text{group}(\omega) = \varphi_1$. \par 
-The term $\phi_2$ corresponds to quadratic variations in the temporal phase and hence to a linear variation in the instantaneous frequency with time. This is known as a linear chirp. If the pulse is positively chirped, the frequency increases with time while in a negatively chirped pulse the frequency decreases. Thus, the leading edge of a positively chirped pulse is of a lower frequency than the trailing edge and vice-versa for negatively chirped pulses.  In regions of normal dispersion this results in a positively chirped pulse being extended in time and negatively chirped pulses being compressed. The reverse hold in regions of anomalous dispersion. \par 
+The term $\phi_2$ corresponds to quadratic variations in the temporal phase and hence to a linear variation in the instantaneous frequency with time. This is known as a linear chirp. If the pulse is positively chirped, the frequency increases with time while in a negatively chirped pulse the frequency decreases. Thus, the leading edge of a positively chirped pulse is of a lower frequency than the trailing edge and vice-versa for negatively chirped pulses.  In regions of normal dispersion this results in a positively chirped pulse being extended in time and negatively chirped pulses being compressed. The reverse hold in regions of anomalous dispersion. IS $\varphi_2$ the same as $k_2$, i.e. GVD?? APPARENTLY THE SAME BUT THE K2 IS PER UNIT LENGTH. Pulse elongation of TL pulse due to $\varphi_2$:
+$\tau_{out} = \tau_{in} \sqrt{1+ \left( \frac{4 \ln 2 \varphi_2}{\tau_{in}^2} \right)^2}$. When DOES THIS HOLD? WHAT ABOUT NEGATIVE??
+
+\par 
 Thus, nonlinear variations of the temporal phase result in spectral broadening by inducing chirp, which may also affect the pulse duration, if dispersion is present. One such nonlinear variation of the phase in time is given by effects of the intensity-dependent refractive index (IDRI), which results in a larger nonlinear phase increase at the (temporal) centre of the pulse and hence in chirp and spectral broadening if the pulse was initially unchirped. May also lead to spectral compression if the initial pulse was chirped oppositely.  \par 
-As can be seen from Fourier analysis, the (temporal) pulse length (or pulse width) is inversely related to the spectral bandwidth. Note that the `pulse length' commonly refers to the full-width-half-maximum (FWHM) length of the pulse, i.e. the time between the most-separated points that are at half of the peak intensity. 
+As can be seen from Fourier analysis, the (temporal) pulse length (or pulse width) is inversely related to the spectral bandwidth. Note that the `pulse length' commonly refers to the full-width-half-maximum (FWHM) length of the pulse, i.e. the time between the most-separated points that are at half of the peak intensity. \par 
+Spectral phase is affected by spatial propagation: $\varphi_out (\omega) = \varphi_in(\omega) + \varphi_{prop}(\omega)$ [note: the effect on the phase in the time domain is not as simple! cannot simply add the phases!!]. The phase due to propagation of lenght $L$ in a medium is $\varphi_{prop} =k(\omega) L$. We can expand $k$ as a Taylor series... [second term is GVD!]. Multiplying GVD by L gives GDD [group delay dispersion]. Generally, GVD/GDD is positive, resulting in elongated pulses on propagation. NOTE: chirp of the pulse can be corrected/modified by passing it through an appropriate medium to cancel out the phase terms. \par 
+A pulse is transform-limited if the inequality in the bandwidth theorem is an equality (i.e. it is the shortest durations it could be given its specral bandwidth). It has an envelope function with no spectral phase [or a spectral phase that is frequency-independent, i.e. constant] and hence exhibits zero chirp (constant frequency carrier wave). Therefore, its electric field $E(t)$ can be directly reconstructed from the spectral intensity $S(\omega)$ without need of further information. 
 
 
 
@@ -169,7 +174,7 @@ where $S$ is the cross-sectional area of the gas cell. Modal decomposition can b
 \end{equation}
 where $\tilde{P}_{j,\text{nl}}$ represents the projection of the polarisation onto the $j$th mode:
 \begin{equation}
-\tilde{P}_{j, \text{nl}} = \int_S \hat{\mathbf{e}}_j(\mathbf{r}_\perp,z) \cdot \mathbf{P}_{\text{nl}}(\omega, \mathbf{r}_\perp, z) d^2 \mathbf{r}_\perp.
+\tilde{P}_{j, \text{nl}}(\omega, z) =\mathcal{F}\left[ \int_S \hat{\mathbf{e}}_j(\mathbf{r}_\perp,z) \cdot \mathbf{P}_{\text{nl}}(t, \mathbf{r}_\perp, z) d^2 \mathbf{r}_\perp \right].
 \end{equation}
 The linear operator acting on the $j$th mode can be described as 
 \begin{equation}
