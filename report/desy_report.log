@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  18 AUG 2023 20:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  18 AUG 2023 21:23
 entering extended mode
 **./desy_report.tex
 (desy_report.tex
@@ -442,25 +442,20 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 [1
 
-{C:/Users/david/AppData/Local/MiKTeX/pdftex/config/pdftex.map}] [2]
-Underfull \hbox (badness 3568) in paragraph at lines 99--100
-[]\OT1/cmr/m/n/10.95 ALSO MENTION THAT $\OML/cmm/m/it/10.95 $ \OT1/cmr/m/n/10.
-95 IS PRORTIONAL TO MOLAR SUSCEPTIBLITY, HENCE
- []
-
-[3] [4]
-Underfull \hbox (badness 4954) in paragraph at lines 183--185
+{C:/Users/david/AppData/Local/MiKTeX/pdftex/config/pdftex.map}] [2] [3]
+[4]
+Underfull \hbox (badness 4954) in paragraph at lines 157--159
 []\OT1/cmr/m/n/10.95 ----------------------------------------------------------
 ------------------------------------------- The total nonlinear
  []
 
 [5] [6]
-Underfull \hbox (badness 4660) in paragraph at lines 259--261
+Underfull \hbox (badness 4660) in paragraph at lines 236--238
 []\OT1/cmr/m/n/10.95 NOTE: ADK MODEL DOES NOT INVOLVE MULTIPHOTON IONISATION BU
 T IS
  []
 
-[7] (desy_report.bbl) [8] (desy_report.aux)
+(desy_report.bbl) [7] (desy_report.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.78749pt have occurred.
@@ -469,8 +464,8 @@ Package rerunfilecheck Info: File `desy_report.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 11312 strings out of 478864
- 170758 string characters out of 2848660
+ 11308 strings out of 478864
+ 170715 string characters out of 2848660
  503734 words of memory out of 3000000
  29038 multiletter control sequences out of 15000+600000
  410911 words of font info for 54 fonts, out of 8000000 for 9000
@@ -487,16 +482,15 @@ ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/david/A
 ppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users
 /david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><
 C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr
-6.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts
-/cm/cmr8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/a
-msfonts/cm/cmr9.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/p
-ublic/amsfonts/cm/cmsy10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/font
-s/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/david/AppData/Local/Programs/MiK
-TeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/david/AppData/Local/Pro
-grams/MiKTeX/fonts/type1/public/amsfonts/cm/cmti9.pfb>
-Output written on desy_report.pdf (8 pages, 266823 bytes).
+8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts
+/cm/cmr9.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/a
+msfonts/cm/cmsy10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1
+/public/amsfonts/cm/cmsy8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fon
+ts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/david/AppData/Local/Programs/M
+iKTeX/fonts/type1/public/amsfonts/cm/cmti9.pfb>
+Output written on desy_report.pdf (7 pages, 252299 bytes).
 PDF statistics:
- 176 PDF objects out of 1000 (max. 8388607)
- 46 named destinations out of 1000 (max. 500000)
+ 163 PDF objects out of 1000 (max. 8388607)
+ 42 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

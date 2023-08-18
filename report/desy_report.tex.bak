@@ -55,15 +55,15 @@ where $A(t)$ represents the envelope function, $\phi(t)$ is the temporal phase a
 \end{equation}
 where $\varphi(\omega)$ is the spectral phase. Note that the effect of the carrier term in the frequency domain is merely a shift and can be thus be absorbed in the definition of $\omega$. \par 
 The spectral and temporal phase are often expanded as Taylor-series, with the notation $\phi_n \equiv \frac{\partial^n \phi}{\partial t^n}$, $\varphi_n \equiv \frac{\partial^n \varphi}{\partial t^n}$ used to denote the series coefficients. The zeroth-order terms of both expansions are the same, $\phi_0 = \varphi_0$, and correspond to the carrier-envelope phase (CEP), also known as the absolute phase. The CEP phase desribes the phase difference between the carrier and the envelope. A laser pulse with no terms in $\varphi(\omega)$ higher than $\varphi_0$ is said to be transform-limited. A pulse is said to be chirped if there are nonlinear terms in $\phi(t)$ or $\varphi(\omega)$. \par 
-The presence of chirp can result in both spectral and temporal broadening of the pulse envelope. A convenient measure of chirp is therefore the so-called time-bandwidth product $\Delta \omega \Delta t$, where $\Delta \omega$ is the full-width half-maximum (FWHM) of $A'(\omega)$ and $\Delta t$ the FWHM of $A(t)$. It can be shown that the time-bandwidth product is minimised for transform-limited, i.e. unchirped, pulses. In other words, at a given spectral bandwidth the shortest pulse durations are associated with transform-limited pulses, for which case the relation $\Delta \omega \propto (\Delta t)^{-1}$ holds.   
-
-
------------------
-\begin{itemize}
-\
-\end{itemize}
+The presence of chirp can result in both spectral and temporal broadening of the pulse envelope. A convenient measure of chirp is therefore the so-called time-bandwidth product $\Delta \omega \Delta t$, where $\Delta \omega$ is the full-width half-maximum (FWHM) of $A'(\omega)$ and $\Delta t$ the FWHM of $A(t)$. It can be shown that the time-bandwidth product is minimised for transform-limited, i.e. unchirped, pulses. In other words, at a given spectral bandwidth the shortest pulse durations are associated with transform-limited pulses, for which case the relation $\Delta \omega \propto (\Delta t)^{-1}$ holds. \par 
+The effects on a lase pulse when travelling through a medium can be described via additional terms in the spectral phase: $\varphi(\omega) \to \varphi(\omega) + [\beta(\omega) + i \alpha(\omega)]L$, where $L$ corresponds to the distance travelled in a medium, $\beta(\omega)$ is the propagation coefficient, and $\alpha(\omega)$ the absorption coefficient. The latter term represents an attenuation of the pulse while the former has the effect of introducing chirp (provided the Taylor-expansion of $\beta(\omega)$ has non-zero terms higher than $\beta_1$). Note that depending on the signs of the quantities involved, the chirp due to $\beta(\omega)$ will either increase or compensate the existing chirp on the pulse. Thus, an initially positively chirped pulse will further broaden upon propagation through a normally dispersive medium while a negatively chirped pulse will be compressed. The opposite effect is observed in anomalously dispersive media.
 
 \subsection{Nonlinear Optics and THG}
+For most materials, the polarisation response to an electric field of moderate intensity is linear. The peak intensities reached in ultrashort laser pulses are large enough, however, for this approximation to become invalid and nonlinear polarisation components to appear. The resulting polarisation can then be represented as a combination of a linear and a nonlinear term: $\mathbf{P}(t) = \mathbf{P}^\text{L}(\mathbf{E}(t)) + \mathbf{P}^\text{NL} (\mathbf{E}(t))$, where spatial dependencies have been left implicit. \par 
+The linear polarisation is given by the familiar expression $\mathbf{P}^\text{L}(\mathbf{E}(t)) = \epsilon_0 \chi_e \mathbf{E}(t)$, where $\chi_e$ is the (linear) electric susceptibility. The nonlinear term, $\mathbf{P}^\text{NL}$, on the other hand, is less trivial. 
+
+
+-----------------------------------------------------------
 For most materials, the polarisation response $\mathbf{P}(t)$ to a moderate electric field $\mathbf{E}(t)$ is linear: $\mathbf{P}(t) = \epsilon_0 \chi \mathbf{E}(t)$, where the linear susceptibility $\chi$ is material-specific and generally frequency-dependent. Stronger field amplitudes result in a nonlinear polarisation response, which can be pertubatively expanded in $\mathbf{E}(t)$:
 \begin{equation}\label{eq:P(E)_expansion}
 \mathbf{P}(t) = \epsilon_0 \left( \chi^{(1)}|\mathbf{E}(t)| + \chi^{(2)}|\mathbf{E}(t)|^2 +  \chi^{(3)}|\mathbf{E}(t)|^3 + ...  \right) \frac{\mathbf{E}(t)}{|\mathbf{E}(t)|}.
@@ -106,35 +106,6 @@ USE n0, n2 notation?
 
 SELF-STEEPENING: due to IDRI, peak of pulse experiences higher refractive index and hence (assuming normal dispersion) a slower group velocity than the wings. This results in the leading edge (or trailing edge, for anomalous dispersion) getting steeper. Self-steepening is associated with spectral broadening ?!. 
 
-\subsection{Ultrashort Laser Pulses}
-
-The effects of $\phi_1$ and $\varphi_1$ are spectral and temporal shifts, respectively. Further, $\phi_1$ is used to define the instantaneous angular frequency 
-\begin{equation}
-\omega_\text{inst}(t) = \omega - \phi_1,
-\end{equation}  
-while $\varphi_1$ is used to define the group delay $t_\text{group}(\omega) = \varphi_1$. \par 
-The term $\phi_2$ corresponds to quadratic variations in the temporal phase and hence to a linear variation in the instantaneous frequency with time. This is known as a linear chirp. If the pulse is positively chirped, the frequency increases with time while in a negatively chirped pulse the frequency decreases. Thus, the leading edge of a positively chirped pulse is of a lower frequency than the trailing edge and vice-versa for negatively chirped pulses.  In regions of normal dispersion this results in a positively chirped pulse being extended in time and negatively chirped pulses being compressed. The reverse hold in regions of anomalous dispersion. IS $\varphi_2$ the same as $k_2$, i.e. GVD?? APPARENTLY THE SAME BUT THE K2 IS PER UNIT LENGTH. Pulse elongation of TL pulse due to $\varphi_2$:
-$\tau_{out} = \tau_{in} \sqrt{1+ \left( \frac{4 \ln 2 \varphi_2}{\tau_{in}^2} \right)^2}$. When DOES THIS HOLD? WHAT ABOUT NEGATIVE??
-
-\par 
-Thus, nonlinear variations of the temporal phase result in spectral broadening by inducing chirp, which may also affect the pulse duration, if dispersion is present. One such nonlinear variation of the phase in time is given by effects of the intensity-dependent refractive index (IDRI), which results in a larger nonlinear phase increase at the (temporal) centre of the pulse and hence in chirp and spectral broadening if the pulse was initially unchirped. May also lead to spectral compression if the initial pulse was chirped oppositely.  \par 
-
-Spectral phase is affected by spatial propagation: $\varphi_out (\omega) = \varphi_in(\omega) + \varphi_{prop}(\omega)$ [note: the effect on the phase in the time domain is not as simple! cannot simply add the phases!!]. The phase due to propagation of lenght $L$ in a medium is $\varphi_{prop} =k(\omega) L$. We can expand $k$ as a Taylor series... [second term is GVD!]. Multiplying GVD by L gives GDD [group delay dispersion]. Generally, GVD/GDD is positive, resulting in elongated pulses on propagation. NOTE: chirp of the pulse can be corrected/modified by passing it through an appropriate medium to cancel out the phase terms. \par 
-A pulse is transform-limited if the inequality in the bandwidth theorem is an equality (i.e. it is the shortest durations it could be given its specral bandwidth). It has an envelope function with no spectral phase [or a spectral phase that is frequency-independent, i.e. constant] and hence exhibits zero chirp (constant frequency carrier wave). Therefore, its electric field $E(t)$ can be directly reconstructed from the spectral intensity $S(\omega)$ without need of further information. \par 
-When the spectral phase is constant, we speak of the pulse as bandwidth limited or transform limited (TL). When $\phi(t)$ is a constant, we say that the pulse is free of phase or frequency modulation. We speak of a pulse as chirped when it has  nontrivial variaation in both the spectral and temporal phase. The time-bandwidth product is a convenient way of specifying the degree of chirp. 
-
-\paragraph{GVD and GDD}
-When a spectral phase arises due to passage through a dispersive medium of length $L$, we can write $\varphi(\omega) = - \beta(\omega) L$, where $\beta$ (often: $k$) is the propagation constant in the medium. We often write this in terms of Taylor expansion [about the carrier frequency $\omega_0$]s:
-$$ \varphi(\omega) = \varphi_0 + \omega \varphi_1 + \omega^2 \frac{\phi_2}{2} + ...$$
-and the same for $\beta_n$ with $\varphi_n = - \beta_n L$. \par 
-The carrier term propagated at the phase velocity $v_p = \omega_0/\beta_0$ and is unaffected by the variation of $\beta$ or $\varphi$ with $\omega$. The envelope function, however, is affected by the form of $\beta(\omega)$. When $\beta$ is linear, $\beta(\omega) = \beta_0 + \beta_1 (\omega - \omega_0)$ then the output pulse is an undistorted replica of thei nput pulse, which travels with group velocity $v_g = \beta_1^{-1}$. When $beta$ is not linear, the shape of the envelope is changed during propagation, which is known as dispersion. \par 
-Note that $\beta(\omega) = \omega n(\omega)/c$
-
------------------------------------------------------------
-
-mention how high peak intensities are sufficient in ultrashort pulses to make nonlinear effects relevant 
-
-mention bandwith theorem
 
 
 \subsection{The Unidirectional Pulse Propagation Equation and \emph{Luna} }
