@@ -29,16 +29,40 @@ XXX
 
 
 \section{Introduction}
-The electronic motion associated with chemical reactions or atomic energy transitions takes place on femotsecond to attosecond time scales. Time-resolved imaging of molecular dynamics therefore requires ultrashort laser pulses in the few-femtoseconds regime. A biochemically especially important type of electronic motion is that excited by the absorption of ultraviolet (UV) radiation. A variety of important processes, such as DNA damage, are known to be caused by UV excitation. Generating few-femtosecond UV pulses for time-resolved measurements of UV-excited molecules plays a crucial part in further understanding and eventually controlling these biochemically relevant effects. \par 
-The CFEL-ATTO group's STARLIGHT beamline produces few-femtosecond UV  pulses by third-harmonic-generation (THG) of a near-infra-red (NIR) input pulse in a noble gas. The THG of an intense ultrashort laser pulse is sensitive to a large range of parameters, including gas pressure, gas density distribution, input beam power, beam focus position, and carrier-envelop-offset (CEO) phase. In order to optimise key properties of the UV output pulse, such as spectrum, energy, and duration, it is therefore advantageous to use theoretical considerations to guide the experimental set-up. This report outlines how, as part of a DESY Summer Student Project, numerical simulations of the THG process were produced using the software package \emph{Luna}. The goal hereby was, in the first instance, to reproduce the experimental conditions of the STARLIGHT beamline and to then carry out various parameter scans in order to find optimal conditions for UV generation. These conditions were then investigated experimentally. \par  
-MENTION WHAT HAS BEEN ACHIEVED
-MENTION THAT FOCUS IN SIMULATIONS ON PARAMETERS THAT CAN BE EXPERIMENTALLY CONTROLLED AT THIS MOMENT (beam power, central pressure, gas) 
+The electronic motion associated with chemical reactions or atomic energy transitions takes place on femotsecond ($1 \text{fs} = 10^{-15} \text{s}$) to attosecond ($1 \text{as} = 10^{-18} \text{s}$) time scales. Time-resolved imaging of molecular dynamics therefore requires ultrashort laser pulses in the few-femtoseconds regime. An important type of electronic motion is that excited by the absorption of ultraviolet (UV) radiation: a variety of biochemical processes, such as DNA damage, are known to be caused by UV excitation. Generating few-femtosecond UV pulses for time-resolved measurements of UV-excited molecules plays a crucial part in further understanding and eventually controlling these effects. \par 
+The CFEL-ATTO group at DESY produces ultrashort UV pulses in the femtosecond regime via third-harmonic generation (THG) in a gas cell \cite{galli2019}. This process is sensitive to a large range of parameters which affect the duration and energy of the generated UV pulse. Numerical simulations of the interactions between the laser pulse and the gas can therefore be advantageous to better understand how THG takes place and how it is affected by the experimental conditions. \par 
+This report summarises the work carried out as part of a DESY Summer Student project focussed on producing simulations of the THG process. The simulations were mainly carried out using the propagation solver \textit{Luna.jl} (\cite{brahms2023}) while the \textit{COMSOL Multiphysics} software was used to model the gas density distribution. The aim of the simulations was to reproduce the experimental conditions in the gas, in order to study which effects dominate the THG process and the shaping of the UV pulse. Further, parameter scans were simulated to investigate how changes of different variables in the experimental set-up affect the output pulse. \par 
+------------------------------------------------
+Mention:
+\begin{itemize}
+\item what is covered in which section
+\item briefly list findings (main relevant processes in gas, experimental conditions...)
+
+\end{itemize}
+-----------------------------------------------
 
 \section{Theoretical Background}
-This section gives an overview of....
-- key properties of ultrashort (few-cycle) laser pulses
-- the governing propagation equation 
-- relevant nonlinear optical effects/polarisation response
+This section gives a brief overview on key properties of ultrashort (femtosecond) laser pulses, the differential equation governing their propagation, and THG as well as other relevant nonlinear effects. An in-depth treatment of these topics can be found in textbooks like \cite{keller2021, new2011}. 
+
+\subsection{Ultrashort Laser Pulses}
+An ultrashort laser pulse can be described as a carrier wave at carrier frequency $\omega_0$ with an amplitude modulated by some envelope function. In the femtosecond domain the envelope may only contain a few cycles of the carrier wave. Using the analytic representation of the electric field vector the time-domain representation of an ultrashort laser pulse can be written as 
+\begin{equation}
+\mathbf{E}(t) = A(t) e^{i[ \omega_o t + \phi(t)]} \hat{\mathbf{u}}_p,
+\end{equation}
+where $A(t)$ represents the envelope function, $\phi(t)$ is the temporal phase and $\hat{\mathbf{u}}_p$ is a unit vector indicating the polarisation of the field. Spatial dependencies are left implicit for simplicity. Similarly, the frequency-domain representation is 
+\begin{equation}
+\mathbf{E}(\omega) = A'(\omega) e^{i \varphi(\omega)} \hat{\mathbf{u}}_p,
+\end{equation}
+where $\varphi(\omega)$ is the spectral phase. Note that the effect of the carrier term in the frequency domain is merely a shift and can be thus be absorbed in the definition of $\omega$. \par 
+The spectral and temporal phase are often expanded as Taylor-series, with the notation $\phi_n \equiv \frac{\partial^n \phi}{\partial t^n}$, $\varphi_n \equiv \frac{\partial^n \varphi}{\partial t^n}$ used to denote the series coefficients. The zeroth-order terms of both expansions are the same, $\phi_0 = \varphi_0$, and correspond to the carrier-envelope phase (CEP), also known as the absolute phase. The CEP phase desribes the phase difference between the carrier and the envelope. A laser pulse with no terms in $\varphi(\omega)$ higher than $\varphi_0$ is said to be transform-limited. A pulse is said to be chirped if there are nonlinear terms in $\phi(t)$ or $\varphi(\omega)$. \par 
+The presence of chirp can result in both spectral and temporal broadening of the pulse envelope. A convenient measure of chirp is therefore the so-called time-bandwidth product $\Delta \omega \Delta t$, where $\Delta \omega$ is the full-width half-maximum (FWHM) of $A'(\omega)$ and $\Delta t$ the FWHM of $A(t)$. It can be shown that the time-bandwidth product is minimised for transform-limited, i.e. unchirped, pulses. In other words, at a given spectral bandwidth the shortest pulse durations are associated with transform-limited pulses, for which case the relation $\Delta \omega \propto (\Delta t)^{-1}$ holds.   
+
+
+-----------------
+\begin{itemize}
+\item more on chirp! how does it lead to broadening.... positive versus negative chirp...
+\item more on dispersion; also inlcude absorption constant alpha 
+\end{itemize}
 
 \subsection{Nonlinear Optics and THG}
 For most materials, the polarisation response $\mathbf{P}(t)$ to a moderate electric field $\mathbf{E}(t)$ is linear: $\mathbf{P}(t) = \epsilon_0 \chi \mathbf{E}(t)$, where the linear susceptibility $\chi$ is material-specific and generally frequency-dependent. Stronger field amplitudes result in a nonlinear polarisation response, which can be pertubatively expanded in $\mathbf{E}(t)$:
@@ -84,26 +108,7 @@ USE n0, n2 notation?
 SELF-STEEPENING: due to IDRI, peak of pulse experiences higher refractive index and hence (assuming normal dispersion) a slower group velocity than the wings. This results in the leading edge (or trailing edge, for anomalous dispersion) getting steeper. Self-steepening is associated with spectral broadening ?!. 
 
 \subsection{Ultrashort Laser Pulses}
-An ultrashort laser pulse can be modelled as a carrier wave at central frequency $\omega_0$ modulated by an envelope function. In the femtosecond regime envelope may only contain a few cycles of the carrier wave. \par 
-For simplicity, the following treatment will focus on the temporal and spectral beam profile and neglect spatial contributions. The electric field amplitude of the pulse is then given by 
-\begin{equation}
-\mathcal{E}(t)= \frac{1}{2} \sqrt{I(t)} e^{i [\omega_0 t - \phi(t)]} + \text{ complex conjugate},
-\end{equation}
-where $I(t)$ is the temporal intensity and $\phi(t)$ the temporal phase. It is often more convenient to drop the complex conjugate (analytic signal approximation) and the rapidly oscillating carrier wave phase contribution $e^{i \omega_0 t}$ and work directly with the complex amplitude
-\begin{equation}
-E(t) = \sqrt{I(t)}e^{- i \phi(t)}.
-\end{equation}
-In the frequency-domain, the pulse is described as the Fourier transform of the time-domain field: $\mathcal{E}(\omega) = \mathcal{F}[\mathcal{E}(t)] \equiv \int_{-\infty}^\infty \mathcal{E}(t) e^{-iwt} dt$, given by 
-\begin{equation}
-\mathcal{E}(\omega) = \sqrt{S(\omega)} e^{-i \varphi(\omega)},
-\end{equation}
-where $S(\omega)$ is the spectral intensity, or spectrum, and $\varphi(\omega)$ the spectral phase. Since $\mathcal{E}(t)$ is real, the negative frequency regions of $\mathcal{E}(\omega)$ can be neglected. \par 
-The temporal and spectral pulse are often expanded as Taylor-series of the form 
-\begin{align}
-\phi(t) &= \phi_0 + t \phi_1 + \frac{1}{2} t^2 \phi_2 + ...  \\
-\varphi(\omega) &= \varphi_0 + \omega \varphi_1 + \frac{1}{2} \omega^2 \varphi_2 + ...
-\end{align}
-where $\phi_n \equiv \frac{\partial^n \phi}{\partial t^n}$ and $\varphi_n \equiv \frac{\partial^n \varphi}{\partial \omega^n}$. It is straight-forward to see from the Fourier transform that the zero-order spectral and temporal phases are the same: $\phi_0 = \varphi_0$. They correspond to what is known as the carrier-envelope-offset (CEO) phase, representing the relative phase between the envelope and the carrier wave. The CEO phase is especially relevant for few-cycle pulses. ALSO KNOWN AS CEP OR ABSOLUTE PHASE \par 
+
 The effects of $\phi_1$ and $\varphi_1$ are spectral and temporal shifts, respectively. Further, $\phi_1$ is used to define the instantaneous angular frequency 
 \begin{equation}
 \omega_\text{inst}(t) = \omega - \phi_1,
@@ -114,37 +119,23 @@ $\tau_{out} = \tau_{in} \sqrt{1+ \left( \frac{4 \ln 2 \varphi_2}{\tau_{in}^2} \r
 
 \par 
 Thus, nonlinear variations of the temporal phase result in spectral broadening by inducing chirp, which may also affect the pulse duration, if dispersion is present. One such nonlinear variation of the phase in time is given by effects of the intensity-dependent refractive index (IDRI), which results in a larger nonlinear phase increase at the (temporal) centre of the pulse and hence in chirp and spectral broadening if the pulse was initially unchirped. May also lead to spectral compression if the initial pulse was chirped oppositely.  \par 
-As can be seen from Fourier analysis, the (temporal) pulse length (or pulse width) is inversely related to the spectral bandwidth. Note that the `pulse length' commonly refers to the full-width-half-maximum (FWHM) length of the pulse, i.e. the time between the most-separated points that are at half of the peak intensity. \par 
+
 Spectral phase is affected by spatial propagation: $\varphi_out (\omega) = \varphi_in(\omega) + \varphi_{prop}(\omega)$ [note: the effect on the phase in the time domain is not as simple! cannot simply add the phases!!]. The phase due to propagation of lenght $L$ in a medium is $\varphi_{prop} =k(\omega) L$. We can expand $k$ as a Taylor series... [second term is GVD!]. Multiplying GVD by L gives GDD [group delay dispersion]. Generally, GVD/GDD is positive, resulting in elongated pulses on propagation. NOTE: chirp of the pulse can be corrected/modified by passing it through an appropriate medium to cancel out the phase terms. \par 
-A pulse is transform-limited if the inequality in the bandwidth theorem is an equality (i.e. it is the shortest durations it could be given its specral bandwidth). It has an envelope function with no spectral phase [or a spectral phase that is frequency-independent, i.e. constant] and hence exhibits zero chirp (constant frequency carrier wave). Therefore, its electric field $E(t)$ can be directly reconstructed from the spectral intensity $S(\omega)$ without need of further information. 
 
 
+\paragraph{GVD and GDD}
+When a spectral phase arises due to passage through a dispersive medium of length $L$, we can write $\varphi(\omega) = - \beta(\omega) L$, where $\beta$ (often: $k$) is the propagation constant in the medium. We often write this in terms of Taylor expansion [about the carrier frequency $\omega_0$]s:
+$$ \varphi(\omega) = \varphi_0 + \omega \varphi_1 + \omega^2 \frac{\phi_2}{2} + ...$$
+and the same for $\beta_n$ with $\varphi_n = - \beta_n L$. \par 
+The carrier term propagated at the phase velocity $v_p = \omega_0/\beta_0$ and is unaffected by the variation of $\beta$ or $\varphi$ with $\omega$. The envelope function, however, is affected by the form of $\beta(\omega)$. When $\beta$ is linear, $\beta(\omega) = \beta_0 + \beta_1 (\omega - \omega_0)$ then the output pulse is an undistorted replica of thei nput pulse, which travels with group velocity $v_g = \beta_1^{-1}$. When $beta$ is not linear, the shape of the envelope is changed during propagation, which is known as dispersion. \par 
+Note that $\beta(\omega) = \omega n(\omega)/c$
 
 -----------------------------------------------------------
-mention dispersion...., GVD,... HERE?
 
 mention how high peak intensities are sufficient in ultrashort pulses to make nonlinear effects relevant 
 
 mention bandwith theorem
 
-chirp etc...
-
-GVD
-
-We can expand the dispersion relation $k(\omega)$ around the carrier frequency $\omega_0$:
-\begin{equation}
-k(\omega) = k(\omega_0) + (\omega - \omega_0) \frac{\partial k}{\partial \omega} + \frac{1}{2} (\omega-\omega_0)^2 \frac{\partial^2 k}{\partial \omega^2} + ...
-\end{equation}
-The first-order coefficienct $\frac{\partial k}{\partial \omega}$ can be identified as the inverse of the group velocity $v_g = \left( \frac{\partial k}{\partial \omega} \right)^{-1}$ while the second-order coefficient $\frac{\partial^2 k}{\partial \omega^2} = \frac{\partial}{\partial \omega} \frac{1}{v_g}$ is kown as the group velocity dispersion (GVD). 
-
-USE k1, k2,.. notation?
-
-GVD IS THE SAME AS BETA2??
-
-
-We choose $k(\omega) = \frac{n(\omega)}{c} \omega$ (neff??)
-
-The spectral phase acquired by propagating a distance $z$ is: $\phi(\omega; z) = \phi(\omega; 0)+ k z \equiv \phi(\omega; 0) + n(\omega) \frac{\omega}{c}z. $
 
 \subsection{The Unidirectional Pulse Propagation Equation and \emph{Luna} }
 There is a variety of differential equations that can be used to describe the propagation of an ultrashort laser pulse in a waveguide or free space. As is shown in [ref], most of these can be derived from the z-propagated unidirectional pulse propagation equation (UPPE). Several variations exist but its general form for a pulse of frequency $\omega$ travelling in the $z$-direction is 
@@ -245,9 +236,16 @@ STILL PLANE WAVES!!
 
 two terms in the photoionisation response: loss term (first) and phase modulation term. This is why ionisation can be helpful due to spatiotemporal re-shaping.
 
-\section{The STARLIGHT Beamline}
+\section{Experimental Conditions}
+The CFEL-ATTO group generates few-femtosecond UV laser pulses via THG in a gas cell. This is driven by a pulsed near-infrared (NIR) Ti:sapphire laser with a central wavelength of 750nm and a repetition rate of 1kHz. Various pulse-shaping and compression techniques are used to produce NIR pulses with a duration of 5-6fs and a pulse energy of XX$\mu$J. A (variable) fraction of the pump beam is then linearly polarised and focussed into a vacuum chamber for UV generation, resulting in a spatially approximately Gaussian beam with a beam waist of 65$\mu$m at the focus. The chamber contains a fused silica cell, a gas nozzle and a pumping system. Its specifications are central to the THG process and are described in more detail in the following. \par 
+The fused silica cell is equipped with a laser machined central 3mm-long channel with a 0.5mm diameter. Pressurised gas is pumped through the channel, with a two-stage differential pumping system on both sides of the central cell ensuring a tight confinement of the gas in this region. As the pump beam passes through the cell and interacts with the pressurised gas, THG takes place which results in UV pulses being generated. The UV components are then separated from the pump beam upon exiting the vacuum chamber using dispersive mirrors. 
 
-NOTE THAT WE CAN ASSUME LINEARLY POLARISED BEAM
+-----------------------------
+\begin{itemize}
+\item include figure?!!!
+\end{itemize}
+
+
 
 \section{Simulation Results}
 
@@ -271,13 +269,11 @@ Many more factors to be investigated (beam focus position, beam size, higher bea
 
 Improve simulations by improving COMSOL gas density model (need to use high Mach number model instead, current model does not take into account gas interaction). 
 
-\section{Conclusion}
+\section{Conclusions}
 
 \section*{Acknowledgments}
-Thank Josina Hahne for supervision and Vincent Wanie for additional help and guidance (both CFEL-ATTo). Also thank Chris Brahms (Heriot-Watt University, co-creator of Luna) for help. Additional thanks to Olaf Behnke and Andreas Przystawik (DESY) for organising the DESy summe programme.  
+I want to thank Josina Hahne for the supervision of the project and Vincent Wanie for his guidance and support. I also want to thank Chris Brahms for providing help with \textit{Luna.jl} as well as Olaf Behnke and Andreas Przystawik for organising the DESY Summer Student programme.  
 
-
-\cite{brahms2023}
 
 \section*{References}
 \bibliographystyle{osa}

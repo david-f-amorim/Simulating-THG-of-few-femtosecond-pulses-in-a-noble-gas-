@@ -43,8 +43,6 @@ added option to feed in COMSOL data; extended scan_eval to also investigate posi
 UV energy; started exhaustive new round of parameter scans; compared COMSOL density profile to grad profile; compared density profiles of different gases; extended scan_eval to compare different gases as well as COMSOL vs grad; 
 
 
-- carry out new round of pressure scans
-
 		
 		started: [with ADK ionisation!]
 		    1	- 075mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6  
@@ -64,19 +62,22 @@ UV energy; started exhaustive new round of parameter scans; compared COMSOL dens
 
                  => wait until simulations are done and then upload to S&S and GitHub			
 
-- chirp scans with Neon; [+- 8fs ?]; 5bar; 400mW -> pulse duration; pulse energy; SPECTRUM!!
-
-
-
-- get COMSOL model of old cell
-
-- Monday 4th: presentation 
 
 	          
 Week 6
 --------------------------------
+extendend previous pressure scans to O2 and SF6
 
 
+- chirp scans with Neon; [+- 8fs ?]; 5bar; 400mW -> pulse duration; pulse energy; SPECTRUM!!
+	+ve coms, -ve coms, 0 coms, 0 grad, -ve grad, -ve coms...
+
+
+- prepare PP for Josina take-over
+
+- get COMSOL model of old cell
+
+- Monday 4th: presentation 
 
 - switch back to PPT eventually
 - add chirp functions and do chirp scan (prop_material, prop_taylor)

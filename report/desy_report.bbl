@@ -4,8 +4,21 @@
   \def\url#1{{#1}}\fi
 \expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{}\fi
 
+\bibitem{galli2019}
+M.~Galli, V.~Wanie, et~al., \enquote{Generation of deep ultraviolet sub-2-fs
+  pulses,} Optics Letters {\bf 44} (2019).
+
 \bibitem{brahms2023}
 C.~Brahms and J.~C. Travers, \enquote{Luna.jl,}  (2023).
 \newline https://doi.org/10.5281/zenodo.8242646
+
+\bibitem{keller2021}
+U.~Keller, {\em Ultrafast lasers: a comprehensive introduction to fundamental
+  principles with practical applications\/} (Springer, Cham, Switzerland,
+  2021).
+
+\bibitem{new2011}
+G.~New, {\em Introduction to Nonlinear Optics\/} (Cambridge University Press,
+  2011).
 
 \end{thebibliography}
