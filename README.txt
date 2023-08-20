@@ -48,14 +48,14 @@ UV energy; started exhaustive new round of parameter scans; compared COMSOL dens
 		    1	- 075mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6  
 		    2	- 150mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6       
    		    3	- 200mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6        
-		    4	- 300mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O        
-		    5	- 400mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O        
+		    4	- 300mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6         
+		    5	- 400mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6         
 		
-		    6   - 075mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O         
-		    7   - 150mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O                             
-                    8   - 200mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O   
-		    9   - 300mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O
-		    10  - 400mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O    
+		    6   - 075mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6          
+		    7   - 150mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6                              
+                    8   - 200mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6    
+		    9   - 300mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6 
+		    10  - 400mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6     
 
 		  [one process died! find out which!]
 		  [run O2 & SF6 over the weekend]

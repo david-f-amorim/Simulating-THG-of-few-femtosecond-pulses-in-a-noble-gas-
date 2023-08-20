@@ -59,56 +59,56 @@ The presence of chirp can result in both spectral and temporal broadening of the
 The effects on a lase pulse when travelling through a medium can be described via additional terms in the spectral phase: $\varphi(\omega) \to \varphi(\omega) + [\beta(\omega) + i \alpha(\omega)]L$, where $L$ corresponds to the distance travelled in a medium, $\beta(\omega)$ is the propagation coefficient, and $\alpha(\omega)$ the absorption coefficient. The latter term represents an attenuation of the pulse while the former has the effect of introducing chirp (provided the Taylor-expansion of $\beta(\omega)$ has non-zero terms higher than $\beta_1$). Note that depending on the signs of the quantities involved, the chirp due to $\beta(\omega)$ will either increase or compensate the existing chirp on the pulse. Thus, an initially positively chirped pulse will further broaden upon propagation through a normally dispersive medium while a negatively chirped pulse will be compressed. The opposite effect is observed in anomalously dispersive media.
 
 \subsection{Nonlinear Optics and THG}
-For most materials, the polarisation response to an electric field of moderate intensity is linear. The peak intensities reached in ultrashort laser pulses are large enough, however, for this approximation to become invalid and nonlinear polarisation components to appear. The resulting polarisation can then be represented as a combination of a linear and a nonlinear term: $\mathbf{P}(t) = \mathbf{P}^\text{L}(\mathbf{E}(t)) + \mathbf{P}^\text{NL} (\mathbf{E}(t))$, where spatial dependencies have been left implicit. \par 
-The linear polarisation is given by the familiar expression $\mathbf{P}^\text{L}(\mathbf{E}(t)) = \epsilon_0 \chi_e \mathbf{E}(t)$, where $\chi_e$ is the (linear) electric susceptibility. The nonlinear term, $\mathbf{P}^\text{NL}$, on the other hand, is less trivial. 
-
+For most materials, the polarisation response to an electric field of moderate intensity is linear. The peak intensities reached in ultrashort laser pulses are large enough, however, for this approximation to become invalid and nonlinear polarisation components to appear. The resulting polarisation can then be represented as a combination of a linear and a nonlinear term: $\mathbf{P}(\mathbf{E}(t)) = \mathbf{P}^\text{L}(\mathbf{E}(t)) + \mathbf{P}^\text{NL} (\mathbf{E}(t))$, where spatial dependencies have been left implicit. \par 
+The linear polarisation is given by the familiar expression $\mathbf{P}^\text{L}(\mathbf{E}(t)) = \epsilon_0 \chi_e \mathbf{E}(t)$, where $\chi_e$ is the (linear) electric susceptibility. The nonlinear term, $\mathbf{P}^\text{NL}$, on the other hand, is less trivial. It can be approximated using a perturbative approach in combination with a contribution to take into account the effects of photoionisation, which is non-perturbative:
+\begin{equation}\label{eq:p_nl}
+\mathbf{P}^\text{NL}(\mathbf{E}(t)) = \epsilon_0 \sum_{n=2} \chi^{(n)} [\mathbf{E}(t)]^n + \mathbf{P}^\text{ion}(\mathbf{E}(t)),
+\end{equation}
+where $\chi^{(n)}$ is the $n$-th order electric susceptibility, which is assumed to be a frequency-independent scalar. Note that the series expansion starts at the quadratic term as the linear term is contained in $\mathbf{P}^\text{L}$.  \par 
+In centrosymmetric media such as gases all even-order susceptibilities necessarily vanish, so that the dominant term in the expansion is the third-order term. Higher-order contributions can be neglected to a good approximation, so that \eqref{eq:p_nl} becomes 
+\begin{equation}\label{eq:p_nl_simpl}
+\mathbf{P}^\text{NL}(\mathbf{E}(t)) = \epsilon_0 \chi^{(3)}|\mathbf{E}(t)|^2 \mathbf{E}(t) + \mathbf{P}^\text{ion}(\mathbf{E}(t)).
+\end{equation}
+As third-order nonlinear effects are commonly known as Kerr effects the first term of \eqref{eq:p_nl_simpl} is known as the Kerr term: $\mathbf{P}^\text{Kerr}(\mathbf{E}(t)) = \chi^{(3)}|\mathbf{E}(t)|^2 \mathbf{E}(t)$. \par 
+How the presence of the Kerr terms leads to THG can be seen when considering an oscillating electric field $\mathbf{E}(t) = \hat{E}(t)\cos(\omega t)$, where all spatial dependence and phase terms have been absorbed into the complex envelope function $\tilde{\mathbf{E}}(t)$. The resulting Kerr response is 
+\begin{equation}\label{eq:Kerr_response}
+\mathbf{P}^\text{Kerr}(\mathbf{E}(t)) = \epsilon_0 \chi^{(3)} \tilde{\mathbf{E}}(t)|\tilde{\mathbf{E}}(t)|^2 \cos^3(\omega t) =\frac{1}{4} \epsilon_0 \chi^{(3)}  \tilde{\mathbf{E}} |\tilde{\mathbf{E}}(t)|^2 \left[  3 \cos(\omega t) + \cos (\omega t) \right].
+\end{equation}
+The second summand corresponds to a field contribution oscillating at the frequency $3 \omega$. Thus, a pump wave at the fundamental frequency $\omega$ will generate a co-propagating frequency-tripled field. This process can be identified as THG. Note that THG is just once instance of a range of nonlinear optical effects which result in the generation of higher-frequency waves from a driving field, generally known as frequency up-conversion. \par 
+The energy of the third harmonic, and by extension the THG efficiency $\eta_THG$, is determined by the value of $\chi^{(3)}$ in a given medium. A further factor to consider, however, is that the third harmonic is generated in-phase with the driving wave at each point in the nonlinear medium. Thus, in dispersive media there will be phase differences between third harmonic contributions generated at different points along the crystal. This can result in destructive interference and thus lower the THG conversion efficiency. \par 
+Note that, as \eqref{eq:Kerr_response} suggests, the intensity of the third harmonic is most significantly affected by the intensity of the driving field. This also implies that, since the intensity of the fundamental pulse is highest at the peak of the envelope, THG conversion is more efficient there so that the third harmonic pulse is narrower in time than the input pulse by a factor of $\sim\sqrt{3}$. \par 
+The first term of \eqref{eq:Kerr_response}, corresponding to polarisation response at the fundamental frequency is also significant: its effect is a correction term in the refractive index that is proportional to the intensity $I \propto|\tilde{\mathbf{E}}|^2$ of the driving field. This intensity-dependent refractive index (IDRI) produced by the Kerr effect has important implications for the propagation of laser pulses in nonlinear media. These include self-phase modulation (SPM) as well as self-steepening. SPM arises because the intensity of a laser pulse is higher at the peak of its envelope than at the wings, so that the peak will experience a higher refractive index, and therefore phase shift on propagation, than the edges of the pulse. This induces chirp and can result in spectral broadening. Similarly, self-steepening describes the effect of the peak of the pulse experiencing, due to the IDRI, a different group velocity in a dispersive medium than the wings. This results in the leading edge of the pulse or, in the case of anomalous dispersion, the trailing edge, to get steeper on propagation, corresponding to temporal compression and spectral broadening. \par 
+After having considered the effects of the Kerr term in the previous paragraphs, we now turn to the second term in \eqref{eq:p_nl}: photoionisation. The highly energetic driving pulse can ionise the atoms or molecules in the nonlinear medium, resulting in the presence of free electrons. This has a two-fold effect on pulse propagation and THG. On the one hand, the pump field is depleted since it must overcome the atomic ionisation potential, so that less energy is available to drive THG. On the other hand, the freed electrons also interact electromagnetically with the fundamental and third harmonic fields, which results in spatio-temporal reshaping of the pulses. Thus, despite ionisation limiting the achievable third harmonic pulse energy, it can aid in further shortening the generated pulses. \par 
+The theoretical treatment of $\mathbf{P}^\text{ion}(\mathbf{E}(t))$ is significantly more sophisticated than that of the Kerr term. As is derived in \cite{geissler1999}:
+\begin{equation}
+\frac{\partial}{\partial t} \mathbf{P}^\text{ion}(t, \mathbf{r},z) = \frac{I_p}{\mathbf{E}(t)} \frac{\partial n_e}{\partial t} + \frac{e^2}{m_e^2} \int_{-\infty}^t n_e(t') \mathbf{E}(t')dt',
+\end{equation} 
+where $n_e(t)$ is the number of free electrons at any point in time, $I_p$ is the ionisation potential, and $e$, $m_e$ represent the electron charge and mass, respectively. The value of $n_e(t)$ can be found from 
+\begin{equation}
+\frac{\partial n_e}{\partial t} = (n_e - n_0) W(\mathbf{E}(t)),
+\end{equation}
+where $n_0$ is the initial number of neutral atoms and $W(\mathbf{E}(t))$ is the ionisation rate, which can be calculated from the so-called ADK model of tunnel ionisation or the PPT model, which is more sophisticated but also more computationally expensive. 
 
 -----------------------------------------------------------
-For most materials, the polarisation response $\mathbf{P}(t)$ to a moderate electric field $\mathbf{E}(t)$ is linear: $\mathbf{P}(t) = \epsilon_0 \chi \mathbf{E}(t)$, where the linear susceptibility $\chi$ is material-specific and generally frequency-dependent. Stronger field amplitudes result in a nonlinear polarisation response, which can be pertubatively expanded in $\mathbf{E}(t)$:
-\begin{equation}\label{eq:P(E)_expansion}
-\mathbf{P}(t) = \epsilon_0 \left( \chi^{(1)}|\mathbf{E}(t)| + \chi^{(2)}|\mathbf{E}(t)|^2 +  \chi^{(3)}|\mathbf{E}(t)|^3 + ...  \right) \frac{\mathbf{E}(t)}{|\mathbf{E}(t)|}.
-\end{equation}
-In the above, $\chi^{(n)}$ corresponds to the $n$-th order electric susceptibility. For simplicity, equation \eqref{eq:P(E)_expansion} leaves the spatial dependence of the polarisation and the driving field implicit. It further treats the $\chi^{(n)}$, which generally are frequency-dependent tensors, as constant scalars. This approximation is valid for isotropic media such as the noble gases considered here [!!!?? SOURCE]. Note that since gases are centrosymmetric all even-order susceptibilities necessarily vanish, e.g. $\chi^{(2)}=0$, so that the third-order response becomes the dominant nonlinear term. Due to the small magnitudes of $\chi^{(5)}$ and the other higher-order odd susceptibilities [INCLUDE TABLE OF VALUES!], in the following only the linear and third-order terms of the expansion $\mathbf{P}(\mathbf{E}(t))$ will be considered. \par 
-It is evident from \eqref{eq:P(E)_expansion} how an oscillating electric field in a nonlinear medium results in the generation of co-propagating fields with new frequency components: consider $\mathbf{E}^{(\omega)}(t) = \tilde{\mathbf{E}} \cos(\omega t)$, where all spatial dependence and phase terms have been absorbed into the complex amplitude  $\tilde{\mathbf{E}}$. The resulting polarisation response, due to the linear and third-order term, is then given by 
-\begin{equation}\label{eq:int_dep_n}
-\mathbf{P}(t) = \epsilon_0 \left( \chi^{(1)} \cos(\omega t) \tilde{\mathbf{E}} + \chi^{(3)} \cos(\omega t)^3 |\tilde{\mathbf{E}}|^2 \tilde{\mathbf{E}}  \right) = \epsilon_0 \left( \left[ \chi^{(1)} + \frac{3}{4} \chi^{(3)} |\tilde{\mathbf{E}}|^2\right] \cos(\omega t) + \frac{1}{4} \chi^{(3)} \cos(3 \omega t) \right)  \tilde{\mathbf{E}}
-\end{equation}
-Thus, the effect of the third-order susceptibility is two-fold: a field contribution $\mathbf{P}^{(3\omega)}(t)$ oscillating at $3\omega$ is generated and an additional term in $\chi^{(3)} |\tilde{\mathbf{E}}|^2$ is added to the polarisation response  $\mathbf{P}^{(\omega)}(t)$ at the fundamental frequency. The former process can be identified as THG: a driving electric field oscillating at some frequency will generate a frequency-tripled co-propagating field due to third-order nonlinear interactions in the medium. This is one instance of a range of related nonlinear effects which result in the generation of a higher-frequency field component, known as frequency up-conversion. \par 
-Note that a third-harmonic contribution is generated in-phase and co-propagating with the driving wave at each point of the nonlinear medium. Due to dispersion, $k=k(\omega)$, the third-harmonic and the fundamental will generally experience different phase shifts on propagation, resulting in a phase mismatch $\Delta k = k(3 \omega)- 3k (\omega)$ between the different third-harmonic components generated at different points along the axis of propagation. This can result in destructive interference of the individual $3\omega$ components. Thus, the phase-mismatch parameter $\Delta k$, or, equivalently, the GVD [DEFINE THIS], are important determinants of the achievable THG conversion efficiency $\eta_{THG}$, a measure of the energy of the generated third-harmonic relative to the input pulse energy.  \par 
-The latter process [REWRITE THIS, REFERENCE TOO FAR BACK] is equivalent to an intensity-dependent contribution being added to the refractive index of the medium. The refractive index, $n$, of a linear medium is commonly defined as $n = \sqrt{1+ \mathbf{P}(t)/[\epsilon_0 \mathbf{E}(t)]} = \sqrt{1 + \chi}$. Analogously, the effective refractive index $n_{\text{eff}}$ in a nonlinear medium can be defined as
-\begin{equation}
-n = \sqrt{1+ \frac{\mathbf{P^{(\omega)}}(t)}{\epsilon_0 \mathbf{E^{(\omega)}}(t)}},
-\end{equation}
-where $\mathbf{P}^{(\omega)}(t)$ is the polarisation response to $\mathbf{E}^{(\omega)}(t)$ oscillating at the fundamental frequency. Due to the presence of the third-order term, and taking into account that $\chi^{(1)} \gg \frac{3}{4} \chi^{(3)} |\tilde{\mathbf{E}}|^2$ :
-\begin{equation}
-n_\text{eff} = \sqrt{1 + \chi^{(1)} + \frac{3}{4} \chi^{(3)} |\tilde{\mathbf{E}}|^2} \approx n + \frac{3}{8n} \chi^{(3)} |\tilde{\mathbf{E}}|^2 \equiv n + \Delta n I = n_0 + n_2 I,
-\end{equation}
-where $I = |\tilde{\mathbf{E}}|^2/[2Z_0]$ is the intensity of the driving field, $Z_0$ the impedance of the wave in the medium, and $\Delta n$ is the intensity-dependent change in effective refractive index. \par 
-This intensity-dependent refractive index has important implications for the propagation of laser pulses in nonlinear media. An important consequence is self-phase modulation (SPM): since the intensity of a beam is significantly higher at its peak than towards the wings, the centre of the beam will experience a higher effective refractive index, and therefore phase-shift on propagation, than off-peak components. This can result in spectral broadening of the pulse [MORE DETAIL???] [IN TIME DOMAIN;]. The intensity-dependent refractive index is also related to effects like self-focussing [SAME THING BUT SPATIAL]. \par 
-Note that the umbrella term `Kerr effects' is commonly used to refer to processes associated with $\chi^{(3)}$, including THG, and this practice will be adopted here. \par 
-For the present context, there is a further relevant group of nonlinear effects that is highly non-perturbative and therefore cannot be captured by the expansion \eqref{eq:P(E)_expansion}. These are photo-ionisation effects: at sufficiently high field amplitudes, the atoms or molecules in the nonlinear medium become ionised, which affects their interaction with the driving field and generated third-harmonic. Particularly the values of the $\chi^{(n)}$ and the absorption coefficients are affected. The effects of ionisation on the polarisation response of a quasistatic gas cell are captured by the ADK model. While ionisation limits the achievable third-harmonic pulse energy due to absorption, it affects the spatio-temporal pulse profile and can result in spectral broadening, as is discussed later. \par 
-The total polarisation response $\mathbf{P}$ in a nonlinear medium can thus be split up into a linear and non-linear part, $\mathbf{P} = \mathbf{P}^L + \mathbf{P}^{NL}$, where the latter can further be subdivided into Kerr and ionisation effects: $\mathbf{P}^{NL} = \mathbf{P}^{\text{Kerr}} + \mathbf{P}^{\text{ion}}.$ MENTION HOW LATER THIS IS IMPLEMENTED IN THE UPPE?
+\begin{itemize}
+\item clean up the maths 
+\item cite more/fewer things?!
+\end{itemize}
 
-
-MAKE SURE THAT IT IS CLEAR THAT ALL MATERIALS ARE NONLINEAR AS LONG AS E IS HIGH ENOUGH!!
-
-SAY SOMEWHERE THAT FOCUSSING ON GAS!! BC OF LOW GVD 
-
-
-ALSO MENTION THAT $\chi$ IS PRORTIONAL TO MOLAR SUSCEPTIBLITY, HENCE INCREASING DENSITY INCREASES CHI
-
-
-NOTE: since intensity highest at centre of beam, THG efficiency is more efficient there, so that the THG pulse is narrower, both in space and in time, than the input pulse. Temporally, this is exepcted to by by $\sim \sqrt{3}$ shorter. 
-
-
-USE n0, n2 notation?
-
-
-SELF-STEEPENING: due to IDRI, peak of pulse experiences higher refractive index and hence (assuming normal dispersion) a slower group velocity than the wings. This results in the leading edge (or trailing edge, for anomalous dispersion) getting steeper. Self-steepening is associated with spectral broadening ?!. 
+\subsection{The Unidirectional Pulse Propagation Equation}
 
 
 
-\subsection{The Unidirectional Pulse Propagation Equation and \emph{Luna} }
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------
 There is a variety of differential equations that can be used to describe the propagation of an ultrashort laser pulse in a waveguide or free space. As is shown in [ref], most of these can be derived from the z-propagated unidirectional pulse propagation equation (UPPE). Several variations exist but its general form for a pulse of frequency $\omega$ travelling in the $z$-direction is 
 \begin{equation}
 \frac{\partial}{\partial z} \mathbf{E}(\omega, \mathbf{k}_\perp, z)= \mathcal{L}(\omega, \mathbf{k}_\perp, z)\mathbf{E}(\omega, \mathbf{k}_\perp, z) + \frac{i \omega}{N_{\text{nl}}} \mathbf{P}_\text{nl}(\omega, \mathbf{k}_\perp, z),
@@ -151,24 +151,6 @@ where $J_0$ is the zeroth-order Bessel function. DEFINE THIS IN APPLICATION TO E
 ...
 Note that this assumes radial symmetry about the propagation axis, which is justified due to the relevant gemoetry of the gas cell. THUS, ONE-DIMENSIONAL TRANSFORM ONLY IN r?!
 
------------------------------------------------------------------------------------------------------
-The total nonlinear polarisation can be calculated from the total electric field while separating Kerr and ionisation contributions (ignoring higher-order terms of \eqref{eq:P(E)_expansion}):
-\begin{equation}
-\mathbf{P}_\textbf{nl} (t, \mathbf{r}_\perp, z) = \mathbf{P}_\text{Kerr}(\mathbf{E}) + \mathbf{P}_\text{ion} (\mathbf{E}).
-\end{equation}
-Assuming that $\chi^{(3)}$ is not dependent of frequency, and hence that THG is instantaneous, as well as approximating the third-order susceptibility as a scalar due to the isotropy of the gas, the Kerr term can be written as 
-\begin{equation}
-\mathbf{P}_\text{Kerr}(t, \mathbf{r}_\perp, z) = \epsilon_0 \chi^{(3)} |\mathbf{E}(t, \mathbf{r}_\perp, z)|^2\mathbf{E}(t, \mathbf{r}_\perp, z).
-\end{equation}
-At sufficiently high intensities, photoionisation effects set in. This affects pulse propagation as the freed electrons are polarisable and as energy is lost to the ionisation potential. [NOTE; the following two things should be $n_0$ and $n_e$] If $a_0$ is the original number of neutral atoms and $a_e(t, \mathbf{r}_\perp, z)$ the number of free electrons at a given point in time and space then $a_e$ can be calculated via
-\begin{equation}
-\frac{\partial}{\partial t} a_e = (a_0 - a_e) W(\mathbf{E})
-\end{equation}
-where $W(\mathbf{E})$ is the ionisation rate. The ionisation rate can be found via THE ADK MODEL?? [link papers]. Given $a_e$, the induced nonlinear polarisation due to ionisation can be shown to be 
-\begin{equation}
-\frac{\partial}{\partial t} \mathbf{P}_\text{Ion}(t, \mathbf{r}_\perp, z) = \mathbf{E}(t, \mathbf{r}_\perp, z) \frac{I_p}{|\mathbf{E}(t, \mathbf{r}_\perp, z)|^2} \frac{\partial}{\partial t} a_e (t, \mathbf{r}_\perp, z ) + \frac{e^2}{m_e^2} \int_{-\infty}^t a_e (t', \mathbf{r}_\perp, z) \mathbf{E}(t', \mathbf{r}_\perp, z) dt',
-\end{equation}
-where $I_p$ is the ionisation energy, $e$ and $m_e$ are the electronic charge and mass.  
 -------------------------------------------------------------------------------------------------------------------------
 
 
@@ -205,7 +187,9 @@ Hankel transofmr is used instead of eq 9 for modal decomposition! Hankel transfo
 STILL PLANE WAVES!!
 
 
-two terms in the photoionisation response: loss term (first) and phase modulation term. This is why ionisation can be helpful due to spatiotemporal re-shaping.
+
+
+MENTION HOW UPPE DERIVED FROM MAXWELL WITHOUT ANY SLOWLY-VARYING ENVELOPE APPROXIMATIONS [THESE SIMPLIFY CALCULATIONS BUT ARE NOT FEASIBLE FOR FEMTOSECOND PULSES!]
 
 \section{Experimental Conditions}
 The CFEL-ATTO group generates few-femtosecond UV laser pulses via THG in a gas cell. This is driven by a pulsed near-infrared (NIR) Ti:sapphire laser with a central wavelength of 750nm and a repetition rate of 1kHz. Various pulse-shaping and compression techniques are used to produce NIR pulses with a duration of 5-6fs and a pulse energy of XX$\mu$J. A (variable) fraction of the pump beam is then linearly polarised and focussed into a vacuum chamber for UV generation, resulting in a spatially approximately Gaussian beam with a beam waist of 65$\mu$m at the focus. The chamber contains a fused silica cell, a gas nozzle and a pumping system. Its specifications are central to the THG process and are described in more detail in the following. \par 
@@ -229,6 +213,9 @@ The simulation output included the UV spectrum at the end of the cell (or chip),
 
 NOTE: ADK MODEL DOES NOT INVOLVE MULTIPHOTON IONISATION BUT IS COMPUTATIONALLY LESS EXPENSIVE
 -> inaccurate at low pressures! 
+
+THIS ENTIRE SECTION IS ESSENTIALLY USELESS!!
+
 \section{Experimental Results}
 
 \section{Discussion}
