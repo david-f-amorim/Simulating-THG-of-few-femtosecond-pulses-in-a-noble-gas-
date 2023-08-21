@@ -1,0 +1,22 @@
+gas     = Ne
+pres    = 5.0
+p_ed    = 0.001
+p_const = false
+τ       = 6.185291734720507e-15
+λ0      = 7.3e-7
+w0      = 6.5e-5
+ϕ       = 0.0
+energy  = 0.0004
+L       = 0.003
+kerr    = f
+ion     = true
+propz   = -0.0015
+
+
+E_out   = 3.427297288976144e-6
+η       = 0.008567997306368123
+τ_UV    = 9.782335966380802e-16
+z_peak  = 0.003
+ϕ2      = -0.0
+
+# IR input beam read from: input/IRpulse.dat

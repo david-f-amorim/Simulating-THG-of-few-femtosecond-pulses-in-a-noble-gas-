@@ -1,0 +1,24 @@
+gas     = Ne
+pres    = 5.0
+p_ed    = 0.001
+p_const = false
+τ       = 6.140914135627128e-15
+λ0      = 7.3e-7
+w0      = 6.5e-5
+ϕ       = 0.0
+energy  = 0.0004
+L       = 0.003
+kerr    = f
+ion     = true
+propz   = -0.0015
+
+
+E_out   = 3.2755442916841547e-7
+η       = 0.0008190314619001364
+τ_UV    = 2.7857804281641037e-15
+z_peak  = 0.06865499999999997
+ϕ2      = -0.0
+
+# IR input beam read from: input/IRpulse.dat
+
+# Gas density distribution read from: input/dens_5.0bar.dat

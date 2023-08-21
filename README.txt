@@ -42,7 +42,6 @@ compared performance of different gases; extended scan_eval to also investigate 
 added option to feed in COMSOL data; extended scan_eval to also investigate position of peak
 UV energy; started exhaustive new round of parameter scans; compared COMSOL density profile to grad profile; compared density profiles of different gases; extended scan_eval to compare different gases as well as COMSOL vs grad; 
 
-
 		
 		started: [with ADK ionisation!]
 		    1	- 075mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6  
@@ -57,30 +56,38 @@ UV energy; started exhaustive new round of parameter scans; compared COMSOL dens
 		    9   - 300mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6 
 		    10  - 400mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6     
 
-		  [one process died! find out which!]
-		  [run O2 & SF6 over the weekend]
-
                  => wait until simulations are done and then upload to S&S and GitHub			
 
 
 	          
 Week 6
 --------------------------------
-extendend previous pressure scans to O2 and SF6
+extendend previous pressure scans to O2 and SF6; implemented option to add chirp to the input pulse; 
+carried out minor chirp scan; added option to toggle between PPT and ADK; started working on handover PP; 
+cleaned up "file_prepare.py"
 
 
-- chirp scans with Neon; [+- 8fs ?]; 5bar; 400mW -> pulse duration; pulse energy; SPECTRUM!!
-	+ve coms, -ve coms, 0 coms, 0 grad, -ve grad, -ve coms...
+- finish up chirp scan:
+	+ put plots on PP 
+		-> neg_grad has to be re-run!!	
+
+- finish up pressure scans
+	+ once simulations are done: export to S&S 
+	+ repeat analysis from last week
+
+- improve density model 
+	+ work on COMSOL model for old cell
+	+ experiment with gradient profile plus wings
 
 
-- prepare PP for Josina take-over
+- run "final simulations" with good parameters
+	+ calculate ratios of Ar/Ne energies 
 
-- get COMSOL model of old cell
+- work on "documentation"
+	+ write report
+	+ prepare final presentation 
+	+ prepare handover PP [clean up scan_eval]
 
-- Monday 4th: presentation 
-
-- switch back to PPT eventually
-- add chirp functions and do chirp scan (prop_material, prop_taylor)
 
 
 
