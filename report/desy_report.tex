@@ -53,7 +53,7 @@ where $A(t)$ represents the envelope function, $\phi(t)$ is the temporal phase a
 \begin{equation}
 \mathbf{E}(\omega) = A'(\omega) e^{i \varphi(\omega)} \hat{\mathbf{u}}_p,
 \end{equation}
-where $\varphi(\omega)$ is the spectral phase. Note that the effect of the carrier term in the frequency domain is merely a shift and can be thus be absorbed in the definition of $\omega$. \par 
+where $\varphi(\omega)$ is the spectral phase. Note that the effect of the carrier term in the frequency domain is merely a shift along the frequency axis and can be thus be absorbed in the definition of $\omega$. \par 
 The spectral and temporal phase are often expanded as Taylor-series, with the notation $\phi_n \equiv \frac{\partial^n \phi}{\partial t^n}$, $\varphi_n \equiv \frac{\partial^n \varphi}{\partial t^n}$ used to denote the series coefficients. The zeroth-order terms of both expansions are the same, $\phi_0 = \varphi_0$, and correspond to the carrier-envelope phase (CEP), also known as the absolute phase. The CEP phase desribes the phase difference between the carrier and the envelope. A laser pulse with no terms in $\varphi(\omega)$ higher than $\varphi_0$ is said to be transform-limited. A pulse is said to be chirped if there are nonlinear terms in $\phi(t)$ or $\varphi(\omega)$. \par 
 The presence of chirp can result in both spectral and temporal broadening of the pulse envelope. A convenient measure of chirp is therefore the so-called time-bandwidth product $\Delta \omega \Delta t$, where $\Delta \omega$ is the full-width half-maximum (FWHM) of $A'(\omega)$ and $\Delta t$ the FWHM of $A(t)$. It can be shown that the time-bandwidth product is minimised for transform-limited, i.e. unchirped, pulses. In other words, at a given spectral bandwidth the shortest pulse durations are associated with transform-limited pulses, for which case the relation $\Delta \omega \propto (\Delta t)^{-1}$ holds. \par 
 The effects on a lase pulse when travelling through a medium can be described via additional terms in the spectral phase: $\varphi(\omega) \to \varphi(\omega) + [\beta(\omega) + i \alpha(\omega)]L$, where $L$ corresponds to the distance travelled in a medium, $\beta(\omega)$ is the propagation coefficient, and $\alpha(\omega)$ the absorption coefficient. The latter term represents an attenuation of the pulse while the former has the effect of introducing chirp (provided the Taylor-expansion of $\beta(\omega)$ has non-zero terms higher than $\beta_1$). Note that depending on the signs of the quantities involved, the chirp due to $\beta(\omega)$ will either increase or compensate the existing chirp on the pulse. Thus, an initially positively chirped pulse will further broaden upon propagation through a normally dispersive medium while a negatively chirped pulse will be compressed. The opposite effect is observed in anomalously dispersive media.
@@ -80,7 +80,7 @@ Note that, as \eqref{eq:Kerr_response} suggests, the intensity of the third harm
 The first term of \eqref{eq:Kerr_response}, corresponding to polarisation response at the fundamental frequency is also significant: its effect is a correction term in the refractive index that is proportional to the intensity $I \propto|\tilde{\mathbf{E}}|^2$ of the driving field. This intensity-dependent refractive index (IDRI) produced by the Kerr effect has important implications for the propagation of laser pulses in nonlinear media. These include self-phase modulation (SPM) as well as self-steepening. SPM arises because the intensity of a laser pulse is higher at the peak of its envelope than at the wings, so that the peak will experience a higher refractive index, and therefore phase shift on propagation, than the edges of the pulse. This induces chirp and can result in spectral broadening. Similarly, self-steepening describes the effect of the peak of the pulse experiencing, due to the IDRI, a different group velocity in a dispersive medium than the wings. This results in the leading edge of the pulse or, in the case of anomalous dispersion, the trailing edge, to get steeper on propagation, corresponding to temporal compression and spectral broadening. \par 
 After having considered the effects of the Kerr term in the previous paragraphs, we now turn to the second term in \eqref{eq:p_nl}: photoionisation. The highly energetic driving pulse can ionise the atoms or molecules in the nonlinear medium, resulting in the presence of free electrons. This has a two-fold effect on pulse propagation and THG. On the one hand, the pump field is depleted since it must overcome the atomic ionisation potential, so that less energy is available to drive THG. On the other hand, the freed electrons also interact electromagnetically with the fundamental and third harmonic fields, which results in spatio-temporal reshaping of the pulses. Thus, despite ionisation limiting the achievable third harmonic pulse energy, it can aid in further shortening the generated pulses. \par 
 The theoretical treatment of $\mathbf{P}^\text{ion}(\mathbf{E}(t))$ is significantly more sophisticated than that of the Kerr term. As is derived in \cite{geissler1999}:
-\begin{equation}
+\begin{equation}\label{eq:p_ion}
 \frac{\partial}{\partial t} \mathbf{P}^\text{ion}(t, \mathbf{r},z) = \frac{I_p}{\mathbf{E}(t)} \frac{\partial n_e}{\partial t} + \frac{e^2}{m_e^2} \int_{-\infty}^t n_e(t') \mathbf{E}(t')dt',
 \end{equation} 
 where $n_e(t)$ is the number of free electrons at any point in time, $I_p$ is the ionisation potential, and $e$, $m_e$ represent the electron charge and mass, respectively. The value of $n_e(t)$ can be found from 
@@ -97,23 +97,55 @@ where $n_0$ is the initial number of neutral atoms and $W(\mathbf{E}(t))$ is the
 
 \subsection{The Unidirectional Pulse Propagation Equation}
 
-
-
-
-
-
-
-
-
-
-
-
------------------------------------------------------
-There is a variety of differential equations that can be used to describe the propagation of an ultrashort laser pulse in a waveguide or free space. As is shown in [ref], most of these can be derived from the z-propagated unidirectional pulse propagation equation (UPPE). Several variations exist but its general form for a pulse of frequency $\omega$ travelling in the $z$-direction is 
-\begin{equation}
-\frac{\partial}{\partial z} \mathbf{E}(\omega, \mathbf{k}_\perp, z)= \mathcal{L}(\omega, \mathbf{k}_\perp, z)\mathbf{E}(\omega, \mathbf{k}_\perp, z) + \frac{i \omega}{N_{\text{nl}}} \mathbf{P}_\text{nl}(\omega, \mathbf{k}_\perp, z),
+A variety of different differential equations  can be used to describe the propagation of laser pulses. Many of them are derived under the slowly-varying- envelope assumption (SVEA), which approximates the carrier wave to change significantly more quickly in space and time then the pulse envelope. The SVEA does not hold for ultrashort pulses, however, and hence many commonly used pulse propagation equations are not suitable for the study of few-femtosecond pulses. The unidirectional pulse propagation equation (UPPE) is derived directly from Maxwell's equations, see \cite{kolesik2004}, and therefore holds for ultrashort pulses. It is the differential equation used by \textit{Luna.jl} to simulate laser pulse propagation. This section gives a brief overview of the UPPE and how it is solved in \textit{Luna.jl}. For more details on numerical solutions of the UPPE see the \textit{Luna.jl} documentation, \cite{brahms2023}, and \cite{tani2014}. \par 
+The general form of the UPPE for a laser pulse of frequency $\omega$ travelling in the $z$-direction is
+\begin{equation}\label{eq:UPPE}
+\frac{\partial}{\partial z} \mathbf{E}(\omega, \mathbf{k}_\perp, z)= \mathcal{L}(\omega, \mathbf{k}_\perp, z)\mathbf{E}(\omega, \mathbf{k}_\perp, z) + \frac{i \omega}{N} \mathbf{P}^\text{NL}(\omega, \mathbf{k}_\perp, z),
 \end{equation}
-where $\mathbf{E}(\omega, \mathbf{k}_\perp, z)$ is reciprocal-space electric field amplitude in the frequency domain, $\mathbf{k}_\perp$ is a generalised transverse wavevector,  $\mathcal{L}(\omega, \mathbf{k}_\perp, z)$ is a linear operator describing dispersion, diffraction, and absorption, while $\mathbf{P}_\text{nl}$ is the nonlinear polarisation with normalisation factor $N_\text{nl}$. \par 
+where $\mathbf{E}(\omega, \mathbf{k}_\perp, z)$ is the reciprocal-space electric field amplitude in the frequency domain, $\mathbf{k}_\perp$ is the transverse wavevector,  $\mathcal{L}(\omega, \mathbf{k}_\perp, z)$ is a linear operator describing dispersion and absorption, while $\mathbf{P}^\text{NL}(\omega, \mathbf{k}_\perp, z)$ is the nonlinear polarisation in reciprocal space and the frequency domain, and $N$ is a normalisation factor. \par 
+
+----------------------------------------------
+
+As is seen in \eqref{eq:p_nl_simpl} and \eqref{eq:p_ion}, the nonlinear polarisation is naturally calculated from the electric field in the time domain. Thus, numerically solving the UPPE, which lives in the frequency domain, requires a cycle of temporal Fourier transforms into and out of the frequency domain at each step. Similarly, since REAL SPACE, REQUIRES TRANSVERSE SPATIAL TRANSFORM. \par 
+
+SPATIAL TRANSFORM LINKED TO (IDENTICAL WITH??) MODAL DECOMPOSITION??!!
+
+SAY SOMETHING ABOUT REQUIRING DIFFERENT TRANSFORMATIONS; AND ABOUT USING MODAL DECOMPOSITION TO SOLVE ONE SCALAR UPPE PER MODE; THE OVERLAP INTEGRALS ARE A TRANSVERSE SPATIAL TRANSFORM INTO RECIPROCAL SPACE! MENTION THAT USE HANKEL
+--------------------------------------------------------
+The frequency-domain electric field in real space, with transverse position vector $\mathbf{r}_\perp$, can be decomposed without approximation into a linear combination of orthogonal modes:
+\begin{equation}\label{eq:modal_decomp}
+\mathbf{E}(\omega, \mathbf{r}_\perp, z) = \sum_j \tilde{E}_j(\omega, z) \boldsymbol{\mathcal{E}}_j(\mathbf{r}_\perp, z),
+\end{equation}
+where $\tilde{E}_j(\omega, z)$ is the frequency-domain field amplitude of the $j$th mode and $\boldsymbol{\mathcal{E}}_j(\mathbf{r}_\perp, z)$ the transverse field distribution of the mode, which is normalised to ensure that $|\tilde{E}_j(\omega,z)|^2$ represents the spectral power density in the $j$th mode. For pulse propagation without a waveguide, as in the present case of pulses travelling through gas, the modes $\boldsymbol{\mathcal{E}}_j$ correspond to free-space modes. Given an input field $\mathbf{E}(\omega, \mathbf{r}_\perp, z)$ it can be projected onto its modal expansion via the overlap integral
+\begin{equation}\label{eq:Ej}
+\tilde{E}_j(\omega,z) = \int_\text{all space} [ \boldsymbol{\mathcal{E}}^*_j(\mathbf{r}_\perp, z) \cdot \mathbf{E}(\omega, \mathbf{r}_\perp, z)] d^2 \mathbf{r}_\perp.
+\end{equation}
+Similarly, $\tilde{P}_j^\text{NL}(\omega,z)$ represents the projection of the polarisation response onto the $j$th mode:
+\begin{equation}
+\tilde{P}_j^\text{NL}(\omega,z) = \int_\text{all space}[ \boldsymbol{\mathcal{E}}^*(\mathbf{r}_\perp,z) \cdot \mathbf{P}_j^\text{NL}(\omega, \mathbf{r}_\perp, z)] d^2 \mathbf{r}_\perp.
+\end{equation}
+-----------------------------------------------------------
+
+In Cartesian coordinates, $\mathbf{r}_\perp = (x,y)$, with plane-wave free space modes the integral in \eqref{eq:Ej} corresponds to a two-dimensional spatial Fourier transform. Since the system is radially symmetric, however, it is more efficient to use cylindrical polar coordinates, $\mathbf{r}_\perp = (r, \theta)$, and employ a zeroth-order Hankel transform, $\mathcal{H}_0$. The zeroth-order Hankel transform of a radially symmetric function can be shown to be mathematically equivalent to its two-dimensional Fourier transform in Cartesian coordinates. It is computationally advantageous to work with $\mathcal{H}_0$ in the present case, as this reduces the integral in \eqref{eq:Ej} from one to two dimensions. Thus,
+\begin{equation}
+\tilde{E}_j(\omega, z) = \mathcal{H}_0 \left[ \boldsymbol{\mathcal{E}}_j(\mathbf{r}_\perp, z) \cdot \mathbf{E}(\omega, \mathbf{r}_\perp, z) \right] \equiv \int_0^\infty  \left[ \boldsymbol{\mathcal{E}}_j(\mathbf{r}_\perp, z) \cdot \mathbf{E}(\omega, \mathbf{r}_\perp, z) \right] J_0(k_r r)r dr,
+\end{equation}
+where $J_0$ is the zeroth-order Bessel function and $k_r$ is the radial spatial frequency. 
+
+
+-----------------------------------------------
+The linear operator for a mode $j$ is given by 
+\begin{equation}\label{eq:Lj}
+\mathcal{L}_j(\omega,z) = i \left( \beta_j(\omega, z) - \frac{\omega}{z} \right) - \frac{1}{2} \alpha_j (\omega,z),
+\end{equation}
+where $\beta_j(\omega,z)$ is the propagation factor of the mode, $v$ is a reference frame velocity (arbitrarily chosen to be the group velocity at the central wavelength $\lambda_0$), and $\alpha_j(\omega,z)$ is the absorption factor.  
+-----------------------------------------------------
+Modal decomposition can be used to solve the UPPE separately for the field of each mode, with the nonlinear term taking into account potential coupling between different modes:
+\begin{equation}
+\frac{\partial}{\partial z} \tilde{E}_j(\omega,z) = \mathcal{L}_j (\omega,z) \tilde{E}_j(\omega,z)+ i\frac{\omega}{N_{j}} \tilde{P}_{j}^\text{NL},
+\end{equation}
+---------------------------------------------------
+
 The nonlinear polarisation response to a given electric field is computed most easily in real space and the time domain: $\mathbf{P}(t, \mathbf{r}_\perp,z) = \mathcal{P}_\text{nl}(\mathbf{E}(t,\mathbf{r}_\perp,z))$, where $t$ is time, $\mathcal{P}_\text{nl}$ is an appropriate operator [RELATE TO Pnl ABOVE?!] and $\mathbf{r}_\perp = (r, \theta)$ represents the transverse spatial coordinate. The real-space-time domain representation of $\mathbf{P}_\text{nl}$ can then be related to the reciprocal-space-frequency domain version via a temporal Fourier transform, $\mathcal{F}$, as well as an appropriate transverse spatial transform, $\mathcal{T}_\perp$:
 \begin{equation}
 \mathbf{P}(\omega, \mathbf{k}_\perp,z) = \mathcal{F}\left[ \mathcal{T}_\perp \left[ \mathbf{P}(t, \mathbf{r}_\perp,z) \right](t, \mathbf{k}_\perp, z)  \right]. 
@@ -121,75 +153,15 @@ The nonlinear polarisation response to a given electric field is computed most e
 Note that the real-space-time domain field $\mathbf{E}(t, \mathbf{r}_\perp, z)$ can be recovered from $\mathbf{E}(\omega, \mathbf{k}_\perp, z)$ via the appropriate inverse transformations $\mathcal{F}^{-1}$ and $\mathcal{T}^{-1}_\perp$. \par 
 
 Hence, once the operators $\mathcal{L}$ and $\mathcal{P}_\text{nl}$ as well as appropriate definitions of the transverse (reciprocal) space $\mathbf{k}_\perp$ and associated transform $\mathcal{T}_\perp$ are known, the UPPE can be solved as an initial value problem in $z$, using appropriate cycles of transforms at each step. \par 
-The choice of $\mathbf{k}_\perp$ and $\mathcal{T}_\perp$ is mostly a matter of the modal expansion of the field in terms of a set of orthogonal spatial modes [the choice of the transform also affects the shape of the linear operator; Note: UPPE derived from Maxwell's equation by substituting a modal expansion!]. These may be waveguide modes or, in the present case, free space modes. The frequency-domain field can be expanded as 
-\begin{equation}
-\mathbf{E}(\omega, \mathbf{r}_\perp, z) = \sum_j \tilde{E}_j (\omega,z)  \hat{\mathbf{e}}_j (\mathbf{r}_\perp, z),
-\end{equation}
-where $\hat{\mathbf{e}}_j (\mathbf{r}_\perp, z)$ is the orthonormal transverse field distribution of the $j$th mode and $\tilde{E}_j (\omega,z)$ is the frequency-domain field in mode $j$. The modes are normalised via $N_{j, \text{nl}}$ to ensure that $|\tilde{E}(\omega,z)_j|^2$ represents the spectral power density in the $j$th mode. \par 
-Given an input field $\mathbf{E}(t, \mathbf{r}_\perp, z)$ the modal decomposition can be calculated via 
-\begin{equation}
-\tilde{E}_j (\omega,z) = \mathcal{F}\left[ \int_S \hat{\mathbf{e}}_j(\mathbf{r}_\perp,z) \cdot \mathbf{E}(t, \mathbf{r}_\perp, z) d^2 \mathbf{r}_\perp \right],
-\end{equation}
-where $S$ is the cross-sectional area of the gas cell. Modal decomposition can be used to solve  a scalar version of the UPPE for each $\tilde{E}_j(\omega,z)$:
-\begin{equation}
-\frac{\partial}{\partial z} \tilde{E}_j(\omega,z) = \mathcal{L}_j (\omega,z) \tilde{E}_j(\omega,z)+ i\frac{\omega}{N_{j, \text{nl}}} \tilde{P}_{j,\text{nl}},
-\end{equation}
-where $\tilde{P}_{j,\text{nl}}$ represents the projection of the polarisation onto the $j$th mode:
-\begin{equation}
-\tilde{P}_{j, \text{nl}}(\omega, z) =\mathcal{F}\left[ \int_S \hat{\mathbf{e}}_j(\mathbf{r}_\perp,z) \cdot \mathbf{P}_{\text{nl}}(t, \mathbf{r}_\perp, z) d^2 \mathbf{r}_\perp \right].
-\end{equation}
-The linear operator acting on the $j$th mode can be described as 
-\begin{equation}
-\mathcal{L}_j(\omega, z) = i \left( \frac{\omega}{c} n_{\text{eff}}(\omega,z) - \frac{\omega}{v} \right),
-\end{equation}
-where $n_\text{eff}$ is the complex effective index (whose real part represents the effective refractive index [not taking into account IDRI?!] and whose imaginary part gives the attenuation coefficient), $c$ the speed of light in vacuum, and $v$ is the velocity of an arbitrary reference frame. Here, $v$ is taken to be the group velocity at the central wavelength $\lambda_0$. \par 
-For the present case of pulse propagation in free-space (`free-space' as opposed to in waveguide or fibre; does propagate through gas, not vacuum) the appropriate reciprocal transform $\mathcal{T}_\perp$ is the (zeroth-order) Hankel transform, defined by
-\begin{equation}
-\mathcal{H} \equiv \int_0^\infty dr J_0 (kr)r
-\end{equation},
-where $J_0$ is the zeroth-order Bessel function. DEFINE THIS IN APPLICATION TO E OR P. Thus, $\mathbf{r}_\perp = (r, \theta)$ and $\mathbf{k}_\perp = (k, \theta)$ where any theta-dependence can be dropped due to the cylindrical symmetry. 
-...
-Note that this assumes radial symmetry about the propagation axis, which is justified due to the relevant gemoetry of the gas cell. THUS, ONE-DIMENSIONAL TRANSFORM ONLY IN r?!
+The choice of $\mathbf{k}_\perp$ and $\mathcal{T}_\perp$ is mostly a matter of the modal expansion of the field in terms of a set of orthogonal spatial modes. These may be waveguide modes or, in the present case, free space modes. 
+
+
 
 -------------------------------------------------------------------------------------------------------------------------
 
 
----------------------------------------------------------------------------------------------
-NOTE: small e should be changed to mathcal E or something to avoid confusion! not basis vector but field! orthogonal with respect to int dr, not dot product!
-$\int_S \hat{\mathbf{e}_j} \cdot \hat{\mathbf{e}}_k d^2 \mathbf{r}_\perp = \delta_{jk}$
-
-DUE TO CYLINDRICAL SYMMETRY: expanding on Bessel function basis, not plane waves? Apart from that, free-space transverse modes?
-
-I GUESS CYLINDRICAL WAVEGUIDE MODES? BESSEL FUNCTIONS...
-		-> free space modes?!
-		
-		IMPORTANCE OF SPATIAL TRANSFORM: comes in during UPPE derivatioin?
-
-THERE MIGHT ACTUALLY NOT BE A RELATION BETWEEN MODAL EXPANSION AND HANKEL TRANSFORM??
 
 
-RELATE UPPE TO MAXWELL'S EQUATIONS!
-		-> UPPE CAN BE DERIVED FROM MAXWELL based on a modal expansion  -> thus slightly different forms for different contexts [link paper]
-
-MENTION LUNA!!!
-
-WRITE ABOUT Pkerr, Pion ,....
-
-MENTION HANKEL TRANSFORM! -> find out more! which order zeroth order?? which spatial modes does this correspond to? bessel? -> one dimensional Hankel transform essentially?
-
-HOW TO FIND THE SPATIAL MODE VECTORS???
-	MAYBE VECTORS NOT REALLY SPATIAL!??
-
-POTENTIALLY START WITH THIS SECTION?
-
-Hankel transofmr is used instead of eq 9 for modal decomposition! Hankel transform essentially 2D Fourier transform for radially symmetric function
-
-STILL PLANE WAVES!!
-
-
-
-
-MENTION HOW UPPE DERIVED FROM MAXWELL WITHOUT ANY SLOWLY-VARYING ENVELOPE APPROXIMATIONS [THESE SIMPLIFY CALCULATIONS BUT ARE NOT FEASIBLE FOR FEMTOSECOND PULSES!]
 
 \section{Experimental Conditions}
 The CFEL-ATTO group generates few-femtosecond UV laser pulses via THG in a gas cell. This is driven by a pulsed near-infrared (NIR) Ti:sapphire laser with a central wavelength of 750nm and a repetition rate of 1kHz. Various pulse-shaping and compression techniques are used to produce NIR pulses with a duration of 5-6fs and a pulse energy of XX$\mu$J. A (variable) fraction of the pump beam is then linearly polarised and focussed into a vacuum chamber for UV generation, resulting in a spatially approximately Gaussian beam with a beam waist of 65$\mu$m at the focus. The chamber contains a fused silica cell, a gas nozzle and a pumping system. Its specifications are central to the THG process and are described in more detail in the following. \par 

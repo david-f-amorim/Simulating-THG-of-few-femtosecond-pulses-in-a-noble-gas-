@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  22 AUG 2023 17:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  22 AUG 2023 22:56
 entering extended mode
 **./desy_report.tex
 (desy_report.tex
@@ -442,48 +442,51 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 [1
 
-{C:/Users/david/AppData/Local/MiKTeX/pdftex/config/pdftex.map}] [2]
+{C:/Users/david/AppData/Local/MiKTeX/pdftex/config/pdftex.map}] [2] [3]
+Underfull \hbox (badness 1424) in paragraph at lines 113--116
+\OT1/cmr/m/n/10.95 INTEGRALS ARE A TRANSVERSE SPATIAL TRANSFORM INTO RECIPROCAL
+ SPACE!
+ []
 
-LaTeX Warning: Citation `geissler1999' on page 3 undefined on input line 82.
-
-[3] [4] [5] (desy_report.bbl) [6] (desy_report.aux)
+[4] [5] (desy_report.bbl) [6] (desy_report.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.78749pt have occurred.
 
 
-LaTeX Warning: There were undefined references.
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
 Package rerunfilecheck Info: File `desy_report.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 11305 strings out of 478864
- 170679 string characters out of 2848660
- 503784 words of memory out of 3000000
- 29039 multiletter control sequences out of 15000+600000
- 410911 words of font info for 54 fonts, out of 8000000 for 9000
+ 11328 strings out of 478864
+ 170942 string characters out of 2848660
+ 504219 words of memory out of 3000000
+ 29053 multiletter control sequences out of 15000+600000
+ 412752 words of font info for 60 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  60i,6n,66p,1222b,354s stack positions out of 5000i,500n,10000p,200000b,80000s
 <C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
-cmbx10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
-fonts/cm/cmbx12.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/p
-ublic/amsfonts/cm/cmbx9.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts
-/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/david/AppData/Local/Programs/MiK
-TeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/david/AppData/Local/Pro
-grams/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/david/AppData/L
-ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/david/A
-ppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users
-/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C
-:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9
-.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/
-cm/cmsy10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/
-amsfonts/cm/cmsy8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1
-/public/amsfonts/cm/cmti10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fo
-nts/type1/public/amsfonts/cm/cmti9.pfb>
-Output written on desy_report.pdf (6 pages, 234231 bytes).
+cmbsy10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/am
+sfonts/cm/cmbx10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/
+public/amsfonts/cm/cmbx12.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fon
+ts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Users/david/AppData/Local/Programs/Mi
+KTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/david/AppData/Local/Pr
+ograms/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/david/AppData
+/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/david
+/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Use
+rs/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb
+><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/c
+mr8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfon
+ts/cm/cmr9.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public
+/amsfonts/cm/cmsy10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/typ
+e1/public/amsfonts/cm/cmsy8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/f
+onts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/david/AppData/Local/Programs
+/MiKTeX/fonts/type1/public/amsfonts/cm/cmti9.pfb>
+Output written on desy_report.pdf (6 pages, 248935 bytes).
 PDF statistics:
- 150 PDF objects out of 1000 (max. 8388607)
- 38 named destinations out of 1000 (max. 500000)
+ 166 PDF objects out of 1000 (max. 8388607)
+ 41 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

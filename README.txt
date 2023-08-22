@@ -50,16 +50,12 @@ carried out minor chirp scan; added option to toggle between PPT and ADK; starte
 cleaned up "file_prepare.py"; finished gas scans
 
 
-- improve density model [wait for Josina!]
-	+ work on COMSOL model for old cell
-	+ experiment with gradient profile plus wings
-
-
 - run "final simulations" with good parameters [and PPT!], based on measurements 
 	+ calculate ratios of Ar/Ne energies 
 	+ reproduce measured data 
 	+ show what is "happening inside"; maybe turn ionisation on/off and compare... ; self-steepening...
 	+ play with chirp/propz/CEP/pressure/beam power/beam waist...?
+	+ WAIT FOR NEW COMSOL DATA!!
 
 - work on "documentation"
 	+ write report

@@ -21,4 +21,23 @@ U.~Keller, {\em Ultrafast lasers: a comprehensive introduction to fundamental
 G.~New, {\em Introduction to Nonlinear Optics\/} (Cambridge University Press,
   2011).
 
+\bibitem{geissler1999}
+M.~Geissler, G.~Tempea, A.~Scrinzi, M.~Schn\"urer, F.~Krausz, and T.~Brabec,
+  \enquote{Light Propagation in Field-Ionizing Media: Extreme Nonlinear
+  Optics,} Phys. Rev. Lett. {\bf 83}, 2930--2933 (1999).
+\newline https://link.aps.org/doi/10.1103/PhysRevLett.83.2930
+
+\bibitem{kolesik2004}
+M.~Kolesik and J.~V. Moloney, \enquote{Nonlinear optical pulse propagation
+  simulation: From Maxwell's to unidirectional equations,} Phys. Rev. E {\bf
+  70}, 036\,604 (2004).
+\newline https://link.aps.org/doi/10.1103/PhysRevE.70.036604
+
+\bibitem{tani2014}
+F.~Tani, J.~C. Travers, and P.~S. Russell, \enquote{Multimode ultrafast
+  nonlinear optics in optical waveguides: numerical modeling and experiments in
+  kagom\&\#xE9; photonic-crystal fiber,} J. Opt. Soc. Am. B {\bf 31}, 311--320
+  (2014).
+\newline https://opg.optica.org/josab/abstract.cfm?URI=josab-31-2-311
+
 \end{thebibliography}
