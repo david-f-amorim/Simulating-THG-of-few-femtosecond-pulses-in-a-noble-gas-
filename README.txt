@@ -42,51 +42,31 @@ compared performance of different gases; extended scan_eval to also investigate 
 added option to feed in COMSOL data; extended scan_eval to also investigate position of peak
 UV energy; started exhaustive new round of parameter scans; compared COMSOL density profile to grad profile; compared density profiles of different gases; extended scan_eval to compare different gases as well as COMSOL vs grad; 
 
-		
-		started: [with ADK ionisation!]
-		    1	- 075mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6  
-		    2	- 150mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6       
-   		    3	- 200mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6        
-		    4	- 300mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6         
-		    5	- 400mW; ion; com;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6         
-		
-		    6   - 075mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6          
-		    7   - 150mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6                              
-                    8   - 200mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6    
-		    9   - 300mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6 
-		    10  - 400mW; ion; grad;    Ar, Ne, Kr, Xe, He, N2, N2O, O2, SF6     
 
-                 => wait until simulations are done and then upload to S&S and GitHub			
-
-
-	          
 Week 6
 --------------------------------
 extendend previous pressure scans to O2 and SF6; implemented option to add chirp to the input pulse; 
 carried out minor chirp scan; added option to toggle between PPT and ADK; started working on handover PP; 
-cleaned up "file_prepare.py"
+cleaned up "file_prepare.py"; finished gas scans
 
 
-- finish up chirp scan:
-	+ put plots on PP 
-		-> neg_grad has to be re-run!!	
-
-- finish up pressure scans
-	+ once simulations are done: export to S&S 
-	+ repeat analysis from last week
-
-- improve density model 
+- improve density model [wait for Josina!]
 	+ work on COMSOL model for old cell
 	+ experiment with gradient profile plus wings
 
 
-- run "final simulations" with good parameters
+- run "final simulations" with good parameters [and PPT!], based on measurements 
 	+ calculate ratios of Ar/Ne energies 
+	+ reproduce measured data 
+	+ show what is "happening inside"; maybe turn ionisation on/off and compare... ; self-steepening...
+	+ play with chirp/propz/CEP/pressure/beam power/beam waist...?
 
 - work on "documentation"
 	+ write report
 	+ prepare final presentation 
 	+ prepare handover PP [clean up scan_eval]
+			-> change function and variable names!!
+			-> rewrite!!! make more general!!
 
 
 

@@ -1,0 +1,14 @@
+gas     = O2
+p_ed    = 0.001
+p_const = false
+τ       = 6.185291734720501e-15
+λ0      = 7.3e-7
+w0      = 6.5e-5
+ϕ       = 0.0
+energy  = 7.5e-5
+L       = 0.003
+kerr    = f
+ion     = true
+propz   = -0.0015
+
+# IR input beam read from: input/IRpulse.dat

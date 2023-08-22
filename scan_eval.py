@@ -8,21 +8,27 @@ import os
         Processing and visualisation of pressure scan output. 
 """
 
-# ---------- EXECUTION SETTINGS --------------------------------------
+# ---------- QUICK SETTINGS --------------------------------------
 
-sup_dir    = "scan_new_prelims"
-out_dir    = "new_scan_analysis"
+single = False  # if True: process output from a single scan; if False: process output from a set of different scans 
+
+single_dir = "scan_new_prelims\\scan_300.0mW_Ar_0.0rad_f_ion_grad" # path to scan directory to process if single=True (Note: output will be written to same directory)
+
+sup_dir = "parameter_scans\\gas_scans" # if single==False, path to super directory containing the various scan directories 
+out_dir = "scan_analysis\\gas_scans"  # if single==False, path to output directory for the produced plots  
+
+n    = 15   # maximum number of overlayed spectra in one plot (to avoid clutter)
+show = True # if True: open plots in matplotlib GUI; if False: don't show plots (directly write to file)  
+
+# ---------- NON-SINGLE SCAN SETTINGS --------------------------------------
 
 
-single_dir = "scan_new_prelims\\scan_300.0mW_Ar_0.0rad_f_ion_grad" 
-single = False
-n = 15
 
 # ---------- FILE EXTRACTION --------------------------------------
 
 # get paths to all files in super directory with different 
 # beam powers and all other parameters equal
-def power_comp(sup_dir, gas, phi,ion, kerr, dens_mod):
+def power_comp(sup_dir, gas, phi,ion, dens_mod):
 
     path_arr =np.array([])
     beam_en_arr = np.array([])
@@ -48,7 +54,7 @@ def power_comp(sup_dir, gas, phi,ion, kerr, dens_mod):
 
 # get paths to all files in super directory with different 
 # CEO phases and all other parameters equal
-def phi_comp(sup_dir, gas, beam_en, ion,kerr, dens_mod):
+def phi_comp(sup_dir, gas, beam_en, ion, dens_mod):
 
     path_arr =np.array([])
     phi_arr = np.array([])
@@ -74,7 +80,7 @@ def phi_comp(sup_dir, gas, beam_en, ion,kerr, dens_mod):
 
 # get paths to all files in super directory with different 
 # beam energies and all other parameters equal
-def gas_comp_singleP(sup_dir,beam_en,dens_mod):
+def gas_comp_singleP(sup_dir,beam_en,phi, ion, dens_mod):
 
     path_arr = []
     gas_arr = []
@@ -127,7 +133,7 @@ def ion_comp(sup_dir, gas, phi, kerr, dens_mod):
     return path_arr_no_ion, path_arr_ion, beam_en_arr, w, tau 
 
 # for a single gas and a single power [in mW] show both dens models
-def singlePg_model_comp(sup_dir, gas, beam_p):
+def singlePg_model_comp(sup_dir, gas, ion, phi, beam_p):
 
     for dir in os.listdir(sup_dir):
         if os.path.isdir(os.path.join(sup_dir,dir)):
@@ -219,6 +225,7 @@ def gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
         data[i, 2]= beam_en_arr
     
     return data, w0, tau     
+
 # ---------- DATA EXTRACTION --------------------------------------
 
 # extract parameter values of a scan directory at 'path' 
@@ -316,7 +323,7 @@ def reduce_spectra(path,n):
     return data_cut, p_cut     
 
 # ---------- VISUALISATION --------------------------------------
-colour_cycle = ["grey", "black", "red", "blue", "purple", "green", "cyan"]
+colour_cycle = ["grey", "black", "red", "blue", "purple", "green", "cyan", "orange", "deeppink"]
 
 # plot UV energy, THG conversion efficiency and UV spectra for a 
 # single scan 
@@ -339,7 +346,7 @@ def plot_single(single_dir, n=15):
     plt.legend(loc="upper left")
 
     plt.savefig(os.path.join(single_dir,"energies.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.84)
@@ -352,7 +359,7 @@ def plot_single(single_dir, n=15):
     plt.legend()
 
     plt.savefig(os.path.join(single_dir,"efficiencies.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.84)
@@ -365,7 +372,7 @@ def plot_single(single_dir, n=15):
     plt.legend()
 
     plt.savefig(os.path.join(single_dir,"durations.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.84)
@@ -378,7 +385,7 @@ def plot_single(single_dir, n=15):
     plt.legend()
 
     plt.savefig(os.path.join(single_dir,"z_peak.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.82)
@@ -400,7 +407,7 @@ def plot_single(single_dir, n=15):
     plt.legend(loc="upper right")
 
     plt.savefig(os.path.join(single_dir,"spectra.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
 # compare single gas, single beam power, two dens models
 def plot_singlePg_model_comp(sup_dir, gas, beam_p):
@@ -429,7 +436,7 @@ def plot_singlePg_model_comp(sup_dir, gas, beam_p):
 
     plt.savefig(os.path.join(path_coms,"energies.png"),dpi=1000)
     plt.savefig(os.path.join(path_grad,"energies.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.84)
@@ -445,7 +452,7 @@ def plot_singlePg_model_comp(sup_dir, gas, beam_p):
 
     plt.savefig(os.path.join(path_coms,"efficiencies.png"),dpi=1000)
     plt.savefig(os.path.join(path_grad,"efficiencies.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.84)
@@ -461,7 +468,7 @@ def plot_singlePg_model_comp(sup_dir, gas, beam_p):
 
     plt.savefig(os.path.join(path_coms,"durations.png"),dpi=1000)
     plt.savefig(os.path.join(path_grad,"durations.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
 # peak investigations for multi power, single gas, dens model comparison 
 def plot_multiP_singleg_model_comp(sup_dir, gas):
@@ -504,7 +511,7 @@ def plot_multiP_singleg_model_comp(sup_dir, gas):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"UV_energies.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     # PLOT 2: efficiency vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
@@ -524,7 +531,7 @@ def plot_multiP_singleg_model_comp(sup_dir, gas):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"THG_efficiencies.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     # PLOT 3: efficiency vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
@@ -544,7 +551,7 @@ def plot_multiP_singleg_model_comp(sup_dir, gas):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
    
     # PLOTS 5-9: peak investigation 
@@ -584,7 +591,7 @@ def plot_multiP_singleg_model_comp(sup_dir, gas):
     plt.legend()
 
     plt.savefig(os.path.join(out_path,"peak_en_vs_beam_power.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
@@ -601,7 +608,7 @@ def plot_multiP_singleg_model_comp(sup_dir, gas):
     plt.legend()
 
     plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
@@ -618,7 +625,7 @@ def plot_multiP_singleg_model_comp(sup_dir, gas):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
-    plt.show()  
+    if show: plt.show()  
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
@@ -635,7 +642,7 @@ def plot_multiP_singleg_model_comp(sup_dir, gas):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"min_tau_vs_beam_power.png"),dpi=1000)
-    plt.show()   
+    if show: plt.show()   
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
@@ -652,7 +659,7 @@ def plot_multiP_singleg_model_comp(sup_dir, gas):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"min_tau_p_vs_beam_power.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
 # plot UV energy and THG conversion efficiency for different beam power
 def plot_beamP_scan(sup_dir, gas, phi, ion, kerr, dens_mod):
@@ -694,7 +701,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr, dens_mod):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"UV_energies.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     # PLOT 2: efficiency vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
@@ -710,7 +717,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr, dens_mod):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"THG_efficiencies.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     # PLOT 3: pulse duration vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
@@ -726,7 +733,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr, dens_mod):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     # PLOT 4: z_peak vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
@@ -742,7 +749,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr, dens_mod):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"peak_positions.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     # PLOTS 4-7: peak investigation 
     peak_arr = np.empty((len(path_arr),6))
@@ -769,7 +776,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr, dens_mod):
     ax.plot(peak_arr[:,0]*1e6, peak_arr[:,2]*1e9, color="blue")
 
     plt.savefig(os.path.join(out_path,"peak_en_vs_beam_power.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
@@ -783,7 +790,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr, dens_mod):
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
     plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
@@ -797,7 +804,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr, dens_mod):
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
     plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
@@ -811,7 +818,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr, dens_mod):
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
     plt.savefig(os.path.join(out_path,"tau_min_vs_beam_power.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
@@ -825,7 +832,7 @@ def plot_beamP_scan(sup_dir, gas, phi, ion, kerr, dens_mod):
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
     plt.savefig(os.path.join(out_path,"min_tau_p_vs_beam_power.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
 # plot UV energy and THG conversion efficiency for different beam powers
 # with and without ionisation
@@ -868,7 +875,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"UV_energies.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     # PLOT 2: efficiency vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
@@ -888,7 +895,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"THG_efficiencies.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     # PLOT 3: efficiency vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
@@ -908,7 +915,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     # PLOT 3: efficiency vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
@@ -928,7 +935,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"z_peak.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     # PLOTS 5-9: peak investigation 
     peak_arr_ion = np.empty((len(path_arr_ion),6))
@@ -967,7 +974,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
     plt.legend()
 
     plt.savefig(os.path.join(out_path,"peak_en_vs_beam_power.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
@@ -984,7 +991,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
     plt.legend()
 
     plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
@@ -1000,7 +1007,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
     plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
-    plt.show()  
+    if show: plt.show()  
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
@@ -1016,7 +1023,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
     plt.savefig(os.path.join(out_path,"min_tau_vs_beam_power.png"),dpi=1000)
-    plt.show()   
+    if show: plt.show()   
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
@@ -1032,7 +1039,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
     plt.savefig(os.path.join(out_path,"min_tau_p_vs_beam_power.png"),dpi=1000)
-    plt.show()   
+    if show: plt.show()   
 
 # plot UV energy and THG conversion efficiency for different beam power
 def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr, dens_mod):
@@ -1067,7 +1074,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr, dens_mod):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"UV_energies.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     # PLOT 2: efficiency vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
@@ -1083,7 +1090,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr, dens_mod):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"THG_efficiencies.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     # PLOT 3: pulse duration vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
@@ -1099,7 +1106,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr, dens_mod):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     # PLOT 4: z_peak vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
@@ -1115,7 +1122,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr, dens_mod):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"z_peak.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     # PLOTS 5-9: peak investigation 
     peak_arr = np.empty((len(path_arr),6))
@@ -1138,7 +1145,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr, dens_mod):
     plt.plot(peak_arr[:,0], peak_arr[:,2]*1e9, color="blue")
 
     plt.savefig(os.path.join(out_path,"peak_en_vs_phi.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28])
     plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
@@ -1149,7 +1156,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr, dens_mod):
     plt.plot(peak_arr[:,0], peak_arr[:,3]*1e2, color="blue")
 
     plt.savefig(os.path.join(out_path,"peak_ef_vs_phi.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28])
     plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
@@ -1160,7 +1167,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr, dens_mod):
     plt.plot(peak_arr[:,0], peak_arr[:,1], color="blue")
 
     plt.savefig(os.path.join(out_path,"peak_p_vs_phi.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28])
     plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion, fontsize=10)
@@ -1171,7 +1178,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr, dens_mod):
     plt.plot(peak_arr[:,0], peak_arr[:,4]*1e15, color="blue")
 
     plt.savefig(os.path.join(out_path,"min_tau_vs_phi.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28])
     plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion, fontsize=10)
@@ -1182,7 +1189,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr, dens_mod):
     plt.plot(peak_arr[:,0], peak_arr[:,5], color="blue")
 
     plt.savefig(os.path.join(out_path,"min_tau_p_vs_phi.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
 # single power, single dens model gas comparison 
 def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
@@ -1218,7 +1225,7 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"UV_energies.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     # PLOT 2: efficiency vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
@@ -1235,7 +1242,7 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"THG_efficiencies.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     # PLOT 3: pulse duration vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
@@ -1252,7 +1259,7 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     # PLOT 4: z_peak vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
@@ -1269,7 +1276,7 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"peak_positions.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
 # multi power, single dens model gas comparison 
 def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
@@ -1335,7 +1342,7 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"peak_en_vs_beam_power.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
@@ -1353,7 +1360,7 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
@@ -1372,7 +1379,7 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
 
     plt.legend()
     plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
@@ -1390,7 +1397,7 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
     plt.legend()
 
     plt.savefig(os.path.join(out_path,"tau_min_vs_beam_power.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
@@ -1407,22 +1414,19 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
     plt.legend()
 
     plt.savefig(os.path.join(out_path,"min_tau_p_vs_beam_power.png"),dpi=1000)
-    plt.show()
+    if show: plt.show()
 
 # ---------- EXEC --------------------------------------
 if single:
     plot_single(single_dir, n)
 else:
    #for gas in ["Ar", "Ne", "He", "N2", "Kr", "N2O", "Xe"]: 
-    #    plot_beamP_scan(sup_dir, gas, 0.0, "true", "f", "coms") 
-     #   plot_beamP_scan(sup_dir, gas, 0.0, "true", "f", "grad") 
-         #plot_multiP_singleg_model_comp(sup_dir, gas)
+        #plot_beamP_scan(sup_dir, gas, 0.0, "true", "f", "coms") 
+        #plot_beamP_scan(sup_dir, gas, 0.0, "true", "f", "grad") 
+        #plot_multiP_singleg_model_comp(sup_dir, gas)
    
-    beam_power = 400*1e-3
-
-    #for gas in ["Ar", "Ne", "He", "N2", "Kr", "N2O", "Xe"]:   
-     #   plot_singlePg_model_comp(sup_dir, gas, beam_power)
-    #plot_multiP_singleg_model_comp(sup_dir, "Ne")
-    #plot_gas_comp_singleP(sup_dir,400e-3,"coms")
-    plot_gas_comp_multiP(sup_dir,"coms", [])
+    placeholder = "_"
+    plot_gas_comp_singleP(sup_dir,400e-3,"coms")
+    #plot_gas_comp_multiP(sup_dir,"coms", [])
+    #plot_gas_comp_multiP(sup_dir,"grad", [])
     #plot_singlePg_model_comp(sup_dir, "N2O", 400*1e-3)

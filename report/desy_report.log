@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  20 AUG 2023 21:22
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  22 AUG 2023 17:54
 entering extended mode
 **./desy_report.tex
 (desy_report.tex
@@ -446,13 +446,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 LaTeX Warning: Citation `geissler1999' on page 3 undefined on input line 82.
 
-[3] [4] [5]
-Underfull \hbox (badness 4660) in paragraph at lines 214--216
-[]\OT1/cmr/m/n/10.95 NOTE: ADK MODEL DOES NOT INVOLVE MULTIPHOTON IONISATION BU
-T IS
- []
-
-(desy_report.bbl) [6] (desy_report.aux)
+[3] [4] [5] (desy_report.bbl) [6] (desy_report.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.78749pt have occurred.
@@ -487,7 +481,7 @@ cm/cmsy10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/
 amsfonts/cm/cmsy8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1
 /public/amsfonts/cm/cmti10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fo
 nts/type1/public/amsfonts/cm/cmti9.pfb>
-Output written on desy_report.pdf (6 pages, 236753 bytes).
+Output written on desy_report.pdf (6 pages, 234231 bytes).
 PDF statistics:
  150 PDF objects out of 1000 (max. 8388607)
  38 named destinations out of 1000 (max. 500000)

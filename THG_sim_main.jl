@@ -630,7 +630,7 @@ function THG_main(pres=pres)
             plt.savefig(joinpath(out_path,"UV_spectral_evolution.png"),dpi=1000)
         end
     end    
-    
+
     # ----------------- WRITE PARAMS & UV SPECTRUM TO FILE ------------------
 
     if save == true 
@@ -651,6 +651,7 @@ function THG_main(pres=pres)
             write(file, "ion     = "*string(ion)*"\n")
             write(file, "propz   = "*string(propz)*"\n")
             write(file, "ϕ2      = "*string(ϕs[3])*"\n")
+            write(file, "thickness= "*string(thickness)*"\n")
             write(file, "ion_mod = "*string(ion_model)*"\n")
 
             if p_scan == false
