@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  23 AUG 2023 15:03
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  23 AUG 2023 20:55
 entering extended mode
 **./desy_report.tex
 (desy_report.tex
@@ -369,24 +369,24 @@ File: l3backend-pdftex.def 2021-05-07 L3 backend support: PDF output (pdfTeX)
 ) (desy_report.aux)
 \openout1 = `desy_report.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 14.
-LaTeX Font Info:    ... okay on input line 14.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
 
 (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/context/base/mkii\supp-pdf.mk
 ii
@@ -413,7 +413,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 fg
 File: epstopdf-sys.cfg 2021/03/18 v2.0 Configuration of epstopdf for MiKTeX
 ))
-Package hyperref Info: Link coloring OFF on input line 14.
+Package hyperref Info: Link coloring OFF on input line 16.
 
 (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
@@ -427,9 +427,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count293
 )
-LaTeX Info: Redefining \ref on input line 14.
-LaTeX Info: Redefining \pageref on input line 14.
-LaTeX Info: Redefining \nameref on input line 14.
+LaTeX Info: Redefining \ref on input line 16.
+LaTeX Info: Redefining \pageref on input line 16.
+LaTeX Info: Redefining \nameref on input line 16.
  (desy_report.out) (desy_report.out)
 \@outlinefile=\write4
 \openout4 = `desy_report.out'.
@@ -439,29 +439,29 @@ Package caption Info: End \AtBeginDocument code.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <18.06749> not available
-(Font)              size <17.28> substituted on input line 27.
+(Font)              size <17.28> substituted on input line 29.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <18.06749> not available
-(Font)              size <17.28> substituted on input line 27.
+(Font)              size <17.28> substituted on input line 29.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 35.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 37.
 
 (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 35.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 37.
 
 
 (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \hbox (badness 1038) in paragraph at lines 46--47
+Underfull \hbox (badness 1038) in paragraph at lines 48--49
 \OT1/cmr/m/n/10.95 An ultrashort laser pulse can be described as
  []
 
 
-Underfull \hbox (badness 1953) in paragraph at lines 55--55
+Underfull \hbox (badness 1953) in paragraph at lines 57--57
 \OT1/cmr/m/n/10.95 coefficients. The zeroth-order terms of both
  []
 
@@ -469,84 +469,84 @@ Underfull \hbox (badness 1953) in paragraph at lines 55--55
 
 
 ]
-Underfull \hbox (badness 1303) in paragraph at lines 56--56
+Underfull \hbox (badness 1303) in paragraph at lines 58--58
 \OT1/cmr/m/n/10.95 pulse durations are associated with transform-
  []
 
 
-Underfull \hbox (badness 1199) in paragraph at lines 57--58
+Underfull \hbox (badness 1199) in paragraph at lines 59--60
 \OML/cmm/m/it/10.95 i\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 !\OT1/cmr/m/n/10.
 95 )]\OML/cmm/m/it/10.95 L$\OT1/cmr/m/n/10.95 , where $\OML/cmm/m/it/10.95 L$ \
 OT1/cmr/m/n/10.95 corresponds to the distance
  []
 
 
-Underfull \hbox (badness 3657) in paragraph at lines 60--60
+Underfull \hbox (badness 3657) in paragraph at lines 62--62
 \OT1/cmr/m/n/10.95 to become invalid and nonlinear polarisation
  []
 
 
-Underfull \hbox (badness 2173) in paragraph at lines 61--62
+Underfull \hbox (badness 2173) in paragraph at lines 63--64
 \OT1/cmr/m/n/10.95 It can be approximated using a perturbative
  []
 
 
-Underfull \hbox (badness 2418) in paragraph at lines 64--65
+Underfull \hbox (badness 2418) in paragraph at lines 66--67
 \OT1/cmr/m/n/10.95 order susceptibilities are frequency-independent
  []
 
 
-Overfull \hbox (3.19376pt too wide) detected at line 74
+Overfull \hbox (3.19376pt too wide) detected at line 76
 []
  []
 
 
-Underfull \hbox (badness 1189) in paragraph at lines 78--78
+Underfull \hbox (badness 1189) in paragraph at lines 80--80
 \OT1/cmr/m/n/10.95 of a laser pulse is higher at the peak of its
  []
 
 [2]
-Underfull \hbox (badness 1616) in paragraph at lines 79--79
+Underfull \hbox (badness 1616) in paragraph at lines 81--81
 \OT1/cmr/m/n/10.95 pulses. Thus, despite ionisation limiting the
  []
 
 
-Underfull \hbox (badness 1902) in paragraph at lines 92--92
+Underfull \hbox (badness 1902) in paragraph at lines 94--94
 \OT1/cmr/m/n/10.95 be used to describe the propagation of laser
  []
 
 
-Underfull \hbox (badness 4543) in paragraph at lines 92--92
+Underfull \hbox (badness 4543) in paragraph at lines 94--94
 \OT1/cmr/m/n/10.95 pulses. Many of them are derived under
  []
 
 
-Underfull \hbox (badness 1527) in paragraph at lines 92--92
+Underfull \hbox (badness 1527) in paragraph at lines 94--94
 \OT1/cmr/m/n/10.95 not suitable for the study of few-femtosecond
  []
 
 
-Underfull \hbox (badness 2088) in paragraph at lines 92--92
+Underfull \hbox (badness 2088) in paragraph at lines 94--94
 \OT1/cmr/m/n/10.95 pulses. The unidirectional pulse propagation
  []
 
 
-Underfull \hbox (badness 1708) in paragraph at lines 96--97
+Underfull \hbox (badness 1708) in paragraph at lines 98--99
 \OT1/cmr/m/n/10.95 is a linear operator describing dispersion and
  []
 
 
-Underfull \hbox (badness 2334) in paragraph at lines 106--106
+Underfull \hbox (badness 2334) in paragraph at lines 108--108
 []\OT1/cmr/m/n/10.95 As is seen in [] and [], the nonlinear
  []
 
 
-Underfull \hbox (badness 1509) in paragraph at lines 106--106
+Underfull \hbox (badness 1509) in paragraph at lines 108--108
 \OT1/cmr/m/n/10.95 numerically solving the UPPE, which lives in
  []
 
 [3]
-Overfull \hbox (13.62755pt too wide) in paragraph at lines 111--111
+Overfull \hbox (13.62755pt too wide) in paragraph at lines 113--113
 []\OT1/cmr/m/n/10.95 The CFEL-ATTO group gen-er-ates few-femtosecond
  []
 
@@ -600,12 +600,12 @@ Package rerunfilecheck Info: File `desy_report.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 11756 strings out of 478864
- 175974 string characters out of 2848660
- 518431 words of memory out of 3000000
+ 11757 strings out of 478864
+ 175989 string characters out of 2848660
+ 518433 words of memory out of 3000000
  29490 multiletter control sequences out of 15000+600000
  410911 words of font info for 54 fonts, out of 8000000 for 9000
- 1141 hyphenation exceptions out of 8191
+ 1142 hyphenation exceptions out of 8191
  60i,10n,66p,1209b,343s stack positions out of 5000i,500n,10000p,200000b,80000s
 <C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
 cmbx10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
@@ -623,7 +623,7 @@ cm/cmsy10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/
 amsfonts/cm/cmsy8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1
 /public/amsfonts/cm/cmti10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fo
 nts/type1/public/amsfonts/cm/cmti9.pfb>
-Output written on desy_report.pdf (4 pages, 228095 bytes).
+Output written on desy_report.pdf (4 pages, 228096 bytes).
 PDF statistics:
  141 PDF objects out of 1000 (max. 8388607)
  32 named destinations out of 1000 (max. 500000)

@@ -29,8 +29,8 @@ p_const = false     # if true: set constant pressure profile P==(pres,pres,pres)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when read_IR==false)
 λ0 = 730e-9         # central wavelength [m]
 w0 = 65e-6          # beam waist [m]
-ϕ = 0.0             # carrier-envelope offset (CEO) phase [rad] (only relevant when read_IR==true)                                 
-energy = 400e-6     # pulse energy [J]                                                            
+CEP = 0.0           # carrier-envelope phase phase (ϕ0) [rad] (only relevant when read_IR==true)                                 
+IRenergy = 400e-6   # IR pulse energy [J]                                                            
 L = 3e-3            # propagation distance (cell length) [m]
 
 propz = -L/2        # propagation distance from the waist [m], i.e. beam focus position  (NOTE: always specified in a coordinate system where the cell starts at z=0!)
@@ -68,7 +68,7 @@ path_IR_spec = joinpath(in_dir, file_IR_spec) # sys. path to IR FROG input spect
 file_IR_spec_exp = "IRspec_exp.dat"                   # name of IR input spectrometer spectrum file 
 path_IR_spec_exp = joinpath(in_dir, file_IR_spec_exp) # sys. path to IR input spectrometer spectrum file 
 
-scan_dir = "scan_"*string(energy*1e6)*"mW_"*string(gas)*"_"*string(round(ϕ; digits=3))*"rad_"*string(kerr)*"_"*string(ion ? "ion" : "no-ion")*"_"*string(read_ρ ? "coms" : "grad")  # name of scan output directory 
+scan_dir = "scan_"*string(IRenergy*1e6)*"mW_"*string(gas)*"_"*string(round(CEP; digits=3))*"rad_"*string(kerr)*"_"*string(ion ? "ion" : "no-ion")*"_"*string(read_ρ ? "coms" : "grad")  # name of scan output directory 
 
 # ----------------- MAKE ARRANGEMENTS FOR PRESSURE SCAN -----------
 
@@ -158,20 +158,20 @@ function THG_main(pres=pres)
         end
 
         if read_ρ==false 
-            inputs = Fields.SpatioTemporalField(λ0, energy, ϕ, 0.0,           # model input beam based off measured data
+            inputs = Fields.SpatioTemporalField(λ0, IRenergy, CEP, 0.0,           # model input beam based off measured data
             (t, r) -> beam_profile(t, r), propz)  
         else 
-            inputs = Fields.SpatioTemporalField(λ0, energy, ϕ, 0.0,           # model input beam based off measured data
+            inputs = Fields.SpatioTemporalField(λ0, IRenergy, CEP, 0.0,           # model input beam based off measured data
             (t, r) -> beam_profile(t, r), propz+L_total/2)
         end 
 
     else 
         if read_ρ==false 
             inputs = Fields.GaussGaussField(λ0=λ0, τfwhm=τ,                   # model input beam as Gaussian 
-                    energy=energy, w0=w0, propz=propz)
+                    energy=IRenergy, w0=w0, propz=propz)
         else 
             inputs = Fields.GaussGaussField(λ0=λ0, τfwhm=τ,                   # model input beam as Gaussian 
-            energy=energy, w0=w0, propz=propz+L_total/2)
+            energy=IRenergy, w0=w0, propz=propz+L_total/2)
         end                
     end            
 
@@ -632,6 +632,7 @@ function THG_main(pres=pres)
     end    
 
     # ----------------- WRITE PARAMS & UV SPECTRUM TO FILE ------------------
+    read_ρ ? dens_mod="coms" : dens_mod="grad"
 
     if save == true 
         open(joinpath(out_path,"params.txt"), "w") do file
@@ -640,17 +641,17 @@ function THG_main(pres=pres)
                 write(file, "pres    = "*string(pres)*"\n")
             end    
             write(file, "p_ed    = "*string(p_ed)*"\n")
-            write(file, "p_const = "*string(p_const)*"\n")
+            write(file, "dens_mod = "*string(dens_mod)*"\n")
             write(file, "τ       = "*string(τ_input)*"\n")
             write(file, "λ0      = "*string(λ0)*"\n")
             write(file, "w0      = "*string(w0)*"\n")
-            write(file, "ϕ       = "*string(ϕ)*"\n")
-            write(file, "energy  = "*string(energy)*"\n")
+            write(file, "CEP     = "*string(CEP)*"\n")
+            write(file, "IRenergy  = "*string(IRenergy)*"\n")
             write(file, "L       = "*string(L)*"\n")
             write(file, "kerr    = "*string(kerr)*"\n")
             write(file, "ion     = "*string(ion)*"\n")
             write(file, "propz   = "*string(propz)*"\n")
-            write(file, "ϕ2      = "*string(ϕs[3])*"\n")
+            write(file, "GVD     = "*string(ϕs[3])*"\n")
             write(file, "thickness= "*string(thickness)*"\n")
             write(file, "ion_mod = "*string(ion_model)*"\n")
 

@@ -11,6 +11,8 @@
 \usepackage[skip=0.5ex]{subcaption}
 \usepackage{xcolor}
 
+\hyphenation{few-femto-second}
+
 \begin{document}
 %\maketitle
 
@@ -22,7 +24,7 @@
 \address{DESY Summer Student Programme 2023 \\ Group:  Attosecond Science (CFEL-ATTO) \\ Institute: Centre for Free-Electron Laser Science (CFEL)\\ Supervisor: Josina Hahne}
 
 \begin{abstract}
-XXXX
+\textcolor{red}{XXXX}
 \end{abstract}
 ]
 
@@ -32,15 +34,15 @@ XXXX
 \setlength{\footskip}{20pt}
 
 \section{Introduction}
-The electronic motion associated with chemical reactions or atomic energy transitions takes place on femotsecond ($1 \text{fs} = 10^{-15} \text{s}$) to attosecond ($1 \text{as} = 10^{-18} \text{s}$) time scales. Time-resolved imaging of molecular dynamics therefore requires ultrashort laser pulses in the few-femtoseconds regime. An important type of electronic motion is that excited by the absorption of ultraviolet (UV) radiation: a variety of biochemical processes, such as DNA damage, are known to be caused by UV excitation. Generating few-femtosecond UV pulses for time-resolved measurements of UV-excited molecules plays a crucial part in further understanding and eventually controlling these effects. \par 
+The electronic motion associated with chemical reactions and atomic energy transitions takes place on femotsecond ($1 \text{fs} = 10^{-15} \text{s}$) to attosecond ($1 \text{as} = 10^{-18} \text{s}$) time scales. Time-resolved imaging of molecular dynamics therefore requires ultrashort laser pulses in the few-femtosecond regime. An important type of electronic motion is that excited by the absorption of ultraviolet (UV) radiation: a variety of biochemical processes, such as DNA damage, are known to be caused by UV excitation. Generating few-femtosecond UV pulses for time-resolved measurements of UV-excited molecules plays a crucial part in further understanding and eventually controlling these effects. \par 
 The CFEL-ATTO group at DESY produces ultrashort UV pulses in the femtosecond regime via third-harmonic generation (THG) in a gas cell \cite{galli2019}. This process is sensitive to a large range of parameters which affect the duration and energy of the generated UV pulse. Numerical simulations of the interactions between the laser pulse and the gas can therefore be advantageous to better understand how THG takes place and how it is affected by the experimental conditions. \par 
-This report summarises the work carried out as part of a DESY Summer Student project focussed on producing simulations of the THG process. The simulations were mainly carried out using the propagation solver \textit{Luna.jl} (\cite{brahms2023}) while the \textit{COMSOL Multiphysics} software was used to model the gas density distribution. The aim of the simulations was to reproduce the experimental conditions in the gas, in order to study which effects dominate the THG process and the shaping of the UV pulse. Further, parameter scans were simulated to investigate how changes of different variables in the experimental set-up affect the output pulse. \par 
+This report summarises the work carried out as part of a DESY Summer Student project focussed on producing simulations of the THG process. The simulations were mainly carried out using the propagation solver \textit{Luna.jl} (\cite{brahms2023}) while the \textit{COMSOL Multiphysics} software was used to model the gas density distribution. The aim of the simulations was to reproduce the experimental conditions in the gas, in order to study which effects dominate the THG process and the shaping of the UV pulse. Further, parameter scans were simulated to investigate how changes to different variables in the experimental set-up affect the output pulse. \par 
 \textcolor{red}{
 briefly list findings (main relevant processes in gas, experimental conditions...)
 }
 
 \section{Theoretical Background}
-This section gives a brief overview on key properties of ultrashort (femtosecond) laser pulses,  THG and other relevant nonlinear optical effects, as well as the differential equation describing the propagation of ultrafast laser pulses. An in-depth treatment of these topics can be found in textbooks like \cite{keller2021, new2011}. 
+This section gives a brief overview of key properties of ultrashort (femtosecond) laser pulses,  THG and other relevant nonlinear optical effects, as well as the differential equation describing the propagation of ultrafast laser pulses. An in-depth treatment of these topics can be found in textbooks like \cite{keller2021, new2011}. 
 
 \subsection{Ultrashort Laser Pulses}
 An ultrashort laser pulse can be described as a carrier wave at carrier frequency $\omega_0$ with an amplitude modulated by an envelope function. In the femtosecond domain the envelope may only contain a few cycles of the carrier wave. Using the analytic representation of the electric field vector the time-domain representation of an ultrashort laser pulse can be written as 
@@ -52,7 +54,7 @@ where $\mathbf{A}(t, \mathbf{r})$ represents the envelope function and $\phi(t)$
 \mathbf{E}(\omega, \mathbf{r}) = \mathbf{A}'(\omega, \mathbf{r}) e^{i \varphi(\omega)},
 \end{equation}
 where $\varphi(\omega)$ is the spectral phase. Note that the effect of the carrier term in the frequency domain is merely a shift along the frequency axis and can be thus be absorbed in the definition of $\omega$. \par 
-The spectral and temporal phase are commonly expanded as Taylor-series, with the notation $\phi_n \equiv \frac{\partial^n \phi}{\partial t^n}$ and $\varphi_n \equiv \frac{\partial^n \varphi}{\partial t^n}$ used to denote the series coefficients. The zeroth-order terms of both expansions are the same, $\phi_0 = \varphi_0$, and correspond to the carrier-envelope phase (CEP), also known as the absolute phase. The CEP desribes the phase difference between the carrier and the envelope and is particularly relevant for few-cycle pulses. A laser pulse with no terms in $\varphi(\omega)$ higher than $\varphi_0$ is said to be transform-limited. A pulse is said to be chirped if there are nonlinear terms in $\phi(t)$ or $\varphi(\omega)$. \par 
+The spectral and temporal phase are commonly expanded as Taylor-series, with the notation $\phi_n \equiv \frac{\partial^n \phi}{\partial t^n}$ and $\varphi_n \equiv \frac{\partial^n \varphi}{\partial \omega^n}$ used to denote the series coefficients. The zeroth-order terms of both expansions are the same, $\phi_0 = \varphi_0$, and correspond to the carrier-envelope phase (CEP), also known as the absolute phase. The CEP desribes the phase difference between the carrier and the envelope and is particularly relevant for few-cycle pulses. A laser pulse with no terms in $\varphi(\omega)$ higher than $\varphi_0$ is said to be transform-limited. A pulse is said to be chirped if there are nonlinear terms in $\phi(t)$ or $\varphi(\omega)$. \par 
 The presence of chirp can result in both spectral and temporal broadening of the pulse envelope. A convenient measure of chirp is therefore the so-called time-bandwidth product $\Delta \omega \Delta t$, where $\Delta \omega$ is the full-width half-maximum (FWHM) of $\mathbf{A}'(\omega, \mathbf{r})$ and $\Delta t$ the FWHM of $\mathbf{A}(t, \mathbf{r})$. It can be shown that the time-bandwidth product is minimised for transform-limited, i.e. unchirped, pulses. In other words, at a given spectral bandwidth the shortest pulse durations are associated with transform-limited pulses, for which case the relation $\Delta \omega \propto (\Delta t)^{-1}$ holds. \par 
 The effects on a laser pulse when travelling through a medium can be described via additional terms in the spectral phase: $\varphi(\omega) \to \varphi(\omega) + [\beta(\omega) + i \alpha(\omega)]L$, where $L$ corresponds to the distance travelled in a medium, $\beta(\omega)$ is the propagation coefficient, and $\alpha(\omega)$ the absorption coefficient. The latter term represents an attenuation of the pulse while the former has the effect of introducing chirp (provided the Taylor-expansion of $\beta(\omega)$ has non-zero terms higher than $\beta_1$). Note that depending on the signs of the quantities involved, the chirp due to $\beta(\omega)$ will either increase or compensate the existing chirp on the pulse. Thus, an initially positively chirped pulse will further broaden upon propagation through a normally dispersive medium while a negatively chirped pulse will be compressed. The opposite effect is observed in anomalously dispersive media.
 
@@ -124,17 +126,19 @@ Comparison with results at times difficult: pressure and energy of output beam h
 \textcolor{red}{
 Many more factors to be investigated (beam focus position, beam size, higher beam powers...)}
 
-
+\textcolor{red}{
 Take into account beam spatial profile (astigmatism, deformation,...) [although that requires moving away from a Hankel transform and breaking radialt symmetry]
-
+}
+\textcolor{red}{
 Improve simulations by improving COMSOL gas density model (need to use high Mach number model instead, current model does not take into account gas interaction). 
-
-
+}
 
 \section{Conclusions}
+\textcolor{red}{summarise everything}
+
 
 \section*{Acknowledgments}
-I want to thank Josina Hahne for the supervision of the project and all of her support, as well as Vincent Wanie for his additional guidance. I also want to thank Chris Brahms for providing help with \textit{Luna.jl} as well as Olaf Behnke and Andreas Przystawik for organising the DESY Summer Student programme.  
+\textcolor{red}{I want to thank Josina Hahne for the supervision of the project and all of her support, as well as Vincent Wanie for his additional guidance. I also want to thank Chris Brahms for providing help with \textit{Luna.jl} as well as Olaf Behnke and Andreas Przystawik for organising the DESY Summer Student programme.}  
 
 
 \section*{References}

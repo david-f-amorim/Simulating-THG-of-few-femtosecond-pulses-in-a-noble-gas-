@@ -50,12 +50,15 @@ carried out minor chirp scan; added option to toggle between PPT and ADK; starte
 cleaned up "file_prepare.py"; finished gas scans
 
 
-- run "final simulations" with good parameters [and PPT!], based on measurements 
+- run "final simulations" with good parameters [and PPT!]
 	+ calculate ratios of Ar/Ne energies 
 	+ reproduce measured data 
 	+ show what is "happening inside"; maybe turn ionisation on/off and compare... ; self-steepening...
 	+ play with chirp/propz/CEP/pressure/beam power/beam waist...?
 	+ WAIT FOR NEW COMSOL DATA!!
+	=> produce good looking plots (svg files?)
+
+	=> ASK JOSINA AND VINCENT WHICH PLOTS TO DO!! [write new code accordingly]
 
 - work on "documentation"
 	+ write report
@@ -63,10 +66,16 @@ cleaned up "file_prepare.py"; finished gas scans
 	+ prepare handover PP [clean up scan_eval]
 			-> change function and variable names!!
 			-> rewrite!!! make more general!!
+				-> add chirp scan functions, add beam waist functions...
+				-> add option to overlay measured beam energies / spectra
 
 
+	HAVE ONLY ONE "XX_comparison_get" function and plotting function?? based on encountering different 
+	values?? always set things up as arrays of arrays??
+		-> at least for power comparison!!
+			should be the same for single gas, or multiple gases, or plus/minus ion or ...
 
-
+				NEED: - multipl gases but same 
 
 	
 	
