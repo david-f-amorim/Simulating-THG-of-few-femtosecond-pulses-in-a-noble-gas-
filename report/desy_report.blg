@@ -5,54 +5,50 @@ Reallocating 'name_of_file' (item size: 1) to 4 items.
 The style file: osa.bst
 Reallocating 'name_of_file' (item size: 1) to 9 items.
 Database file #1: refs.bib
-Repeated entry---line 100 of file refs.bib
- : @article{galli2019
- :                   ,
-I'm skipping whatever remains of this entry
 Warning--entry type for "brahms2023" isn't style-file defined
---line 166 of file refs.bib
+--line 157 of file refs.bib
 Reallocating 'glb_str_end' (item size: 4) to 20 items.
 Reallocating 'glb_str_ptr' (item size: 4) to 20 items.
 Reallocating 'global_strs' (item size: 1) to 4000000 items.
 You've used 7 entries,
             2555 wiz_defined-function locations,
-            854 strings with 7843 characters,
-and the built_in function-call counts, 2975 in all, are:
-= -- 384
-> -- 66
+            856 strings with 8201 characters,
+and the built_in function-call counts, 3854 in all, are:
+= -- 507
+> -- 105
 < -- 0
-+ -- 45
-- -- 18
-* -- 159
-:= -- 290
++ -- 66
+- -- 31
+* -- 210
+:= -- 361
 add.period$ -- 12
 call.type$ -- 7
 change.case$ -- 0
 chr.to.int$ -- 0
 cite$ -- 7
-duplicate$ -- 288
-empty$ -- 194
-format.name$ -- 23
-if$ -- 623
+duplicate$ -- 379
+empty$ -- 216
+format.name$ -- 36
+if$ -- 792
 int.to.chr$ -- 0
 int.to.str$ -- 7
 missing$ -- 8
-newline$ -- 32
+newline$ -- 33
 num.names$ -- 7
-pop$ -- 91
+pop$ -- 110
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 202
+skip$ -- 282
 stack$ -- 0
-substring$ -- 159
-swap$ -- 262
+substring$ -- 220
+swap$ -- 363
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 15
+while$ -- 18
 width$ -- 8
-write$ -- 67
-(There was 1 error message)
+write$ -- 68
+(There was 1 warning)

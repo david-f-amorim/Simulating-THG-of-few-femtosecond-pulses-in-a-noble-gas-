@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  22 AUG 2023 22:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  23 AUG 2023 15:03
 entering extended mode
 **./desy_report.tex
 (desy_report.tex
@@ -344,6 +344,22 @@ Package caption Info: hyperref package is loaded.
 Package: subcaption 2020/10/07 v1.3j Sub-captions (AR)
 \c@subfigure=\count284
 \c@subtable=\count285
+) (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
+Package: xcolor 2016/05/11 v2.12 LaTeX color extensions (UK)
+
+(C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1348.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1352.
+Package xcolor Info: Model `RGB' extended on input line 1364.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1366.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1367.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
 )
 (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-pdf
 tex.def
@@ -423,70 +439,193 @@ Package caption Info: End \AtBeginDocument code.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/m/n' in size <18.06749> not available
-(Font)              size <17.28> substituted on input line 18.
+(Font)              size <17.28> substituted on input line 27.
 
 
 LaTeX Font Warning: Font shape `OT1/cmr/bx/n' in size <18.06749> not available
-(Font)              size <17.28> substituted on input line 18.
+(Font)              size <17.28> substituted on input line 27.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 32.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 35.
 
 (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 32.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 35.
 
 
 (C:\Users\david\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-[1
-
-{C:/Users/david/AppData/Local/MiKTeX/pdftex/config/pdftex.map}] [2] [3]
-Underfull \hbox (badness 1424) in paragraph at lines 113--116
-\OT1/cmr/m/n/10.95 INTEGRALS ARE A TRANSVERSE SPATIAL TRANSFORM INTO RECIPROCAL
- SPACE!
+Underfull \hbox (badness 1038) in paragraph at lines 46--47
+\OT1/cmr/m/n/10.95 An ultrashort laser pulse can be described as
  []
 
-[4] [5] (desy_report.bbl) [6] (desy_report.aux)
+
+Underfull \hbox (badness 1953) in paragraph at lines 55--55
+\OT1/cmr/m/n/10.95 coefficients. The zeroth-order terms of both
+ []
+
+[1{C:/Users/david/AppData/Local/MiKTeX/pdftex/config/pdftex.map}
+
+
+]
+Underfull \hbox (badness 1303) in paragraph at lines 56--56
+\OT1/cmr/m/n/10.95 pulse durations are associated with transform-
+ []
+
+
+Underfull \hbox (badness 1199) in paragraph at lines 57--58
+\OML/cmm/m/it/10.95 i\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 !\OT1/cmr/m/n/10.
+95 )]\OML/cmm/m/it/10.95 L$\OT1/cmr/m/n/10.95 , where $\OML/cmm/m/it/10.95 L$ \
+OT1/cmr/m/n/10.95 corresponds to the distance
+ []
+
+
+Underfull \hbox (badness 3657) in paragraph at lines 60--60
+\OT1/cmr/m/n/10.95 to become invalid and nonlinear polarisation
+ []
+
+
+Underfull \hbox (badness 2173) in paragraph at lines 61--62
+\OT1/cmr/m/n/10.95 It can be approximated using a perturbative
+ []
+
+
+Underfull \hbox (badness 2418) in paragraph at lines 64--65
+\OT1/cmr/m/n/10.95 order susceptibilities are frequency-independent
+ []
+
+
+Overfull \hbox (3.19376pt too wide) detected at line 74
+[]
+ []
+
+
+Underfull \hbox (badness 1189) in paragraph at lines 78--78
+\OT1/cmr/m/n/10.95 of a laser pulse is higher at the peak of its
+ []
+
+[2]
+Underfull \hbox (badness 1616) in paragraph at lines 79--79
+\OT1/cmr/m/n/10.95 pulses. Thus, despite ionisation limiting the
+ []
+
+
+Underfull \hbox (badness 1902) in paragraph at lines 92--92
+\OT1/cmr/m/n/10.95 be used to describe the propagation of laser
+ []
+
+
+Underfull \hbox (badness 4543) in paragraph at lines 92--92
+\OT1/cmr/m/n/10.95 pulses. Many of them are derived under
+ []
+
+
+Underfull \hbox (badness 1527) in paragraph at lines 92--92
+\OT1/cmr/m/n/10.95 not suitable for the study of few-femtosecond
+ []
+
+
+Underfull \hbox (badness 2088) in paragraph at lines 92--92
+\OT1/cmr/m/n/10.95 pulses. The unidirectional pulse propagation
+ []
+
+
+Underfull \hbox (badness 1708) in paragraph at lines 96--97
+\OT1/cmr/m/n/10.95 is a linear operator describing dispersion and
+ []
+
+
+Underfull \hbox (badness 2334) in paragraph at lines 106--106
+[]\OT1/cmr/m/n/10.95 As is seen in [] and [], the nonlinear
+ []
+
+
+Underfull \hbox (badness 1509) in paragraph at lines 106--106
+\OT1/cmr/m/n/10.95 numerically solving the UPPE, which lives in
+ []
+
+[3]
+Overfull \hbox (13.62755pt too wide) in paragraph at lines 111--111
+[]\OT1/cmr/m/n/10.95 The CFEL-ATTO group gen-er-ates few-femtosecond
+ []
+
+(desy_report.bbl
+Underfull \hbox (badness 10000) in paragraph at lines 8--14
+\OT1/cmr/m/n/9 https://opg.optica.org/ol/abstract.cfm?URI=ol-44-6-
+ []
+
+
+Underfull \hbox (badness 1496) in paragraph at lines 29--33
+[]\OT1/cmr/m/n/9 M. Geissler, G. Tem-pea, A. Scrinzi, M. Schnurer,
+ []
+
+
+Overfull \hbox (2.08125pt too wide) in paragraph at lines 29--33
+\OT1/cmr/m/n/9 https://link.aps.org/doi/10.1103/PhysRevLett.83.2930 
+ []
+
+
+Overfull \hbox (0.53613pt too wide) in paragraph at lines 35--39
+\OT1/cmr/m/n/9 https://link.aps.org/doi/10.1103/PhysRevE.70.036604 
+ []
+
+
+Underfull \hbox (badness 3838) in paragraph at lines 41--45
+\OT1/cmr/m/n/9 ul-tra-fast non-lin-ear op-tics in op-tical wave-guides:
+ []
+
+
+Underfull \hbox (badness 4001) in paragraph at lines 41--45
+\OT1/cmr/m/n/9 nu-mer-ical mod-el-ing and ex-per-i-ments in kagome
+ []
+
+
+Underfull \hbox (badness 1496) in paragraph at lines 41--45
+\OT1/cmr/m/n/9 photonic-crystal fiber,'' J. Opt. Soc. Am. B \OT1/cmr/bx/n/9 31\
+OT1/cmr/m/n/9 ,
+ []
+
+
+Overfull \hbox (3.42987pt too wide) in paragraph at lines 41--45
+\OT1/cmr/m/n/9 https://opg.optica.org/josab/abstract.cfm?URI=josab-
+ []
+
+) [4] (desy_report.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.78749pt have occurred.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
 Package rerunfilecheck Info: File `desy_report.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 11328 strings out of 478864
- 170942 string characters out of 2848660
- 504219 words of memory out of 3000000
- 29053 multiletter control sequences out of 15000+600000
- 412752 words of font info for 60 fonts, out of 8000000 for 9000
+ 11756 strings out of 478864
+ 175974 string characters out of 2848660
+ 518431 words of memory out of 3000000
+ 29490 multiletter control sequences out of 15000+600000
+ 410911 words of font info for 54 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 60i,6n,66p,1222b,354s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,10n,66p,1209b,343s stack positions out of 5000i,500n,10000p,200000b,80000s
 <C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
-cmbsy10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/am
-sfonts/cm/cmbx10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/
-public/amsfonts/cm/cmbx12.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fon
-ts/type1/public/amsfonts/cm/cmbx9.pfb><C:/Users/david/AppData/Local/Programs/Mi
-KTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/david/AppData/Local/Pr
-ograms/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/david/AppData
-/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/david
-/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Use
-rs/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb
-><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/c
-mr8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfon
-ts/cm/cmr9.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public
-/amsfonts/cm/cmsy10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/typ
-e1/public/amsfonts/cm/cmsy8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/f
-onts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/david/AppData/Local/Programs
-/MiKTeX/fonts/type1/public/amsfonts/cm/cmti9.pfb>
-Output written on desy_report.pdf (6 pages, 248935 bytes).
+cmbx10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
+fonts/cm/cmbx12.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/p
+ublic/amsfonts/cm/cmbx9.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts
+/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/david/AppData/Local/Programs/MiK
+TeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/david/AppData/Local/Pro
+grams/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Users/david/AppData/L
+ocal/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/david/A
+ppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users
+/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C
+:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr9
+.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/
+cm/cmsy10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/
+amsfonts/cm/cmsy8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1
+/public/amsfonts/cm/cmti10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fo
+nts/type1/public/amsfonts/cm/cmti9.pfb>
+Output written on desy_report.pdf (4 pages, 228095 bytes).
 PDF statistics:
- 166 PDF objects out of 1000 (max. 8388607)
- 41 named destinations out of 1000 (max. 500000)
+ 141 PDF objects out of 1000 (max. 8388607)
+ 32 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

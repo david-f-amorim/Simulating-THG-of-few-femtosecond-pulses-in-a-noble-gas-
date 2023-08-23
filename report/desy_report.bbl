@@ -5,8 +5,12 @@
 \expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{}\fi
 
 \bibitem{galli2019}
-M.~Galli, V.~Wanie, et~al., \enquote{Generation of deep ultraviolet sub-2-fs
-  pulses,} Optics Letters {\bf 44} (2019).
+M.~Galli, V.~Wanie, D.~P. Lopes, E.~P. M{\aa}nsson, A.~Trabattoni, L.~Colaizzi,
+  K.~Saraswathula, A.~Cartella, F.~Frassetto, L.~Poletto, F.~L\'{e}gar\'{e},
+  S.~Stagira, M.~Nisoli, R.~M. V\'{a}zquez, R.~Osellame, and F.~Calegari,
+  \enquote{Generation of deep ultraviolet sub-2-fs pulses,} Opt. Lett. {\bf
+  44}, 1308--1311 (2019).
+\newline https://opg.optica.org/ol/abstract.cfm?URI=ol-44-6-1308
 
 \bibitem{brahms2023}
 C.~Brahms and J.~C. Travers, \enquote{Luna.jl,}  (2023).
@@ -36,8 +40,7 @@ M.~Kolesik and J.~V. Moloney, \enquote{Nonlinear optical pulse propagation
 \bibitem{tani2014}
 F.~Tani, J.~C. Travers, and P.~S. Russell, \enquote{Multimode ultrafast
   nonlinear optics in optical waveguides: numerical modeling and experiments in
-  kagom\&\#xE9; photonic-crystal fiber,} J. Opt. Soc. Am. B {\bf 31}, 311--320
-  (2014).
+  kagome photonic-crystal fiber,} J. Opt. Soc. Am. B {\bf 31}, 311--320 (2014).
 \newline https://opg.optica.org/josab/abstract.cfm?URI=josab-31-2-311
 
 \end{thebibliography}
