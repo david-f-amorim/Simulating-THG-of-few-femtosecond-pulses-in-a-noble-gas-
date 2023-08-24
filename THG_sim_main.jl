@@ -293,7 +293,7 @@ function THG_main(pres=pres)
 
     for i = 1:length(zout)
 
-        for j=1:lenght(q.r)
+        for j=1:length(q.r)
             Iωr_UV = integrate(ω[ωlowUVidx, ωhighUVidx],Iωr[ωTHidx, j, i], SimpsonEven()) # frequency domain UV intensity
             Iωr_IR = integrate(ω[ωlowIRidx, ωhighIRidx],Iωr[ω0idx, j, i], SimpsonEven())  # frequency domain IR intensity
         end    
