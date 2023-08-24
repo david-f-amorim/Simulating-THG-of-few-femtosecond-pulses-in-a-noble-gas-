@@ -47,37 +47,24 @@ Week 6
 --------------------------------
 extendend previous pressure scans to O2 and SF6; implemented option to add chirp to the input pulse; 
 carried out minor chirp scan; added option to toggle between PPT and ADK; started working on handover PP; 
-cleaned up "file_prepare.py"; finished gas scans
+cleaned up "file_prepare.py"; finished gas scans; rewrote "scan_eval.py"
 
 
 - run "final simulations" with good parameters [and PPT!]
 	+ calculate ratios of Ar/Ne energies 
-	+ reproduce measured data 
-	+ show what is "happening inside"; maybe turn ionisation on/off and compare... ; self-steepening...
-	+ play with chirp/propz/CEP/pressure/beam power/beam waist...?
-	+ WAIT FOR NEW COMSOL DATA!!
-	=> produce good looking plots (svg files?)
+	+ finalise list of plots
 
-	=> ASK JOSINA AND VINCENT WHICH PLOTS TO DO!! [write new code accordingly]
+	+ notes on plot design: 8cm or 16cm width; 
+
+	+ change spectra etc. from on-axis to total 
+		=> delete a few plots ?
 
 - work on "documentation"
 	+ write report
-	+ prepare final presentation 
+	+ prepare final presentation [use CFEL template; 12 minutes; formal]
 	+ prepare handover PP [clean up scan_eval]
-			-> change function and variable names!!
-			-> rewrite!!! make more general!!
-				-> add chirp scan functions, add beam waist functions...
-				-> add option to overlay measured beam energies / spectra
-
-
-	HAVE ONLY ONE "XX_comparison_get" function and plotting function?? based on encountering different 
-	values?? always set things up as arrays of arrays??
-		-> at least for power comparison!!
-			should be the same for single gas, or multiple gases, or plus/minus ion or ...
-
-				NEED: - multipl gases but same 
-
-			+ show other gases, show other dens, show other ion
-				-> show a single other gas ?
+			-> add functions for multi_gas comparison
+			-> add quick notes section for control
+			-> write PP slide
 
 

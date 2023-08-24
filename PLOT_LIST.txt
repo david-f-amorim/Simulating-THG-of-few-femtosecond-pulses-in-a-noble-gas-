@@ -1,0 +1,21 @@
+PLOT LIST
+=========
+
+[ask about ratios!]
+
+1. Measured Argon pressure scan UV energies (200mW)
+2. Measured Neon pressure scan UV energies (400mW)
+3. Argon UV spectrum (200mW, 0.4 bar)
+4. Neon UV spectrum (400mW, 1.7 bar)
+
+5.-8. repeat of 1.-4. but with overlayed simulated data 
+
+9. spatiotemporal UV beam profile at cell output (Ar, 200mW, 0.4 bar), with & without ionisation
+10. spatiotemporal UV beam profile at various cell positions (Ar, 200mW, 0.4 bar) 
+
+11. UV spectra with no chirp, +ve chirp, -ve chirp overlayed (Ar, 200mW, 0.4 bar)
+12. UV spectra with CEP=0, pi/4, pi/2, 3pi/4, pi overlayed (Ar, 200mW, 0.4 bar)
+13. 10 best UV spectra across different gases, beam powers, pressures
+
+
+[NOTE: the existing gas scans only give the on-axis spectra!]

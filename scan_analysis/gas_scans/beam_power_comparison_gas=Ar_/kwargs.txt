@@ -1,0 +1,1 @@
+{"gas": "Ar", "dens_mod": "coms", "tau": 6.140914135627107e-15, "lam0": 7.3e-07, "w0": 6.5e-05, "CEP": 0.0, "IR_energy": 7.5e-05, "ion": "true", "propz": -0.0015, "GVD": 0.0, "thickness": 0.0, "ion_mod": "ADK", "IR_int": 92013521563397.62, "sup_dir": "parameter_scans\\gas_scans"}

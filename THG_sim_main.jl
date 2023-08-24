@@ -1,7 +1,8 @@
 using  Luna
 import Luna.PhysData: wlfreq    
 import FFTW                    
-import Luna: Hankel            
+import Luna: Hankel  
+import NumericalIntegration: integrate, SimpsonEven          
 import Dates                   
 using  DelimitedFiles         
 
@@ -213,6 +214,8 @@ function THG_main(pres=pres)
     Eout = output.data["Eω"]                         # Hankel-transformed amplitude in frequency domain  
     Erout = (q \ Eout)                               # Real-space amplitude in frequency domain at r ≠ 0   (NOTE:"\" represents inverse Hankel transform) 
     Er0 = dropdims(Hankel.onaxis(Eout, q), dims=2)   # Real-space amplitude in frequency domain at r=0 
+
+    #Er0[:,:] = integrate(q.r, Eout[:,])
 
     Etout = FFTW.irfft(Erout, length(t), 1)     # time-domain real field amplitude at r≠0
     Et0 = FFTW.irfft(Er0, length(t),1)          # time-domain real field amplitude at r=0
