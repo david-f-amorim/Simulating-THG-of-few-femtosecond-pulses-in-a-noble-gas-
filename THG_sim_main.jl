@@ -24,14 +24,14 @@ IR_spec_exp = false          # if true: read input IR spectrometer spectrum from
 # ------------------ SET PHYSICAL PARAMETERS ------------------------
 
 gas = :Ne           # gas
-pres = 5.0          # central gas pressure [bar] (not relevant for pressure scans)
+pres = 0.1          # central gas pressure [bar] (not relevant for pressure scans)
 p_ed = 1e-3         # edge gas pressure [bar] 
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed); (only relevant when read_ρ==false)
 τ = 5e-15           # FWHM pulse duration [s] (only relevant when read_IR==false)
 λ0 = 730e-9         # central wavelength [m]
 w0 = 65e-6          # beam waist [m]
 CEP = 0.0           # carrier-envelope phase phase (ϕ0) [rad] (only relevant when read_IR==true)                                 
-IRenergy = 400e-6   # IR pulse energy [J]                                                            
+IRenergy = 75e-6   # IR pulse energy [J]                                                            
 L = 3e-3            # propagation distance (cell length) [m]
 
 propz = -L/2        # propagation distance from the waist [m], i.e. beam focus position  (NOTE: always specified in a coordinate system where the cell starts at z=0!)
@@ -47,7 +47,7 @@ thickness= 0*1e-3    # thickness of the material [m] (for chirp compensation)
 ϕs = [0,0,+11.31*1e30,0]     # Taylor-series coefficients of initial spectral phase (used to introduce additional chirp)
 
 ion = true         # if true: enable ionisation response, if false: disable ionisation 
-ion_model="ADK"    # set to "ADK" or "PPT" (has no effect if ion==false)
+ion_model="PPT"    # set to "ADK" or "PPT" (has no effect if ion==false)
 
 pres_arr = range(start= 0.1, stop= 5.1, step= 0.1)  # pressure range (only relevant for pressure scans)  [bar]
 
@@ -69,7 +69,7 @@ path_IR_spec = joinpath(in_dir, file_IR_spec) # sys. path to IR FROG input spect
 file_IR_spec_exp = "IRspec_exp.dat"                   # name of IR input spectrometer spectrum file 
 path_IR_spec_exp = joinpath(in_dir, file_IR_spec_exp) # sys. path to IR input spectrometer spectrum file 
 
-scan_dir = "scan_"*string(IRenergy*1e6)*"mW_"*string(gas)*"_"*string(round(CEP; digits=3))*"rad_"*string(kerr)*"_"*string(ion ? "ion" : "no-ion")*"_"*string(read_ρ ? "coms" : "grad")  # name of scan output directory 
+scan_dir = "scan_"*string(IRenergy*1e6)*"mW_"*string(gas)*"_"*string(round(CEP; digits=3))*"rad_"*string(ion ? "ion" : "no-ion")*"_"*string(read_ρ ? "coms" : "grad")  # name of scan output directory 
 
 # ----------------- MAKE ARRANGEMENTS FOR PRESSURE SCAN -----------
 
@@ -129,7 +129,8 @@ function THG_main(pres=pres)
     if ion_model=="ADK"
         ionrate = Ionisation.ionrate_fun!_ADK(gas)                  # set gas ionisation rate (ADK)
     elseif ion_model=="PPT"
-        ionrate_fun!_PPTcached(gas, λ0)                             # set gas ionisation rate (PPT)
+        ionrate = Ionisation.ionrate_fun!_PPTcached(gas, λ0)        # set gas ionisation rate (PPT)
+    end    
 
     linop = LinearOps.make_linop(grid, q, coren)                # generate linear operator for pulse-propagation equation  
     normfun = NonlinearRHS.norm_radial(grid, q, coren)          # generate normalisation function for radial symmetry 
@@ -215,7 +216,11 @@ function THG_main(pres=pres)
     Erout = (q \ Eout)                               # Real-space amplitude in frequency domain at r ≠ 0   (NOTE:"\" represents inverse Hankel transform) 
     Er0 = dropdims(Hankel.onaxis(Eout, q), dims=2)   # Real-space amplitude in frequency domain at r=0 
 
-    #Er0[:,:] = integrate(q.r, Eout[:,])
+    Er0 = zeros((size(Eout, 1), size(Eout, 2)))
+
+    for i = 1:size(Eout, 1), j = 1:size(Eout, 2)
+           Er0[i,j] = integrate(q.r, Eout[i,:,j], SimpsonEven())
+    end 
 
     Etout = FFTW.irfft(Erout, length(t), 1)     # time-domain real field amplitude at r≠0
     Et0 = FFTW.irfft(Er0, length(t),1)          # time-domain real field amplitude at r=0
