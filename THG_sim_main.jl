@@ -294,12 +294,12 @@ function THG_main(pres=pres)
     for i = 1:length(zout)
 
         for j=1:length(q.r)
-            Iωr_UV = integrate(ω[ωlowUVidx, ωhighUVidx],Iωr[ωTHidx, j, i], SimpsonEven()) # frequency domain UV intensity
-            Iωr_IR = integrate(ω[ωlowIRidx, ωhighIRidx],Iωr[ω0idx, j, i], SimpsonEven())  # frequency domain IR intensity
+            Iωr_UV[j,i] = integrate(ω[ωlowUVidx:ωhighUVidx],Iωr[ωlowUVidx:ωhighUVidx, j, i], SimpsonEven()) # frequency domain UV intensity
+            Iωr_IR[j,i] = integrate(ω[ωlowIRidx:ωhighIRidx],Iωr[ωlowIRidx:ωhighIRidx, j, i], SimpsonEven())  # frequency domain IR intensity
         end    
 
-        Iω0_UV[i] = integrate(ω[ωlowUVidx, ωhighUVidx],Iω0[ωTHidx,  i] ,SimpsonEven()) # frequency domain UV intensity (integrated along r)
-        Iω0_IR[i] = integrate(ω[ωlowIRidx, ωhighIRidx],Iω0[ω0idx,  i]  ,SimpsonEven()) # frequency domain IR intensity (integrated along r)
+        Iω0_UV[i] = integrate(ω[ωlowUVidx:ωhighUVidx],Iω0[ωlowUVidx:ωhighUVidx,  i] ,SimpsonEven()) # frequency domain UV intensity (integrated along r)
+        Iω0_IR[i] = integrate(ω[ωlowIRidx:ωhighIRidx],Iω0[ωlowIRidx:ωhighIRidx,  i]  ,SimpsonEven()) # frequency domain IR intensity (integrated along r)
     end    
     
     # * * * PROCESS MEASURED DATA FROM FILES 

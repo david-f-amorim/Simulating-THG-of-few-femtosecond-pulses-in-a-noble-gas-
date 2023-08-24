@@ -47,7 +47,8 @@ Week 6
 --------------------------------
 extendend previous pressure scans to O2 and SF6; implemented option to add chirp to the input pulse; 
 carried out minor chirp scan; added option to toggle between PPT and ADK; started working on handover PP; 
-cleaned up "file_prepare.py"; finished gas scans; changed from on-axis to total intensity/energy; rewrote "scan_eval.py"
+cleaned up "file_prepare.py"; finished gas scans; changed from on-axis to total intensity/energy; 
+started re-writing "scan_eval.py"; 
 
 
 - run "final simulations" with good parameters [and PPT!]
