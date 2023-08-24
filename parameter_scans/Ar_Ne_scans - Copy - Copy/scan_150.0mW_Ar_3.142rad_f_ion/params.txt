@@ -1,0 +1,13 @@
+gas     = Ar
+p_ed    = 0.001
+p_const = false
+τ       = 5.0e-15
+λ0      = 8.0e-7
+w0      = 6.5e-5
+ϕ       = 3.14159
+energy  = 0.00015
+L       = 0.003
+kerr    = f
+ion     = true
+
+# IR input beam read from: input/IRpulse.dat

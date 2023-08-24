@@ -1,13 +1,15 @@
 gas     = Ar
 p_ed    = 0.001
-p_const = false
-τ       = 5.0e-15
+dens_mod= grad
+τ       = 6.18e-15
 λ0      = 8.0e-7
 w0      = 6.5e-5
-ϕ       = 6.28318
+CEP     = 6.28318
 energy  = 0.00015
 L       = 0.003
 kerr    = f
 ion     = true
-
-# IR input beam read from: input/IRpulse.dat
+propz   = -0.0015
+GVD     = 0.0
+thickness= 0.0
+ion_mod = PPT

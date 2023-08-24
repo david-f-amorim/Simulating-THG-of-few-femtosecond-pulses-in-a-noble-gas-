@@ -77,7 +77,7 @@ cleaned up "file_prepare.py"; finished gas scans
 
 				NEED: - multipl gases but same 
 
-	
-	
+			+ show other gases, show other dens, show other ion
+				-> show a single other gas ?
 
 

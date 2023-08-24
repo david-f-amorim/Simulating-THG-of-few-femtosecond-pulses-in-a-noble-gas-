@@ -2,13 +2,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os  
 import json
-from datetime import DateTime
+from datetime import datetime
 # ---------- QUICK SETTINGS --------------------------------------
 
 single = False  # if True: process output from a single pressure scan; if False: process output from a set of different pressure scans ("multi-scan")
 
 n    = 15   # maximum number of overlayed spectra in one plot (to avoid clutter)
-show = True # if True: open plots in matplotlib GUI; if False: don't show plots (directly write to file)  
+show = True # if True: open plots in matplotlib GUI; if False: don't show plots (directly write to file) 
+save = True # if True: saves plots 
 
 # ---------- MULTI-SCAN SETTINGS --------------------------------------
 
@@ -47,19 +48,18 @@ def power_comparison_get(sup_dir, **kwargs ):
             cond = 1
 
             for key, value in kwargs.items():
-                if (key in params_dict) and (value==params_dict.get(key)):
-                    cond *=1
-                else:
-                    cond *=0   
-
+                    if (key in params_dict) and (value==params_dict.get(key)):
+                        cond *=1
+                    else:
+                        cond *=0 
+                                    
             if cond: 
-                IR_energy = params_arr[6]
-                IR_int    = params_arr[12]
+                IR_energy = float(params_arr[6])
+                IR_int    = float(params_arr[12])
 
                 path_arr = np.append(path_arr, os.path.join(sup_dir,dir))
                 IR_energy_arr = np.append(IR_energy_arr, IR_energy)
                 IR_int_arr = np.append(IR_int_arr, IR_int)
-
     
     path_arr = path_arr[IR_energy_arr.argsort()] 
     IR_int_arr = IR_int_arr[IR_energy_arr.argsort()]
@@ -254,7 +254,7 @@ def get_params(path):
     params = np.loadtxt(os.path.join(path,"params.txt"),dtype="str", delimiter="=", comments="#")
 
     gas  = params[0,1][1:]
-    dens_mod =params[2,1]
+    dens_mod =params[2,1][1:]
     tau = float(params[3,1])
     lam0=float(params[4,1])
     w0 = float(params[5,1])
@@ -271,6 +271,7 @@ def get_params(path):
 
     params_arr = np.array([gas, dens_mod, tau, lam0, w0, CEP, IR_energy, ion, propz, GVD, thickness, ion_mod, IR_int]) 
     params_dict= {"gas": gas, "dens_mod": dens_mod, "tau": tau, "lam0": lam0, "w0": w0, "CEP": CEP, "IR_energy": IR_energy, "ion": ion, "propz": propz, "GVD": GVD, "thickness": thickness, "ion_mod": ion_mod, "IR_int": IR_int}
+    
 
     return params_arr, params_dict
 
@@ -281,12 +282,12 @@ def get_data(path):
     arr    = np.loadtxt(os.path.join(path,"energy_efficiency_time_zpeak.txt"))
     arr    = arr[arr[:, 0].argsort()]
     p_arr  = arr[:,0] 
-    en_arr = arr[:,1]
+    UVen_arr = arr[:,1]
     ef_arr = arr[:,2]
     tau_arr= arr[:,3]
     zpeak_arr= arr[:,4]
 
-    return p_arr, en_arr, ef_arr, tau_arr, zpeak_arr 
+    return p_arr, UVen_arr, ef_arr, tau_arr, zpeak_arr 
 
 # extract peak energy, peak efficiency, minimum pulse duration, pressure at peak energy, and pressure at minimum pulse duration of the pressure scan directory at 'path';
 # returns array 
@@ -351,59 +352,59 @@ def plot_single(single_dir, n=15):
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.84)
     plt.suptitle("Simulated UV energies", fontsize=16)
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {2:.1f}PW/cm^2); CEP: {1:.2f}rad; ".format(beam_en*1e6, phi, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10, pad=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW ({2:.1f}PW/cm^2); CEP: {1:.2f}rad; ".format(beam_en*1e6, phi, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10, pad=10)
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, en_arr*1e9, color="blue")
     plt.scatter(p_arr, en_arr*1e9, color="blue", label="Peak: {0:.1f}nJ at {1}bar".format(en_peak*1e9, p_peak))
     plt.legend(loc="upper left")
 
-    plt.savefig(os.path.join(single_dir,"energies.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(single_dir,"energies.png"),dpi=1000)
     if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.84)
     plt.suptitle("Simulated THG efficiencies", fontsize=16)
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {2:.1f}PW/cm^2); CEP: {1:.2f}rad; ".format(beam_en*1e6, phi, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10, pad=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW ({2:.1f}PW/cm^2); CEP: {1:.2f}rad; ".format(beam_en*1e6, phi, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10, pad=10)
     plt.ylabel("Efficiency (%)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, ef_arr*1e2, color="blue")
     plt.scatter(p_arr, ef_arr*1e2, color="blue", label="Peak: {0:.2f}% at {1}bar".format(ef_peak*1e2, p_peak))
     plt.legend()
 
-    plt.savefig(os.path.join(single_dir,"efficiencies.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(single_dir,"efficiencies.png"),dpi=1000)
     if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.84)
     plt.suptitle("Simulated pulse durations", fontsize=16)
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {2:.1f}PW/cm^2); CEP: {1:.2f}rad; ".format(beam_en*1e6, phi, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10, pad=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW ({2:.1f}PW/cm^2); CEP: {1:.2f}rad; ".format(beam_en*1e6, phi, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10, pad=10)
     plt.ylabel("Pulse duration (fs)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, tau_arr*1e15, color="blue")
     plt.scatter(p_arr, tau_arr*1e15, color="blue", label="Minimum: {0:.2f}fs at {1}bar".format(tau_peak*1e15, min_tau_p))
     plt.legend()
 
-    plt.savefig(os.path.join(single_dir,"durations.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(single_dir,"durations.png"),dpi=1000)
     if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.84)
     plt.suptitle("Position of peak UV energy", fontsize=16)
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {2:.1f}PW/cm^2); CEP: {1:.2f}rad; ".format(beam_en*1e6, phi, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10, pad=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW ({2:.1f}PW/cm^2); CEP: {1:.2f}rad; ".format(beam_en*1e6, phi, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10, pad=10)
     plt.ylabel("Position (mm)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, zpeak_arr*1e3, color="blue")
     plt.scatter(p_arr, zpeak_arr*1e3, color="blue", label="Maximum: {0:.2f}mm at {1}bar".format(np.max(zpeak_arr)*1e3,p_arr[np.where(zpeak_arr == np.max(zpeak_arr) )][0]))
     plt.legend()
 
-    plt.savefig(os.path.join(single_dir,"z_peak.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(single_dir,"z_peak.png"),dpi=1000)
     if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.82)
     plt.suptitle("Simulated UV spectra", fontsize=16)
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {2:.1f}PW/cm^2); CEP: {1:.2f}rad; ".format(beam_en*1e6, phi, I(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10, pad=18)
+    plt.title("Gas: "+gas+"; beam power: {0}mW ({2:.1f}PW/cm^2); CEP: {1:.2f}rad; ".format(beam_en*1e6, phi, I(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10, pad=18)
     plt.ylabel("Intensity (arb. units)")
     plt.xlabel("Wavelength (nm)")
 
@@ -419,7 +420,7 @@ def plot_single(single_dir, n=15):
         plt.plot(data[i,1]*1e9, data[i,2], color=cmap(cidx[i]), label="{0}bar".format(data[i,0]))
     plt.legend(loc="upper right")
 
-    plt.savefig(os.path.join(single_dir,"spectra.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(single_dir,"spectra.png"),dpi=1000)
     if show: plt.show()
 
 # compare single gas, single beam power, two dens models
@@ -438,7 +439,7 @@ def plot_singlePg_model_comp(sup_dir, gas, beam_p):
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.84)
     plt.suptitle("Simulated UV energies", fontsize=16)
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {2:.1f}PW/cm^2); CEP: {1:.2f}rad; ".format(beam_en*1e6, phi, I(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW ({2:.1f}PW/cm^2); CEP: {1:.2f}rad; ".format(beam_en*1e6, phi, I(single_dir)*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=10)
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr_coms, en_arr_coms*1e9, color="blue")
@@ -447,14 +448,14 @@ def plot_singlePg_model_comp(sup_dir, gas, beam_p):
     plt.scatter(p_arr_grad, en_arr_grad*1e9, color="red", label="gradient (peak: {0:.1f}nJ at {1}bar)".format(en_peak_grad*1e9, p_peak_grad))
     plt.legend()
 
-    plt.savefig(os.path.join(path_coms,"energies.png"),dpi=1000)
-    plt.savefig(os.path.join(path_grad,"energies.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(path_coms,"energies.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(path_grad,"energies.png"),dpi=1000)
     if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.84)
     plt.suptitle("Simulated THG efficiencies", fontsize=16)
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {2:.1f}PW/cm^2); CEP: {1:.2f}rad; ".format(beam_en*1e6, phi, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW ({2:.1f}PW/cm^2); CEP: {1:.2f}rad; ".format(beam_en*1e6, phi, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=10)
     plt.ylabel("Efficiency (%)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr_coms, ef_arr_coms*1e2, color="blue")
@@ -463,14 +464,14 @@ def plot_singlePg_model_comp(sup_dir, gas, beam_p):
     plt.scatter(p_arr_grad, ef_arr_grad*1e2, color="red", label="gradient (peak: {0:.2f}% at {1}bar)".format(ef_peak_grad*1e2, p_peak_grad))
     plt.legend()
 
-    plt.savefig(os.path.join(path_coms,"efficiencies.png"),dpi=1000)
-    plt.savefig(os.path.join(path_grad,"efficiencies.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(path_coms,"efficiencies.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(path_grad,"efficiencies.png"),dpi=1000)
     if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.84)
     plt.suptitle("Simulated pulse durations", fontsize=16)
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {2:.1f}PW/cm^2); CEP: {1:.2f}rad; ".format(beam_en*1e6, phi, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW ({2:.1f}PW/cm^2); CEP: {1:.2f}rad; ".format(beam_en*1e6, phi, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion, fontsize=10, pad=10)
     plt.ylabel("Pulse duration (fs)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr_coms, tau_arr_coms*1e15, color="blue")
@@ -479,8 +480,8 @@ def plot_singlePg_model_comp(sup_dir, gas, beam_p):
     plt.scatter(p_arr_grad, tau_arr_grad*1e15, color="red", label="gradient (minimum: {0:.2f}fs at {1}bar)".format(tau_peak_grad*1e15, min_tau_p_grad))
     plt.legend()
 
-    plt.savefig(os.path.join(path_coms,"durations.png"),dpi=1000)
-    plt.savefig(os.path.join(path_grad,"durations.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(path_coms,"durations.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(path_grad,"durations.png"),dpi=1000)
     if show: plt.show()
 
 # peak investigations for multi power, single gas, dens model comparison 
@@ -523,7 +524,7 @@ def plot_multiP_singleg_model_comp(sup_dir, gas):
         plt.plot(p_arr, en_arr*1e9, color=cmap(cidx[i]), ls="--")
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"UV_energies.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"UV_energies.png"),dpi=1000)
     if show: plt.show()
 
     # PLOT 2: efficiency vs pressure 
@@ -543,7 +544,7 @@ def plot_multiP_singleg_model_comp(sup_dir, gas):
         plt.plot(p_arr, ef_arr*1e2, color=cmap(cidx[i]), ls='--')
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"THG_efficiencies.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"THG_efficiencies.png"),dpi=1000)
     if show: plt.show()
 
     # PLOT 3: efficiency vs pressure 
@@ -563,7 +564,7 @@ def plot_multiP_singleg_model_comp(sup_dir, gas):
         plt.plot(p_arr, tau_arr*1e15, color=cmap(cidx[i]), ls='--')
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
     if show: plt.show()
 
    
@@ -603,7 +604,7 @@ def plot_multiP_singleg_model_comp(sup_dir, gas):
 
     plt.legend()
 
-    plt.savefig(os.path.join(out_path,"peak_en_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"peak_en_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
@@ -620,7 +621,7 @@ def plot_multiP_singleg_model_comp(sup_dir, gas):
     secax.set_xlabel('Peak intensity (PW/cm^2)')
     plt.legend()
 
-    plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
@@ -637,7 +638,7 @@ def plot_multiP_singleg_model_comp(sup_dir, gas):
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
     if show: plt.show()  
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
@@ -654,7 +655,7 @@ def plot_multiP_singleg_model_comp(sup_dir, gas):
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"min_tau_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"min_tau_vs_beam_power.png"),dpi=1000)
     if show: plt.show()   
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
@@ -671,40 +672,67 @@ def plot_multiP_singleg_model_comp(sup_dir, gas):
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"min_tau_p_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"min_tau_p_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
 # plot UV energy and THG conversion efficiency for different beam power
-def power_comparison_plot(sup_dir, **kwargs):
+# NOTE: a second_var can be overlayed (meant mainly for ion_mod, dens_mod,ion, and gas)
+def power_comparison_plot(sup_dir, second_var=(None, None, None), **kwargs):
+
+    # check if second_var is valid (if given)
+    if (second_var[0] != None) and (second_var[1] != None) and (second_var[0] != None):
+        if second_var[0] in kwargs:
+            raise "Invalid second_var; second_var cannot be in kwargs"
+        else:
+            bool_sec_var = True
+    else:
+        bool_sec_var = False   
+
+    # set output directory name and title string (show kwargs on plot)
+    title_str = ""
+    out_dir_str=""
+    for key, val in kwargs.items():
+        title_str += key+": "+str(val)+"; "
+        out_dir_str += key+"="+str(val)+"_"     
 
     # get data and params
-    path_arr, IR_energy_arr, IR_int_arr = power_comparison_get(sup_dir, **kwargs)
+    path_arr, IR_energy_arr, IR_int_arr = power_comparison_get(sup_dir,**kwargs)
+    if bool_sec_var:
+        kwargs2 = kwargs
+        kwargs[second_var[0]]=second_var[1]
+        kwargs2[second_var[0]]=second_var[2]
+        path_arr, IR_energy_arr, IR_int_arr = power_comparison_get(sup_dir,**kwargs)
+        path_arr2, IR_energy_arr2, IR_int_arr2 = power_comparison_get(sup_dir,**kwargs2)
+
+    N = len(path_arr)
+    p_arr, UVen_arr, ef_arr, tau_arr, zpeak_arr = np.empty(N, dtype="object"),np.empty(N, dtype="object"), np.empty(N, dtype="object"), np.empty(N, dtype="object"),np.empty(N, dtype="object")
+    
+    if bool_sec_var:
+        p_arr2, UVen_arr2, ef_arr2, tau_arr2, zpeak_arr2 = np.empty(N, dtype="object"),np.empty(N, dtype="object"), np.empty(N, dtype="object"), np.empty(N, dtype="object"),np.empty(N, dtype="object")
+    
+    for i in np.arange(N):
+       p_arr[i], UVen_arr[i], ef_arr[i], tau_arr[i], zpeak_arr[i] = get_data(path_arr[i])
+       if bool_sec_var:
+           p_arr2[i], UVen_arr2[i], ef_arr2[i], tau_arr2[i], zpeak_arr2[i] = get_data(path_arr2[i])
 
     params, params_dict = get_params(path_arr[0])
-    w0, tau = params[4], params[2]
+    w0, tau = float(params[4]), float(params[2])
 
-    # set title string 
-    title_str = ""
-    for key, val in kwargs.items():
-        title_str += key+": "+val+"; "
-  
     # set output directory 
-    out_path = os.path.join(out_dir, "beam_power_comparison_{}") and "add date time here!!"
-    if not os.path.isdir(out_path): 
+    out_path = os.path.join(out_dir, "beam_power_comparison_"+out_dir_str) 
+    if save and not os.path.isdir(out_path): 
         os.mkdir(out_path)
 
-    # auxiliary functions (beam_en in mW, I in PW/cm^2):
-    def p2i(beam_en):
-        return beam_en *1e-6 / (np.pi * (w0*1e2)**2 * tau ) * 1e-15
+    # auxiliary functions (beam_power in mW, I in PW/cm^2):
+    def p2i(beam_power):
+        return beam_power *1e-6 / (np.pi * (w0*1e2)**2 * tau ) * 1e-15
 
     def i2p(I):
         return I * (np.pi * (w0*1e2)**2 * tau ) *1e15 *1e6
     
-    # set title string
-
     # PLOT 1: energy vs pressure 
     cmap = plt.get_cmap("viridis")
-    cidx = beam_en_arr / np.max(beam_en_arr) 
+    cidx = IR_energy_arr / np.max(IR_energy_arr) 
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Simulated UV energies", fontsize=16)
@@ -712,13 +740,19 @@ def power_comparison_plot(sup_dir, **kwargs):
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
     
-    for i in np.arange(len(path_arr)):
-        p_arr, en_arr, _,_,_ = get_data(path_arr[i])
-        plt.scatter(p_arr, en_arr*1e9, color=cmap(cidx[i]), label="{0}mW (I={1:.1f}PW/cm^2)".format(beam_en_arr[i]*1e6, 1e-15*I_arr[i]))
-        plt.plot(p_arr, en_arr*1e9, color=cmap(cidx[i]))
+    for i in np.arange(N):
+
+        if bool_sec_var:
+            plt.scatter(p_arr[i], UVen_arr[i]*1e9, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2); {2}={3}".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i], second_var[0],second_var[1]))
+            plt.plot(p_arr[i], UVen_arr[i]*1e9, color=cmap(cidx[i]))
+            plt.scatter(p_arr2[i], UVen_arr2[i]*1e9, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2); {2}={3}".format(IR_energy_arr2[i]*1e6, 1e-15*IR_int_arr2[i],second_var[0],second_var[2]))
+            plt.plot(p_arr2[i], UVen_arr2[i]*1e9, color=cmap(cidx[i]))
+        else:
+            plt.scatter(p_arr[i], UVen_arr[i]*1e9, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i]))
+            plt.plot(p_arr[i], UVen_arr[i]*1e9, color=cmap(cidx[i]))
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"UV_energies.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"UV_energies.png"),dpi=1000)
     if show: plt.show()
 
     # PLOT 2: efficiency vs pressure 
@@ -729,12 +763,18 @@ def power_comparison_plot(sup_dir, **kwargs):
     plt.xlabel("Central pressure (bar)")
     
     for i in np.arange(len(path_arr)):
-        p_arr, _, ef_arr, _, _ = get_data(path_arr[i])
-        plt.scatter(p_arr, ef_arr*1e2, color=cmap(cidx[i]), label="{0}mW (I={1:.1f}PW/cm^2)".format(beam_en_arr[i]*1e6,1e-15*I_arr[i]))
-        plt.plot(p_arr, ef_arr*1e2, color=cmap(cidx[i]))
+        
+        if bool_sec_var:
+            plt.scatter(p_arr[i], ef_arr[i]*1e9, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2); {2}={3}".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i], second_var[0],second_var[1]))
+            plt.plot(p_arr[i], ef_arr[i]*1e9, color=cmap(cidx[i]))
+            plt.scatter(p_arr2[i],ef_arr2[i]*1e9, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2); {2}={3}".format(IR_energy_arr2[i]*1e6, 1e-15*IR_int_arr2[i],second_var[0],second_var[2]))
+            plt.plot(p_arr2[i], ef_arr2[i]*1e9, color=cmap(cidx[i]))
+        else:
+            plt.scatter(p_arr[i], ef_arr[i]*1e2, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i]))
+            plt.plot(p_arr[i], ef_arr[i]*1e2, color=cmap(cidx[i]))
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"THG_efficiencies.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"THG_efficiencies.png"),dpi=1000)
     if show: plt.show()
 
     # PLOT 3: pulse duration vs pressure 
@@ -745,12 +785,17 @@ def power_comparison_plot(sup_dir, **kwargs):
     plt.xlabel("Central pressure (bar)")
     
     for i in np.arange(len(path_arr)):
-        p_arr, _, _, tau_arr,_ = get_data(path_arr[i])
-        plt.scatter(p_arr, tau_arr*1e15, color=cmap(cidx[i]), label="{0}mW (I={1:.1f}PW/cm^2)".format(beam_en_arr[i]*1e6,1e-15*I_arr[i]))
-        plt.plot(p_arr, tau_arr*1e15, color=cmap(cidx[i]))
+        if bool_sec_var:
+            plt.scatter(p_arr[i], tau_arr[i]*1e9, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2); {2}={3}".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i], second_var[0],second_var[1]))
+            plt.plot(p_arr[i], tau_arr[i]*1e9, color=cmap(cidx[i]))
+            plt.scatter(p_arr2[i],tau_arr2[i]*1e9, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2); {2}={3}".format(IR_energy_arr2[i]*1e6, 1e-15*IR_int_arr2[i],second_var[0],second_var[2]))
+            plt.plot(p_arr2[i], tau_arr2[i]*1e9, color=cmap(cidx[i]))
+        else:
+            plt.scatter(p_arr[i], tau_arr[i]*1e15, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i]))
+            plt.plot(p_arr[i], tau_arr[i]*1e15, color=cmap(cidx[i]))
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
     if show: plt.show()
 
     # PLOT 4: z_peak vs pressure 
@@ -761,25 +806,42 @@ def power_comparison_plot(sup_dir, **kwargs):
     plt.xlabel("Central pressure (bar)")
     
     for i in np.arange(len(path_arr)):
-        p_arr, _, _, _,z_peak_arr = get_data(path_arr[i])
-        plt.scatter(p_arr, z_peak_arr*1e3, color=cmap(cidx[i]), label="{0}mW (I={1:.1f}PW/cm^2)".format(beam_en_arr[i]*1e6,1e-15*I_arr[i]))
-        plt.plot(p_arr, z_peak_arr*1e3, color=cmap(cidx[i]))
+
+        if bool_sec_var:
+            plt.scatter(p_arr[i], zpeak_arr[i]*1e9, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2); {2}={3}".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i], second_var[0],second_var[1]))
+            plt.plot(p_arr[i], zpeak_arr[i]*1e9, color=cmap(cidx[i]))
+            plt.scatter(p_arr2[i],zpeak_arr2[i]*1e9, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2); {2}={3}".format(IR_energy_arr2[i]*1e6, 1e-15*IR_int_arr2[i],second_var[0],second_var[2]))
+            plt.plot(p_arr2[i], zpeak_arr2[i]*1e9, color=cmap(cidx[i]))
+        else:
+            plt.scatter(p_arr[i], zpeak_arr[i]*1e3, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i]))
+            plt.plot(p_arr[i], zpeak_arr[i]*1e3, color=cmap(cidx[i]))
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"peak_positions.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"peak_positions.png"),dpi=1000)
     if show: plt.show()
 
     # PLOTS 4-7: peak investigation 
     peak_arr = np.empty((len(path_arr),6))
+    if bool_sec_var:
+        peak_arr2 = np.empty((len(path_arr),6))
 
     for i in np.arange(len(path_arr)):
-        peak_arr[i,0] = beam_en_arr[i]
-        p_peak, en_peak, ef_peak, tau_peak, min_tau_p = get_peaks(path_arr[i])
-        peak_arr[i, 1] = p_peak 
-        peak_arr[i,2] = en_peak 
-        peak_arr[i,3] = ef_peak 
-        peak_arr[i,4] = tau_peak 
-        peak_arr[i,5] = min_tau_p
+        peak_arr[i,0] = IR_energy_arr[i]
+        peak_en, peak_ef, min_tau, peak_en_pres, min_tau_pres = get_peaks(path_arr[i])
+        peak_arr[i, 1] = peak_en_pres 
+        peak_arr[i,2] = peak_en 
+        peak_arr[i,3] = peak_ef 
+        peak_arr[i,4] = min_tau 
+        peak_arr[i,5] =  min_tau_pres
+
+        if bool_sec_var:
+            peak_arr2[i,0] = IR_energy_arr2[i]
+            peak_en, peak_ef, min_tau, peak_en_pres, min_tau_pres = get_peaks(path_arr2[i])
+            peak_arr2[i, 1] = peak_en_pres 
+            peak_arr2[i,2] = peak_en 
+            peak_arr2[i,3] = peak_ef 
+            peak_arr2[i,4] = min_tau 
+            peak_arr2[i,5] =  min_tau_pres
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
     plt.subplots_adjust(top=0.8, right=0.9)
@@ -790,10 +852,16 @@ def power_comparison_plot(sup_dir, **kwargs):
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
-    ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,2]*1e9, color="blue")
-    ax.plot(peak_arr[:,0]*1e6, peak_arr[:,2]*1e9, color="blue")
+    if bool_sec_var:
+        ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,2]*1e9, color="blue", label="{0}={1}".format(second_var[0], second_var[1]))
+        ax.plot(peak_arr[:,0]*1e6, peak_arr[:,2]*1e9, color="blue")
+        ax.scatter(peak_arr2[:,0]*1e6, peak_arr2[:,2]*1e9, color="red", label="{0}={2}".format(second_var[0], second_var[1]))
+        ax.plot(peak_arr2[:,0]*1e6, peak_arr2[:,2]*1e9, color="red")
+    else:    
+        ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,2]*1e9, color="blue")
+        ax.plot(peak_arr[:,0]*1e6, peak_arr[:,2]*1e9, color="blue")
 
-    plt.savefig(os.path.join(out_path,"peak_en_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"peak_en_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
@@ -802,12 +870,19 @@ def power_comparison_plot(sup_dir, **kwargs):
     plt.suptitle("Simulated peak UV efficiencies", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Efficiency (%)")
-    ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,3]*1e2, color="blue")
-    ax.plot(peak_arr[:,0]*1e6, peak_arr[:,3]*1e2, color="blue")
+
+    if bool_sec_var:
+        ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,3]*1e2, color="blue", label="{0}={1}".format(second_var[0], second_var[1]))
+        ax.plot(peak_arr[:,0]*1e6, peak_arr[:,3]*1e2, color="blue")
+        ax.scatter(peak_arr2[:,0]*1e6, peak_arr2[:,3]*1e2, color="red", label="{0}={2}".format(second_var[0], second_var[1]))
+        ax.plot(peak_arr2[:,0]*1e6, peak_arr2[:,3]*1e2, color="red")
+    else:
+        ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,3]*1e2, color="blue")
+        ax.plot(peak_arr[:,0]*1e6, peak_arr[:,3]*1e2, color="blue")
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
-    plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
@@ -816,12 +891,19 @@ def power_comparison_plot(sup_dir, **kwargs):
     plt.suptitle("Simulated saturation pressures", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Saturation pressure (bar)")
-    ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,1], color="blue")
-    ax.plot(peak_arr[:,0]*1e6, peak_arr[:,1], color="blue")
+    if bool_sec_var:
+        ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,1], color="blue", label="{0}={1}".format(second_var[0], second_var[1]))
+        ax.plot(peak_arr[:,0]*1e6, peak_arr[:,1], color="blue")
+        ax.scatter(peak_arr2[:,0]*1e6, peak_arr2[:,1], color="red", label="{0}={2}".format(second_var[0], second_var[1]))
+        ax.plot(peak_arr2[:,0]*1e6, peak_arr2[:,1], color="red")
+    else:
+        ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,3]*1e2, color="blue")
+        ax.plot(peak_arr[:,0]*1e6, peak_arr[:,3]*1e2, color="blue")
+    
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
-    plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
@@ -830,12 +912,19 @@ def power_comparison_plot(sup_dir, **kwargs):
     plt.suptitle("Simulated UV pulse durations", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Minimum pulse duration (fs)")
-    ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,4]*1e15, color="blue")
-    ax.plot(peak_arr[:,0]*1e6, peak_arr[:,4]*1e15, color="blue")
+    if bool_sec_var:
+        ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,4]*1e15, color="blue", label="{0}={1}".format(second_var[0], second_var[1]))
+        ax.plot(peak_arr[:,0]*1e6, peak_arr[:,4]*1e15, color="blue")
+        ax.scatter(peak_arr2[:,0]*1e6, peak_arr2[:,4]*1e15, color="red", label="{0}={2}".format(second_var[0], second_var[1]))
+        ax.plot(peak_arr2[:,0]*1e6, peak_arr2[:,4]*1e15, color="red")
+    else:
+        ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,4]*1e15, color="blue")
+        ax.plot(peak_arr[:,0]*1e6, peak_arr[:,4]*1e15, color="blue")
+    
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
-    plt.savefig(os.path.join(out_path,"tau_min_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"tau_min_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
@@ -844,21 +933,27 @@ def power_comparison_plot(sup_dir, **kwargs):
     plt.suptitle("Simulated minimal pulse duration pressure", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Minimum pulse duration pressure (bar)")
-    ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,5], color="blue")
-    ax.plot(peak_arr[:,0]*1e6, peak_arr[:,5], color="blue")
+    if bool_sec_var:
+        ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,5], color="blue", label="{0}={1}".format(second_var[0], second_var[1]))
+        ax.plot(peak_arr[:,0]*1e6, peak_arr[:,5], color="blue")
+        ax.scatter(peak_arr2[:,0]*1e6, peak_arr2[:,5], color="red", label="{0}={2}".format(second_var[0], second_var[1]))
+        ax.plot(peak_arr2[:,0]*1e6, peak_arr2[:,5], color="red")
+    else:
+        ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,5], color="blue")
+        ax.plot(peak_arr[:,0]*1e6, peak_arr[:,5], color="blue")
+    
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
-    plt.savefig(os.path.join(out_path,"min_tau_p_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"min_tau_p_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
     # save kwargs and sup_dir to file
     params_dict["sup_dir"] = sup_dir
 
-    with open(os.path.join(out_path,"kwargs.txt"), "w") as file:
-        json.dump(params_dict, file)
-
-
+    if save: 
+        with open(os.path.join(out_path,"kwargs.txt"), "w") as file:
+            json.dump(params_dict, file)
 
 # plot UV energy and THG conversion efficiency for different beam powers
 # with and without ionisation
@@ -900,7 +995,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
         plt.plot(p_arr, en_arr*1e9, color=cmap(cidx[i]), ls="--")
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"UV_energies.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"UV_energies.png"),dpi=1000)
     if show: plt.show()
 
     # PLOT 2: efficiency vs pressure 
@@ -920,7 +1015,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
         plt.plot(p_arr, ef_arr*1e2, color=cmap(cidx[i]), ls='--')
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"THG_efficiencies.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"THG_efficiencies.png"),dpi=1000)
     if show: plt.show()
 
     # PLOT 3: efficiency vs pressure 
@@ -940,7 +1035,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
         plt.plot(p_arr, tau_arr*1e15, color=cmap(cidx[i]), ls='--')
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
     if show: plt.show()
 
     # PLOT 3: efficiency vs pressure 
@@ -960,7 +1055,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
         plt.plot(p_arr, z_peak_arr*1e3, color=cmap(cidx[i]), ls='--')
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"z_peak.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"z_peak.png"),dpi=1000)
     if show: plt.show()
 
     # PLOTS 5-9: peak investigation 
@@ -999,7 +1094,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
 
     plt.legend()
 
-    plt.savefig(os.path.join(out_path,"peak_en_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"peak_en_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
@@ -1016,7 +1111,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
     secax.set_xlabel('Peak intensity (PW/cm^2)')
     plt.legend()
 
-    plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
@@ -1032,7 +1127,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
-    plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
     if show: plt.show()  
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
@@ -1048,7 +1143,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
-    plt.savefig(os.path.join(out_path,"min_tau_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"min_tau_vs_beam_power.png"),dpi=1000)
     if show: plt.show()   
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
@@ -1064,7 +1159,7 @@ def plot_beamP_ion_scan(sup_dir, gas, phi, kerr, dens_mod):
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
-    plt.savefig(os.path.join(out_path,"min_tau_p_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"min_tau_p_vs_beam_power.png"),dpi=1000)
     if show: plt.show()   
 
 # plot UV energy and THG conversion efficiency for different beam power
@@ -1089,7 +1184,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr, dens_mod):
 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Simulated UV energies", fontsize=16)
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW ({1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
     
@@ -1099,13 +1194,13 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr, dens_mod):
         plt.plot(p_arr, en_arr*1e9, color=cmap(cidx[i]))
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"UV_energies.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"UV_energies.png"),dpi=1000)
     if show: plt.show()
 
     # PLOT 2: efficiency vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Simulated THG efficiencies", fontsize=16)
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW ({1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Efficiency (%)")
     plt.xlabel("Central pressure (bar)")
     
@@ -1115,13 +1210,13 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr, dens_mod):
         plt.plot(p_arr, ef_arr*1e2, color=cmap(cidx[i]))
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"THG_efficiencies.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"THG_efficiencies.png"),dpi=1000)
     if show: plt.show()
 
     # PLOT 3: pulse duration vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Simulated UV pulse durations", fontsize=16)
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW ({1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Pulse duration (fs)")
     plt.xlabel("Central pressure (bar)")
     
@@ -1131,13 +1226,13 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr, dens_mod):
         plt.plot(p_arr, tau_arr*1e15, color=cmap(cidx[i]))
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
     if show: plt.show()
 
     # PLOT 4: z_peak vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.suptitle("Position of peak UV energy", fontsize=16)
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW ({1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Position (mm)")
     plt.xlabel("Central pressure (bar)")
     
@@ -1147,7 +1242,7 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr, dens_mod):
         plt.plot(p_arr,z_peak_arr*1e3, color=cmap(cidx[i]))
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"z_peak.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"z_peak.png"),dpi=1000)
     if show: plt.show()
 
     # PLOTS 5-9: peak investigation 
@@ -1163,58 +1258,58 @@ def plot_phi_scan(sup_dir, gas, beam_en, ion, kerr, dens_mod):
         peak_arr[i,5] = min_tau_p 
 
     plt.figure(figsize=[7.04, 5.28])
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW ({1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.suptitle("Simulated peak UV energies", fontsize=16)
     plt.xlabel("CEP (rad)")
     plt.ylabel("Peak UV energy (nJ)")
     plt.scatter(peak_arr[:,0], peak_arr[:,2]*1e9, color="blue")
     plt.plot(peak_arr[:,0], peak_arr[:,2]*1e9, color="blue")
 
-    plt.savefig(os.path.join(out_path,"peak_en_vs_phi.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"peak_en_vs_phi.png"),dpi=1000)
     if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28])
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW ({1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.suptitle("Simulated peak UV efficiencies", fontsize=16)
     plt.xlabel("CEP (rad)")
     plt.ylabel("Efficiency (%)")
     plt.scatter(peak_arr[:,0], peak_arr[:,3]*1e2, color="blue")
     plt.plot(peak_arr[:,0], peak_arr[:,3]*1e2, color="blue")
 
-    plt.savefig(os.path.join(out_path,"peak_ef_vs_phi.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"peak_ef_vs_phi.png"),dpi=1000)
     if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28])
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW ({1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.suptitle("Simulated saturation pressures", fontsize=16)
     plt.xlabel("CEP (rad)")
     plt.ylabel("Saturation pressure (bar)")
     plt.scatter(peak_arr[:,0], peak_arr[:,1], color="blue")
     plt.plot(peak_arr[:,0], peak_arr[:,1], color="blue")
 
-    plt.savefig(os.path.join(out_path,"peak_p_vs_phi.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"peak_p_vs_phi.png"),dpi=1000)
     if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28])
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW ({1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion, fontsize=10)
     plt.suptitle("Simulated minimum UV pulse durations", fontsize=16)
     plt.xlabel("CEP (rad)")
     plt.ylabel("Minimum pulse duration (fs)")
     plt.scatter(peak_arr[:,0], peak_arr[:,4]*1e15, color="blue")
     plt.plot(peak_arr[:,0], peak_arr[:,4]*1e15, color="blue")
 
-    plt.savefig(os.path.join(out_path,"min_tau_vs_phi.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"min_tau_vs_phi.png"),dpi=1000)
     if show: plt.show()
 
     plt.figure(figsize=[7.04, 5.28])
-    plt.title("Gas: "+gas+"; beam power: {0}mW (I= {1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion, fontsize=10)
+    plt.title("Gas: "+gas+"; beam power: {0}mW ({1:.1f}PW/cm2); ".format(beam_en*1e6, I*1e-15)+" response function: "+kerr+"; ionisation: "+ion, fontsize=10)
     plt.suptitle("Simulated minimum pulse duration pressures", fontsize=16)
     plt.xlabel("CEP (rad)")
     plt.ylabel("Minimum pulse duration pressure (bar)")
     plt.scatter(peak_arr[:,0], peak_arr[:,5], color="blue")
     plt.plot(peak_arr[:,0], peak_arr[:,5], color="blue")
 
-    plt.savefig(os.path.join(out_path,"min_tau_p_vs_phi.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"min_tau_p_vs_phi.png"),dpi=1000)
     if show: plt.show()
 
 # single power, single dens model gas comparison 
@@ -1240,7 +1335,7 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.85)
     plt.suptitle("Simulated UV energies", fontsize=16)
-    plt.title("Beam power: {1}mW (I= {2:.1f}PW/cm^2); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
+    plt.title("Beam power: {1}mW ({2:.1f}PW/cm^2); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
     
@@ -1250,14 +1345,14 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
         plt.plot(p_arr, en_arr*1e9, color=colour_cycle[i])
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"UV_energies.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"UV_energies.png"),dpi=1000)
     if show: plt.show()
 
     # PLOT 2: efficiency vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.85)
     plt.suptitle("Simulated THG efficiencies", fontsize=16)
-    plt.title("Beam power: {1}mW (I= {2:.1f}PW/cm^2); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
+    plt.title("Beam power: {1}mW ({2:.1f}PW/cm^2); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Efficiency (%)")
     plt.xlabel("Central pressure (bar)")
     
@@ -1267,14 +1362,14 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
         plt.plot(p_arr, ef_arr*1e2, color=colour_cycle[i])
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"THG_efficiencies.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"THG_efficiencies.png"),dpi=1000)
     if show: plt.show()
 
     # PLOT 3: pulse duration vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.85)
     plt.suptitle("Simulated UV pulse durations", fontsize=16)
-    plt.title("Beam power: {1}mW (I= {2:.1f}PW/cm^2); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
+    plt.title("Beam power: {1}mW ({2:.1f}PW/cm^2); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Pulse duration (fs)")
     plt.xlabel("Central pressure (bar)")
     
@@ -1284,14 +1379,14 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
         plt.plot(p_arr, tau_arr*1e15, color=colour_cycle[i])
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
     if show: plt.show()
 
     # PLOT 4: z_peak vs pressure 
     plt.figure(figsize=[7.04, 5.28]) 
     plt.subplots_adjust(top=0.85)
     plt.suptitle("Position of peak UV energy", fontsize=16)
-    plt.title("Beam power: {1}mW (I= {2:.1f}PW/cm^2); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
+    plt.title("Beam power: {1}mW ({2:.1f}PW/cm^2); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Position (mm)")
     plt.xlabel("Central pressure (bar)")
     
@@ -1301,7 +1396,7 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
         plt.plot(p_arr, z_peak_arr*1e3, color=colour_cycle[i])
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"peak_positions.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"peak_positions.png"),dpi=1000)
     if show: plt.show()
 
 # multi power, single dens model gas comparison 
@@ -1367,7 +1462,7 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
         ax.plot(peak_arr[:,0]*1e6, peak_arr[:,2]*1e9, color=colour_cycle[k])
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"peak_en_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"peak_en_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
@@ -1385,7 +1480,7 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
@@ -1404,7 +1499,7 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
     secax.set_xlabel('Peak intensity (PW/cm^2)')
 
     plt.legend()
-    plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
@@ -1422,7 +1517,7 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
     secax.set_xlabel('Peak intensity (PW/cm^2)')
     plt.legend()
 
-    plt.savefig(os.path.join(out_path,"tau_min_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"tau_min_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=[7.04, 5.28])
@@ -1439,7 +1534,7 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
     secax.set_xlabel('Peak intensity (PW/cm^2)')
     plt.legend()
 
-    plt.savefig(os.path.join(out_path,"min_tau_p_vs_beam_power.png"),dpi=1000)
+    if save: plt.savefig(os.path.join(out_path,"min_tau_p_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
 # ---------- EXEC --------------------------------------
@@ -1451,8 +1546,6 @@ else:
         #plot_beamP_scan(sup_dir, gas, 0.0, "true", "f", "grad") 
         #plot_multiP_singleg_model_comp(sup_dir, gas)
    
-    placeholder = "_"
-    plot_gas_comp_singleP(sup_dir,400e-3,"coms")
-    #plot_gas_comp_multiP(sup_dir,"coms", [])
-    #plot_gas_comp_multiP(sup_dir,"grad", [])
-    #plot_singlePg_model_comp(sup_dir, "N2O", 400*1e-3)
+    power_comparison_plot(sup_dir,gas="Ne",dens_mod="coms")
+
+    #  second_var=("gas", "Ne", "Ar")
