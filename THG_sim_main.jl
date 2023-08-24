@@ -218,12 +218,12 @@ function THG_main(pres=pres)
     
     #Er0 = dropdims(Hankel.onaxis(Eout, q), dims=2)   # Real-space amplitude in frequency domain at r=0 
 
-    Er0 = zeros((size(Eout, 1), size(Eout, 2)))      # set up array for total real-space amplitude in frequency domain 
+    Er0 = zeros(ComplexF64, (size(Eout, 1), size(Eout, 2)))      # set up array for total real-space amplitude in frequency domain 
 
     for i = 1:size(Eout, 1), j = 1:size(Eout, 2)
-        print(Hankel.integrateR(Eout[ω0idx,:,end], q))
-        println(i)
-        println(j)
+        #print(Hankel.integrateR(Eout[ω0idx,:,end], q))
+        #println(i)
+        #println(j)
         Er0[i,j] = Hankel.integrateR(Eout[i,:,j], q) # integrate along r to obtain total real-space amplitude in frequency domain  
     end 
 
