@@ -214,7 +214,9 @@ function THG_main(pres=pres)
     # * * * EXTRACT FIELD AMPLITUDES:
     Eout = output.data["Eω"]                         # Hankel-transformed amplitude in frequency domain  
     Erout = (q \ Eout)                               # Real-space amplitude in frequency domain at r ≠ 0   (NOTE:"\" represents inverse Hankel transform) 
-    Er0 = dropdims(Hankel.onaxis(Eout, q), dims=2)   # Real-space amplitude in frequency domain at r=0 
+    
+    
+    #Er0 = dropdims(Hankel.onaxis(Eout, q), dims=2)   # Real-space amplitude in frequency domain at r=0 
 
     Er0 = zeros((size(Eout, 1), size(Eout, 2)))      # set up array for total real-space amplitude in frequency domain 
 
@@ -351,7 +353,7 @@ function THG_main(pres=pres)
             
         #+++++ PLOT 2:  fundamental and third harmonic intensities as functions of z
         plt.figure(figsize=[7.04, 5.28])
-        plt.suptitle("On-axis intensity of fundamental and third harmonic")
+        plt.suptitle("Total intensity of fundamental and third harmonic")
         plt.subplots_adjust(hspace=0.5)
 
         plt.subplot(2,1,1)
@@ -371,7 +373,7 @@ function THG_main(pres=pres)
 
     
         if save==true
-            plt.savefig(joinpath(out_path,"on-axis_intensity.png"),dpi=1000)
+            plt.savefig(joinpath(out_path,"total_intensity.png"),dpi=1000)
         end 
 
         #+++++ PLOT 3: gas number density and effective susceptibility along the cell 
@@ -401,9 +403,9 @@ function THG_main(pres=pres)
             plt.savefig(joinpath(out_path,"density_and_susceptibility.png"),dpi=1000)
         end 
 
-        #+++++ PLOT 4:  linear on-axis spectrum I(λ) at z=0 and z=L 
+        #+++++ PLOT 4:  linear  spectrum I(λ) at z=0 and z=L 
         plt.figure(figsize=[7.04, 5.28])
-        plt.title("Linear on-axis beam spectrum")
+        plt.title("Linear beam spectrum")
         plt.plot(λ[2:end]*1e9, Iω0[2:end,1], label="z=$(round(zout[1]*1e3,digits=2))mm", color="grey")
         plt.plot(λ[2:end]*1e9, Iω0[2:end,end], label="z=$(round(zout[end]*1e3,digits=2))mm", color="red")
         plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
@@ -425,12 +427,12 @@ function THG_main(pres=pres)
         plt.legend()
 
         if save==true
-            plt.savefig(joinpath(out_path,"full_on-axis_spectrum.png"),dpi=1000)
+            plt.savefig(joinpath(out_path,"full_spectrum.png"),dpi=1000)
         end 
 
-        #+++++ PLOT 5:  UV only linear on-axis spectrum I(λ) at z=0 and z=L 
+        #+++++ PLOT 5:  UV only linear spectrum I(λ) at z=0 and z=L 
         plt.figure(figsize=[7.04, 5.28])
-        plt.title("Linear on-axis UV spectrum")
+        plt.title("Linear UV spectrum")
         plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,1], label="z=$(round(zout[1]*1e3,digits=2))mm", color="grey")
         plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,end], label="z=$(round(zout[end]*1e3,digits=2))mm", color="red")
         plt.xlim(λ_rangeUV[1]*1e9, λ_rangeUV[2]*1e9)
@@ -452,14 +454,14 @@ function THG_main(pres=pres)
         plt.legend()
 
         if save==true
-            plt.savefig(joinpath(out_path,"UV_on-axis_spectrum.png"),dpi=1000)
+            plt.savefig(joinpath(out_path,"UV_spectrum.png"),dpi=1000)
         end 
 
-        #+++++ PLOT 6:  log. on-axis spectrum I(λ) at z=0 and z=L 
+        #+++++ PLOT 6:  log. spectrum I(λ) at z=0 and z=L 
         Iω0log = log10.(Iω0)
 
         plt.figure(figsize=[7.04, 5.28])
-        plt.title("Logarithmic on-axis beam spectrum")
+        plt.title("Logarithmic beam spectrum")
         plt.plot(λ[2:end]*1e9, Iω0log[2:end,1], label="z=$(round(zout[1]*1e3,digits=2))mm",  color="grey")
         plt.plot(λ[2:end]*1e9, Iω0log[2:end,end], label="z=$(round(zout[end]*1e3,digits=2))mm", color="red")
         plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
@@ -482,7 +484,7 @@ function THG_main(pres=pres)
 
 
         if save==true
-            plt.savefig(joinpath(out_path,"on-axis_spectrum_log.png"),dpi=1000)
+            plt.savefig(joinpath(out_path,"spectrum_log.png"),dpi=1000)
         end 
 
         #+++++ PLOT 7:  pulse energies and efficiency 
@@ -508,9 +510,9 @@ function THG_main(pres=pres)
             plt.savefig(joinpath(out_path,"pulse_energies.png"),dpi=1000)
         end
 
-        #+++++ PLOT 8: on-axis frequency evolution 
+        #+++++ PLOT 8: frequency evolution 
         plt.figure(figsize=[7.04, 5.28])
-        plt.suptitle("On-axis frequency evolution")
+        plt.suptitle("Frequency evolution")
         plt.pcolormesh(zout*1e3, f*1e-15, log10.(Maths.normbymax(Iω0)))   
         plt.colorbar(label="arb. units, normed")
         plt.clim(0, -6)  
@@ -519,12 +521,12 @@ function THG_main(pres=pres)
         plt.title("log. ∫I(r, ω)dr")
 
         if save==true
-            plt.savefig(joinpath(out_path,"on-axis_frequency_evolution.png"),dpi=1000)
+            plt.savefig(joinpath(out_path,"frequency_evolution.png"),dpi=1000)
         end
 
         #+++++ PLOT 9: time-domain plot of input pulse 
         plt.figure(figsize=[7.04, 5.28]) 
-        plt.title("Time-domain representation of on-axis input pulse")
+        plt.title("Time-domain representation of input pulse")
         plt.xlabel("t (fs)")
         plt.xlim(minimum(t)*1e15, maximum(t)*1e15)
         plt.ylabel("∫I(t, r, z=0)dr (arb. units)")
@@ -543,7 +545,7 @@ function THG_main(pres=pres)
 
         #+++++ PLOT 10: time-domain plot of UV output pulse 
         plt.figure(figsize=[7.04, 5.28]) 
-        plt.title("Time-domain representation of on-axis UV output pulse")
+        plt.title("Time-domain representation of UV output pulse")
         plt.xlabel("t (fs)")
         plt.ylabel("∫I(t,r; z=L)dr (arb. units)")
         plt.plot(t*1e15, It0_UV[:,end] , color="red", label="FWHM pulse duration: τ="*string(round(τ_UV*1e15, digits=1) )*"fs")
