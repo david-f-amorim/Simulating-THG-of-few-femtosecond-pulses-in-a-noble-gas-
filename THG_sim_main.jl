@@ -47,7 +47,7 @@ thickness= 0*1e-3    # thickness of the material [m] (for chirp compensation)
 ϕs = [0,0,+11.31*1e30,0]     # Taylor-series coefficients of initial spectral phase (used to introduce additional chirp)
 
 ion = true         # if true: enable ionisation response, if false: disable ionisation 
-ion_model="PPT"    # set to "ADK" or "PPT" (has no effect if ion==false)
+ion_model="ADK"    # set to "ADK" or "PPT" (has no effect if ion==false)
 
 pres_arr = range(start= 0.1, stop= 5.1, step= 0.1)  # pressure range (only relevant for pressure scans)  [bar]
 
@@ -219,7 +219,10 @@ function THG_main(pres=pres)
     Er0 = zeros((size(Eout, 1), size(Eout, 2)))      # set up array for total real-space amplitude in frequency domain 
 
     for i = 1:size(Eout, 1), j = 1:size(Eout, 2)
-           Er0[i,j] = Hankel.integrateR(Eout[i,:,j], q) # integrate along r to obtain total real-space amplitude in frequency domain  
+        println("Test")
+        Integral = Hankel.integrateR(Eoutp[ω0idx,:,end])
+        println("End test")  
+        Er0[i,j] = Hankel.integrateR(Eout[i,:,j], q) # integrate along r to obtain total real-space amplitude in frequency domain  
     end 
 
     Etout = FFTW.irfft(Erout, length(t), 1)     # time-domain real field amplitude at r≠0
@@ -240,7 +243,7 @@ function THG_main(pres=pres)
     Etout_UV=FFTW.irfft(filter, length(t), 1)    # time-domain real field amplitude of UV pulse 
     Et_UV = Maths.hilbert(Etout_UV)              # time-domain real field amplitude of UV envelope
 
-    # * * * FILTER FOR UV FIELD (r=0)
+    # * * * FILTER FOR UV FIELD (across r)
     filter_onaxis = FFTW.rfft(Et0, 1)          # set up filter array
     filter_onaxis[1:ωlowUVidx,:].=0;           # filters out ω < ω_min
     filter_onaxis[ωhighUVidx:end,:].=0;        # filters out ω > ω_max  
@@ -344,7 +347,7 @@ function THG_main(pres=pres)
             plt.savefig(joinpath(out_path,"off-axis_intensity.png"),dpi=1000)
         end    
             
-        #+++++ PLOT 2:  fundamental and third harmonic intensities as functions of z at r=0
+        #+++++ PLOT 2:  fundamental and third harmonic intensities as functions of z
         plt.figure(figsize=[7.04, 5.28])
         plt.suptitle("On-axis intensity of fundamental and third harmonic")
         plt.subplots_adjust(hspace=0.5)
@@ -352,7 +355,7 @@ function THG_main(pres=pres)
         plt.subplot(2,1,1)
         plt.plot(zout*1e3,  Iω0[ω0idx,  :], color="red")
         plt.title("λ=$(round(Int,λ0*1e9))nm")
-        plt.ylabel("I(r=0) (arb. units)")
+        plt.ylabel("∫I(r)dr (arb. units)")
         plt.xlabel("z (mm)")
         plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
         
@@ -361,7 +364,7 @@ function THG_main(pres=pres)
         plt.plot(zout*1e3,  Iω0[ωTHidx,  :], color="red")
         plt.title("λ=$(round(Int,λ0/3*1e9))nm")
         plt.xlabel("z (mm)")
-        plt.ylabel("I(r=0) (arb. units)")
+        plt.ylabel("∫I(r)dr (arb. units)")
         plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
 
     
@@ -403,7 +406,7 @@ function THG_main(pres=pres)
         plt.plot(λ[2:end]*1e9, Iω0[2:end,end], label="z=$(round(zout[end]*1e3,digits=2))mm", color="red")
         plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
         plt.xlabel("λ (nm)")
-        plt.ylabel("I(r=0, λ) (arb. units)")
+        plt.ylabel("∫I(r, λ)dr (arb. units)")
 
         if read_UV == true  # overlay measured UV output spectrum 
             plt.plot(λ_in*1e9, maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(I_in_UV), color="purple", label="UV data (rescaled)")
@@ -430,7 +433,7 @@ function THG_main(pres=pres)
         plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,end], label="z=$(round(zout[end]*1e3,digits=2))mm", color="red")
         plt.xlim(λ_rangeUV[1]*1e9, λ_rangeUV[2]*1e9)
         plt.xlabel("λ (nm)")
-        plt.ylabel("I(r=0, λ) (arb. units)")
+        plt.ylabel("∫I(r, λ)dr (arb. units)")
 
         if read_UV == true  # overlay measured UV output spectrum 
             plt.plot(λ_in*1e9, maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(I_in_UV), color="purple", label="UV data (rescaled)")
@@ -459,7 +462,7 @@ function THG_main(pres=pres)
         plt.plot(λ[2:end]*1e9, Iω0log[2:end,end], label="z=$(round(zout[end]*1e3,digits=2))mm", color="red")
         plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
         plt.xlabel("λ (nm)")
-        plt.ylabel("I(r=0, λ) (arb. units)")
+        plt.ylabel("∫I(r, λ)dr (arb. units)")
 
         if read_UV == true  # overlay measured UV output spectrum 
             plt.plot(λ_in*1e9, log10.(abs.(maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(I_in_UV))), color="purple", label="UV data (rescaled)")
@@ -511,7 +514,7 @@ function THG_main(pres=pres)
         plt.clim(0, -6)  
         plt.xlabel("z (mm)")
         plt.ylabel("f (PHz)")
-        plt.title("log. I(r=0, ω)")
+        plt.title("log. ∫I(r, ω)dr")
 
         if save==true
             plt.savefig(joinpath(out_path,"on-axis_frequency_evolution.png"),dpi=1000)
@@ -522,7 +525,7 @@ function THG_main(pres=pres)
         plt.title("Time-domain representation of on-axis input pulse")
         plt.xlabel("t (fs)")
         plt.xlim(minimum(t)*1e15, maximum(t)*1e15)
-        plt.ylabel("I(t; r=0, z=0) (arb. units)")
+        plt.ylabel("∫I(t, r, z=0)dr (arb. units)")
         plt.plot(t*1e15, It0[:,1] , color="red", label="FWHM pulse duration: τ="*string(round(τ_input*1e15, digits=1) )*"fs")
         plt.plot(t*1e15,It0_envelope[:,1], color="black", ls="--")
 
@@ -540,7 +543,7 @@ function THG_main(pres=pres)
         plt.figure(figsize=[7.04, 5.28]) 
         plt.title("Time-domain representation of on-axis UV output pulse")
         plt.xlabel("t (fs)")
-        plt.ylabel("I(t; r=0, z=L) (arb. units)")
+        plt.ylabel("∫I(t,r; z=L)dr (arb. units)")
         plt.plot(t*1e15, It0_UV[:,end] , color="red", label="FWHM pulse duration: τ="*string(round(τ_UV*1e15, digits=1) )*"fs")
         plt.plot(t*1e15,It0_UV_envelope[:,end], color="black", linestyle="--")
 
@@ -630,7 +633,7 @@ function THG_main(pres=pres)
         end
         plt.xlim(λ_rangeUV[1]*1e9, λ_rangeUV[2]*1e9)
         plt.xlabel("λ (nm)")
-        plt.ylabel("I(r=0, λ) (arb. units)")
+        plt.ylabel("∫I(r, λ)dr (arb. units)")
 
         plt.legend(loc="upper right")
 
