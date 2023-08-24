@@ -286,13 +286,22 @@ function THG_main(pres=pres)
 
     # * * * INTEGRATE FREQUENCY DOMAIN UV
     #       AND IR INTENSITIES 
-    Iωr_UV = integrate(ω[ωlowUVidx, ωhighUVidx],Iωr[ωTHidx, :, :], SimpsonEven()) # frequency domain UV intensity
-    Iωr_IR = integrate(ω[ωlowIRidx, ωhighIRidx],Iωr[ω0idx, :, :], SimpsonEven())  # frequency domain IR intensity
+    Iωr_UV = zeros((length(q.r),length(zout)))                   # set up arrays
+    Iωr_IR  =zeros((length(q.r),length(zout)))
+    Iω0_UV = zeros(length(zout))                   
+    Iω0_IR  = zeros(length(zout))
 
-    Iω0_UV = integrate(ω[ωlowUVidx, ωhighUVidx],Iω0[ωTHidx,  :] ,SimpsonEven()) # frequency domain UV intensity (integrated along r)
-    Iω0_IR = integrate(ω[ωlowIRidx, ωhighIRidx],Iω0[ω0idx,  :]  ,SimpsonEven()) # frequency domain IR intensity (integrated along r)
+    for i = 1:length(zout)
 
+        for j=1:lenght(q.r)
+            Iωr_UV = integrate(ω[ωlowUVidx, ωhighUVidx],Iωr[ωTHidx, j, i], SimpsonEven()) # frequency domain UV intensity
+            Iωr_IR = integrate(ω[ωlowIRidx, ωhighIRidx],Iωr[ω0idx, j, i], SimpsonEven())  # frequency domain IR intensity
+        end    
 
+        Iω0_UV[i] = integrate(ω[ωlowUVidx, ωhighUVidx],Iω0[ωTHidx,  i] ,SimpsonEven()) # frequency domain UV intensity (integrated along r)
+        Iω0_IR[i] = integrate(ω[ωlowIRidx, ωhighIRidx],Iω0[ω0idx,  i]  ,SimpsonEven()) # frequency domain IR intensity (integrated along r)
+    end    
+    
     # * * * PROCESS MEASURED DATA FROM FILES 
     if (IR_spec == true) & (txt_only == false)
         λ_IR_spec = readdlm(path_IR_spec,' ', Float64, '\n')[:,1]             # read in IR input wavelength data [FROG]
@@ -360,7 +369,7 @@ function THG_main(pres=pres)
         plt.subplot(2,1,1)
         plt.plot(zout*1e3,  Iω0_IR, color="red")
         plt.title("IR beam")
-        plt.ylabel("∫I(r)dr (arb. units)")
+        plt.ylabel("I (arb. units)")
         plt.xlabel("z (mm)")
         plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
         
@@ -368,7 +377,7 @@ function THG_main(pres=pres)
         plt.plot(zout*1e3,  Iω0_UV, color="red")
         plt.title("UV beam")
         plt.xlabel("z (mm)")
-        plt.ylabel("∫I(r)dr (arb. units)")
+        plt.ylabel("I (arb. units)")
         plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
 
     
@@ -410,7 +419,7 @@ function THG_main(pres=pres)
         plt.plot(λ[2:end]*1e9, Iω0[2:end,end], label="z=$(round(zout[end]*1e3,digits=2))mm", color="red")
         plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
         plt.xlabel("λ (nm)")
-        plt.ylabel("∫I(r, λ)dr (arb. units)")
+        plt.ylabel("I (arb. units)")
 
         if read_UV == true  # overlay measured UV output spectrum 
             plt.plot(λ_in*1e9, maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(I_in_UV), color="purple", label="UV data (rescaled)")
@@ -437,7 +446,7 @@ function THG_main(pres=pres)
         plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,end], label="z=$(round(zout[end]*1e3,digits=2))mm", color="red")
         plt.xlim(λ_rangeUV[1]*1e9, λ_rangeUV[2]*1e9)
         plt.xlabel("λ (nm)")
-        plt.ylabel("∫I(r, λ)dr (arb. units)")
+        plt.ylabel("I (arb. units)")
 
         if read_UV == true  # overlay measured UV output spectrum 
             plt.plot(λ_in*1e9, maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(I_in_UV), color="purple", label="UV data (rescaled)")
@@ -466,7 +475,7 @@ function THG_main(pres=pres)
         plt.plot(λ[2:end]*1e9, Iω0log[2:end,end], label="z=$(round(zout[end]*1e3,digits=2))mm", color="red")
         plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
         plt.xlabel("λ (nm)")
-        plt.ylabel("∫I(r, λ)dr (arb. units)")
+        plt.ylabel("I (arb. units)")
 
         if read_UV == true  # overlay measured UV output spectrum 
             plt.plot(λ_in*1e9, log10.(abs.(maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(I_in_UV))), color="purple", label="UV data (rescaled)")
@@ -518,7 +527,7 @@ function THG_main(pres=pres)
         plt.clim(0, -6)  
         plt.xlabel("z (mm)")
         plt.ylabel("f (PHz)")
-        plt.title("log. ∫I(r, ω)dr")
+        plt.title("log(I) (arb. units)")
 
         if save==true
             plt.savefig(joinpath(out_path,"frequency_evolution.png"),dpi=1000)
@@ -529,7 +538,7 @@ function THG_main(pres=pres)
         plt.title("Time-domain representation of input pulse")
         plt.xlabel("t (fs)")
         plt.xlim(minimum(t)*1e15, maximum(t)*1e15)
-        plt.ylabel("∫I(t, r, z=0)dr (arb. units)")
+        plt.ylabel("I(z=0) (arb. units)")
         plt.plot(t*1e15, It0[:,1] , color="red", label="FWHM pulse duration: τ="*string(round(τ_input*1e15, digits=1) )*"fs")
         plt.plot(t*1e15,It0_envelope[:,1], color="black", ls="--")
 
@@ -547,7 +556,7 @@ function THG_main(pres=pres)
         plt.figure(figsize=[7.04, 5.28]) 
         plt.title("Time-domain representation of UV output pulse")
         plt.xlabel("t (fs)")
-        plt.ylabel("∫I(t,r; z=L)dr (arb. units)")
+        plt.ylabel("I(z=L) (arb. units)")
         plt.plot(t*1e15, It0_UV[:,end] , color="red", label="FWHM pulse duration: τ="*string(round(τ_UV*1e15, digits=1) )*"fs")
         plt.plot(t*1e15,It0_UV_envelope[:,end], color="black", linestyle="--")
 
@@ -617,7 +626,7 @@ function THG_main(pres=pres)
         end
         plt.xlim(λ_rangeUV[1]*1e9, λ_rangeUV[2]*1e9)
         plt.xlabel("λ (nm)")
-        plt.ylabel("∫I(r, λ)dr (arb. units)")
+        plt.ylabel("I (arb. units)")
 
         plt.legend(loc="upper right")
 
