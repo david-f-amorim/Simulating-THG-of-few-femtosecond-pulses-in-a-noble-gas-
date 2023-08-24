@@ -216,20 +216,20 @@ function THG_main(pres=pres)
     Erout = (q \ Eout)                               # Real-space amplitude in frequency domain at r ≠ 0   (NOTE:"\" represents inverse Hankel transform) 
     Er0 = dropdims(Hankel.onaxis(Eout, q), dims=2)   # Real-space amplitude in frequency domain at r=0 
 
-    Er0 = zeros((size(Eout, 1), size(Eout, 2)))
+    Er0 = zeros((size(Eout, 1), size(Eout, 2)))      # set up array for total real-space amplitude in frequency domain 
 
     for i = 1:size(Eout, 1), j = 1:size(Eout, 2)
-           Er0[i,j] = integrate(q.r, Eout[i,:,j], SimpsonEven())
+           Er0[i,j] = Hankel.integrateR(Eout[i,:,j], q) # integrate along r to obtain total real-space amplitude in frequency domain  
     end 
 
     Etout = FFTW.irfft(Erout, length(t), 1)     # time-domain real field amplitude at r≠0
-    Et0 = FFTW.irfft(Er0, length(t),1)          # time-domain real field amplitude at r=0
+    Et0 = FFTW.irfft(Er0, length(t),1)          # total time-domain real field amplitude across all radii
     Et = Maths.hilbert(Etout)                   # time-domain real field amplitude of envelope at r≠0
 
     # * * * CONVERT TO INTENSITIES:
     Iωr = abs2.(Erout)                               #  intensity at r≠0 in frequency domain  [arbitrary units]
-    Iω0 = abs2.(Er0)                                 #  intensity at r=0 in frequency domain  [arbitrary units]
-    It0 = abs2.(Et0)                                 #  intensity at r=0 in time domain [arbitrary units]
+    Iω0 = abs2.(Er0)                                 #  intensity across all r in frequency domain  [arbitrary units]
+    It0 = abs2.(Et0)                                 #  intensity across all r in time domain [arbitrary units]
     It = abs2.(Maths.hilbert(Etout))                 #  intensity of envelope at r≠0 in time domain [arbitrary units]
 
     # * * * FILTER FOR UV FIELD (r≠0):
@@ -245,8 +245,8 @@ function THG_main(pres=pres)
     filter_onaxis[1:ωlowUVidx,:].=0;           # filters out ω < ω_min
     filter_onaxis[ωhighUVidx:end,:].=0;        # filters out ω > ω_max  
 
-    Et0_UV =FFTW.irfft(filter_onaxis, length(t), 1)     # time-domain real field amplitude of UV pulse at r=0
-    It0_UV = abs2.(Et0_UV)                              # intensity of on-axis UV pulse at r=0
+    Et0_UV =FFTW.irfft(filter_onaxis, length(t), 1)     # total time-domain real field amplitude of UV pulse 
+    It0_UV = abs2.(Et0_UV)                              # intensity of total UV pulse at 
 
     # * * * FILTER FOR IR FIELD (r≠0):
     filter_IR=FFTW.rfft(Etout, 1)        # set up filter array 
@@ -256,12 +256,12 @@ function THG_main(pres=pres)
     Etout_IR=FFTW.irfft(filter_IR, length(t), 1)    # time-domain real field amplitude of IR pulse
     Et_IR = Maths.hilbert(Etout_IR)                 # time-domain real field amplitude of IR envelope
 
-    # * * * FILTER FOR IR FIELD (r=0)
+    # * * * FILTER FOR IR FIELD (across r)
     filter_onaxis_IR = FFTW.rfft(Et0, 1)          # set up filter array
     filter_onaxis_IR[1:ωlowIRidx,:].=0;           # filters out ω < ω_min
     filter_onaxis_IR[ωhighIRidx:end,:].=0;        # filters out ω > ω_max  
 
-    Et0_IR =FFTW.irfft(filter_onaxis_IR, length(t), 1)    # time-domain real field amplitude of IR pulse at r=0
+    Et0_IR =FFTW.irfft(filter_onaxis_IR, length(t), 1)    # time-domain real field amplitude of IR pulse across r
 
     # * * * EXTRACT INTENSITY ENVELOPES 
     It0_envelope = abs2.(Maths.hilbert(Et0))          # envelope modulating It0
