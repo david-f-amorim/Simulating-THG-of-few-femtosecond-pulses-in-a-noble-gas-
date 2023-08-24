@@ -221,11 +221,9 @@ function THG_main(pres=pres)
     Er0 = zeros((size(Eout, 1), size(Eout, 2)))      # set up array for total real-space amplitude in frequency domain 
 
     for i = 1:size(Eout, 1), j = 1:size(Eout, 2)
-        println("First test")
-        println(Eout[i, 0, j])
-        println("Test")
-        Integral = Hankel.integrateR(Eout[ω0idx,:,end])
-        println("End test")  
+        print(Hankel.integrateR(Eout[ω0idx,:,end], q))
+        println(i)
+        println(j)
         Er0[i,j] = Hankel.integrateR(Eout[i,:,j], q) # integrate along r to obtain total real-space amplitude in frequency domain  
     end 
 

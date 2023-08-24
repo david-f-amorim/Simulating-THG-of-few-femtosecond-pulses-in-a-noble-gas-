@@ -56,7 +56,7 @@ cleaned up "file_prepare.py"; finished gas scans; rewrote "scan_eval.py"
 
 	+ notes on plot design: 8cm or 16cm width; 
 
-	+ change spectra etc. from on-axis to total !!!
+	+ change spectra etc. from on-axis to total !!! -> fix integration issue!!
 		=> delete a few plots ?
 
 - work on "documentation"
