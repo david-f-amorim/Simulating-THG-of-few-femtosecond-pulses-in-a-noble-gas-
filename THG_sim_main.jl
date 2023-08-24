@@ -10,7 +10,7 @@ using  DelimitedFiles
 p_scan = false               # if true, run is counted as part of a pressure scan 
 
 save = true                  # if true, saves output plots, run parameters and UV spectrum
-show = false                 # if true, opens plots in GUI after run 
+show = true                 # if true, opens plots in GUI after run 
 txt_only = false             # if true, no plots are produced (only UV spectrum and params are written to file)
 
 read_IR = true               # if true: read input IR pulse from file; if false: use Gaussian approximation 
@@ -44,7 +44,7 @@ z_vals =L .* [1.0/4, 1.0/3, 3.0/4, 1.0]     # points along the cell at which to 
 material = :SiO2     # material of the optics the IR beam propagates through before THG (for chirp compensation)
 thickness= 0*1e-3    # thickness of the material [m] (for chirp compensation)
 
-ϕs = [0,0,+11.31*1e30,0]     # Taylor-series coefficients of initial spectral phase (used to introduce additional chirp)
+ϕs = [0,0,0,0]     # Taylor-series coefficients of initial spectral phase (used to introduce additional chirp)
 
 ion = true         # if true: enable ionisation response, if false: disable ionisation 
 ion_model="ADK"    # set to "ADK" or "PPT" (has no effect if ion==false)
@@ -215,14 +215,11 @@ function THG_main(pres=pres)
     Eout = output.data["Eω"]                         # Hankel-transformed amplitude in frequency domain  
     Erout = (q \ Eout)                               # Real-space amplitude in frequency domain at r ≠ 0   (NOTE:"\" represents inverse Hankel transform) 
     
-    Er0 = zeros(ComplexF64, (size(Eout, 1), size(Eout, 3)))      # set up array for total real-space amplitude in frequency domain 
 
+    Er0 = zeros(ComplexF64, (size(Eout, 1), size(Eout, 3)))      # set up array for total real-space amplitude in frequency domain 
     for i = 1:size(Eout, 1), j = 1:size(Eout, 3)
         Er0[i,j] = Hankel.integrateR(Eout[i,:,j], q) # integrate along r to obtain total real-space amplitude in frequency domain  
     end 
-
-    print(size(Er0))
-    print(size(Erout))
 
     Etout = FFTW.irfft(Erout, length(t), 1)     # time-domain real field amplitude at r≠0
     Et0 = FFTW.irfft(Er0, length(t),1)          # total time-domain real field amplitude across all radii
