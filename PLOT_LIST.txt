@@ -1,21 +1,26 @@
 PLOT LIST
 =========
 
-[ask about ratios!]
+ Hi Vincent and Josina,
 
-1. Measured Argon pressure scan UV energies (200mW)
-2. Measured Neon pressure scan UV energies (400mW)
-3. Argon UV spectrum (200mW, 0.4 bar)
-4. Neon UV spectrum (400mW, 1.7 bar)
+the following is the list of plots for the manuscript. I will prepare the relevant code in the next few days so that it is directly ready to use when the updated COMSOL data is available. Let me know if there is anything I am missing or that should be amended:
 
-5.-8. repeat of 1.-4. but with overlayed simulated data 
+    A. Pressure scan (UV energy v. pressure) for Ar (150mW) and Ne (400mW); with and without overlayed simulated data 
+    B. UV spectrum for Ar (150mW, 0.4bar) and Ne (400mW, 2.0bar); with and without overlayed simulated data
+    C. Simulated UV spectrum for Ar (150mW, 0.4bar) and/or Ne (400mW, 2.0bar), new chip versus old 2019 cell
+    D. Spatiotemporal UV beam profile at output for Ar (150mW, 0.4bar) and/or Ne (400mW, 2.0bar), with and without ionisation 
+    E. Spatiotemporal UV beam profile at various cell positions for Ar (150mW, 0.4bar) and/or Ne (400mW, 2.0bar) 
+    F. Effect of chirp on spectrum for Ar (150mW, 0.4bar) and/or Ne (400mW, 2.0bar); chirp: 0, +11fs^2, -11fs^2 
+    G. Effect of CEP on spectrum for Ar (150mW, 0.4bar) and/or Ne (400mW, 2.0bar); CEP: 0, pi/4, pi/2, 3pi/4, pi 
+    H. Overlay the 10 best (broadest) UV spectra across all gases and pressures 
 
-9. spatiotemporal UV beam profile at cell output (Ar, 200mW, 0.4 bar), with & without ionisation
-10. spatiotemporal UV beam profile at various cell positions (Ar, 200mW, 0.4 bar) 
+Note that I have now changed the code so that all newly generated spectra will take into account contributions from all radial positions, not just the on-axis component (sidenote to Josina: I fixed the issue we discussed earlier in the lab). 
 
-11. UV spectra with no chirp, +ve chirp, -ve chirp overlayed (Ar, 200mW, 0.4 bar)
-12. UV spectra with CEP=0, pi/4, pi/2, 3pi/4, pi overlayed (Ar, 200mW, 0.4 bar)
-13. 10 best UV spectra across different gases, beam powers, pressures
+I will also prepare a table with ratios of the relative saturation energies, saturation pressures, and pulse durations of Argon and Neon.
 
 
-[NOTE: the existing gas scans only give the on-axis spectra!]
+If that sounds good to you both, I will work on the above for now and then return to finalising the code handover document afterwards. 
+
+
+Best wishes,
+David

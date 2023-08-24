@@ -51,20 +51,25 @@ cleaned up "file_prepare.py"; finished gas scans; changed from on-axis to total 
 
 
 - run "final simulations" with good parameters [and PPT!]
-	+ calculate ratios of Ar/Ne energies 
-	+ finalise list of plots
+	+ calculate ratios of Ar/Ne energies [just numerically at sat points]
+	+ finalise list of plots -> send to vincent for looking over !!
 
 	+ notes on plot design: 8cm or 16cm width; 
 
-	+ change spectra etc. from on-axis to total -->> THIS FUCKS EVERYTHING!!
-		=> delete a few plots ?
+	+ INTEGRATE ALONG IR/UV INSTEAD OF USING lam0 and TH AS PROXY??!! [change this for plots 1 and 2; not sure if needed anywhere else! but check!]
+		=> delete a few plots !!??
 
 - work on "documentation"
 	+ write report
 	+ prepare final presentation [use CFEL template; 12 minutes; formal]
-	+ prepare handover PP [clean up scan_eval]
+	+ prepare handover PP 
+			[clean up scan_eval]
 			-> add functions for multi_gas comparison
 			-> add quick notes section for control
 			-> write PP slide
+
+			go through THG_main again
+			-> change some plot labelling
+			-> if making changes for manuscript plots, make sure to update handover
 
 

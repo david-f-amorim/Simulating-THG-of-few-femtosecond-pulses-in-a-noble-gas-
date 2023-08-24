@@ -240,11 +240,11 @@ function THG_main(pres=pres)
     Et_UV = Maths.hilbert(Etout_UV)              # time-domain real field amplitude of UV envelope
 
     # * * * FILTER FOR UV FIELD (across r)
-    filter_onaxis = FFTW.rfft(Et0, 1)          # set up filter array
-    filter_onaxis[1:ωlowUVidx,:].=0;           # filters out ω < ω_min
-    filter_onaxis[ωhighUVidx:end,:].=0;        # filters out ω > ω_max  
+    filter_all_r = FFTW.rfft(Et0, 1)          # set up filter array
+    filter_all_r[1:ωlowUVidx,:].=0;           # filters out ω < ω_min
+    filter_all_r[ωhighUVidx:end,:].=0;        # filters out ω > ω_max  
 
-    Et0_UV =FFTW.irfft(filter_onaxis, length(t), 1)     # total time-domain real field amplitude of UV pulse 
+    Et0_UV =FFTW.irfft(filter_all_r, length(t), 1)     # total time-domain real field amplitude of UV pulse 
     It0_UV = abs2.(Et0_UV)                              # intensity of total UV pulse at 
 
     # * * * FILTER FOR IR FIELD (r≠0):
@@ -256,11 +256,11 @@ function THG_main(pres=pres)
     Et_IR = Maths.hilbert(Etout_IR)                 # time-domain real field amplitude of IR envelope
 
     # * * * FILTER FOR IR FIELD (across r)
-    filter_onaxis_IR = FFTW.rfft(Et0, 1)          # set up filter array
-    filter_onaxis_IR[1:ωlowIRidx,:].=0;           # filters out ω < ω_min
-    filter_onaxis_IR[ωhighIRidx:end,:].=0;        # filters out ω > ω_max  
+    filter_all_r_IR = FFTW.rfft(Et0, 1)          # set up filter array
+    filter_all_r_IR[1:ωlowIRidx,:].=0;           # filters out ω < ω_min
+    filter_all_r_IR[ωhighIRidx:end,:].=0;        # filters out ω > ω_max  
 
-    Et0_IR =FFTW.irfft(filter_onaxis_IR, length(t), 1)    # time-domain real field amplitude of IR pulse across r
+    Et0_IR =FFTW.irfft(filter_all_r_IR, length(t), 1)    # time-domain real field amplitude of IR pulse across r
 
     # * * * EXTRACT INTENSITY ENVELOPES 
     It0_envelope = abs2.(Maths.hilbert(Et0))          # envelope modulating It0
@@ -283,6 +283,15 @@ function THG_main(pres=pres)
     η_THG = UV_pulse_en[end]/tot_pulse_en[1]            # THG efficiency: initial total pulse energy / final UV pulse energy 
 
     z_peak = zout[findmax(UV_pulse_en)[2]]             # z-coordinate of peak UV energy
+
+    # * * * INTEGRATE FREQUENCY DOMAIN UV
+    #       AND IR INTENSITIES 
+    Iωr_UV = integrate(ω[ωlowUVidx, ωhighUVidx],Iωr[ωTHidx, :, :], SimpsonEven()) # frequency domain UV intensity
+    Iωr_IR = integrate(ω[ωlowIRidx, ωhighIRidx],Iωr[ω0idx, :, :], SimpsonEven())  # frequency domain IR intensity
+
+    Iω0_UV = integrate(ω[ωlowUVidx, ωhighUVidx],Iω0[ωTHidx,  :] ,SimpsonEven()) # frequency domain UV intensity (integrated along r)
+    Iω0_IR = integrate(ω[ωlowIRidx, ωhighIRidx],Iω0[ω0idx,  :]  ,SimpsonEven()) # frequency domain IR intensity (integrated along r)
+
 
     # * * * PROCESS MEASURED DATA FROM FILES 
     if (IR_spec == true) & (txt_only == false)
@@ -320,24 +329,24 @@ function THG_main(pres=pres)
         close("all")
         pygui(true)
 
-        #+++++ PLOT 1:  fundamental and third harmonic intensities as functions of z and r≠0
+        #+++++ PLOT 1:  IR and UV intensities as functions of z and r≠0
         plt.figure(figsize=[7.04, 5.28])
-        plt.suptitle("Off-axis intensity of fundamental and third harmonic")
+        plt.suptitle("Off-axis intensity of IR and UV beams")
         plt.subplots_adjust(left=0.125, bottom=0.11, right=0.992, top=0.88, hspace=0.5)
 
         plt.subplot(2,1,1)
-        plt.pcolormesh(zout*1e3, q.r*1e3, Iωr[ω0idx, :, :])
+        plt.pcolormesh(zout*1e3, q.r*1e3, Iωr_IR)
         plt.colorbar(label="arb. units")
         plt.ylabel("r (mm)")
         plt.xlabel("z (mm)")
-        plt.title("I(r,z; λ=$(round(Int,λ0*1e9))nm)")    
+        plt.title("IR beam")    
 
         plt.subplot(2,1,2)
-        plt.pcolormesh(zout*1e3, q.r*1e3,Iωr[ωTHidx, :, :])
+        plt.pcolormesh(zout*1e3, q.r*1e3,Iωr_UV)
         plt.colorbar(label="arb. units")
         plt.xlabel("z (mm)")
         plt.ylabel("r (mm)")
-        plt.title("I(r,z; λ=$(round(Int,λ0/3*1e9))nm)")
+        plt.title("UV beam")
 
         if save==true
             plt.savefig(joinpath(out_path,"off-axis_intensity.png"),dpi=1000)
@@ -345,20 +354,19 @@ function THG_main(pres=pres)
             
         #+++++ PLOT 2:  fundamental and third harmonic intensities as functions of z
         plt.figure(figsize=[7.04, 5.28])
-        plt.suptitle("Total intensity of fundamental and third harmonic")
+        plt.suptitle("Total intensity of IR and UV beams")
         plt.subplots_adjust(hspace=0.5)
 
         plt.subplot(2,1,1)
-        plt.plot(zout*1e3,  Iω0[ω0idx,  :], color="red")
-        plt.title("λ=$(round(Int,λ0*1e9))nm")
+        plt.plot(zout*1e3,  Iω0_IR, color="red")
+        plt.title("IR beam")
         plt.ylabel("∫I(r)dr (arb. units)")
         plt.xlabel("z (mm)")
         plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
         
-          
         plt.subplot(2,1,2)
-        plt.plot(zout*1e3,  Iω0[ωTHidx,  :], color="red")
-        plt.title("λ=$(round(Int,λ0/3*1e9))nm")
+        plt.plot(zout*1e3,  Iω0_UV, color="red")
+        plt.title("UV beam")
         plt.xlabel("z (mm)")
         plt.ylabel("∫I(r)dr (arb. units)")
         plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
@@ -549,7 +557,7 @@ function THG_main(pres=pres)
             plt.savefig(joinpath(out_path,"time_domain_UV_output.png"),dpi=1000)
         end
 
-        #+++++ PLOT 11: plot spatiotemporal pulse evolution (total beam) 
+        #+++++ PLOT 12: plot spatiotemporal UV pulse evolution 
         if read_ρ==true 
             z_vals_local =[L_total/2,L_total/2+L*0.5,L_total/2+L,L_total] # re-define zvals 
         else 
@@ -558,28 +566,8 @@ function THG_main(pres=pres)
         
         rsym = Hankel.Rsymmetric(q)
         idcs = [argmin(abs.(zout .- k)) for k in z_vals_local]   
-        jw = Plotting.cmap_white("jet"; n=10)   
-        
-        plt.figure(figsize=[7.04, 5.28]) 
-        plt.suptitle("Spatiotemporal evolution of total pulse")
-        plt.subplots_adjust(hspace=0.5, wspace=0.55)
+        jw = Plotting.cmap_white("jet"; n=10)
 
-        for i in 1:4
-            plt.subplot(2,2,i)
-            plt.title("z="*string(round(z_vals_local[i]*1e3, digits=3))*"mm")
-            plt.xlabel("t (fs)")
-            plt.ylabel("r (mm)")
-            plt.ylim(minimum(rsym*1e3)/2, maximum(rsym*1e3)/2)
-            plt.xlim(minimum(grid.t*1e15)/2, maximum(grid.t*1e15)/2)
-            plt.pcolormesh(grid.t*1e15, rsym*1e3, abs2.(Hankel.symmetric(Et[:, :, idcs[i]], q)'), cmap=jw)
-            plt.colorbar(label="I (arb. units)")
-        end
-        
-        if save==true
-            plt.savefig(joinpath(out_path,"pulse_evolution.png"),dpi=1000)
-        end
-
-        #+++++ PLOT 12: plot spatiotemporal UV pulse evolution 
         plt.figure(figsize=[7.04, 5.28]) 
         plt.suptitle("Spatiotemporal evolution of UV pulse")
         plt.subplots_adjust(hspace=0.5, wspace=0.55)
