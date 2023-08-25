@@ -520,11 +520,11 @@ function THG_main(pres=pres)
         #+++++ PLOT 8: frequency evolution 
         plt.figure(figsize=fig_dim)
         if show_title plt.suptitle("Frequency evolution") end
-        plt.pcolormesh(zout*1e3, f*1e-15, log10.(Maths.normbymax(Iω0)))   
-        plt.clim(0, -6)  
+        plt.pcolormesh(zout*1e3, f*1e-15,norm ? Maths.normbymax(log10.(Maths.normbymax(Iω0))) : log10.(Maths.normbymax(Iω0)))   
+        if norm==false plt.clim(-6, 0) end   
+        plt.colorbar(label=(norm ? "log. I (norm.)" : "log. I (arb. units)" ))
         plt.xlabel("z (mm)")
         plt.ylabel("f (PHz)")
-        plt.title("log. I (arb. units)")
 
         if save==true
             plt.savefig(joinpath(out_path,"frequency_evolution.png"),dpi=1000)

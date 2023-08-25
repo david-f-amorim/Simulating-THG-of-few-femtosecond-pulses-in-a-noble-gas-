@@ -62,7 +62,7 @@ started re-writing "scan_eval.py"; now integrating along frequencies for intensi
 	+ write report
 	+ prepare final presentation [use CFEL template; 12 minutes; formal]
 	+ prepare handover PP 
-			[clean up scan_eval]
+			[clean up scan_eval] ; upload gas_scans etc to Sync&Share (fixed param files)
 			-> add functions for multi_gas comparison
 			-> add quick notes section for control
 			-> write PP slide
