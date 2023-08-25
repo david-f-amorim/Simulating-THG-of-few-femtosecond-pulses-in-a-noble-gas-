@@ -510,16 +510,36 @@ def plot_double(scan_dir, second_var,**kwargs):
     p_arr2, UVen_arr2, ef_arr2, tau_arr2, zpeak_arr2 = get_data(paths[1])
     peak_arr2 = get_peaks(paths[1])
 
-    gas, dens_mod, tau, lam0, w0, CEP, IR_energy, ion, propz, GVD, thickness, ion_mod, IR_int
-
     # set labels
     if second_var[0]=="gas": 
         label1 = second_var[1]
         label2 = second_var[2]
     elif second_var[0]=="dens_mod":
+        if second_var[1]=="coms":
+            label1="COMSOL"
+            label2="grad."
+        else:
+            label1="grad."
+            label2="COMSOL"
+    elif second_var[0]=="ion":
+        if second_var[1]=="true":
+            label1="ion."
+            label2="no ion."
+        else:
+            label1="no ion."
+            label2="ion." 
+    elif second_var[0]=="ion_mod":
+        if second_var[1]=="ADK":
+            label1="ADK"
+            label2="PPT"
+        else:
+            label1="PPT"
+            label2="ADK"
+    else:
+        label1=second_var[1]
+        label2=second_var[2]                                   
 
-
-    # set subtitle and output string
+    # set output string
     out_dir_str=""
     for key, val in kwargs.items():
         out_dir_str += key+"="+str(val)+"_"
@@ -535,7 +555,7 @@ def plot_double(scan_dir, second_var,**kwargs):
     fig_dim = [2 * 3.14961,2* 2.3622075] # for 8cm width ; double for 16cm width
 
     plt.figure(figsize=fig_dim) 
-    plt.subplots_adjust(top=0.84)
+    plt.subplots_adjust(top=0.9, bottom=0.15)
     if show_title: plt.title("Simulated UV energies")
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
@@ -549,9 +569,9 @@ def plot_double(scan_dir, second_var,**kwargs):
     if show: plt.show()
 
     plt.figure(figsize=fig_dim) 
-    plt.subplots_adjust(top=0.84)
+    plt.subplots_adjust(top=0.9, bottom=0.15)
     if show_title: plt.title("Simulated THG efficiencies")
-    plt.ylabel("Efficiency (%)")
+    plt.ylabel("Efficiency (\%)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, ef_arr*1e2, color="blue")
     plt.scatter(p_arr, ef_arr*1e2, color="blue", label=label1)
@@ -564,7 +584,7 @@ def plot_double(scan_dir, second_var,**kwargs):
 
     if old==False:
         plt.figure(figsize=fig_dim) 
-        plt.subplots_adjust(top=0.84)
+        plt.subplots_adjust(top=0.9, bottom=0.15)
         if show_title: plt.title("Simulated pulse durations")
         plt.ylabel("Pulse duration (fs)")
         plt.xlabel("Central pressure (bar)")
@@ -578,7 +598,7 @@ def plot_double(scan_dir, second_var,**kwargs):
         if show: plt.show()
 
         plt.figure(figsize=fig_dim) 
-        plt.subplots_adjust(top=0.84)
+        plt.subplots_adjust(top=0.9, bottom=0.15)
         if show_title: plt.title("Position of peak UV energy")
         plt.ylabel("Position (mm)")
         plt.xlabel("Central pressure (bar)")
@@ -605,11 +625,9 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
     else:
         bool_sec_var = False   
 
-    # set output directory name and title string (show kwargs on plot)
-    title_str = ""
+    # set output directory name 
     out_dir_str=""
     for key, val in kwargs.items():
-        title_str += key+": "+str(val)+"; "
         out_dir_str += key+"="+str(val)+"_"     
 
     # get data and params
@@ -623,6 +641,34 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
         if len(path_arr) != len(path_arr2):
             raise SystemExit("Error: the selected files with '{0}={1}' cannot be matched up with the files with '{0}={2}'. The selected files should only differ in '{0}' and there should be a corresponding '{0}={1}' file for each '{0}={2}' file.".format(second_var[0],second_var[1],second_var[2]))
 
+        # set labels
+        if second_var[0]=="gas": 
+            label1 = second_var[1]
+            label2 = second_var[2]
+        elif second_var[0]=="dens_mod":
+            if second_var[1]=="coms":
+                label1="COMSOL"
+                label2="grad."
+            else:
+                label1="grad."
+                label2="COMSOL"
+        elif second_var[0]=="ion":
+            if second_var[1]=="true":
+                label1="ion."
+                label2="no ion."
+            else:
+                label1="no ion."
+                label2="ion." 
+        elif second_var[0]=="ion_mod":
+            if second_var[1]=="ADK":
+                label1="ADK"
+                label2="PPT"
+            else:
+                label1="PPT"
+                label2="ADK"
+        else:
+            label1=second_var[1]
+            label2=second_var[2]
     else:
         path_arr, IR_energy_arr, IR_int_arr = power_comparison_get(sup_dir,**kwargs)    
 
@@ -653,22 +699,28 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
     def i2p(I):
         return I * (np.pi * (w0*1e2)**2 * tau ) *1e15 *1e6
     
+    # set plot formatting 
+    if disable_latex == False : plt.rcParams["text.usetex"] = True   # enable LaTeX renadering
+    plt.rcParams["mathtext.fontset"] = "cm" # use LateX font for maths
+    plt.rcParams["font.family"] = "STIXGeneral" # use LateX font for text
+    plt.rcParams["font.size"] = 16 # set standard font size 
+    fig_dim = [2 * 3.14961,2* 2.3622075] # for 8cm width ; double for 16cm width
+
     # PLOT 1: energy vs pressure 
     cmap = plt.get_cmap("viridis")
     cidx = IR_energy_arr / np.max(IR_energy_arr) 
 
     plt.figure(figsize=fig_dim) 
-    if show_title: plt.suptitle("Simulated UV energies", fontsize=16)
-    plt.title(title_str, fontsize=10)
+    if show_title: plt.title("Simulated UV energies")
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
     
     for i in np.arange(N):
 
         if bool_sec_var:
-            plt.scatter(p_arr[i], UVen_arr[i]*1e9, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2); {2}={3}".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i], second_var[0],second_var[1]))
+            plt.scatter(p_arr[i], UVen_arr[i]*1e9, color=cmap(cidx[i]), label=label1)
             plt.plot(p_arr[i], UVen_arr[i]*1e9, color=cmap(cidx[i]))
-            plt.scatter(p_arr2[i], UVen_arr2[i]*1e9, color=cmap(cidx[i]),marker="+", label="{0}mW ({1:.1f}PW/cm^2); {2}={3}".format(IR_energy_arr2[i]*1e6, 1e-15*IR_int_arr2[i],second_var[0],second_var[2]))
+            plt.scatter(p_arr2[i], UVen_arr2[i]*1e9, color=cmap(cidx[i]),marker="+", label=label2)
             plt.plot(p_arr2[i], UVen_arr2[i]*1e9, ls="--", color=cmap(cidx[i]))
         else:
             plt.scatter(p_arr[i], UVen_arr[i]*1e9, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i]))
@@ -680,17 +732,16 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
 
     # PLOT 2: efficiency vs pressure 
     plt.figure(figsize=fig_dim) 
-    if show_title: plt.suptitle("Simulated THG efficiencies", fontsize=16)
-    plt.title(title_str, fontsize=10)
-    plt.ylabel("Efficiency (%)")
+    if show_title: plt.title("Simulated THG efficiencies")
+    plt.ylabel("Efficiency (\%)")
     plt.xlabel("Central pressure (bar)")
     
     for i in np.arange(len(path_arr)):
         
         if bool_sec_var:
-            plt.scatter(p_arr[i], ef_arr[i]*1e2, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2); {2}={3}".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i], second_var[0],second_var[1]))
+            plt.scatter(p_arr[i], ef_arr[i]*1e2, color=cmap(cidx[i]), label=label1)
             plt.plot(p_arr[i], ef_arr[i]*1e2, color=cmap(cidx[i]))
-            plt.scatter(p_arr2[i],ef_arr2[i]*1e2, color=cmap(cidx[i]),marker="+", label="{0}mW ({1:.1f}PW/cm^2); {2}={3}".format(IR_energy_arr2[i]*1e6, 1e-15*IR_int_arr2[i],second_var[0],second_var[2]))
+            plt.scatter(p_arr2[i],ef_arr2[i]*1e2, color=cmap(cidx[i]),marker="+", label=label2)
             plt.plot(p_arr2[i], ef_arr2[i]*1e2, ls="--", color=cmap(cidx[i]))
         else:
             plt.scatter(p_arr[i], ef_arr[i]*1e2, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i]))
@@ -703,16 +754,15 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
     # PLOT 3: pulse duration vs pressure
     if old==False:  
         plt.figure(figsize=fig_dim) 
-        if show_title: plt.suptitle("Simulated UV pulse durations", fontsize=16)
-        plt.title(title_str, fontsize=10)
+        if show_title: plt.title("Simulated UV pulse durations")
         plt.ylabel("Pulse duration (fs)")
         plt.xlabel("Central pressure (bar)")
         
         for i in np.arange(len(path_arr)):
             if bool_sec_var:
-                plt.scatter(p_arr[i], tau_arr[i]*1e15, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2); {2}={3}".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i], second_var[0],second_var[1]))
+                plt.scatter(p_arr[i], tau_arr[i]*1e15, color=cmap(cidx[i]), label=label1)
                 plt.plot(p_arr[i], tau_arr[i]*1e15, color=cmap(cidx[i]))
-                plt.scatter(p_arr2[i],tau_arr2[i]*1e15,marker="+", color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2); {2}={3}".format(IR_energy_arr2[i]*1e6, 1e-15*IR_int_arr2[i],second_var[0],second_var[2]))
+                plt.scatter(p_arr2[i],tau_arr2[i]*1e15,marker="+", color=cmap(cidx[i]), label=label2)
                 plt.plot(p_arr2[i], tau_arr2[i]*1e15,ls="--", color=cmap(cidx[i]))
             else:
                 plt.scatter(p_arr[i], tau_arr[i]*1e15, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i]))
@@ -725,17 +775,16 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
     # PLOT 4: z_peak vs pressure 
     if old==False:
         plt.figure(figsize=fig_dim) 
-        if show_title: plt.suptitle("Position of peak UV energy", fontsize=16)
-        plt.title(title_str, fontsize=10)
+        if show_title: plt.title("Position of peak UV energy")
         plt.ylabel("Position (mm)")
         plt.xlabel("Central pressure (bar)")
         
         for i in np.arange(len(path_arr)):
 
             if bool_sec_var:
-                plt.scatter(p_arr[i], zpeak_arr[i]*1e3, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2); {2}={3}".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i], second_var[0],second_var[1]))
+                plt.scatter(p_arr[i], zpeak_arr[i]*1e3, color=cmap(cidx[i]), label=label1)
                 plt.plot(p_arr[i], zpeak_arr[i]*1e3, color=cmap(cidx[i]))
-                plt.scatter(p_arr2[i],zpeak_arr2[i]*1e3,marker="+", color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2); {2}={3}".format(IR_energy_arr2[i]*1e6, 1e-15*IR_int_arr2[i],second_var[0],second_var[2]))
+                plt.scatter(p_arr2[i],zpeak_arr2[i]*1e3,marker="+", color=cmap(cidx[i]), label=label2)
                 plt.plot(p_arr2[i], zpeak_arr2[i]*1e3,ls="--", color=cmap(cidx[i]))
             else:
                 plt.scatter(p_arr[i], zpeak_arr[i]*1e3, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i]))
