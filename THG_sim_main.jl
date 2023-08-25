@@ -5,8 +5,7 @@ import Luna: Hankel
 import NumericalIntegration: integrate, SimpsonEven          
 import Dates                   
 using  DelimitedFiles
-using  LaTeXStrings         
-
+       
 # ----------------- QUICK SETTINGS -------------------------------
 p_scan = false               # if true, run is counted as part of a pressure scan 
 
@@ -335,12 +334,13 @@ function THG_main(pres=pres)
     # ----------------- PLOT RESULTS ----------------------------
     if txt_only == false 
 
-        @eval import PyPlot: pygui, plt, PyDict
+        @eval import PyPlot: pygui, plt, PyDict, matplotlib
+        @eval using  LaTeXStrings  
         close("all")
         pygui(true)
 
         # set plot formatting 
-        rcParams = PyPlot.PyDict(PyPlot.matplotlib."rcParams") # get rcParams 
+        rcParams = PyDict(matplotlib."rcParams") # get rcParams 
         rcParams["text.usetex"] = true # enable LaTeX renadering
         rcParams["mathtext.fontset"] = "cm" # use LateX font for maths
         rcParams["font.family"] = "STIXGeneral" # use LateX font for text
