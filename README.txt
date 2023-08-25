@@ -74,3 +74,12 @@ added option to norm plots;
 
 		
 			rewrite PP !
+
+
+			FIX MULTIGAS FUNCTIONS (COMBINE INTO ONE) BUT DON'T PUT MUCH 
+                        EFFORT IN ; 
+
+
+			ADD SOME COMMENTS;
+			ADD EXEC/SETTINGS 
+			ADD WARNING HOW SOME PLOTS ARE USELESS/REMOVE THEM?? 

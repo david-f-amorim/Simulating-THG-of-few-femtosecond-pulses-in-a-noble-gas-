@@ -292,7 +292,7 @@ def get_params(path):
     thickness=float(params[13,1])
     ion_mod=params[14,1][1:]
     
-    # also calculate 1/e^2 IR intensity in W/cm^2:
+    # also calculate 1/e^2 IR intensity in W/cm$^2$:
     IR_int = IR_energy  / (np.pi * (w0*1e2)**2 * tau)
 
     params_arr = np.array([gas, dens_mod, tau, lam0, w0, CEP, IR_energy, ion, propz, GVD, thickness, ion_mod, IR_int]) 
@@ -692,7 +692,7 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
     if save and not os.path.isdir(out_path): 
         os.mkdir(out_path)
 
-    # auxiliary functions (beam_power in mW, I in PW/cm^2):
+    # auxiliary functions (beam_power in mW, I in PW/cm$^2$):
     def p2i(beam_power):
         return beam_power *1e-6 / (np.pi * (w0*1e2)**2 * tau ) * 1e-15
 
@@ -711,6 +711,7 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
     cidx = IR_energy_arr / np.max(IR_energy_arr) 
 
     plt.figure(figsize=fig_dim) 
+    plt.subplots_adjust(bottom=0.15,left=0.15)
     if show_title: plt.title("Simulated UV energies")
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
@@ -718,12 +719,12 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
     for i in np.arange(N):
 
         if bool_sec_var:
-            plt.scatter(p_arr[i], UVen_arr[i]*1e9, color=cmap(cidx[i]), label=label1)
+            plt.scatter(p_arr[i], UVen_arr[i]*1e9, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm$^2$)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i])+"; "+label1)
             plt.plot(p_arr[i], UVen_arr[i]*1e9, color=cmap(cidx[i]))
-            plt.scatter(p_arr2[i], UVen_arr2[i]*1e9, color=cmap(cidx[i]),marker="+", label=label2)
+            plt.scatter(p_arr2[i], UVen_arr2[i]*1e9, color=cmap(cidx[i]),marker="+", label="{0}mW ({1:.1f}PW/cm$^2$)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i])+"; "+label2)
             plt.plot(p_arr2[i], UVen_arr2[i]*1e9, ls="--", color=cmap(cidx[i]))
         else:
-            plt.scatter(p_arr[i], UVen_arr[i]*1e9, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i]))
+            plt.scatter(p_arr[i], UVen_arr[i]*1e9, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm$^2$)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i]))
             plt.plot(p_arr[i], UVen_arr[i]*1e9, color=cmap(cidx[i]))
 
     plt.legend()
@@ -739,12 +740,12 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
     for i in np.arange(len(path_arr)):
         
         if bool_sec_var:
-            plt.scatter(p_arr[i], ef_arr[i]*1e2, color=cmap(cidx[i]), label=label1)
+            plt.scatter(p_arr[i], ef_arr[i]*1e2, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm$^2$)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i])+"; "+label1)
             plt.plot(p_arr[i], ef_arr[i]*1e2, color=cmap(cidx[i]))
-            plt.scatter(p_arr2[i],ef_arr2[i]*1e2, color=cmap(cidx[i]),marker="+", label=label2)
+            plt.scatter(p_arr2[i],ef_arr2[i]*1e2, color=cmap(cidx[i]),marker="+", label="{0}mW ({1:.1f}PW/cm$^2$)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i])+"; "+label2)
             plt.plot(p_arr2[i], ef_arr2[i]*1e2, ls="--", color=cmap(cidx[i]))
         else:
-            plt.scatter(p_arr[i], ef_arr[i]*1e2, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i]))
+            plt.scatter(p_arr[i], ef_arr[i]*1e2, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm$^2$)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i]))
             plt.plot(p_arr[i], ef_arr[i]*1e2, color=cmap(cidx[i]))
 
     plt.legend()
@@ -754,18 +755,19 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
     # PLOT 3: pulse duration vs pressure
     if old==False:  
         plt.figure(figsize=fig_dim) 
+        plt.subplots_adjust(bottom=0.15,left=0.15)
         if show_title: plt.title("Simulated UV pulse durations")
         plt.ylabel("Pulse duration (fs)")
         plt.xlabel("Central pressure (bar)")
         
         for i in np.arange(len(path_arr)):
             if bool_sec_var:
-                plt.scatter(p_arr[i], tau_arr[i]*1e15, color=cmap(cidx[i]), label=label1)
+                plt.scatter(p_arr[i], tau_arr[i]*1e15, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm$^2$)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i])+"; "+label1)
                 plt.plot(p_arr[i], tau_arr[i]*1e15, color=cmap(cidx[i]))
-                plt.scatter(p_arr2[i],tau_arr2[i]*1e15,marker="+", color=cmap(cidx[i]), label=label2)
+                plt.scatter(p_arr2[i],tau_arr2[i]*1e15,marker="+", color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm$^2$)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i])+"; "+label2)
                 plt.plot(p_arr2[i], tau_arr2[i]*1e15,ls="--", color=cmap(cidx[i]))
             else:
-                plt.scatter(p_arr[i], tau_arr[i]*1e15, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i]))
+                plt.scatter(p_arr[i], tau_arr[i]*1e15, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm$^2$)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i]))
                 plt.plot(p_arr[i], tau_arr[i]*1e15, color=cmap(cidx[i]))
 
         plt.legend()
@@ -775,6 +777,7 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
     # PLOT 4: z_peak vs pressure 
     if old==False:
         plt.figure(figsize=fig_dim) 
+        plt.subplots_adjust(bottom=0.15, left=0.15)
         if show_title: plt.title("Position of peak UV energy")
         plt.ylabel("Position (mm)")
         plt.xlabel("Central pressure (bar)")
@@ -782,12 +785,12 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
         for i in np.arange(len(path_arr)):
 
             if bool_sec_var:
-                plt.scatter(p_arr[i], zpeak_arr[i]*1e3, color=cmap(cidx[i]), label=label1)
+                plt.scatter(p_arr[i], zpeak_arr[i]*1e3, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm$^2$)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i])+"; "+label1)
                 plt.plot(p_arr[i], zpeak_arr[i]*1e3, color=cmap(cidx[i]))
-                plt.scatter(p_arr2[i],zpeak_arr2[i]*1e3,marker="+", color=cmap(cidx[i]), label=label2)
+                plt.scatter(p_arr2[i],zpeak_arr2[i]*1e3,marker="+", color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm$^2$)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i])+"; "+label2)
                 plt.plot(p_arr2[i], zpeak_arr2[i]*1e3,ls="--", color=cmap(cidx[i]))
             else:
-                plt.scatter(p_arr[i], zpeak_arr[i]*1e3, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm^2)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i]))
+                plt.scatter(p_arr[i], zpeak_arr[i]*1e3, color=cmap(cidx[i]), label="{0}mW ({1:.1f}PW/cm$^2$)".format(IR_energy_arr[i]*1e6, 1e-15*IR_int_arr[i]))
                 plt.plot(p_arr[i], zpeak_arr[i]*1e3, color=cmap(cidx[i]))
 
         plt.legend()
@@ -818,18 +821,17 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
             peak_arr2[i,5] =  min_tau_pres
 
     fig, ax = plt.subplots(figsize=fig_dim)
-    plt.subplots_adjust(top=0.8, right=0.9)
-    ax.set_title(title_str, fontsize=10)
-    if show_title: plt.suptitle("Simulated peak UV energies", fontsize=16)
+    plt.subplots_adjust(top=0.8, right=0.9, bottom=0.15,left=0.15)
+    if show_title: plt.title("Simulated peak UV energies")
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Peak UV energy (nJ)")
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
-    secax.set_xlabel('Peak intensity (PW/cm^2)')
+    secax.set_xlabel('Peak intensity (PW/cm$^2$)')
 
     if bool_sec_var:
-        ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,2]*1e9, color="blue", label="{0}={1}".format(second_var[0], second_var[1]))
+        ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,2]*1e9, color="blue", label=label1)
         ax.plot(peak_arr[:,0]*1e6, peak_arr[:,2]*1e9, color="blue")
-        ax.scatter(peak_arr2[:,0]*1e6, peak_arr2[:,2]*1e9, color="red", label="{0}={1}".format(second_var[0], second_var[2]))
+        ax.scatter(peak_arr2[:,0]*1e6, peak_arr2[:,2]*1e9, color="red", label=label2)
         ax.plot(peak_arr2[:,0]*1e6, peak_arr2[:,2]*1e9, color="red")
         plt.legend()
     else:    
@@ -840,37 +842,35 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=fig_dim)
-    plt.subplots_adjust(top=0.8, right=0.9)
-    ax.set_title(title_str, fontsize=10)
-    if show_title: plt.suptitle("Simulated peak UV efficiencies", fontsize=16)
+    plt.subplots_adjust(top=0.8, right=0.9, bottom=0.15,left=0.15)
+    if show_title: plt.title("Simulated peak UV efficiencies")
     ax.set_xlabel("Beam power (mW)")
-    ax.set_ylabel("Efficiency (%)")
+    ax.set_ylabel("Efficiency (\%)")
 
     if bool_sec_var:
-        ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,3]*1e2, color="blue", label="{0}={1}".format(second_var[0], second_var[1]))
+        ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,3]*1e2, color="blue", label=label1)
         ax.plot(peak_arr[:,0]*1e6, peak_arr[:,3]*1e2, color="blue")
-        ax.scatter(peak_arr2[:,0]*1e6, peak_arr2[:,3]*1e2, color="red", label="{0}={1}".format(second_var[0], second_var[2]))
+        ax.scatter(peak_arr2[:,0]*1e6, peak_arr2[:,3]*1e2, color="red", label=label2)
         ax.plot(peak_arr2[:,0]*1e6, peak_arr2[:,3]*1e2, color="red")
         plt.legend()
     else:
         ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,3]*1e2, color="blue")
         ax.plot(peak_arr[:,0]*1e6, peak_arr[:,3]*1e2, color="blue")
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
-    secax.set_xlabel('Peak intensity (PW/cm^2)')
+    secax.set_xlabel('Peak intensity (PW/cm$^2$)')
 
     if save: plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=fig_dim)
-    plt.subplots_adjust(top=0.8, right=0.9)
-    ax.set_title(title_str, fontsize=10)
-    if show_title: plt.suptitle("Simulated saturation pressures", fontsize=16)
+    plt.subplots_adjust(top=0.8, right=0.9, bottom=0.15,left=0.15)
+    if show_title: plt.title("Simulated saturation pressures")
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Saturation pressure (bar)")
     if bool_sec_var:
-        ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,1], color="blue", label="{0}={1}".format(second_var[0], second_var[1]))
+        ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,1], color="blue", label=label1)
         ax.plot(peak_arr[:,0]*1e6, peak_arr[:,1], color="blue")
-        ax.scatter(peak_arr2[:,0]*1e6, peak_arr2[:,1], color="red", label="{0}={1}".format(second_var[0], second_var[2]))
+        ax.scatter(peak_arr2[:,0]*1e6, peak_arr2[:,1], color="red", label=label2)
         ax.plot(peak_arr2[:,0]*1e6, peak_arr2[:,1], color="red")
         plt.legend()
     else:
@@ -878,22 +878,21 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
         ax.plot(peak_arr[:,0]*1e6, peak_arr[:,1], color="blue")
     
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
-    secax.set_xlabel('Peak intensity (PW/cm^2)')
+    secax.set_xlabel('Peak intensity (PW/cm$^2$)')
 
     if save: plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
     if old==False:
         fig, ax = plt.subplots(figsize=fig_dim)
-        plt.subplots_adjust(top=0.8, right=0.9)
-        ax.set_title(title_str, fontsize=10)
-        if show_title: plt.suptitle("Simulated UV pulse durations", fontsize=16)
+        plt.subplots_adjust(top=0.8, right=0.9, bottom=0.15, left=0.15)
+        if show_title: plt.title("Simulated UV pulse durations")
         ax.set_xlabel("Beam power (mW)")
         ax.set_ylabel("Minimum pulse duration (fs)")
         if bool_sec_var:
-            ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,4]*1e15, color="blue", label="{0}={1}".format(second_var[0], second_var[1]))
+            ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,4]*1e15, color="blue", label=label1)
             ax.plot(peak_arr[:,0]*1e6, peak_arr[:,4]*1e15, color="blue")
-            ax.scatter(peak_arr2[:,0]*1e6, peak_arr2[:,4]*1e15, color="red", label="{0}={1}".format(second_var[0], second_var[2]))
+            ax.scatter(peak_arr2[:,0]*1e6, peak_arr2[:,4]*1e15, color="red", label=label2)
             ax.plot(peak_arr2[:,0]*1e6, peak_arr2[:,4]*1e15, color="red")
             plt.legend()
         else:
@@ -901,22 +900,21 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
             ax.plot(peak_arr[:,0]*1e6, peak_arr[:,4]*1e15, color="blue")
         
         secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
-        secax.set_xlabel('Peak intensity (PW/cm^2)')
+        secax.set_xlabel('Peak intensity (PW/cm$^2$)')
 
         if save: plt.savefig(os.path.join(out_path,"tau_min_vs_beam_power.png"),dpi=1000)
         if show: plt.show()
 
     if old==False:
         fig, ax = plt.subplots(figsize=fig_dim)
-        plt.subplots_adjust(top=0.8, right=0.9)
-        ax.set_title(title_str, fontsize=10)
-        if show_title: plt.suptitle("Simulated minimal pulse duration pressure", fontsize=16)
+        plt.subplots_adjust(top=0.8, right=0.9, bottom=0.15, left=0.15)
+        if show_title: plt.title("Simulated minimal pulse duration pressure")
         ax.set_xlabel("Beam power (mW)")
         ax.set_ylabel("Minimum pulse duration pressure (bar)")
         if bool_sec_var:
-            ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,5], color="blue", label="{0}={1}".format(second_var[0], second_var[1]))
+            ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,5], color="blue", label=label1)
             ax.plot(peak_arr[:,0]*1e6, peak_arr[:,5], color="blue")
-            ax.scatter(peak_arr2[:,0]*1e6, peak_arr2[:,5], color="red", label="{0}={1}".format(second_var[0], second_var[2]))
+            ax.scatter(peak_arr2[:,0]*1e6, peak_arr2[:,5], color="red", label=label2)
             ax.plot(peak_arr2[:,0]*1e6, peak_arr2[:,5], color="red")
             plt.legend()
         else:
@@ -924,7 +922,7 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
             ax.plot(peak_arr[:,0]*1e6, peak_arr[:,5], color="blue")
         
         secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
-        secax.set_xlabel('Peak intensity (PW/cm^2)')
+        secax.set_xlabel('Peak intensity (PW/cm$^2$)')
 
         if save: plt.savefig(os.path.join(out_path,"min_tau_p_vs_beam_power.png"),dpi=1000)
         if show: plt.show()
@@ -959,7 +957,7 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
     plt.figure(figsize=fig_dim) 
     plt.subplots_adjust(top=0.85)
     if show_title: plt.suptitle("Simulated UV energies", fontsize=16)
-    plt.title("Beam power: {1}mW ({2:.1f}PW/cm^2); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
+    plt.title("Beam power: {1}mW ({2:.1f}PW/cm$^2$); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
     
@@ -976,7 +974,7 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
     plt.figure(figsize=fig_dim) 
     plt.subplots_adjust(top=0.85)
     if show_title: plt.suptitle("Simulated THG efficiencies", fontsize=16)
-    plt.title("Beam power: {1}mW ({2:.1f}PW/cm^2); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
+    plt.title("Beam power: {1}mW ({2:.1f}PW/cm$^2$); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Efficiency (%)")
     plt.xlabel("Central pressure (bar)")
     
@@ -993,7 +991,7 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
     plt.figure(figsize=fig_dim) 
     plt.subplots_adjust(top=0.85)
     if show_title: plt.suptitle("Simulated UV pulse durations", fontsize=16)
-    plt.title("Beam power: {1}mW ({2:.1f}PW/cm^2); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
+    plt.title("Beam power: {1}mW ({2:.1f}PW/cm$^2$); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Pulse duration (fs)")
     plt.xlabel("Central pressure (bar)")
     
@@ -1010,7 +1008,7 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
     plt.figure(figsize=fig_dim) 
     plt.subplots_adjust(top=0.85)
     if show_title: plt.suptitle("Position of peak UV energy", fontsize=16)
-    plt.title("Beam power: {1}mW ({2:.1f}PW/cm^2); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
+    plt.title("Beam power: {1}mW ({2:.1f}PW/cm$^2$); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Position (mm)")
     plt.xlabel("Central pressure (bar)")
     
@@ -1043,7 +1041,7 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
     if not os.path.isdir(out_path): 
         os.mkdir(out_path)
 
-    # auxiliary functions (beam_en in mW, I in PW/cm^2):
+    # auxiliary functions (beam_en in mW, I in PW/cm$^2$):
     def p2i(beam_en):
         return beam_en *1e-6 / (np.pi * (w0*1e2)**2 * tau ) * 1e-15
 
@@ -1078,7 +1076,7 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Peak UV energy (nJ)")
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
-    secax.set_xlabel('Peak intensity (PW/cm^2)')
+    secax.set_xlabel('Peak intensity (PW/cm$^2$)')
 
     for k in np.arange(len(gas_arr)):
         peak_arr = peak_data[k, 1]
@@ -1101,7 +1099,7 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
         ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,3]*1e2, color=colour_cycle[k], label=peak_data[k,0])
         ax.plot(peak_arr[:,0]*1e6, peak_arr[:,3]*1e2, color=colour_cycle[k])
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
-    secax.set_xlabel('Peak intensity (PW/cm^2)')
+    secax.set_xlabel('Peak intensity (PW/cm$^2$)')
 
     plt.legend()
     if save: plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
@@ -1120,7 +1118,7 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
         ax.plot(peak_arr[:,0]*1e6, peak_arr[:,1], color=colour_cycle[k])
     
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
-    secax.set_xlabel('Peak intensity (PW/cm^2)')
+    secax.set_xlabel('Peak intensity (PW/cm$^2$)')
 
     plt.legend()
     if save: plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
@@ -1138,7 +1136,7 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
         ax.plot(peak_arr[:,0]*1e6, peak_arr[:,4]*1e15, color=colour_cycle[k])
     
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
-    secax.set_xlabel('Peak intensity (PW/cm^2)')
+    secax.set_xlabel('Peak intensity (PW/cm$^2$)')
     plt.legend()
 
     if save: plt.savefig(os.path.join(out_path,"tau_min_vs_beam_power.png"),dpi=1000)
@@ -1155,7 +1153,7 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
         ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,5], color=colour_cycle[k], label=peak_data[k,0])
         ax.plot(peak_arr[:,0]*1e6, peak_arr[:,5], color=colour_cycle[k])
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
-    secax.set_xlabel('Peak intensity (PW/cm^2)')
+    secax.set_xlabel('Peak intensity (PW/cm$^2$)')
     plt.legend()
 
     if save: plt.savefig(os.path.join(out_path,"min_tau_p_vs_beam_power.png"),dpi=1000)
@@ -1165,4 +1163,4 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
 if single:
     plot_single(single_dir, n)
 else:  
-    plot_double(sup_dir, ("dens_mod", "coms", "grad"),IR_energy=75e-6, gas="Ar")
+    plot_multipower(sup_dir, gas="Ar", dens_mod="coms")
