@@ -5,6 +5,7 @@ import Luna: Hankel
 import NumericalIntegration: integrate, SimpsonEven          
 import Dates                   
 using  DelimitedFiles
+using  LaTeXStrings 
        
 # ----------------- QUICK SETTINGS -------------------------------
 p_scan = false               # if true, run is counted as part of a pressure scan 
@@ -334,8 +335,7 @@ function THG_main(pres=pres)
     # ----------------- PLOT RESULTS ----------------------------
     if txt_only == false 
 
-        @eval import PyPlot: pygui, plt, PyDict, matplotlib
-        @eval using  LaTeXStrings  
+        @eval import PyPlot: pygui, plt, PyDict, matplotlib 
         close("all")
         pygui(true)
 
