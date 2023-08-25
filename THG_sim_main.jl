@@ -353,7 +353,7 @@ function THG_main(pres=pres)
         #+++++ PLOT 1:  IR and UV intensities as functions of z and r≠0
         plt.figure(figsize=fig_dim)
         if show_title plt.suptitle("Off-axis intensity of IR and UV beams") end
-        plt.subplots_adjust(left=0.125, bottom=0.11, right=0.992, top=0.88, hspace=0.5)
+        plt.subplots_adjust(left=0.125, bottom=0.11, right=0.992, top=0.87, hspace=0.6)
 
         plt.subplot(2,1,1)
         plt.pcolormesh(zout*1e3, q.r*1e3, norm ? Maths.normbymax(Iωr_IR) : Iωr_IR)
@@ -376,23 +376,22 @@ function THG_main(pres=pres)
         #+++++ PLOT 2:  fundamental and third harmonic intensities as functions of z
         plt.figure(figsize=fig_dim)
         if show_title plt.suptitle("Total intensity of IR and UV beams") end
-        plt.subplots_adjust(hspace=0.5)
+        plt.subplots_adjust(hspace=0.6)
 
         plt.subplot(2,1,1)
         plt.plot(zout*1e3,norm ? Maths.normbymax(Iω0_IR) : Iω0_IR, color="red")
         plt.title("IR beam")
         plt.ylabel(norm ? "I (norm.)" : "I (arb. units)")
         plt.xlabel("z (mm)")
-        plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
+        if norm==false plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0)) end
         
         plt.subplot(2,1,2)
         plt.plot(zout*1e3,  norm ? Maths.normbymax(Iω0_UV) : Iω0_UV, color="red")
         plt.title("UV beam")
         plt.xlabel("z (mm)")
         plt.ylabel(norm ? "I (norm.)" : "I (arb. units)")
-        plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
+        if norm==false plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0)) end
 
-    
         if save==true
             plt.savefig(joinpath(out_path,"total_intensity.png"),dpi=1000)
         end 
@@ -416,7 +415,7 @@ function THG_main(pres=pres)
         plt.plot(λ[2:end]*1e9,norm ? Maths.normbymax(Iω0[2:end,1]) : Iω0[2:end,1], label="z=$(round(zout[1]*1e3,digits=2))mm", color="grey")
         plt.plot(λ[2:end]*1e9,norm ? Iω0[2:end,end]/maximum(Iω0[2:end,1]) : Iω0[2:end,end], label="z=$(round(zout[end]*1e3,digits=2))mm", color="red")
         plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
-        plt.xlabel(L"\lambda"*"(nm)")
+        plt.xlabel(L"\lambda"*" (nm)")
         plt.ylabel(norm ? "I (norm.)" : "I (arb. units)")
 
         if read_UV == true  # overlay measured UV output spectrum 
@@ -443,7 +442,7 @@ function THG_main(pres=pres)
         plt.plot(λ[λlowidx:λhighidx]*1e9,norm ? Iω0[λlowidx:λhighidx,1]/maximum(Iω0[λlowidx:λhighidx,end]) : Iω0[λlowidx:λhighidx,1], label="z=$(round(zout[1]*1e3,digits=2))mm", color="grey")
         plt.plot(λ[λlowidx:λhighidx]*1e9,norm ? Maths.normbymax(Iω0[λlowidx:λhighidx,end]) : Iω0[λlowidx:λhighidx,end], label="z=$(round(zout[end]*1e3,digits=2))mm", color="red")
         plt.xlim(λ_rangeUV[1]*1e9, λ_rangeUV[2]*1e9)
-        plt.xlabel(L"\lambda"*"(nm)")
+        plt.xlabel(L"\lambda"*" (nm)")
         plt.ylabel(norm ? "I (norm.)" : "I (arb. units)")
 
         if read_UV == true  # overlay measured UV output spectrum 
@@ -472,7 +471,7 @@ function THG_main(pres=pres)
         plt.plot(λ[2:end]*1e9,norm ? Maths.normbymax(Iω0log[2:end,1]) : Iω0log[2:end,1], label="z=$(round(zout[1]*1e3,digits=2))mm",  color="grey")
         plt.plot(λ[2:end]*1e9,norm ? Iω0log[2:end,end]/maximum(Iω0log[2:end,1]) : Iω0log[2:end,end], label="z=$(round(zout[end]*1e3,digits=2))mm", color="red")
         plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
-        plt.xlabel(L"\lambda"*"(nm)")
+        plt.xlabel(L"\lambda"*" (nm)")
         plt.ylabel(norm ? "log. I (norm.)" : "log. I (arb. units)")
 
         if read_UV == true  # overlay measured UV output spectrum 
@@ -496,8 +495,8 @@ function THG_main(pres=pres)
 
         #+++++ PLOT 7:  pulse energies and efficiency 
         plt.figure(figsize=fig_dim)
-        if show_title plt.suptitle("Pulse energies (THG conversion efficiency: "*L"\eta="*string(round(η_THG, digits=4) *100)*"%)") end
-        plt.subplots_adjust(hspace=0.5)
+        if show_title plt.suptitle("Pulse energies ("*L"\eta_{THG}="*string(round(η_THG, digits=4) *100)*"%)") end
+        plt.subplots_adjust(hspace=0.6, top=0.86)
 
         plt.subplot(2,1,1)
         plt.xlabel("z (mm)")
@@ -520,9 +519,9 @@ function THG_main(pres=pres)
         #+++++ PLOT 8: frequency evolution 
         plt.figure(figsize=fig_dim)
         if show_title plt.suptitle("Frequency evolution") end
-        plt.pcolormesh(zout*1e3, f*1e-15,norm ? Maths.normbymax(log10.(Maths.normbymax(Iω0))) : log10.(Maths.normbymax(Iω0)))   
-        norm ? plt.clim(-6/maximum(abs.(log10.(Maths.normbymax(Iω0)))), 0) : plt.clim(-6, 0)    
-        plt.colorbar(label=(norm ? "log. I (norm.)" : "log. I (arb. units)" ))
+        plt.pcolormesh(zout*1e3, f*1e-15log10.(Maths.normbymax(Iω0)))   
+        plt.clim(-6, 0)    
+        plt.colorbar(label="log. I (arb. units)")
         plt.xlabel("z (mm)")
         plt.ylabel("f (PHz)")
 
@@ -536,7 +535,7 @@ function THG_main(pres=pres)
         plt.xlabel("t (fs)")
         plt.xlim(minimum(t)*1e15, maximum(t)*1e15)
         plt.ylabel(norm ? "I(z=0) (norm.)" : "I(z=0) (arb. units)")
-        plt.plot(t*1e15,norm ? Maths.normbymax(It0[:,1]) : It0[:,1] , color="red", label=L"\tau="*string(round(τ_input*1e15, digits=1) )*"fs")
+        plt.plot(t*1e15,norm ? Maths.normbymax(It0[:,1]) : It0[:,1] , color="red", label=L"\tau_{TL}="*string(round(τ_input*1e15, digits=1) )*"fs")
         plt.plot(t*1e15,norm ? Maths.normbymax(It0_envelope[:,1]) : It0_envelope[:,1], color="black", ls="--")
 
         if (read_IR & show_IR )==true  # overlay measured input pulse 
@@ -554,7 +553,7 @@ function THG_main(pres=pres)
         if show_title plt.title("Time-domain representation of UV output pulse") end
         plt.xlabel("t (fs)")
         plt.ylabel(norm ? "I(z=0) (norm.)" : "I(z=0) (arb. units)")
-        plt.plot(t*1e15, norm ? Maths.normbymax(It0_UV[:,end]) : It0_UV[:,end] , color="red", label=L"\tau="*string(round(τ_UV*1e15, digits=1) )*"fs")
+        plt.plot(t*1e15, norm ? Maths.normbymax(It0_UV[:,end]) : It0_UV[:,end] , color="red", label=L"\tau_{TL}="*string(round(τ_UV*1e15, digits=1) )*"fs")
         plt.plot(t*1e15,norm ? Maths.normbymax(It0_UV_envelope[:,end]) : It0_UV_envelope[:,end], color="black", linestyle="--")
 
         plt.legend(loc="upper right")
@@ -568,6 +567,7 @@ function THG_main(pres=pres)
         jw = Plotting.cmap_white("jet"; n=10)
         
         plt.figure(figsize=fig_dim)
+        plt.subplots_adjust(left=0.15, right=0.95)
         if show_title plt.title("Output UV pulse") end
         plt.xlabel("t (fs)")
         plt.ylabel("r (mm)")
@@ -586,11 +586,12 @@ function THG_main(pres=pres)
         else 
             z_vals_local = z_vals 
         end       
-        
         idcs = [argmin(abs.(zout .- k)) for k in z_vals_local]   
+        hide_cbar = true # if true: hide colour bars
+        
         plt.figure(figsize=fig_dim) 
         if show_title plt.suptitle("Spatiotemporal evolution of UV pulse") end
-        plt.subplots_adjust(hspace=0.5, wspace=0.55)
+        plt.subplots_adjust(hspace=0.6, wspace=0.55)
 
         for i in 1:4
             plt.subplot(2,2,i)
@@ -600,7 +601,7 @@ function THG_main(pres=pres)
             plt.ylim(minimum(rsym*1e3)/2, maximum(rsym*1e3)/2)
             plt.xlim(minimum(grid.t*1e15)/2, maximum(grid.t*1e15)/2)
             plt.pcolormesh(grid.t*1e15, rsym*1e3,norm ? Maths.normbymax(abs2.(Hankel.symmetric(Et_UV[:, :, idcs[i]], q)')) : abs2.(Hankel.symmetric(Et_UV[:, :, idcs[i]], q)'), cmap=jw)
-            plt.colorbar(label=(norm ? "I (norm.)" : "I (arb. units)"))
+            if hide_cbar==false  plt.colorbar(label=(norm ? "I (norm.)" : "I (arb. units)")) end 
         end
         
         if save==true
@@ -610,7 +611,7 @@ function THG_main(pres=pres)
         #+++++ PLOT 13: plot spatiotemporal IR pulse evolution 
         plt.figure(figsize=fig_dim) 
         if show_title plt.suptitle("Spatiotemporal evolution of IR pulse") end
-        plt.subplots_adjust(hspace=0.5, wspace=0.55)
+        plt.subplots_adjust(hspace=0.6, wspace=0.55)
 
         for i in 1:4
             plt.subplot(2,2,i)
@@ -620,7 +621,7 @@ function THG_main(pres=pres)
             plt.ylim(minimum(rsym*1e3)/2, maximum(rsym*1e3)/2)
             plt.xlim(minimum(grid.t*1e15)/2, maximum(grid.t*1e15)/2)
             plt.pcolormesh(grid.t*1e15, rsym*1e3,norm ? Maths.normbymax(abs2.(Hankel.symmetric(Et_IR[:, :, idcs[i]], q)')) : abs2.(Hankel.symmetric(Et_IR[:, :, idcs[i]], q)'), cmap=jw)
-            plt.colorbar(label=(norm ? "I (norm.)" : "I (arb. units)"))
+            if hide_cbar==false  plt.colorbar(label=(norm ? "I (norm.)" : "I (arb. units)")) end
         end
 
         if save==true

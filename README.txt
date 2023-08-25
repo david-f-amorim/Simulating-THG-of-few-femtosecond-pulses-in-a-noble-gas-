@@ -49,12 +49,14 @@ extendend previous pressure scans to O2 and SF6; implemented option to add chirp
 carried out minor chirp scan; added option to toggle between PPT and ADK; started working on handover PP; 
 cleaned up "file_prepare.py"; finished gas scans; changed from on-axis to total intensity/energy; 
 started re-writing "scan_eval.py"; now integrating along frequencies for intensity distributions; changed plot design;
+added option to norm plots; 
 
 
 
 - run "final simulations" with good parameters [and PPT!]
 	+ calculate ratios of Ar/Ne energies [just numerically at sat points]
 	+ work on plot list 
+                -> fix irregular y ticks... [Figs 2,7,1]
 
 	
 	
