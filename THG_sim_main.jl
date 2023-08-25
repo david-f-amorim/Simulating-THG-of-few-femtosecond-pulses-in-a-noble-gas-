@@ -334,13 +334,23 @@ function THG_main(pres=pres)
     # ----------------- PLOT RESULTS ----------------------------
     if txt_only == false 
 
-        @eval import PyPlot:pygui, plt
+        @eval using PyPlot
         close("all")
         pygui(true)
 
+        # set plot formatting 
+        rcParams = PyPlot.PyDict(PyPlot.matplotlib."rcParams") # get rcParams 
+        rcParams["text.usetex"] = true # enable LaTeX renadering
+        rcParams["mathtext.fontset"] = "cm" # use LateX font for maths
+        rcParams["font.family"] = "STIXGeneral" # use LateX font for text
+        rcParams["font.size"] = 16 # set standard font size 
+        fig_dim = 2* [3.14961, 2.3622075] # for 8cm width ; double for 16cm width  
+
+        show_title = true # if false: hides figure titles
+        
         #+++++ PLOT 1:  IR and UV intensities as functions of z and r≠0
-        plt.figure(figsize=[7.04, 5.28])
-        plt.suptitle("Off-axis intensity of IR and UV beams")
+        plt.figure(figsize=fig_dim)
+        if show_title plt.suptitle("Off-axis intensity of IR and UV beams") end
         plt.subplots_adjust(left=0.125, bottom=0.11, right=0.992, top=0.88, hspace=0.5)
 
         plt.subplot(2,1,1)
@@ -362,8 +372,8 @@ function THG_main(pres=pres)
         end    
             
         #+++++ PLOT 2:  fundamental and third harmonic intensities as functions of z
-        plt.figure(figsize=[7.04, 5.28])
-        plt.suptitle("Total intensity of IR and UV beams")
+        plt.figure(figsize=fig_dim)
+        if show_title plt.suptitle("Total intensity of IR and UV beams") end
         plt.subplots_adjust(hspace=0.5)
 
         plt.subplot(2,1,1)
@@ -386,39 +396,25 @@ function THG_main(pres=pres)
         end 
 
         #+++++ PLOT 3: gas number density and effective susceptibility along the cell 
-        plt.figure(figsize=[7.04, 5.28])
-        plt.suptitle("Initial gas properties")
-        plt.subplots_adjust(hspace=0.4)
-
-        plt.subplot(2,1,1)
-        plt.plot(zout*1e3, [dens(i) for i in zout] ./ PhysData.N_A, label="central pressure: P₀=$(pres) bar", color="red")
-        plt.ylabel("ρ (mol/m³)")
-        plt.xlabel("z (mm)")
-        plt.legend()
-
-        plt.subplot(2,1,2)
-
-        χ0  = [coren(ω[ω0idx],z=i)^2-1 for i in zout]
-        χTH = [coren(ω[ωTHidx],z=i)^2-1 for i in zout]
+        plt.figure(figsize=fig_dim)
+        if show_title plt.title("Gas density profile") end
         
+        plt.plot(zout*1e3, [dens(i) for i in zout] ./ PhysData.N_A, label="central pressure: P₀=$(pres) bar", color="red")
+        plt.ylabel(L"\rho"*"(mol/"*L"m^3"*")")
         plt.xlabel("z (mm)")
-        plt.ylabel("Effective linear χₑ")
-        plt.plot(zout*1e3, χ0, label="λ=$(round(Int,λ0*1e9))nm", color="grey")
-        plt.plot(zout*1e3, χTH, label="λ=$(round(Int,λ0/3*1e9))nm", color="red")
-        plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0))
-        plt.legend()
+        plt.legend(loc="upper right")
 
         if save==true
-            plt.savefig(joinpath(out_path,"density_and_susceptibility.png"),dpi=1000)
+            plt.savefig(joinpath(out_path,"density.png"),dpi=1000)
         end 
 
         #+++++ PLOT 4:  linear  spectrum I(λ) at z=0 and z=L 
-        plt.figure(figsize=[7.04, 5.28])
-        plt.title("Linear beam spectrum")
+        plt.figure(figsize=fig_dim)
+        if show_title plt.title("Full spectrum") end
         plt.plot(λ[2:end]*1e9, Iω0[2:end,1], label="z=$(round(zout[1]*1e3,digits=2))mm", color="grey")
         plt.plot(λ[2:end]*1e9, Iω0[2:end,end], label="z=$(round(zout[end]*1e3,digits=2))mm", color="red")
         plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
-        plt.xlabel("λ (nm)")
+        plt.xlabel(L"\lambda"*"(nm)")
         plt.ylabel("I (arb. units)")
 
         if read_UV == true  # overlay measured UV output spectrum 
@@ -440,12 +436,12 @@ function THG_main(pres=pres)
         end 
 
         #+++++ PLOT 5:  UV only linear spectrum I(λ) at z=0 and z=L 
-        plt.figure(figsize=[7.04, 5.28])
-        plt.title("Linear UV spectrum")
+        plt.figure(figsize=fig_dim)
+        if show_title plt.title("UV spectrum") end
         plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,1], label="z=$(round(zout[1]*1e3,digits=2))mm", color="grey")
         plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,end], label="z=$(round(zout[end]*1e3,digits=2))mm", color="red")
         plt.xlim(λ_rangeUV[1]*1e9, λ_rangeUV[2]*1e9)
-        plt.xlabel("λ (nm)")
+        plt.xlabel(L"\lambda"*"(nm)")
         plt.ylabel("I (arb. units)")
 
         if read_UV == true  # overlay measured UV output spectrum 
@@ -469,13 +465,13 @@ function THG_main(pres=pres)
         #+++++ PLOT 6:  log. spectrum I(λ) at z=0 and z=L 
         Iω0log = log10.(Iω0)
 
-        plt.figure(figsize=[7.04, 5.28])
-        plt.title("Logarithmic beam spectrum")
+        plt.figure(figsize=fig_dim)
+        if show_title plt.title("Logarithmic spectrum") end
         plt.plot(λ[2:end]*1e9, Iω0log[2:end,1], label="z=$(round(zout[1]*1e3,digits=2))mm",  color="grey")
         plt.plot(λ[2:end]*1e9, Iω0log[2:end,end], label="z=$(round(zout[end]*1e3,digits=2))mm", color="red")
         plt.xlim(λ_lims[1]*1e9, λ_lims[2]*1e9)
-        plt.xlabel("λ (nm)")
-        plt.ylabel("I (arb. units)")
+        plt.xlabel(L"\lambda"*"(nm)")
+        plt.ylabel("log. I (arb. units)")
 
         if read_UV == true  # overlay measured UV output spectrum 
             plt.plot(λ_in*1e9, log10.(abs.(maximum(Iω0[λlowidx:λhighidx,end]).*Maths.normbymax(I_in_UV))), color="purple", label="UV data (rescaled)")
@@ -493,26 +489,25 @@ function THG_main(pres=pres)
 
 
         if save==true
-            plt.savefig(joinpath(out_path,"spectrum_log.png"),dpi=1000)
+            plt.savefig(joinpath(out_path,"log_spectrum.png"),dpi=1000)
         end 
 
         #+++++ PLOT 7:  pulse energies and efficiency 
-        plt.figure(figsize=[7.04, 5.28])
-        plt.suptitle("THG conversion efficiency: η="*string(round(η_THG, digits=4) *100)*"%")
+        plt.figure(figsize=fig_dim)
+        if show_title plt.suptitle("Pulse energies (THG conversion efficiency: η="*string(round(η_THG, digits=4) *100)*"%)") end
         plt.subplots_adjust(hspace=0.5)
 
         plt.subplot(2,1,1)
-        plt.plot(zout.*1e3, tot_pulse_en.*1e6, label="ΔE=-$(round(Int64, tot_pulse_en[1]*1e6-tot_pulse_en[end]*1e6))μJ", color="red")
         plt.xlabel("z (mm)")
-        plt.ylabel("E (μJ)")
-        plt.title("Total pulse energy")
+        plt.ylabel("E ("*L"\mu"*"J)")
+        plt.title("Total pulse ")
         plt.legend()
 
         plt.subplot(2,1,2)
         plt.plot(zout.*1e3, UV_pulse_en.*1e9, label="ΔE=+$(round(Int64, UV_pulse_en[end]*1e9))nJ", color="red")
         plt.xlabel("z (mm)")
         plt.ylabel("E (nJ)")
-        plt.title("UV pulse energy")
+        plt.title("UV pulse")
         plt.legend()
 
         if save==true
@@ -520,22 +515,21 @@ function THG_main(pres=pres)
         end
 
         #+++++ PLOT 8: frequency evolution 
-        plt.figure(figsize=[7.04, 5.28])
-        plt.suptitle("Frequency evolution")
+        plt.figure(figsize=fig_dim)
+        if show_title plt.suptitle("Frequency evolution") end
         plt.pcolormesh(zout*1e3, f*1e-15, log10.(Maths.normbymax(Iω0)))   
-        plt.colorbar(label="arb. units, normed")
         plt.clim(0, -6)  
         plt.xlabel("z (mm)")
         plt.ylabel("f (PHz)")
-        plt.title("log(I) (arb. units)")
+        plt.title("log. I (arb. units)")
 
         if save==true
             plt.savefig(joinpath(out_path,"frequency_evolution.png"),dpi=1000)
         end
 
         #+++++ PLOT 9: time-domain plot of input pulse 
-        plt.figure(figsize=[7.04, 5.28]) 
-        plt.title("Time-domain representation of input pulse")
+        plt.figure(figsize=fig_dim) 
+        if show_title plt.title("Time-domain representation of input pulse") end
         plt.xlabel("t (fs)")
         plt.xlim(minimum(t)*1e15, maximum(t)*1e15)
         plt.ylabel("I(z=0) (arb. units)")
@@ -553,8 +547,8 @@ function THG_main(pres=pres)
         end
 
         #+++++ PLOT 10: time-domain plot of UV output pulse 
-        plt.figure(figsize=[7.04, 5.28]) 
-        plt.title("Time-domain representation of UV output pulse")
+        plt.figure(figsize=fig_dim) 
+        if show_title plt.title("Time-domain representation of UV output pulse") end
         plt.xlabel("t (fs)")
         plt.ylabel("I(z=L) (arb. units)")
         plt.plot(t*1e15, It0_UV[:,end] , color="red", label="FWHM pulse duration: τ="*string(round(τ_UV*1e15, digits=1) )*"fs")
@@ -563,7 +557,24 @@ function THG_main(pres=pres)
         plt.legend(loc="upper right")
 
         if save==true
-            plt.savefig(joinpath(out_path,"time_domain_UV_output.png"),dpi=1000)
+            plt.savefig(joinpath(out_path,"time_domain_UV.png"),dpi=1000)
+        end
+
+        #+++++ PLOT 11: plot spatiotemporal UV pulse at output
+        rsym = Hankel.Rsymmetric(q)
+        jw = Plotting.cmap_white("jet"; n=10)
+        
+        plt.figure(figsize=fig_dim)
+        if show_title plt.title("Output UV pulse") end
+        plt.xlabel("t (fs)")
+        plt.ylabel("r (mm)")
+        plt.ylim(minimum(rsym*1e3)/2, maximum(rsym*1e3)/2)
+        plt.xlim(minimum(grid.t*1e15)/2, maximum(grid.t*1e15)/2)
+        plt.pcolormesh(grid.t*1e15, rsym*1e3, abs2.(Hankel.symmetric(Et_UV[:, :, end], q)'), cmap=jw)
+        plt.colorbar(label="I (arb. units)")
+
+        if save==true
+            plt.savefig(joinpath(out_path,"UV_pulse_output.png"),dpi=1000)
         end
 
         #+++++ PLOT 12: plot spatiotemporal UV pulse evolution 
@@ -573,12 +584,9 @@ function THG_main(pres=pres)
             z_vals_local = z_vals 
         end       
         
-        rsym = Hankel.Rsymmetric(q)
         idcs = [argmin(abs.(zout .- k)) for k in z_vals_local]   
-        jw = Plotting.cmap_white("jet"; n=10)
-
-        plt.figure(figsize=[7.04, 5.28]) 
-        plt.suptitle("Spatiotemporal evolution of UV pulse")
+        plt.figure(figsize=fig_dim) 
+        if show_title plt.suptitle("Spatiotemporal evolution of UV pulse") end
         plt.subplots_adjust(hspace=0.5, wspace=0.55)
 
         for i in 1:4
@@ -597,8 +605,8 @@ function THG_main(pres=pres)
         end
 
         #+++++ PLOT 13: plot spatiotemporal IR pulse evolution 
-        plt.figure(figsize=[7.04, 5.28]) 
-        plt.suptitle("Spatiotemporal evolution of IR pulse")
+        plt.figure(figsize=fig_dim) 
+        if show_title plt.suptitle("Spatiotemporal evolution of IR pulse") end
         plt.subplots_adjust(hspace=0.5, wspace=0.55)
 
         for i in 1:4
@@ -619,13 +627,13 @@ function THG_main(pres=pres)
         #+++++ PLOT 14: UV spectral evolution
         c = [plt.get_cmap("viridis")(i) for i in range(0,1,length(z_vals_local))]
 
-        plt.figure(figsize=[7.04, 5.28])
-        plt.title("UV beam spectral evolution")
+        plt.figure(figsize=fig_dim)
+        if show_title plt.title("UV beam spectral evolution") end
         for i in 1:length(z_vals_local)
             plt.plot(λ[λlowidx:λhighidx]*1e9, Iω0[λlowidx:λhighidx,idcs[i]], label="z="*string(round(z_vals_local[i]*1e3, digits=3))*"mm", color=c[i])
         end
         plt.xlim(λ_rangeUV[1]*1e9, λ_rangeUV[2]*1e9)
-        plt.xlabel("λ (nm)")
+        plt.xlabel(L"\lambda"*"(nm)")
         plt.ylabel("I (arb. units)")
 
         plt.legend(loc="upper right")

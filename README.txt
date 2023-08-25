@@ -48,7 +48,7 @@ Week 6
 extendend previous pressure scans to O2 and SF6; implemented option to add chirp to the input pulse; 
 carried out minor chirp scan; added option to toggle between PPT and ADK; started working on handover PP; 
 cleaned up "file_prepare.py"; finished gas scans; changed from on-axis to total intensity/energy; 
-started re-writing "scan_eval.py"; 
+started re-writing "scan_eval.py"; now integrating long frequencies for intensity distributions
 
 
 - run "final simulations" with good parameters [and PPT!]
@@ -57,9 +57,7 @@ started re-writing "scan_eval.py";
 
 	+ notes on plot design: 8cm or 16cm width; 
 
-	+ INTEGRATE ALONG IR/UV INSTEAD OF USING lam0 and TH AS PROXY??!! [change this for plots 1 and 2; not sure if needed anywhere else! but check!]
-		=> delete a few plots !!??
-
+	
 - work on "documentation"
 	+ write report
 	+ prepare final presentation [use CFEL template; 12 minutes; formal]
