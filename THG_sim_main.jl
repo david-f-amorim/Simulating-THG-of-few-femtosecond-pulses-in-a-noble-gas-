@@ -357,14 +357,14 @@ function THG_main(pres=pres)
 
         plt.subplot(2,1,1)
         plt.pcolormesh(zout*1e3, q.r*1e3, norm ? Maths.normbymax(Iωr_IR) : Iωr_IR)
-        plt.colorbar(label=(norm ? "norm." : "arb. units" ))
+        plt.colorbar(label=(norm ? "I (norm.)" : "I (arb. units)" ))
         plt.ylabel("r (mm)")
         plt.xlabel("z (mm)")
         plt.title("IR beam")    
 
         plt.subplot(2,1,2)
         plt.pcolormesh(zout*1e3, q.r*1e3,norm ? Maths.normbymax(Iωr_UV) : Iωr_UV)
-        plt.colorbar(label=(norm ? "norm." : "arb. units" ))
+        plt.colorbar(label=(norm ? "I (norm.)" : "I (arb. units)" ))
         plt.xlabel("z (mm)")
         plt.ylabel("r (mm)")
         plt.title("UV beam")
@@ -521,7 +521,7 @@ function THG_main(pres=pres)
         plt.figure(figsize=fig_dim)
         if show_title plt.suptitle("Frequency evolution") end
         plt.pcolormesh(zout*1e3, f*1e-15,norm ? Maths.normbymax(log10.(Maths.normbymax(Iω0))) : log10.(Maths.normbymax(Iω0)))   
-        if norm==false plt.clim(-6, 0) end   
+        norm ? plt.clim(-6/maximum(abs.(log10.(Maths.normbymax(Iω0)))), 0) : plt.clim(-6, 0)    
         plt.colorbar(label=(norm ? "log. I (norm.)" : "log. I (arb. units)" ))
         plt.xlabel("z (mm)")
         plt.ylabel("f (PHz)")
@@ -536,7 +536,7 @@ function THG_main(pres=pres)
         plt.xlabel("t (fs)")
         plt.xlim(minimum(t)*1e15, maximum(t)*1e15)
         plt.ylabel(norm ? "I(z=0) (norm.)" : "I(z=0) (arb. units)")
-        plt.plot(t*1e15,norm ? Maths.normbymax(It0[:,1]) : It0[:,1] , color="red", label="FWHM pulse duration: "*L"\tau="*string(round(τ_input*1e15, digits=1) )*"fs")
+        plt.plot(t*1e15,norm ? Maths.normbymax(It0[:,1]) : It0[:,1] , color="red", label=L"\tau="*string(round(τ_input*1e15, digits=1) )*"fs")
         plt.plot(t*1e15,norm ? Maths.normbymax(It0_envelope[:,1]) : It0_envelope[:,1], color="black", ls="--")
 
         if (read_IR & show_IR )==true  # overlay measured input pulse 
@@ -554,7 +554,7 @@ function THG_main(pres=pres)
         if show_title plt.title("Time-domain representation of UV output pulse") end
         plt.xlabel("t (fs)")
         plt.ylabel(norm ? "I(z=0) (norm.)" : "I(z=0) (arb. units)")
-        plt.plot(t*1e15, norm ? Maths.normbymax(It0_UV[:,end]) : It0_UV[:,end] , color="red", label="FWHM pulse duration: "*L"\tau="*string(round(τ_UV*1e15, digits=1) )*"fs")
+        plt.plot(t*1e15, norm ? Maths.normbymax(It0_UV[:,end]) : It0_UV[:,end] , color="red", label=L"\tau="*string(round(τ_UV*1e15, digits=1) )*"fs")
         plt.plot(t*1e15,norm ? Maths.normbymax(It0_UV_envelope[:,end]) : It0_UV_envelope[:,end], color="black", linestyle="--")
 
         plt.legend(loc="upper right")
@@ -631,10 +631,10 @@ function THG_main(pres=pres)
         c = [plt.get_cmap("viridis")(i) for i in range(0,1,length(z_vals_local))]
         
         if norm 
-            max = 0
+            max = 1
             for i=1:length(z_vals_local)
                 n = maximum(Iω0[λlowidx:λhighidx,idcs[i]])
-                if (n > max) n=max end 
+                if (n > max) max=n end 
             end 
         end     
         
