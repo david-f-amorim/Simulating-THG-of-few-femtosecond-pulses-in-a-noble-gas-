@@ -54,23 +54,23 @@ added option to norm plots;
 
 
 - run "final simulations" with good parameters [and PPT!]
-	+ calculate ratios of Ar/Ne energies [just numerically at sat points]
+	+ calculate ratios of Ar/Ne energies [just numerically at sat points; DOES NE EVEN SAT IN EXP??]
 	+ work on plot list 
-                -> fix irregular y ticks... [Figs 2,7,1]
+                -> start new code file for spectra !!!
 
-	
 	
 - work on "documentation"
 	+ write report
 	+ prepare final presentation [use CFEL template; 12 minutes; formal]
 	+ prepare handover PP 
-			[clean up scan_eval] ; upload gas_scans etc to Sync&Share (fixed param files)
+			[clean up scan_eval] ; upload gas_scans etc to Sync&Share (fixed param files) !!!!!
 			-> add functions for multi_gas comparison
 			-> add quick notes section for control
 			-> write PP slide
 
-			go through THG_main again
-			-> change some plot labelling
-			-> if making changes for manuscript plots, make sure to update handover
+			MAKE PRESURE SHIFTING FUNCTION MORE SOPHISTICATED ??!!
+			
+			MOVE PRESSURE SCAN EXP DATA OUT OF RAW_INPUT!!
 
-
+		
+			rewrite PP !

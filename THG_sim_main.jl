@@ -8,49 +8,55 @@ using  DelimitedFiles
 using  LaTeXStrings 
        
 # ----------------- QUICK SETTINGS -------------------------------
-p_scan = false               # if true, run is counted as part of a pressure scan 
+p_scan = false               # if true, pressure scan is executed, with pressure range set by the variable "pres_arr" below; if false, a single run is simulated
 
-save = true                  # if true, saves output plots, run parameters and UV spectrum
+save = true                  # if true, save output plots, run parameters and UV spectrum
 show = true                 # if true, opens plots in GUI after run 
-txt_only = false             # if true, no plots are produced (only UV spectrum and params are written to file)
+txt_only = false             # if true, no plots are produced (only UV spectrum and simulation parameters are written to file)
 
-read_IR = true               # if true: read input IR pulse from file; if false: use Gaussian approximation 
+read_IR = true               # if true: read input IR pulse [time domain] from file; if false: use Gaussian approximation 
 read_ρ  = false              # if true: read gas density profile from file; if false: use pressure gradient approximation 
 read_UV = false              # if true: read in measured UV spectrum and overlay on simulated results   
 
 IR_spec = false              # if true: read measured input IR spectrum from file and overlay 
-show_IR = false              # if true and "read_IR" is true: overlay measured time-domain input pulse on plots
-IR_spec_exp = false          # if true: read input IR spectrometer spectrum from file and overlay 
+show_IR = false              # if true and "read_IR" is true: overlay measured time-domain input pulse on plots (barely ever relevant; used to check that transform to frequency domain works)
+IR_spec_exp = false          # if true: read input IR spectrometer spectrum from file and overlay (barely ever relevant; used to check that FROG spectrum is accurate)
 
 # ------------------ SET PHYSICAL PARAMETERS ------------------------
 
-gas = :Ne           # gas
-pres = 0.1          # central gas pressure [bar] (not relevant for pressure scans)
+gas = :Ne           # gas type in cell 
+pres = 0.1          # central gas pressure [bar] (for single run; not relevant for pressure scans)
 p_ed = 1e-3         # edge gas pressure [bar] 
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed); (only relevant when read_ρ==false)
-τ = 5e-15           # FWHM pulse duration [s] (only relevant when read_IR==false)
-λ0 = 730e-9         # central wavelength [m]
-w0 = 65e-6          # beam waist [m]
-CEP = 0.0           # carrier-envelope phase phase (ϕ0) [rad] (only relevant when read_IR==true)                                 
-IRenergy = 75e-6   # IR pulse energy [J]                                                            
+τ = 5e-15           # FWHM pulse duration of IR pulse [s] (only relevant when read_IR==false)
+λ0 = 740e-9         # central wavelength of IR pulse [m]
+w0 = 65e-6          # beam waist of IR pulse [m]
+CEP = 0.0           # carrier-envelope phase of IR pulse (ϕ0) [rad] (only relevant when read_IR==true)                                 
+IRenergy = 75e-6    # IR pulse energy [J] (related to beam power via 1kHz repetition rate)                                                           
 L = 3e-3            # propagation distance (cell length) [m]
 
-propz = -L/2        # propagation distance from the waist [m], i.e. beam focus position  (NOTE: always specified in a coordinate system where the cell starts at z=0!)
-z_vals =L .* [1.0/4, 1.0/3, 3.0/4, 1.0]     # points along the cell at which to investigate beam evolution [m] 
+propz = -L/2        # propagation distance from the waist [m], i.e. beam focus position  (NOTE: always specified in a coordinate system where the cell starts at 0 and ends at L!)
+z_vals =L .* [1.0/4, 1.0/3, 3.0/4, 1.0]     # points along the cell at which to investigate beam evolution [m] (NOTE: always specified in a coordinate system where the cell starts at 0 and ends at L!)
 
 λ_lims = (100e-9, 1000e-9)       # wavelength limits of overall frequency window (both NIR and UV) [m,m]
 λ_rangeUV = (100e-9, 360e-9)     # wavelength limits of UV region of interest [m,m]
 λ_rangeIR = (600e-9, 1000e-9)    # wavelength limits of IR region of interest [m,m]
 
 material = :SiO2     # material of the optics the IR beam propagates through before THG (for chirp compensation)
-thickness= 0*1e-3    # thickness of the material [m] (for chirp compensation)
+thickness= 0         # thickness of the material [m] (for chirp compensation)
 
-ϕs = [0,0,0,0]     # Taylor-series coefficients of initial spectral phase (used to introduce additional chirp)
+ϕs = [0,0,0,0]     # Taylor-series coefficients of initial spectral phase  [s^n] (used to introduce additional chirp)
 
 ion = true         # if true: enable ionisation response, if false: disable ionisation 
-ion_model="ADK"    # set to "ADK" or "PPT" (has no effect if ion==false)
+ion_model="PPT"    # set to "ADK" or "PPT" (has no effect if ion==false); "ADK" is less accurate at low intensities but faster; "PPT" may crash at very high intensities
 
 pres_arr = range(start= 0.1, stop= 5.1, step= 0.1)  # pressure range (only relevant for pressure scans)  [bar]
+
+# ----------------- PLOT SETTINGS -------------------------------
+
+show_title = false # if false: hides figure titles
+norm = true        # if true: normalise intensities on figures
+disable_latex = false # if true: disable latex rendering of plots (saves time but might result in some labels or title being displayed incorrectly)
 
 # ----------------- FILE HANDLING -------------------------------
 
@@ -70,14 +76,14 @@ path_IR_spec = joinpath(in_dir, file_IR_spec) # sys. path to IR FROG input spect
 file_IR_spec_exp = "IRspec_exp.dat"                   # name of IR input spectrometer spectrum file 
 path_IR_spec_exp = joinpath(in_dir, file_IR_spec_exp) # sys. path to IR input spectrometer spectrum file 
 
-scan_dir = "scan_"*string(IRenergy*1e6)*"mW_"*string(gas)*"_"*string(round(CEP; digits=3))*"rad_"*string(ion ? "ion" : "no-ion")*"_"*string(read_ρ ? "coms" : "grad")  # name of scan output directory 
-
 # ----------------- MAKE ARRANGEMENTS FOR PRESSURE SCAN -----------
 
 if p_scan == true  
-    txt_only = true        # ensures that no plots are generated as part of the san (save time)
+    txt_only = true        # ensures that no plots are generated as part of the scan (save time)
     save     = true        # ensures that output is saved 
 end    
+
+scan_dir = "scan_"*string(IRenergy*1e6)*"mW_"*string(gas)*"_"*string(round(CEP; digits=3))*"rad_"*string(ion ? "ion" : "no-ion")*"_"*string(read_ρ ? "coms" : "grad")  # name of scan output directory 
 
 # ----------------- DEFINE MAIN FUNCTION -----------
 
@@ -109,8 +115,8 @@ function THG_main(pres=pres)
     # ----------------- SET SIMULATION GRID ----------------------------
 
     R = 250e-6            # aperture radius for Hankel transform (assume field ≈0 for r>R ) [m]  
-    N = 1024              # sample size for Hankel tansform grid  (NOTE: this value was taken from an older version of the code )           
-    trange = 0.05e-12     # total extent of time window required [s] (NOTE: if this is too short, the range is extended automatically)                            
+    N = 1024              # sample size for Hankel tansform grid  (NOTE: this value was taken from an older version of the code; no justification! )           
+    trange = 0.05e-12     # total extent of time window required [s] (NOTE: if this is too short, the range is extended automatically; this value was taken from an older version of the code; no justification!)                            
 
     if read_ρ==true 
         grid = Grid.RealGrid(maximum(z_in), λ0, λ_lims ,trange)   # set up time & space grid for read-in density case 
@@ -119,7 +125,6 @@ function THG_main(pres=pres)
     end
 
     q = Hankel.QDHT(R, N, dim=2)                  # set up discrete Hankel transform matrix                        
-
     energyfun, _ = Fields.energyfuncs(grid, q)    # "energyfun" gives total energy in a field E(t)    
 
     # ----------------- SET NONLINEAR EFFECTS ----------------------------
@@ -137,11 +142,11 @@ function THG_main(pres=pres)
     normfun = NonlinearRHS.norm_radial(grid, q, coren)          # generate normalisation function for radial symmetry 
 
     # * * * SET KERR EFFECT AND/OR PLASMA FORMATION 
-    if (kerr=="f") & (ion == true)
+    if (kerr=="f") & (ion == true)                              # nonlinear response function with ionisation and Kerr effect
         responses = (Nonlinear.Kerr_field(PhysData.γ3_gas(gas)),     
                 Nonlinear.PlasmaCumtrapz(grid.to, grid.to, ionrate, ionpot),
                 )  
-    elseif (kerr=="f") & (ion == false)
+    elseif (kerr=="f") & (ion == false)                        # nonlinear response function without ionisation, just Kerr effect
         responses = (Nonlinear.Kerr_field(PhysData.γ3_gas(gas)),     
                 )    
     end    
@@ -161,10 +166,10 @@ function THG_main(pres=pres)
         end
 
         if read_ρ==false 
-            inputs = Fields.SpatioTemporalField(λ0, IRenergy, CEP, 0.0,           # model input beam based off measured data
+            inputs = Fields.SpatioTemporalField(λ0, IRenergy, CEP, 0.0,           # model input beam based off measured data (coordinate system with cell between 0 and L)
             (t, r) -> beam_profile(t, r), propz)  
         else 
-            inputs = Fields.SpatioTemporalField(λ0, IRenergy, CEP, 0.0,           # model input beam based off measured data
+            inputs = Fields.SpatioTemporalField(λ0, IRenergy, CEP, 0.0,           # model input beam based off measured data (shifted coordinate system due to regions outside cell)
             (t, r) -> beam_profile(t, r), propz+L_total/2)
         end 
 
@@ -173,7 +178,7 @@ function THG_main(pres=pres)
             inputs = Fields.GaussGaussField(λ0=λ0, τfwhm=τ,                   # model input beam as Gaussian 
                     energy=IRenergy, w0=w0, propz=propz)
         else 
-            inputs = Fields.GaussGaussField(λ0=λ0, τfwhm=τ,                   # model input beam as Gaussian 
+            inputs = Fields.GaussGaussField(λ0=λ0, τfwhm=τ,                   # model input beam as Gaussian (shifted coordinate system due to regions outside cell)
             energy=IRenergy, w0=w0, propz=propz+L_total/2)
         end                
     end            
@@ -184,7 +189,7 @@ function THG_main(pres=pres)
 
     # ----------------- ADD CHIRP ----------------------------
 
-    Fields.prop_material!(Eω, grid, material, thickness, λ0)              # compensate chirp due to mirror
+    Fields.prop_material!(Eω, grid, material, thickness, λ0)              # account for chirp due to mirrors, etc. 
     Fields.prop_taylor!(Eω, grid, ϕs, λ0)                                 # add chirp using spectral phase Taylor coefficients ϕs
 
     # ----------------- RUN SIMULATION ----------------------------
@@ -202,24 +207,21 @@ function THG_main(pres=pres)
     zout = output.data["z"]      # sampled points along z [m] 
 
     # * * * DEFINE USEFUL GRID INDICES:
-    ω0idx         = argmin(abs.(ω .- 2π*PhysData.c/λ0))                   # index X such that ω[X]=ω0 (fundamental)
-    ωTHidx        = argmin(abs.(ω .- 2π*PhysData.c/(λ0/3)))               # index X such that ω[X]=3ω0 (TH)
     ωhighUVidx    = argmin(abs.(ω .- 2π*PhysData.c/λ_rangeUV[1]))         # index X such that ω[X]=ω_maxUV 
     ωlowUVidx     = argmin(abs.(ω .- 2π*PhysData.c/λ_rangeUV[2]))         # index X such that ω[X]=ω_minUV
     ωhighIRidx    = argmin(abs.(ω .- 2π*PhysData.c/λ_rangeIR[1]))         # index X such that ω[X]=ω_maxIR 
     ωlowIRidx     = argmin(abs.(ω .- 2π*PhysData.c/λ_rangeIR[2]))         # index X such that ω[X]=ω_minIR
 
-    λhighidx    = argmin(abs.(λ .- λ_rangeUV[1]))         # index X such that λ[X]=λ_maxUV 
-    λlowidx     = argmin(abs.(λ .-λ_rangeUV[2]))          # index X such that λ[X]=λ_minUV
+    λhighidx    = argmin(abs.(λ .- λ_rangeUV[1]))                         # index X such that λ[X]=λ_maxUV 
+    λlowidx     = argmin(abs.(λ .-λ_rangeUV[2]))                          # index X such that λ[X]=λ_minUV
 
     # * * * EXTRACT FIELD AMPLITUDES:
     Eout = output.data["Eω"]                         # Hankel-transformed amplitude in frequency domain  
     Erout = (q \ Eout)                               # Real-space amplitude in frequency domain at r ≠ 0   (NOTE:"\" represents inverse Hankel transform) 
     
-
-    Er0 = zeros(ComplexF64, (size(Eout, 1), size(Eout, 3)))      # set up array for total real-space amplitude in frequency domain 
+    Er0 = zeros(ComplexF64, (size(Eout, 1), size(Eout, 3)))      # set up array for total (integrated along r) real-space amplitude in frequency domain 
     for i = 1:size(Eout, 1), j = 1:size(Eout, 3)
-        Er0[i,j] = Hankel.integrateK(Eout[i,:,j], q) # integrate along r to obtain total real-space amplitude in frequency domain  
+        Er0[i,j] = Hankel.integrateK(Eout[i,:,j], q)             # integrate along r (technically: k) to obtain total real-space amplitude in frequency domain  
     end 
 
     Etout = FFTW.irfft(Erout, length(t), 1)     # time-domain real field amplitude at r≠0
@@ -295,8 +297,8 @@ function THG_main(pres=pres)
     for i = 1:length(zout)
 
         for j=1:length(q.r)
-            Iωr_UV[j,i] = integrate(ω[ωlowUVidx:ωhighUVidx],Iωr[ωlowUVidx:ωhighUVidx, j, i], SimpsonEven()) # frequency domain UV intensity
-            Iωr_IR[j,i] = integrate(ω[ωlowIRidx:ωhighIRidx],Iωr[ωlowIRidx:ωhighIRidx, j, i], SimpsonEven())  # frequency domain IR intensity
+            Iωr_UV[j,i] = integrate(ω[ωlowUVidx:ωhighUVidx],Iωr[ωlowUVidx:ωhighUVidx, j, i], SimpsonEven()) # frequency domain UV intensity (at r ≠0)
+            Iωr_IR[j,i] = integrate(ω[ωlowIRidx:ωhighIRidx],Iωr[ωlowIRidx:ωhighIRidx, j, i], SimpsonEven())  # frequency domain IR intensity (at r ≠ 0)
         end    
 
         Iω0_UV[i] = integrate(ω[ωlowUVidx:ωhighUVidx],Iω0[ωlowUVidx:ωhighUVidx,  i] ,SimpsonEven()) # frequency domain UV intensity (integrated along r)
@@ -341,15 +343,12 @@ function THG_main(pres=pres)
 
         # set plot formatting 
         rcParams = PyDict(matplotlib."rcParams") # get rcParams 
-        rcParams["text.usetex"] = true # enable LaTeX renadering
+        if disable_latex rcParams["text.usetex"] = true end # enable LaTeX renadering
         rcParams["mathtext.fontset"] = "cm" # use LateX font for maths
         rcParams["font.family"] = "STIXGeneral" # use LateX font for text
         rcParams["font.size"] = 16 # set standard font size 
         fig_dim = 2* [3.14961, 2.3622075] # for 8cm width ; double for 16cm width  
 
-        show_title = false # if false: hides figure titles
-        norm = true # if true: norm intensities
-        
         #+++++ PLOT 1:  IR and UV intensities as functions of z and r≠0
         plt.figure(figsize=fig_dim)
         if show_title plt.suptitle("Off-axis intensity of IR and UV beams") end

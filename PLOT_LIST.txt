@@ -6,13 +6,21 @@ PLOT LIST
 the following is the list of plots for the manuscript. I will prepare the relevant code in the next few days so that it is directly ready to use when the updated COMSOL data is available. Let me know if there is anything I am missing or that should be amended:
 
     A. Pressure scan (UV energy v. pressure) for Ar (150mW) and Ne (400mW); with and without overlayed simulated data 
+	[code not ready  -> adapt scan_eval !!]
     B. UV spectrum for Ar (150mW, 0.4bar) and Ne (400mW, 2.0bar); with and without overlayed simulated data
+	[code ready; maybe change labels etc. *]
     C. Simulated UV spectrum for Ar (150mW, 0.4bar) and/or Ne (400mW, 2.0bar), new chip versus old 2019 cell
+	[code not ready -> make extra file for spectrum plots ?!*]
     D. Spatiotemporal UV beam profile at output for Ar (150mW, 0.4bar) and/or Ne (400mW, 2.0bar), with and without ionisation 
+        [code ready; supply ion and non ion independently]
     E. Spatiotemporal UV beam profile at various cell positions for Ar (150mW, 0.4bar) and/or Ne (400mW, 2.0bar) 
+	[code ready]
     F. Effect of chirp on spectrum for Ar (150mW, 0.4bar) and/or Ne (400mW, 2.0bar); chirp: 0, +11fs^2, -11fs^2 
+	[code not ready*]
     G. Effect of CEP on spectrum for Ar (150mW, 0.4bar) and/or Ne (400mW, 2.0bar); CEP: 0, pi/4, pi/2, 3pi/4, pi 
+	[code not ready*]
     H. Overlay the 10 best (broadest) UV spectra across all gases and pressures 
+	[code not ready*]
 
 
 I will also prepare a table with ratios of the relative saturation energies, saturation pressures, and pulse durations of Argon and Neon.

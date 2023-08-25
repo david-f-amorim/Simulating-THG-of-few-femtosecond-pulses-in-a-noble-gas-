@@ -7,12 +7,19 @@ import json
 
 single = False  # if True: process output from a single pressure scan; if False: process output from a set of different pressure scans ("multi-scan")
 
-n    = 15   # maximum number of overlayed spectra in one plot (to avoid clutter)
+n    = 8   # maximum number of overlayed spectra in one plot (to avoid clutter)
 show = True # if True: open plots in matplotlib GUI; if False: don't show plots (directly write to file) 
 save = True # if True: saves plots 
 
 old = False # if True: skip some features that were not available with some older scan data; only use if error occurs when old == False
 
+show_title = True
+norm = True 
+comp_exp = True
+disable_latex = False 
+
+shift_sim = "no" # either: "no", "offset", or "factor"
+set_shift = None # if 
 
 # ---------- MULTI-SCAN SETTINGS --------------------------------------
 
@@ -20,7 +27,8 @@ old = False # if True: skip some features that were not available with some olde
 
 # ---------- INPUT/OUTPUT HANDLING --------------------------------------
 
-single_dir = "scan_new_prelims\\scan_300.0mW_Ar_0.0rad_f_ion_grad" # path to pressure scan directory to process if single=True (Note: output will be written to same directory)
+single_dir = "parameter_scans\\gas_scans\\scan_200.0mW_Ne_0.0rad_f_ion_coms" # path to pressure scan directory to process if single=True (Note: output will be written to same directory)
+exp_file = "raw_input\\Ne_200mW_IR.txt"
 
 sup_dir = "parameter_scans\\gas_scans" # if single==False, path to super directory containing the various pressure scan directories 
 out_dir = "scan_analysis\\gas_scans"   # if single==False, path to output directory for the produced plots 
@@ -372,90 +380,122 @@ def get_spectra(path, n):
 colour_cycle = ["grey", "black", "red", "blue", "purple", "green", "cyan", "orange", "deeppink"]
 
 # plot UV energy, THG conversion efficiency, pulse duration, UV peak position, and UV spectra for a single scan 
-def plot_single(single_dir, n=15):
+def plot_single(single_dir, n=n):
 
+    # set plot formatting 
+    if disable_latex == False : plt.rcParams["text.usetex"] = True   # enable LaTeX renadering
+    plt.rcParams["mathtext.fontset"] = "cm" # use LateX font for maths
+    plt.rcParams["font.family"] = "STIXGeneral" # use LateX font for text
+    plt.rcParams["font.size"] = 16 # set standard font size 
+    fig_dim = [2 * 3.14961,2* 2.3622075] # for 8cm width ; double for 16cm width
+
+    # get data 
     p_arr, en_arr, ef_arr, tau_arr, zpeak_arr = get_data(single_dir)
-    p_peak, en_peak, ef_peak, tau_peak, min_tau_p = get_peaks(single_dir)
-    params_arr, params_dict = get_params(single_dir)
+    peak_arr = get_peaks(single_dir)
+    
+    # import measured energy data (should be: first col pressure in bar; other cols energy in nJ)
+    if comp_exp:
+        measured_arr = np.loadtxt(exp_file, skiprows=0, delimiter=";", dtype="float")
+        p_measured = measured_arr[:, 0]
+        en_measured = np.mean(measured_arr[:,1:], axis=1)
+        
+        if shift_sim:
+            if shift_sim == "offset" :
 
-    title_str = ""
-    for key, val in params_dict.items():
-        title_str += key+": "+str(val)+"; "
+                if set_shift == None:
+                    dif = peak_arr[3] - p_measured[np.where(en_measured == np.max(en_measured) )][0]
+                else: dif = set_shift
 
-    plt.figure(figsize=[7.04, 5.28]) 
-    plt.subplots_adjust(top=0.84)
-    plt.suptitle("Simulated UV energies", fontsize=16)
-    plt.title(title_str, fontsize=10, pad=10)
+                p_arr -= dif
+            elif shift_sim == "factor" :
+                if set_shift == None:
+                    fac = peak_arr[3] / p_measured[np.where(en_measured == np.max(en_measured) )][0]
+                else: fac = set_shift
+                p_arr /= fac
+            
+    # plots
+    plt.figure(figsize=fig_dim) 
+    plt.subplots_adjust(top=0.9, bottom=0.14)
+    if show_title: plt.title("Simulated UV energies")
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, en_arr*1e9, color="blue")
-    plt.scatter(p_arr, en_arr*1e9, color="blue", label="Peak: {0:.1f}nJ at {1}bar".format(en_peak*1e9, p_peak))
-    plt.legend(loc="upper left")
+    plt.scatter(p_arr, en_arr*1e9, color="blue", label= ("Peak: {0:.1f}nJ at {1}bar".format(peak_arr[0]*1e9, peak_arr[3]) if comp_exp == False else "sim."))
+    if comp_exp:
+        plt.plot(p_measured, en_measured, color="red")
+        plt.scatter(p_measured, en_measured, color="red", label="exp.")
+        plt.xlim(0, max(p_measured)+0.1)
+
+    plt.legend(loc="upper right")
 
     if save: plt.savefig(os.path.join(single_dir,"energies.png"),dpi=1000)
     if show: plt.show()
 
-    plt.figure(figsize=[7.04, 5.28]) 
-    plt.subplots_adjust(top=0.84)
-    plt.suptitle("Simulated THG efficiencies", fontsize=16)
-    plt.title(title_str, fontsize=10, pad=10)
-    plt.ylabel("Efficiency (%)")
-    plt.xlabel("Central pressure (bar)")
-    plt.plot(p_arr, ef_arr*1e2, color="blue")
-    plt.scatter(p_arr, ef_arr*1e2, color="blue", label="Peak: {0:.2f}% at {1}bar".format(ef_peak*1e2, p_peak))
-    plt.legend()
-
-    if save: plt.savefig(os.path.join(single_dir,"efficiencies.png"),dpi=1000)
-    if show: plt.show()
-
-    if old==False:
-        plt.figure(figsize=[7.04, 5.28]) 
-        plt.subplots_adjust(top=0.84)
-        plt.suptitle("Simulated pulse durations", fontsize=16)
-        plt.title(title_str, fontsize=10, pad=10)
-        plt.ylabel("Pulse duration (fs)")
-        plt.xlabel("Central pressure (bar)")
-        plt.plot(p_arr, tau_arr*1e15, color="blue")
-        plt.scatter(p_arr, tau_arr*1e15, color="blue", label="Minimum: {0:.2f}fs at {1}bar".format(tau_peak*1e15, min_tau_p))
-        plt.legend()
-
-        if save: plt.savefig(os.path.join(single_dir,"durations.png"),dpi=1000)
-        if show: plt.show()
-
-        plt.figure(figsize=[7.04, 5.28]) 
-        plt.subplots_adjust(top=0.84)
-        plt.suptitle("Position of peak UV energy", fontsize=16)
-        plt.title(title_str, fontsize=10, pad=18)
-        plt.ylabel("Position (mm)")
-        plt.xlabel("Central pressure (bar)")
-        plt.plot(p_arr, zpeak_arr*1e3, color="blue")
-        plt.scatter(p_arr, zpeak_arr*1e3, color="blue", label="Maximum: {0:.2f}mm at {1}bar".format(np.max(zpeak_arr)*1e3,p_arr[np.where(zpeak_arr == np.max(zpeak_arr) )][0]))
-        plt.legend()
-
-        if save: plt.savefig(os.path.join(single_dir,"z_peak.png"),dpi=1000)
-        if show: plt.show()
-
-    plt.figure(figsize=[7.04, 5.28]) 
-    plt.subplots_adjust(top=0.82)
-    plt.suptitle("Simulated UV spectra", fontsize=16)
-    plt.title(title_str, fontsize=10, pad=10)
-    plt.ylabel("Intensity (arb. units)")
-    plt.xlabel("Wavelength (nm)")
-
-    N = len(p_arr)
-    cmap = plt.get_cmap("viridis")
-    data, p_cut = get_spectra(single_dir, n)
-    cidx = p_cut / np.max(p_cut) 
+    if comp_exp==False:
     
-    if N<=n:
-        n=N
+        plt.figure(figsize=fig_dim) 
+        if show_title: plt.title("Simulated THG efficiencies")
+        plt.subplots_adjust(top=0.9, bottom=0.14, left=0.16)
+        plt.ylabel('Efficiency (\%)')
+        plt.xlabel("Central pressure (bar)")
+        plt.plot(p_arr, ef_arr*1e2, color="blue")
+        plt.scatter(p_arr, ef_arr*1e2, color="blue", label="Peak: {0:.2f}\% at {1}bar".format(peak_arr[1]*1e2, peak_arr[3]))
+        plt.legend()
 
-    for i in np.arange(n):
-        plt.plot(data[i,1]*1e9, data[i,2], color=cmap(cidx[i]), label="{0}bar".format(data[i,0]))
-    plt.legend(loc="upper right")
+        if save: plt.savefig(os.path.join(single_dir,"efficiencies.png"),dpi=1000)
+        if show: plt.show()
 
-    if save: plt.savefig(os.path.join(single_dir,"spectra.png"),dpi=1000)
-    if show: plt.show()
+        if old==False:
+            plt.figure(figsize=fig_dim) 
+            plt.subplots_adjust(top=0.9, bottom=0.14)
+            if show_title: plt.title("Simulated pulse durations")
+            plt.ylabel("Pulse duration (fs)")
+            plt.xlabel("Central pressure (bar)")
+            plt.plot(p_arr, tau_arr*1e15, color="blue")
+            plt.scatter(p_arr, tau_arr*1e15, color="blue", label="Minimum: {0:.2f}fs at {1}bar".format(peak_arr[2]*1e15, peak_arr[4]))
+            plt.legend()
+
+            if save: plt.savefig(os.path.join(single_dir,"durations.png"),dpi=1000)
+            if show: plt.show()
+
+            plt.figure(figsize=fig_dim) 
+            plt.subplots_adjust(top=0.9, bottom=0.14)
+            if show_title: plt.title("Position of peak UV energy")
+            plt.ylabel("Position (mm)")
+            plt.xlabel("Central pressure (bar)")
+            plt.plot(p_arr, zpeak_arr*1e3, color="blue")
+            plt.scatter(p_arr, zpeak_arr*1e3, color="blue", label="Maximum: {0:.2f}mm at {1}bar".format(np.max(zpeak_arr)*1e3,p_arr[np.where(zpeak_arr == np.max(zpeak_arr) )][0]))
+            plt.legend()
+
+            if save: plt.savefig(os.path.join(single_dir,"z_peak.png"),dpi=1000)
+            if show: plt.show()
+
+        plt.figure(figsize=fig_dim) 
+        plt.subplots_adjust(top=0.9, bottom=0.14)
+        if show_title: plt.title("Simulated UV spectra")
+        plt.ylabel("I (arb. units)" if norm==False else "I (norm.)")
+        plt.xlabel("$\lambda$ (nm)")
+
+        N = len(p_arr)
+        cmap = plt.get_cmap("viridis")
+        data, p_cut = get_spectra(single_dir, n)
+        cidx = p_cut / np.max(p_cut) 
+        
+        if N<=n:
+            n=N
+
+        if norm: 
+            maxI = 0
+            for i in np.arange(n):
+                if np.max(data[i,2]) > maxI:
+                    maxI = np.max(data[i,2])    
+
+        for i in np.arange(n):
+            plt.plot(data[i,1]*1e9, data[i,2] if norm==False else data[i,2]/maxI, color=cmap(cidx[i]), label="{0}bar".format(data[i,0]))
+        plt.legend(loc="upper right")
+
+        if save: plt.savefig(os.path.join(single_dir,"spectra.png"),dpi=1000)
+        if show: plt.show()
 
 # plot UV energy, THG conversion efficiency, pulse duration, UV peak position, for two scans, differing in second_var 
 def plot_double(scan_dir, second_var,**kwargs):
@@ -470,72 +510,82 @@ def plot_double(scan_dir, second_var,**kwargs):
     p_arr2, UVen_arr2, ef_arr2, tau_arr2, zpeak_arr2 = get_data(paths[1])
     peak_arr2 = get_peaks(paths[1])
 
+    gas, dens_mod, tau, lam0, w0, CEP, IR_energy, ion, propz, GVD, thickness, ion_mod, IR_int
+
+    # set labels
+    if second_var[0]=="gas": 
+        label1 = second_var[1]
+        label2 = second_var[2]
+    elif second_var[0]=="dens_mod":
+
+
     # set subtitle and output string
-    title_str = ""
     out_dir_str=""
     for key, val in kwargs.items():
-        title_str += key+": "+str(val)+"; "
         out_dir_str += key+"="+str(val)+"_"
     out_path = os.path.join(out_dir, "two_comparison_"+out_dir_str) 
     if save and not os.path.isdir(out_path): 
         os.mkdir(out_path)    
 
-    plt.figure(figsize=[7.04, 5.28]) 
+    # set plot formatting 
+    if disable_latex == False : plt.rcParams["text.usetex"] = True   # enable LaTeX renadering
+    plt.rcParams["mathtext.fontset"] = "cm" # use LateX font for maths
+    plt.rcParams["font.family"] = "STIXGeneral" # use LateX font for text
+    plt.rcParams["font.size"] = 16 # set standard font size 
+    fig_dim = [2 * 3.14961,2* 2.3622075] # for 8cm width ; double for 16cm width
+
+    plt.figure(figsize=fig_dim) 
     plt.subplots_adjust(top=0.84)
-    plt.suptitle("Simulated UV energies", fontsize=16)
-    plt.title(title_str, fontsize=10, pad=10)
+    if show_title: plt.title("Simulated UV energies")
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, UVen_arr*1e9, color="blue")
-    plt.scatter(p_arr, UVen_arr*1e9, color="blue", label="{2}={3} (Peak: {0:.1f}nJ at {1}bar)".format(peak_arr[0]*1e9, peak_arr[3], second_var[0], second_var[1]))
+    plt.scatter(p_arr, UVen_arr*1e9, color="blue", label=label1)
     plt.plot(p_arr2, UVen_arr2*1e9, color="red")
-    plt.scatter(p_arr2, UVen_arr2*1e9, color="red", label="{2}={3} (Peak: {0:.1f}nJ at {1}bar)".format(peak_arr2[0]*1e9, peak_arr2[3], second_var[0], second_var[2]))
+    plt.scatter(p_arr2, UVen_arr2*1e9, color="red", label=label2)
     plt.legend(loc="upper left")
 
     if save: plt.savefig(os.path.join(out_path,"energies.png"),dpi=1000)
     if show: plt.show()
 
-    plt.figure(figsize=[7.04, 5.28]) 
+    plt.figure(figsize=fig_dim) 
     plt.subplots_adjust(top=0.84)
-    plt.suptitle("Simulated THG efficiencies", fontsize=16)
-    plt.title(title_str, fontsize=10, pad=10)
+    if show_title: plt.title("Simulated THG efficiencies")
     plt.ylabel("Efficiency (%)")
     plt.xlabel("Central pressure (bar)")
     plt.plot(p_arr, ef_arr*1e2, color="blue")
-    plt.scatter(p_arr, ef_arr*1e2, color="blue", label="{2}={3} ( Peak: {0:.2f}% at {1}bar)".format(peak_arr[1]*1e2, peak_arr[3], second_var[0], second_var[1]))
+    plt.scatter(p_arr, ef_arr*1e2, color="blue", label=label1)
     plt.plot(p_arr2, ef_arr2*1e2, color="red")
-    plt.scatter(p_arr2, ef_arr2*1e2, color="red", label="{2}={3} ( Peak: {0:.2f}% at {1}bar)".format(peak_arr2[1]*1e2, peak_arr2[3], second_var[0], second_var[2]))
-    plt.legend()
+    plt.scatter(p_arr2, ef_arr2*1e2, color="red", label=label2)
+    plt.legend(loc="upper left")
 
     if save: plt.savefig(os.path.join(out_path,"efficiencies.png"),dpi=1000)
     if show: plt.show()
 
     if old==False:
-        plt.figure(figsize=[7.04, 5.28]) 
+        plt.figure(figsize=fig_dim) 
         plt.subplots_adjust(top=0.84)
-        plt.suptitle("Simulated pulse durations", fontsize=16)
-        plt.title(title_str, fontsize=10, pad=10)
+        if show_title: plt.title("Simulated pulse durations")
         plt.ylabel("Pulse duration (fs)")
         plt.xlabel("Central pressure (bar)")
         plt.plot(p_arr, tau_arr*1e15, color="blue")
-        plt.scatter(p_arr, tau_arr*1e15, color="blue", label="{2}={3} (Minimum: {0:.2f}fs at {1}bar)".format(peak_arr[2]*1e15, peak_arr[4], second_var[0], second_var[1]))
+        plt.scatter(p_arr, tau_arr*1e15, color="blue", label=label1)
         plt.plot(p_arr2, tau_arr2*1e15, color="red")
-        plt.scatter(p_arr2, tau_arr2*1e15, color="red", label="{2}={3} (Minimum: {0:.2f}fs at {1}bar)".format(peak_arr2[2]*1e15, peak_arr2[4], second_var[0], second_var[2]))
+        plt.scatter(p_arr2, tau_arr2*1e15, color="red", label=label2)
         plt.legend()
 
         if save: plt.savefig(os.path.join(out_path,"durations.png"),dpi=1000)
         if show: plt.show()
 
-        plt.figure(figsize=[7.04, 5.28]) 
+        plt.figure(figsize=fig_dim) 
         plt.subplots_adjust(top=0.84)
-        plt.suptitle("Position of peak UV energy", fontsize=16)
-        plt.title(title_str, fontsize=10, pad=10)
+        if show_title: plt.title("Position of peak UV energy")
         plt.ylabel("Position (mm)")
         plt.xlabel("Central pressure (bar)")
         plt.plot(p_arr, zpeak_arr*1e3, color="blue")
-        plt.scatter(p_arr, zpeak_arr*1e3, color="blue", label="{0}={1}".format(second_var[0], second_var[1]))
+        plt.scatter(p_arr, zpeak_arr*1e3, color="blue", label=label1)
         plt.plot(p_arr2, zpeak_arr2*1e3, color="red")
-        plt.scatter(p_arr2, zpeak_arr2*1e3, color="red", label="{0}={1}".format(second_var[0], second_var[2]))
+        plt.scatter(p_arr2, zpeak_arr2*1e3, color="red", label=label2)
         plt.legend()
 
         if save: plt.savefig(os.path.join(out_path,"z_peak.png"),dpi=1000)
@@ -607,8 +657,8 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
     cmap = plt.get_cmap("viridis")
     cidx = IR_energy_arr / np.max(IR_energy_arr) 
 
-    plt.figure(figsize=[7.04, 5.28]) 
-    plt.suptitle("Simulated UV energies", fontsize=16)
+    plt.figure(figsize=fig_dim) 
+    if show_title: plt.suptitle("Simulated UV energies", fontsize=16)
     plt.title(title_str, fontsize=10)
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
@@ -629,8 +679,8 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
     if show: plt.show()
 
     # PLOT 2: efficiency vs pressure 
-    plt.figure(figsize=[7.04, 5.28]) 
-    plt.suptitle("Simulated THG efficiencies", fontsize=16)
+    plt.figure(figsize=fig_dim) 
+    if show_title: plt.suptitle("Simulated THG efficiencies", fontsize=16)
     plt.title(title_str, fontsize=10)
     plt.ylabel("Efficiency (%)")
     plt.xlabel("Central pressure (bar)")
@@ -652,8 +702,8 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
 
     # PLOT 3: pulse duration vs pressure
     if old==False:  
-        plt.figure(figsize=[7.04, 5.28]) 
-        plt.suptitle("Simulated UV pulse durations", fontsize=16)
+        plt.figure(figsize=fig_dim) 
+        if show_title: plt.suptitle("Simulated UV pulse durations", fontsize=16)
         plt.title(title_str, fontsize=10)
         plt.ylabel("Pulse duration (fs)")
         plt.xlabel("Central pressure (bar)")
@@ -674,8 +724,8 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
 
     # PLOT 4: z_peak vs pressure 
     if old==False:
-        plt.figure(figsize=[7.04, 5.28]) 
-        plt.suptitle("Position of peak UV energy", fontsize=16)
+        plt.figure(figsize=fig_dim) 
+        if show_title: plt.suptitle("Position of peak UV energy", fontsize=16)
         plt.title(title_str, fontsize=10)
         plt.ylabel("Position (mm)")
         plt.xlabel("Central pressure (bar)")
@@ -718,10 +768,10 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
             peak_arr2[i,4] = min_tau 
             peak_arr2[i,5] =  min_tau_pres
 
-    fig, ax = plt.subplots(figsize=[7.04, 5.28])
+    fig, ax = plt.subplots(figsize=fig_dim)
     plt.subplots_adjust(top=0.8, right=0.9)
     ax.set_title(title_str, fontsize=10)
-    plt.suptitle("Simulated peak UV energies", fontsize=16)
+    if show_title: plt.suptitle("Simulated peak UV energies", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Peak UV energy (nJ)")
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
@@ -740,10 +790,10 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
     if save: plt.savefig(os.path.join(out_path,"peak_en_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
-    fig, ax = plt.subplots(figsize=[7.04, 5.28])
+    fig, ax = plt.subplots(figsize=fig_dim)
     plt.subplots_adjust(top=0.8, right=0.9)
     ax.set_title(title_str, fontsize=10)
-    plt.suptitle("Simulated peak UV efficiencies", fontsize=16)
+    if show_title: plt.suptitle("Simulated peak UV efficiencies", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Efficiency (%)")
 
@@ -762,10 +812,10 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
     if save: plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
-    fig, ax = plt.subplots(figsize=[7.04, 5.28])
+    fig, ax = plt.subplots(figsize=fig_dim)
     plt.subplots_adjust(top=0.8, right=0.9)
     ax.set_title(title_str, fontsize=10)
-    plt.suptitle("Simulated saturation pressures", fontsize=16)
+    if show_title: plt.suptitle("Simulated saturation pressures", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Saturation pressure (bar)")
     if bool_sec_var:
@@ -785,10 +835,10 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
     if show: plt.show()
 
     if old==False:
-        fig, ax = plt.subplots(figsize=[7.04, 5.28])
+        fig, ax = plt.subplots(figsize=fig_dim)
         plt.subplots_adjust(top=0.8, right=0.9)
         ax.set_title(title_str, fontsize=10)
-        plt.suptitle("Simulated UV pulse durations", fontsize=16)
+        if show_title: plt.suptitle("Simulated UV pulse durations", fontsize=16)
         ax.set_xlabel("Beam power (mW)")
         ax.set_ylabel("Minimum pulse duration (fs)")
         if bool_sec_var:
@@ -808,10 +858,10 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
         if show: plt.show()
 
     if old==False:
-        fig, ax = plt.subplots(figsize=[7.04, 5.28])
+        fig, ax = plt.subplots(figsize=fig_dim)
         plt.subplots_adjust(top=0.8, right=0.9)
         ax.set_title(title_str, fontsize=10)
-        plt.suptitle("Simulated minimal pulse duration pressure", fontsize=16)
+        if show_title: plt.suptitle("Simulated minimal pulse duration pressure", fontsize=16)
         ax.set_xlabel("Beam power (mW)")
         ax.set_ylabel("Minimum pulse duration pressure (bar)")
         if bool_sec_var:
@@ -857,9 +907,9 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
         os.mkdir(out_path)
 
    # PLOT 1: energy vs pressure 
-    plt.figure(figsize=[7.04, 5.28]) 
+    plt.figure(figsize=fig_dim) 
     plt.subplots_adjust(top=0.85)
-    plt.suptitle("Simulated UV energies", fontsize=16)
+    if show_title: plt.suptitle("Simulated UV energies", fontsize=16)
     plt.title("Beam power: {1}mW ({2:.1f}PW/cm^2); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
@@ -874,9 +924,9 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
     if show: plt.show()
 
     # PLOT 2: efficiency vs pressure 
-    plt.figure(figsize=[7.04, 5.28]) 
+    plt.figure(figsize=fig_dim) 
     plt.subplots_adjust(top=0.85)
-    plt.suptitle("Simulated THG efficiencies", fontsize=16)
+    if show_title: plt.suptitle("Simulated THG efficiencies", fontsize=16)
     plt.title("Beam power: {1}mW ({2:.1f}PW/cm^2); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Efficiency (%)")
     plt.xlabel("Central pressure (bar)")
@@ -891,9 +941,9 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
     if show: plt.show()
 
     # PLOT 3: pulse duration vs pressure 
-    plt.figure(figsize=[7.04, 5.28]) 
+    plt.figure(figsize=fig_dim) 
     plt.subplots_adjust(top=0.85)
-    plt.suptitle("Simulated UV pulse durations", fontsize=16)
+    if show_title: plt.suptitle("Simulated UV pulse durations", fontsize=16)
     plt.title("Beam power: {1}mW ({2:.1f}PW/cm^2); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Pulse duration (fs)")
     plt.xlabel("Central pressure (bar)")
@@ -908,9 +958,9 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
     if show: plt.show()
 
     # PLOT 4: z_peak vs pressure 
-    plt.figure(figsize=[7.04, 5.28]) 
+    plt.figure(figsize=fig_dim) 
     plt.subplots_adjust(top=0.85)
-    plt.suptitle("Position of peak UV energy", fontsize=16)
+    if show_title: plt.suptitle("Position of peak UV energy", fontsize=16)
     plt.title("Beam power: {1}mW ({2:.1f}PW/cm^2); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
     plt.ylabel("Position (mm)")
     plt.xlabel("Central pressure (bar)")
@@ -972,10 +1022,10 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
         peak_data[j, 0] = gas_arr[j]
         peak_data[j, 1] = peak_arr    
 
-    fig, ax = plt.subplots(figsize=[7.04, 5.28])
+    fig, ax = plt.subplots(figsize=fig_dim)
     plt.subplots_adjust(top=0.8, right=0.9)
     ax.set_title("CEP: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
-    plt.suptitle("Simulated peak UV energies", fontsize=16)
+    if show_title: plt.suptitle("Simulated peak UV energies", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Peak UV energy (nJ)")
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
@@ -990,10 +1040,10 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
     if save: plt.savefig(os.path.join(out_path,"peak_en_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
-    fig, ax = plt.subplots(figsize=[7.04, 5.28])
+    fig, ax = plt.subplots(figsize=fig_dim)
     plt.subplots_adjust(top=0.8, right=0.9)
     ax.set_title("CEP: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
-    plt.suptitle("Simulated peak UV efficiencies", fontsize=16)
+    if show_title: plt.suptitle("Simulated peak UV efficiencies", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Efficiency (%)")
 
@@ -1008,10 +1058,10 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
     if save: plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
-    fig, ax = plt.subplots(figsize=[7.04, 5.28])
+    fig, ax = plt.subplots(figsize=fig_dim)
     plt.subplots_adjust(top=0.8, right=0.9)
     ax.set_title("CEP: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
-    plt.suptitle("Simulated saturation pressures", fontsize=16)
+    if show_title: plt.suptitle("Simulated saturation pressures", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Saturation pressure (bar)")
     
@@ -1027,10 +1077,10 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
     if save: plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
-    fig, ax = plt.subplots(figsize=[7.04, 5.28])
+    fig, ax = plt.subplots(figsize=fig_dim)
     plt.subplots_adjust(top=0.8, right=0.9)
     ax.set_title("CEP: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
-    plt.suptitle("Simulated UV pulse durations", fontsize=16)
+    if show_title: plt.suptitle("Simulated UV pulse durations", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Minimum pulse duration (fs)")
     for k in np.arange(len(gas_arr)):
@@ -1045,10 +1095,10 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
     if save: plt.savefig(os.path.join(out_path,"tau_min_vs_beam_power.png"),dpi=1000)
     if show: plt.show()
 
-    fig, ax = plt.subplots(figsize=[7.04, 5.28])
+    fig, ax = plt.subplots(figsize=fig_dim)
     plt.subplots_adjust(top=0.8, right=0.9)
     ax.set_title("CEP: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
-    plt.suptitle("Simulated minimal pulse duration pressure", fontsize=16)
+    if show_title: plt.suptitle("Simulated minimal pulse duration pressure", fontsize=16)
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Minimum pulse duration pressure (bar)")
     for k in np.arange(len(gas_arr)):
