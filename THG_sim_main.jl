@@ -495,17 +495,18 @@ function THG_main(pres=pres)
 
         #+++++ PLOT 7:  pulse energies and efficiency 
         plt.figure(figsize=fig_dim)
-        if show_title plt.suptitle("Pulse energies (THG conversion efficiency: η="*string(round(η_THG, digits=4) *100)*"%)") end
+        if show_title plt.suptitle("Pulse energies (THG conversion efficiency: "*L"\eta="*string(round(η_THG, digits=4) *100)*"%)") end
         plt.subplots_adjust(hspace=0.5)
 
         plt.subplot(2,1,1)
         plt.xlabel("z (mm)")
         plt.ylabel("E ("*L"\mu"*"J)")
+        plt.plot(zout.*1e3, tot_pulse_en.*1e6, label=L"\Delta"*"E=-$(round(Int64, tot_pulse_en[1]*1e6-tot_pulse_en[end]*1e6))μJ", color="red")
         plt.title("Total pulse ")
         plt.legend()
 
         plt.subplot(2,1,2)
-        plt.plot(zout.*1e3, UV_pulse_en.*1e9, label="ΔE=+$(round(Int64, UV_pulse_en[end]*1e9))nJ", color="red")
+        plt.plot(zout.*1e3, UV_pulse_en.*1e9, label=L"\Delta"*"E=+$(round(Int64, UV_pulse_en[end]*1e9))nJ", color="red")
         plt.xlabel("z (mm)")
         plt.ylabel("E (nJ)")
         plt.title("UV pulse")
@@ -534,7 +535,7 @@ function THG_main(pres=pres)
         plt.xlabel("t (fs)")
         plt.xlim(minimum(t)*1e15, maximum(t)*1e15)
         plt.ylabel("I(z=0) (arb. units)")
-        plt.plot(t*1e15, It0[:,1] , color="red", label="FWHM pulse duration: τ="*string(round(τ_input*1e15, digits=1) )*"fs")
+        plt.plot(t*1e15, It0[:,1] , color="red", label="FWHM pulse duration: "*L"\tau="*string(round(τ_input*1e15, digits=1) )*"fs")
         plt.plot(t*1e15,It0_envelope[:,1], color="black", ls="--")
 
         if (read_IR & show_IR )==true  # overlay measured input pulse 
@@ -552,7 +553,7 @@ function THG_main(pres=pres)
         if show_title plt.title("Time-domain representation of UV output pulse") end
         plt.xlabel("t (fs)")
         plt.ylabel("I(z=L) (arb. units)")
-        plt.plot(t*1e15, It0_UV[:,end] , color="red", label="FWHM pulse duration: τ="*string(round(τ_UV*1e15, digits=1) )*"fs")
+        plt.plot(t*1e15, It0_UV[:,end] , color="red", label="FWHM pulse duration: "*L"\tau="*string(round(τ_UV*1e15, digits=1) )*"fs")
         plt.plot(t*1e15,It0_UV_envelope[:,end], color="black", linestyle="--")
 
         plt.legend(loc="upper right")
