@@ -48,15 +48,15 @@ Week 6
 extendend previous pressure scans to O2 and SF6; implemented option to add chirp to the input pulse; 
 carried out minor chirp scan; added option to toggle between PPT and ADK; started working on handover PP; 
 cleaned up "file_prepare.py"; finished gas scans; changed from on-axis to total intensity/energy; 
-started re-writing "scan_eval.py"; now integrating long frequencies for intensity distributions
+started re-writing "scan_eval.py"; now integrating along frequencies for intensity distributions; changed plot design;
+
 
 
 - run "final simulations" with good parameters [and PPT!]
 	+ calculate ratios of Ar/Ne energies [just numerically at sat points]
-	+ finalise list of plots -> send to vincent for looking over !!
+	+ work on plot list 
 
-	+ notes on plot design: 8cm or 16cm width; 
-
+	
 	
 - work on "documentation"
 	+ write report

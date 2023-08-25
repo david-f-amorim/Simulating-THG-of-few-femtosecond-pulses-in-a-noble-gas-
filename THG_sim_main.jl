@@ -4,7 +4,8 @@ import FFTW
 import Luna: Hankel  
 import NumericalIntegration: integrate, SimpsonEven          
 import Dates                   
-using  DelimitedFiles         
+using  DelimitedFiles
+using  LaTeXStrings         
 
 # ----------------- QUICK SETTINGS -------------------------------
 p_scan = false               # if true, run is counted as part of a pressure scan 
@@ -334,7 +335,7 @@ function THG_main(pres=pres)
     # ----------------- PLOT RESULTS ----------------------------
     if txt_only == false 
 
-        @eval using PyPlot
+        @eval import PyPlot: pygui, plt, PyDict
         close("all")
         pygui(true)
 
@@ -399,7 +400,7 @@ function THG_main(pres=pres)
         plt.figure(figsize=fig_dim)
         if show_title plt.title("Gas density profile") end
         
-        plt.plot(zout*1e3, [dens(i) for i in zout] ./ PhysData.N_A, label="central pressure: P₀=$(pres) bar", color="red")
+        plt.plot(zout*1e3, [dens(i) for i in zout] ./ PhysData.N_A, label="central pressure: "*L"P_0"*"$(pres) bar", color="red")
         plt.ylabel(L"\rho"*"(mol/"*L"m^3"*")")
         plt.xlabel("z (mm)")
         plt.legend(loc="upper right")
