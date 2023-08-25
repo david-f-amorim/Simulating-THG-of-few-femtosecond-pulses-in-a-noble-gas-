@@ -347,7 +347,7 @@ function THG_main(pres=pres)
         rcParams["font.size"] = 16 # set standard font size 
         fig_dim = 2* [3.14961, 2.3622075] # for 8cm width ; double for 16cm width  
 
-        show_title = true # if false: hides figure titles
+        show_title = false # if false: hides figure titles
         norm = true # if true: norm intensities
         
         #+++++ PLOT 1:  IR and UV intensities as functions of z and r≠0
@@ -495,7 +495,7 @@ function THG_main(pres=pres)
 
         #+++++ PLOT 7:  pulse energies and efficiency 
         plt.figure(figsize=fig_dim)
-        if show_title plt.suptitle("Pulse energies ("*L"\eta_{THG}="*string(round(η_THG, digits=4) *100)*"%)") end
+        if show_title plt.suptitle("Pulse energies ("*L"\eta_{THG}="*string(round(η_THG, digits=4) *100)*L"\% )") end
         plt.subplots_adjust(hspace=0.6, top=0.86)
 
         plt.subplot(2,1,1)
@@ -519,7 +519,7 @@ function THG_main(pres=pres)
         #+++++ PLOT 8: frequency evolution 
         plt.figure(figsize=fig_dim)
         if show_title plt.suptitle("Frequency evolution") end
-        plt.pcolormesh(zout*1e3, f*1e-15log10.(Maths.normbymax(Iω0)))   
+        plt.pcolormesh(zout*1e3, f*1e-15,log10.(Maths.normbymax(Iω0)))   
         plt.clim(-6, 0)    
         plt.colorbar(label="log. I (arb. units)")
         plt.xlabel("z (mm)")
