@@ -21,6 +21,9 @@ disable_latex = False
 shift_sim = "no" # either: "no", "offset", or "factor"
 set_shift = None # if 
 
+multi_gas = False 
+multi_power = False 
+
 # ---------- MULTI-SCAN SETTINGS --------------------------------------
 
 
@@ -158,119 +161,89 @@ def two_comparison_get(sup_dir, second_var, **kwargs):
 
     return path_arr
 
-# get paths to 
-
-
 # get paths to all files in super directory with different 
 # beam energies and all other parameters equal
-def gas_comp_singleP(sup_dir,beam_en,phi, ion, dens_mod):
+def gas_comp_singleP(sup_dir,**kwargs):
 
     path_arr = []
     gas_arr = []
 
     for dir in os.listdir(sup_dir) :
-        if os.path.isdir(os.path.join(sup_dir,dir)) and (dir[-4:]==dens_mod):
-            gas,_, beam_en0, _, _, _, _, I = get_params(os.path.join(sup_dir,dir))
+        if os.path.isdir(os.path.join(sup_dir,dir)):
 
-            cond = (beam_en0==beam_en*1e-3)
+            params_arr, params_dict = get_params(os.path.join(sup_dir,dir))
+
+            cond = 1
+            
+            for key, value in kwargs.items():
+                    if (key in params_dict) and (value==params_dict.get(key)):
+                        cond *=1
+                    elif (key in params_dict) and (value !=params_dict.get(key)):
+                        cond *=0 
+                    else:
+                        raise SystemExit("Error: argument '{0}' not recognised; kwargs should be: 'gas', 'dens_mod', 'tau', 'lam0', 'w0', 'CEP', 'IR_energy', 'ion', 'propz', 'GVD', 'thickness', 'ion_mod', 'IR_int'".format(key))    
 
             if cond:
+                gas = params_arr[0]
                 path_arr.append(os.path.join(sup_dir,dir))
                 gas_arr.append(gas)
 
     return path_arr, gas_arr 
 
-
-
-    path_arr_no_ion = np.array([])
-    beam_en_arr = np.array([])
-    I_arr = np.array([])
-    path_arr_ion = np.array([])
-
-    for dir in os.listdir(sup_dir):
-        if os.path.isdir(os.path.join(sup_dir,dir)) and (dir[-4:]==dens_mod):
-            gas0, phi0, beam_en, ion, kerr0, w, tau, I = get_params(os.path.join(sup_dir,dir))
-
-            cond = (gas0==gas) & (phi0 == phi) & (kerr0 == kerr) & (ion=="false")
-
-            if cond:
-                path_arr_no_ion = np.append(path_arr_no_ion,os.path.join(sup_dir,dir))
-                beam_en_arr = np.append(beam_en_arr,beam_en)
-                I_arr = np.append(I_arr, I)
-
-    for dir in os.listdir(sup_dir):
-        if os.path.isdir(os.path.join(sup_dir,dir)) and (dir[-4:]==dens_mod):
-            gas0, phi0, beam_en, ion, kerr0, w, tau, I = get_params(os.path.join(sup_dir,dir))
-
-            cond = (gas0==gas) & (phi0 == phi) & (kerr0 == kerr) & (ion=="true") & (beam_en in beam_en_arr)
-
-            if cond:
-                path_arr_ion =np.append(path_arr_ion,os.path.join(sup_dir,dir))
-           
-
-    path_arr_no_ion = path_arr_no_ion[beam_en_arr.argsort()] 
-    path_arr_ion = path_arr_ion[beam_en_arr.argsort()]
-    I_arr = I_arr[beam_en_arr.argsort()]
-    beam_en_arr = beam_en_arr[beam_en_arr.argsort()]
-
-    return path_arr_no_ion, path_arr_ion, beam_en_arr, I_arr, w, tau 
-
-
-    for dir in os.listdir(sup_dir):
-        if os.path.isdir(os.path.join(sup_dir,dir)):
-            gas0, _, beam_en, _, _, w, tau, I = get_params(os.path.join(sup_dir,dir))
-
-            cond_coms = (gas0==gas) & (beam_en*1e3==beam_p) & (dir[-4:]=="coms")
-            cond_grad = (gas0==gas) & (beam_en*1e3==beam_p) & (dir[-4:]=="grad")
-
-            if cond_coms:
-                path_coms =os.path.join(sup_dir,dir)
-            elif cond_grad:
-                path_grad =os.path.join(sup_dir,dir)
-             
-
-    return path_coms, path_grad, beam_en, w, tau      
-
 # get paths to all files in super directory with different 
 # beam powers and all other parameters equal
-def gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
+def gas_comp_multiP(sup_dir,**kwargs):
 
     gas_arr = np.array([])
   
     for dir in os.listdir(sup_dir):
 
-        if os.path.isdir(os.path.join(sup_dir,dir)) and (dir[-4:]==dens_mod):
+        if os.path.isdir(os.path.join(sup_dir,dir)):
             
-            gas, _, beam_en,_, _, w0, tau, I = get_params(os.path.join(sup_dir,dir))
+            params_arr, _ = get_params(os.path.join(sup_dir,dir))
 
-            if not (gas in gas_arr) and not (gas in excluded_gases):
-                gas_arr = np.append(gas_arr, gas)
+            if not (params_arr[0] in gas_arr):
+                gas_arr = np.append(gas_arr, params_arr[0])
 
-    data = np.empty(shape=(len(gas_arr), 3), dtype="object")
+    data = np.empty(shape=(len(gas_arr), 4), dtype="object")
     
     for i in np.arange(len(gas_arr)):
         path_arr =np.array([])
-        beam_en_arr = np.array([])
+        IR_energy_arr = np.array([])
+        IR_int_arr = np.array([])
         for dir in os.listdir(sup_dir):
 
-            if os.path.isdir(os.path.join(sup_dir,dir)) and (dir[-4:]==dens_mod):
+            if os.path.isdir(os.path.join(sup_dir,dir)):
                 
-                gas0, _, beam_en,_, _, w0, tau, I = get_params(os.path.join(sup_dir,dir))
+                params_arr, params_dict = get_params(os.path.join(sup_dir,dir))
 
-                cond = (gas0==gas_arr[i]) 
+                cond = 1
+                
+                for key, value in kwargs.items():
+                        if (key in params_dict) and (value==params_dict.get(key)):
+                            cond *=1
+                        elif (key in params_dict) and (value !=params_dict.get(key)):
+                            cond *=0 
+                        else:
+                            raise SystemExit("Error: argument '{0}' not recognised; kwargs should be: 'gas', 'dens_mod', 'tau', 'lam0', 'w0', 'CEP', 'IR_energy', 'ion', 'propz', 'GVD', 'thickness', 'ion_mod', 'IR_int'".format(key))    
+
+                cond *= (params_arr[0]==gas_arr[i]) 
 
                 if cond:
                     path_arr = np.append(path_arr, os.path.join(sup_dir,dir))
-                    beam_en_arr = np.append(beam_en_arr, beam_en)
+                    IR_energy_arr = np.append(IR_energy_arr, params_arr[6])
+                    IR_int_arr = np.append(IR_int_arr, params_arr[-1])
 
-        path_arr = path_arr[beam_en_arr.argsort()] 
-        beam_en_arr = beam_en_arr[beam_en_arr.argsort()]
+        path_arr = path_arr[IR_energy_arr.argsort()] 
+        IR_int_arr = IR_int_arr[IR_energy_arr.argsort()]
+        IR_energy_arr = IR_energy_arr[IR_energy_arr.argsort()]
 
         data[i, 0] = gas_arr[i]
         data[i, 1] = path_arr 
-        data[i, 2] = beam_en_arr
+        data[i, 2] = IR_energy_arr
+        data[i, 3] = IR_int_arr 
     
-    return data, w0, tau     
+    return data  
 
 # ---------- FUNCTIONS THAT EXTRACT DATA FROM A SINGLE PRESSURE SCAN DIRECTORY --------------------------------------
 
@@ -377,7 +350,7 @@ def get_spectra(path, n):
 # ---------- VISUALISATION --------------------------------------
 
 # define set of colours 
-colour_cycle = ["grey", "black", "red", "blue", "purple", "green", "cyan", "orange", "deeppink"]
+colour_cycle = ["blue", "grey", "black", "red", "purple", "green", "cyan", "orange", "deeppink"]
 
 # plot UV energy, THG conversion efficiency, pulse duration, UV peak position, and UV spectra for a single scan 
 def plot_single(single_dir, n=n):
@@ -626,7 +599,7 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
         bool_sec_var = False   
 
     # set output directory name 
-    out_dir_str=""
+    out_dir_str="multipower_"
     for key, val in kwargs.items():
         out_dir_str += key+"="+str(val)+"_"     
 
@@ -733,6 +706,7 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
 
     # PLOT 2: efficiency vs pressure 
     plt.figure(figsize=fig_dim) 
+    plt.subplots_adjust(bottom=0.15,left=0.15)
     if show_title: plt.title("Simulated THG efficiencies")
     plt.ylabel("Efficiency (\%)")
     plt.xlabel("Central pressure (bar)")
@@ -935,36 +909,37 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
                 json.dump(params_dict, file)
 
 # single power, single dens model gas comparison 
-def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
+def plot_gas_comp_singleP(sup_dir,**kwargs):
 
     # get data 
-    path_arr, gas_arr = gas_comp_singleP(sup_dir,beam_en,dens_mod)
+    path_arr, gas_arr = gas_comp_singleP(sup_dir,**kwargs)
 
-    # get trivia
-    _, phi, _, ion, kerr, _, _, I = get_params(path_arr[0])
-   
     # create output directory
-    if ion=="true":
-        ion_string ="ion"
-    else:    
-        ion_string="no-ion"    
-
-    out_path = os.path.join(out_dir, "gas_comp_"+str(beam_en*1e3)+"mW_"+str(phi)+"rad_"+kerr+"_"+ion_string+"_"+dens_mod)
+    out_dir_str = ""
+    for key, val in kwargs.items():
+        out_dir_str += key+"="+str(val)+"_"
+    out_path = os.path.join(out_dir, "gas_comp_"+out_dir_str)
     if not os.path.isdir(out_path): 
         os.mkdir(out_path)
 
+    # set plot formatting 
+    if disable_latex == False : plt.rcParams["text.usetex"] = True   # enable LaTeX renadering
+    plt.rcParams["mathtext.fontset"] = "cm" # use LateX font for maths
+    plt.rcParams["font.family"] = "STIXGeneral" # use LateX font for text
+    plt.rcParams["font.size"] = 16 # set standard font size 
+    fig_dim = [2 * 3.14961,2* 2.3622075] # for 8cm width ; double for 16cm width
+    
    # PLOT 1: energy vs pressure 
     plt.figure(figsize=fig_dim) 
-    plt.subplots_adjust(top=0.85)
-    if show_title: plt.suptitle("Simulated UV energies", fontsize=16)
-    plt.title("Beam power: {1}mW ({2:.1f}PW/cm$^2$); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
+    plt.subplots_adjust(bottom=0.15, left=0.15)
+    if show_title: plt.title("Simulated UV energies")
     plt.ylabel("Energy (nJ)")
     plt.xlabel("Central pressure (bar)")
     
     for i in np.arange(len(path_arr)):
-        p_arr, en_arr, _,_,_ = get_data(path_arr[i])
-        plt.scatter(p_arr, en_arr*1e9, color=colour_cycle[i], label=gas_arr[i])
-        plt.plot(p_arr, en_arr*1e9, color=colour_cycle[i])
+        p_arr, UVen_arr, _,_,_ = get_data(path_arr[i])
+        plt.scatter(p_arr, UVen_arr*1e9, color=colour_cycle[i], label=gas_arr[i])
+        plt.plot(p_arr, UVen_arr*1e9, color=colour_cycle[i])
 
     plt.legend()
     if save: plt.savefig(os.path.join(out_path,"UV_energies.png"),dpi=1000)
@@ -972,10 +947,9 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
 
     # PLOT 2: efficiency vs pressure 
     plt.figure(figsize=fig_dim) 
-    plt.subplots_adjust(top=0.85)
-    if show_title: plt.suptitle("Simulated THG efficiencies", fontsize=16)
-    plt.title("Beam power: {1}mW ({2:.1f}PW/cm$^2$); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
-    plt.ylabel("Efficiency (%)")
+    plt.subplots_adjust(bottom=0.15, left=0.15)
+    if show_title: plt.title("Simulated THG efficiencies")
+    plt.ylabel("Efficiency (\%)")
     plt.xlabel("Central pressure (bar)")
     
     for i in np.arange(len(path_arr)):
@@ -989,9 +963,8 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
 
     # PLOT 3: pulse duration vs pressure 
     plt.figure(figsize=fig_dim) 
-    plt.subplots_adjust(top=0.85)
-    if show_title: plt.suptitle("Simulated UV pulse durations", fontsize=16)
-    plt.title("Beam power: {1}mW ({2:.1f}PW/cm$^2$); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
+    plt.subplots_adjust(bottom=0.15, left=0.15)
+    if show_title: plt.title("Simulated UV pulse durations")
     plt.ylabel("Pulse duration (fs)")
     plt.xlabel("Central pressure (bar)")
     
@@ -1006,9 +979,8 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
 
     # PLOT 4: z_peak vs pressure 
     plt.figure(figsize=fig_dim) 
-    plt.subplots_adjust(top=0.85)
-    if show_title: plt.suptitle("Position of peak UV energy", fontsize=16)
-    plt.title("Beam power: {1}mW ({2:.1f}PW/cm$^2$); CEP: {0:.2f}rad; ".format(phi,beam_en*1e3, I*1e-15 )+"\n response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
+    plt.subplots_adjust(bottom=0.15, left=0.15)
+    if show_title: plt.title("Position of peak UV energy")
     plt.ylabel("Position (mm)")
     plt.xlabel("Central pressure (bar)")
     
@@ -1022,24 +994,30 @@ def plot_gas_comp_singleP(sup_dir,beam_en,dens_mod):
     if show: plt.show()
 
 # multi power, single dens model gas comparison 
-def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
+def plot_gas_comp_multiP(sup_dir,**kwargs):
     
     # get data 
-    data, w0, tau = gas_comp_multiP(sup_dir,dens_mod,excluded_gases)
+    data = gas_comp_multiP(sup_dir,**kwargs)
     gas_arr = data[:,0]
 
     # get trivia
-    _, phi, _, ion, kerr, _, _, I = get_params(data[0,1][0])
-   
-    # create output directory
-    if ion=="true":
-        ion_string ="ion"
-    else:    
-        ion_string="no-ion"    
+    params_arr, _ = get_params(data[0,1][0])
+    w0, tau = float(params_arr[4]), float(params_arr[2])
 
-    out_path = os.path.join(out_dir, "gas_comp_multiP_"+str(phi)+"rad_"+kerr+"_"+ion_string+"_"+dens_mod)
+    # set output path
+    out_dir_str ="" 
+    for key, val in kwargs.items():
+        out_dir_str += key+"="+str(val)+"_"
+    out_path = os.path.join(out_dir, "gas_comp_multi_power"+out_dir_str)
     if not os.path.isdir(out_path): 
         os.mkdir(out_path)
+
+    # set plot formatting 
+    if disable_latex == False : plt.rcParams["text.usetex"] = True   # enable LaTeX renadering
+    plt.rcParams["mathtext.fontset"] = "cm" # use LateX font for maths
+    plt.rcParams["font.family"] = "STIXGeneral" # use LateX font for text
+    plt.rcParams["font.size"] = 16 # set standard font size 
+    fig_dim = [2 * 3.14961,2* 2.3622075] # for 8cm width ; double for 16cm width    
 
     # auxiliary functions (beam_en in mW, I in PW/cm$^2$):
     def p2i(beam_en):
@@ -1059,20 +1037,20 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
 
         for i in np.arange(len(path_arr)):
             peak_arr[i,0] = beam_en_arr[i]
-            p_peak, en_peak, ef_peak, tau_peak, min_tau_p = get_peaks(path_arr[i])
-            peak_arr[i, 1] = p_peak 
-            peak_arr[i,2] = en_peak 
-            peak_arr[i,3] = ef_peak 
-            peak_arr[i,4] = tau_peak 
-            peak_arr[i,5] = min_tau_p
+            peaks = get_peaks(path_arr[i])
+
+            peak_arr[i, 1] = peaks[3] 
+            peak_arr[i,2] = peaks[0] 
+            peak_arr[i,3] = peaks[1]
+            peak_arr[i,4] = peaks[2]
+            peak_arr[i,5] = peaks[4]
 
         peak_data[j, 0] = gas_arr[j]
         peak_data[j, 1] = peak_arr    
 
     fig, ax = plt.subplots(figsize=fig_dim)
-    plt.subplots_adjust(top=0.8, right=0.9)
-    ax.set_title("CEP: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
-    if show_title: plt.suptitle("Simulated peak UV energies", fontsize=16)
+    plt.subplots_adjust(top=0.8, right=0.95,left=0.15, bottom=0.15)
+    if show_title: plt.title("Simulated peak UV energies" )
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Peak UV energy (nJ)")
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
@@ -1088,11 +1066,10 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=fig_dim)
-    plt.subplots_adjust(top=0.8, right=0.9)
-    ax.set_title("CEP: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
-    if show_title: plt.suptitle("Simulated peak UV efficiencies", fontsize=16)
+    plt.subplots_adjust(top=0.8, right=0.9, bottom=0.15)
+    if show_title: plt.title("Simulated peak UV efficiencies" )
     ax.set_xlabel("Beam power (mW)")
-    ax.set_ylabel("Efficiency (%)")
+    ax.set_ylabel("Efficiency (\%)")
 
     for k in np.arange(len(gas_arr)):
         peak_arr = peak_data[k, 1]
@@ -1106,9 +1083,8 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=fig_dim)
-    plt.subplots_adjust(top=0.8, right=0.9)
-    ax.set_title("CEP: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
-    if show_title: plt.suptitle("Simulated saturation pressures", fontsize=16)
+    plt.subplots_adjust(top=0.8, right=0.9, bottom=0.15)
+    if show_title: plt.title("Simulated saturation pressures" )
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Saturation pressure (bar)")
     
@@ -1125,9 +1101,8 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=fig_dim)
-    plt.subplots_adjust(top=0.8, right=0.9)
-    ax.set_title("CEP: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
-    if show_title: plt.suptitle("Simulated UV pulse durations", fontsize=16)
+    plt.subplots_adjust(top=0.8, right=0.9, bottom=0.15)
+    if show_title: plt.title("Simulated UV pulse durations" )
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Minimum pulse duration (fs)")
     for k in np.arange(len(gas_arr)):
@@ -1143,9 +1118,8 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=fig_dim)
-    plt.subplots_adjust(top=0.8, right=0.9)
-    ax.set_title("CEP: {0:.2f}rad; ".format(phi)+"response function: "+kerr+"; ionisation: "+ion+"; model: "+dens_mod, fontsize=10)
-    if show_title: plt.suptitle("Simulated minimal pulse duration pressure", fontsize=16)
+    plt.subplots_adjust(top=0.8, right=0.9, bottom=0.15)
+    if show_title: plt.title("Simulated minimal pulse duration pressure" )
     ax.set_xlabel("Beam power (mW)")
     ax.set_ylabel("Minimum pulse duration pressure (bar)")
     for k in np.arange(len(gas_arr)):
@@ -1163,4 +1137,6 @@ def plot_gas_comp_multiP(sup_dir,dens_mod, excluded_gases):
 if single:
     plot_single(single_dir, n)
 else:  
-    plot_multipower(sup_dir, gas="Ar", dens_mod="coms")
+    #plot_multipower(sup_dir, gas="Ar", dens_mod="coms")
+    #plot_gas_comp_singleP(sup_dir, IR_energy=200e-6, dens_mod="coms")
+    plot_gas_comp_multiP(sup_dir, dens_mod="coms")
