@@ -28,7 +28,7 @@ in_rho         = "COMSOL_pressure_scan.txt"             # name of file containin
 in_IR          = "Ek.dat"                               # name of file containing IR time-intensity information
 in_IR_spec     = "Speck.dat"                            # name of file containing IR spectrum data 
 in_UV          = "1.0bar_Subt2__0__17-08-23-927.txt"    # name of file containing UV spectrum data 
-in_IR_spec_exp = "1.2bar_2.21e-1mbar_1308032U1.txt"     # name of file containing alternative IR spectrum data 
+in_IR_spec_exp = "2.0bar_Ne_400mW.txt"     # name of file containing alternative IR spectrum data 
 
 # ----------------- FILE PROCESSING -------------------------------
 

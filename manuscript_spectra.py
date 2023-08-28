@@ -55,11 +55,11 @@ if plot1:
         if overlay==False:
             spec_measured[:,1]=spec_measured[:,1]/np.max(spec_measured[:,1])
         else:
-            max_val = max(np.max(spec_measured), np.max(spec_sim))
-            spec_measured[:,1]=spec_measured[:,1]/ max_val 
-            spec_sim[:,1]=spec_sim[:,1]/ max_val    
+            spec_measured[:,1]=spec_measured[:,1]/ np.max(spec_measured)
+            spec_sim[:,1]=spec_sim[:,1]/ np.max(spec_sim)    
 
     plt.plot(spec_measured[:,0]*1e9, spec_measured[:,1], color="red", label="meas.")
+    plt.xlim(100, 360)
     if overlay:
         plt.plot(spec_sim[:,0]*1e9, spec_sim[:,1], color="blue", label="sim.")
         plt.legend()
@@ -122,8 +122,8 @@ if plot3:
             spec_pos_chirp[:,1]=spec_pos_chirp[:,1]/ max_val
             spec_neg_chirp[:,1]=spec_neg_chirp[:,1]/ max_val   
 
-    plt.plot(spec_pos_chirp[:,0]*1e9, spec_pos_chirp[:,1], color="red", label="+11fs$^2$")
-    plt.plot(spec_neg_chirp[:,0]*1e9, spec_neg_chirp[:,1], color="blue", label="-11fs$^2$")
+    plt.plot(spec_pos_chirp[:,0]*1e9, spec_pos_chirp[:,1], color="red", label="+11.0fs$^2$")
+    plt.plot(spec_neg_chirp[:,0]*1e9, spec_neg_chirp[:,1], color="blue", label="$-$11.0fs$^2$")
     plt.plot(spec_no_chirp[:,0]*1e9, spec_no_chirp[:,1], color="black", label="0.0fs$^2$")
     plt.legend()
 

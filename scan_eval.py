@@ -21,7 +21,7 @@ old = False # if True: skip some features that are not available with some older
 # ---------- SINGLE-SCAN SETTINGS --------------------------------------
 
 n = 8   # maximum number of overlayed spectra in one plot (to avoid clutter)
-comp_exp = False # if True: overlay experimental data of UV energy as function of central pressure 
+comp_exp = True # if True: overlay experimental data of UV energy as function of central pressure 
 
 shift_sim = "no" # if comp_exp==True, this can be used to align the simulated and measured pressure axes
                  #          if shift_sim=="offset": shift the simulated data along the pressure axis
@@ -30,8 +30,8 @@ shift_sim = "no" # if comp_exp==True, this can be used to align the simulated an
 set_shift = None # specify the magnitude of the offset/scaling factor if shift_sim=="offset" or "factor"; if 
                  # set_shift==None, the offset/scaling factor will be set automatically to align the peak energies
 
-single_dir = "parameter_scans\\gas_scans\\scan_200.0mW_Ne_0.0rad_f_ion_coms" # path to pressure scan directory if single=True (Note: output will be written to same directory)
-exp_file = "raw_input\\Ne_200mW_IR.txt" # path to file containing experimental data; will be overlayed if comp_exp==True 
+single_dir = "parameter_scans\\gas_scans\\scan_150.0mW_Ar_0.0rad_f_ion_grad" # path to pressure scan directory if single=True (Note: output will be written to same directory)
+exp_file = "raw_input\\Ar_150mW_IR.txt" # path to file containing experimental data; will be overlayed if comp_exp==True 
 
 # ---------- SET KWARGS -------------------------------------------
 #
@@ -66,6 +66,7 @@ save = True           # if True: saves plots
 show_title = False     # if False: no titles shown 
 norm = True           # if True: norm spectra 
 disable_latex = False # if True: disable LaTeX rendering 
+use_pdf = True        # if True: save plots as pdf; else: use png
 
 # ---------- MULTI-SCANS: FILE EXTRACTION --------------------------------------
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  28 AUG 2023 10:34
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  28 AUG 2023 22:15
 entering extended mode
 **./desy_report.tex
 (desy_report.tex
@@ -366,7 +366,11 @@ tex.def
 File: l3backend-pdftex.def 2021-05-07 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count286
 \l__pdf_internal_box=\box54
-) (desy_report.aux)
+) (desy_report.aux
+
+LaTeX Warning: Label `im:pressure_scan' multiply defined.
+
+)
 \openout1 = `desy_report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
@@ -550,7 +554,29 @@ Overfull \hbox (13.62755pt too wide) in paragraph at lines 113--113
 []\OT1/cmr/m/n/10.95 The CFEL-ATTO group gen-er-ates few-femtosecond
  []
 
-(desy_report.bbl
+<im/Ar_prelim_sim_v_measured.png, id=65, 455.22873pt x 341.40347pt>
+File: im/Ar_prelim_sim_v_measured.png Graphic file (type png)
+<use im/Ar_prelim_sim_v_measured.png>
+Package pdftex.def Info: im/Ar_prelim_sim_v_measured.png  used on input line 12
+4.
+(pdftex.def)             Requested size: 227.6138pt x 170.70131pt.
+<im/Ar_prelim_old_vs_new.png, id=67, 455.22873pt x 341.40347pt>
+File: im/Ar_prelim_old_vs_new.png Graphic file (type png)
+<use im/Ar_prelim_old_vs_new.png>
+Package pdftex.def Info: im/Ar_prelim_old_vs_new.png  used on input line 132.
+(pdftex.def)             Requested size: 227.6138pt x 170.70131pt.
+<im/energies.png, id=68, 455.22873pt x 341.40347pt>
+File: im/energies.png Graphic file (type png)
+<use im/energies.png>
+Package pdftex.def Info: im/energies.png  used on input line 140.
+(pdftex.def)             Requested size: 227.6138pt x 170.70131pt.
+[4 <./im/Ar_prelim_sim_v_measured.png> <./im/Ar_prelim_old_vs_new.png> <./im/en
+ergies.png>]
+File: im/energies.png Graphic file (type png)
+<use im/energies.png>
+Package pdftex.def Info: im/energies.png  used on input line 148.
+(pdftex.def)             Requested size: 227.6138pt x 170.70131pt.
+ (desy_report.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 8--14
 \OT1/cmr/m/n/9 https://opg.optica.org/ol/abstract.cfm?URI=ol-44-6-
  []
@@ -591,22 +617,25 @@ Overfull \hbox (3.42987pt too wide) in paragraph at lines 41--45
 \OT1/cmr/m/n/9 https://opg.optica.org/josab/abstract.cfm?URI=josab-
  []
 
-) [4] (desy_report.aux)
+) [5] (desy_report.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.78749pt have occurred.
+
+
+LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `desy_report.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 11757 strings out of 478864
- 175989 string characters out of 2848660
- 518433 words of memory out of 3000000
- 29490 multiletter control sequences out of 15000+600000
+ 11806 strings out of 478864
+ 177162 string characters out of 2848660
+ 518727 words of memory out of 3000000
+ 29529 multiletter control sequences out of 15000+600000
  410911 words of font info for 54 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 60i,10n,66p,1209b,343s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,10n,66p,1209b,442s stack positions out of 5000i,500n,10000p,200000b,80000s
 <C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
 cmbx10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
 fonts/cm/cmbx12.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/p
@@ -623,9 +652,9 @@ cm/cmsy10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/
 amsfonts/cm/cmsy8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1
 /public/amsfonts/cm/cmti10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fo
 nts/type1/public/amsfonts/cm/cmti9.pfb>
-Output written on desy_report.pdf (4 pages, 228095 bytes).
+Output written on desy_report.pdf (5 pages, 1454981 bytes).
 PDF statistics:
- 141 PDF objects out of 1000 (max. 8388607)
- 32 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 159 PDF objects out of 1000 (max. 8388607)
+ 37 named destinations out of 1000 (max. 500000)
+ 16 words of extra memory for PDF output out of 10000 (max. 10000000)
 

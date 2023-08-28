@@ -118,6 +118,38 @@ The fused silica chip is equipped with a laser machined central 3mm-long channel
 
 \textcolor{red}{section 1: comparison with experiment; section 2: investigate additional parameters; section 3: gas cell}
 
+\textcolor{red}{test image}
+\begin{center}
+\begin{figure}
+\includegraphics[scale=0.5]{im/Ar_prelim_sim_v_measured}\label{im:sim_v_measured}
+\caption{Measured and simulated UV output spectrum of Argon at 150mW input beam power and 0.4bar central pressure.}
+\end{figure}
+\end{center}
+
+\textcolor{red}{test image}
+\begin{center}
+\begin{figure}
+\includegraphics[scale=0.5]{im/Ar_prelim_old_vs_new}\label{im:old_v_new}
+\caption{Simulated UV output spectrum of Argon at 150mW input beam power and 0.4bar central pressure with old and new gas cell design.}
+\end{figure}
+\end{center}
+
+\textcolor{red}{test image}
+\begin{center}
+\begin{figure}
+\includegraphics[scale=0.5]{im/energies}\label{im:pressure_scan}
+\caption{Argon pressure scan at 150mW input beam power.}
+\end{figure}
+\end{center}
+
+\textcolor{red}{test image}
+\begin{center}
+\begin{figure}
+\includegraphics[scale=0.5]{im/energies}\label{im:pressure_scan}
+\caption{Argon pressure scan at 150mW input beam power.}
+\end{figure}
+\end{center}
+
 \section{Discussion}
 
 \textcolor{red}{

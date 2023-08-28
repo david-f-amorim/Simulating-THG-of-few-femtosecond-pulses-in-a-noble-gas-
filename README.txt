@@ -57,9 +57,16 @@ Week 7
 finished handover presentation; wrote "manuscript_spectra.py" ; 
 
 
+- FINISH PP WITH SAMPLE OUTPUT
+
+START WRITING REPORT AND PRESENTATION WITHOUT RESULTS!!
+
+
+IMPLEMENT USE_PDF IN SCAN_EVAL AND MANUSCRIPT_SPECTRA!!
+
 - run "final simulations" with good parameters [and PPT!]
 	+ calculate ratios of Ar/Ne energies [just numerically at sat points; DOES NE EVEN SAT IN EXP??]
-	+ test "manuscript_spectra" ??
+	+ 
 
 	
 - work on "documentation"

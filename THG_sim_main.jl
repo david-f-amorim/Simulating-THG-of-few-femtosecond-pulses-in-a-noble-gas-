@@ -24,15 +24,15 @@ IR_spec_exp = false          # if true: read input IR spectrometer spectrum from
 
 # ------------------ SET PHYSICAL PARAMETERS ------------------------
 
-gas = :Ne           # gas type in cell 
-pres = 0.1          # central gas pressure [bar] (for single run; not relevant for pressure scans)
+gas = :Ar           # gas type in cell 
+pres = 0.4          # central gas pressure [bar] (for single run; not relevant for pressure scans)
 p_ed = 1e-3         # edge gas pressure [bar] 
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed); (only relevant when read_ρ==false)
 τ = 5e-15           # FWHM pulse duration of IR pulse [s] (only relevant when read_IR==false)
 λ0 = 740e-9         # central wavelength of IR pulse [m]
 w0 = 65e-6          # beam waist of IR pulse [m]
 CEP = 0.0           # carrier-envelope phase of IR pulse (ϕ0) [rad] (only relevant when read_IR==true)                                 
-IRenergy = 75e-6    # IR pulse energy [J] (related to beam power via 1kHz repetition rate)                                                           
+IRenergy = 150e-6    # IR pulse energy [J] (related to beam power via 1kHz repetition rate)                                                           
 L = 3e-3            # propagation distance (cell length) [m]
 
 propz = -L/2        # propagation distance from the waist [m], i.e. beam focus position  (NOTE: always specified in a coordinate system where the cell starts at 0 and ends at L!)
@@ -57,6 +57,7 @@ pres_arr = range(start= 0.1, stop= 5.1, step= 0.1)  # pressure range (only relev
 show_title = false # if false: hides figure titles
 norm = true        # if true: normalise intensities on figures
 disable_latex = false # if true: disable latex rendering of plots (saves time but might result in some labels or title being displayed incorrectly)
+use_pdf = true     # if true: save output as pdf; if false: use png
 
 # ----------------- FILE HANDLING -------------------------------
 
@@ -343,7 +344,7 @@ function THG_main(pres=pres)
 
         # set plot formatting 
         rcParams = PyDict(matplotlib."rcParams") # get rcParams 
-        if disable_latex rcParams["text.usetex"] = true end # enable LaTeX renadering
+        if disable_latex==false  rcParams["text.usetex"] = true end # enable LaTeX renadering
         rcParams["mathtext.fontset"] = "cm" # use LateX font for maths
         rcParams["font.family"] = "STIXGeneral" # use LateX font for text
         rcParams["font.size"] = 16 # set standard font size 
@@ -369,7 +370,11 @@ function THG_main(pres=pres)
         plt.title("UV beam")
 
         if save==true
-            plt.savefig(joinpath(out_path,"off-axis_intensity.png"),dpi=1000)
+            if use_pdf == true
+                plt.savefig(joinpath(out_path,"off-axis_intensity.pdf"))
+            else 
+                plt.savefig(joinpath(out_path,"off-axis_intensity.png"),dpi=1000)
+            end
         end    
             
         #+++++ PLOT 2:  fundamental and third harmonic intensities as functions of z
@@ -391,10 +396,15 @@ function THG_main(pres=pres)
         plt.ylabel(norm ? "I (norm.)" : "I (arb. units)")
         if norm==false plt.ticklabel_format(axis="y", style="scientific", scilimits=(0,0)) end
 
-        if save==true
-            plt.savefig(joinpath(out_path,"total_intensity.png"),dpi=1000)
-        end 
 
+        if save==true
+            if use_pdf == true
+                plt.savefig(joinpath(out_path,"total_intensity.pdf"))
+            else 
+                plt.savefig(joinpath(out_path,"total_intensity.png"),dpi=1000)
+            end
+        end  
+    
         #+++++ PLOT 3: gas number density and effective susceptibility along the cell 
         plt.figure(figsize=fig_dim)
         if show_title plt.title("Gas density profile") end
@@ -405,7 +415,11 @@ function THG_main(pres=pres)
         plt.legend(loc="upper right")
 
         if save==true
-            plt.savefig(joinpath(out_path,"density.png"),dpi=1000)
+            if use_pdf == true 
+                plt.savefig(joinpath(out_path,"density.pdf"))
+            else     
+                plt.savefig(joinpath(out_path,"density.png"),dpi=1000)
+            end 
         end 
 
         #+++++ PLOT 4:  linear  spectrum I(λ) at z=0 and z=L 
@@ -432,7 +446,11 @@ function THG_main(pres=pres)
         plt.legend()
 
         if save==true
-            plt.savefig(joinpath(out_path,"full_spectrum.png"),dpi=1000)
+            if use_pdf == true 
+                plt.savefig(joinpath(out_path,"full_spectrum.pdf"))
+            else     
+                plt.savefig(joinpath(out_path,"full_spectrum.png"),dpi=1000)
+            end 
         end 
 
         #+++++ PLOT 5:  UV only linear spectrum I(λ) at z=0 and z=L 
@@ -459,9 +477,13 @@ function THG_main(pres=pres)
         plt.legend()
 
         if save==true
-            plt.savefig(joinpath(out_path,"UV_spectrum.png"),dpi=1000)
+            if use_pdf == true 
+                plt.savefig(joinpath(out_path,"UV_spectrum.pdf"))
+            else     
+                plt.savefig(joinpath(out_path,"UV_spectrum.png"),dpi=1000)
+            end 
         end 
-
+       
         #+++++ PLOT 6:  log. spectrum I(λ) at z=0 and z=L 
         Iω0log = log10.(Iω0)
 
@@ -487,11 +509,14 @@ function THG_main(pres=pres)
 
         plt.legend()
 
-
         if save==true
-            plt.savefig(joinpath(out_path,"log_spectrum.png"),dpi=1000)
+            if use_pdf == true 
+                plt.savefig(joinpath(out_path,"log_spectrum.pdf"))
+            else     
+                plt.savefig(joinpath(out_path,"log_spectrum.png"),dpi=1000)
+            end 
         end 
-
+    
         #+++++ PLOT 7:  pulse energies and efficiency 
         plt.figure(figsize=fig_dim)
         if show_title plt.suptitle("Pulse energies ("*L"\eta_{THG}="*string(round(η_THG, digits=4) *100)*L"\% )") end
@@ -512,8 +537,12 @@ function THG_main(pres=pres)
         plt.legend()
 
         if save==true
-            plt.savefig(joinpath(out_path,"pulse_energies.png"),dpi=1000)
-        end
+            if use_pdf == true 
+                plt.savefig(joinpath(out_path,"pulse_energies.pdf"))
+            else     
+                plt.savefig(joinpath(out_path,"pulse_energies.png"),dpi=1000)
+            end 
+        end 
 
         #+++++ PLOT 8: frequency evolution 
         plt.figure(figsize=fig_dim)
@@ -525,7 +554,11 @@ function THG_main(pres=pres)
         plt.ylabel("f (PHz)")
 
         if save==true
-            plt.savefig(joinpath(out_path,"frequency_evolution.png"),dpi=1000)
+            if use_pdf == true 
+                plt.savefig(joinpath(out_path,"frequency_evolution.pdf"))
+            else     
+                plt.savefig(joinpath(out_path,"frequency_evolution.png"),dpi=1000)
+            end 
         end
 
         #+++++ PLOT 9: time-domain plot of input pulse 
@@ -544,9 +577,13 @@ function THG_main(pres=pres)
         plt.legend(loc="upper right")
 
         if save==true
-            plt.savefig(joinpath(out_path,"time_domain_input.png"),dpi=1000)
+            if use_pdf == true 
+                plt.savefig(joinpath(out_path,"time_domain_input.pdf"))
+            else     
+                plt.savefig(joinpath(out_path,"time_domain_input.png"),dpi=1000)
+            end 
         end
-
+        
         #+++++ PLOT 10: time-domain plot of UV output pulse 
         plt.figure(figsize=fig_dim) 
         if show_title plt.title("Time-domain representation of UV output pulse") end
@@ -558,7 +595,11 @@ function THG_main(pres=pres)
         plt.legend(loc="upper right")
 
         if save==true
-            plt.savefig(joinpath(out_path,"time_domain_UV.png"),dpi=1000)
+            if use_pdf == true 
+                plt.savefig(joinpath(out_path,"time_domain_UV.pdf"))
+            else     
+                plt.savefig(joinpath(out_path,"time_domain_UV.png"),dpi=1000)
+            end 
         end
 
         #+++++ PLOT 11: plot spatiotemporal UV pulse at output
@@ -576,7 +617,11 @@ function THG_main(pres=pres)
         plt.colorbar(label=(norm ? "I (norm.)" : "I (arb. units)"))
 
         if save==true
-            plt.savefig(joinpath(out_path,"UV_pulse_output.png"),dpi=1000)
+            if use_pdf == true 
+                plt.savefig(joinpath(out_path,"UV_pulse_output.pdf"))
+            else     
+                plt.savefig(joinpath(out_path,"UV_pulse_output.png"),dpi=1000)
+            end 
         end
 
         #+++++ PLOT 12: plot spatiotemporal UV pulse evolution 
@@ -602,9 +647,13 @@ function THG_main(pres=pres)
             plt.pcolormesh(grid.t*1e15, rsym*1e3,norm ? Maths.normbymax(abs2.(Hankel.symmetric(Et_UV[:, :, idcs[i]], q)')) : abs2.(Hankel.symmetric(Et_UV[:, :, idcs[i]], q)'), cmap=jw)
             if hide_cbar==false  plt.colorbar(label=(norm ? "I (norm.)" : "I (arb. units)")) end 
         end
-        
+
         if save==true
-            plt.savefig(joinpath(out_path,"UV_pulse_evolution.png"),dpi=1000)
+            if use_pdf == true 
+                plt.savefig(joinpath(out_path,"UV_pulse_evolution.pdf"))
+            else     
+                plt.savefig(joinpath(out_path,"UV_pulse_evolution.png"),dpi=1000)
+            end 
         end
 
         #+++++ PLOT 13: plot spatiotemporal IR pulse evolution 
@@ -624,7 +673,11 @@ function THG_main(pres=pres)
         end
 
         if save==true
-            plt.savefig(joinpath(out_path,"IR_pulse_evolution.png"),dpi=1000)
+            if use_pdf == true 
+                plt.savefig(joinpath(out_path,"IR_pulse_evolution.pdf"))
+            else     
+                plt.savefig(joinpath(out_path,"IR_pulse_evolution.png"),dpi=1000)
+            end 
         end
 
         #+++++ PLOT 14: UV spectral evolution
@@ -652,7 +705,11 @@ function THG_main(pres=pres)
         plt.legend(loc="upper right")
 
         if save==true
-            plt.savefig(joinpath(out_path,"UV_spectral_evolution.png"),dpi=1000)
+            if use_pdf == true 
+                plt.savefig(joinpath(out_path,"UV_spectral_evolution.pdf"))
+            else     
+                plt.savefig(joinpath(out_path,"UV_spectral_evolution.png"),dpi=1000)
+            end 
         end
     end    
 
