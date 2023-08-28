@@ -99,7 +99,7 @@ The general form of the UPPE for a laser pulse of frequency $\omega$ travelling 
 where $\mathbf{E}(\omega, \mathbf{k}_\perp, z)$ is the reciprocal-space electric field amplitude in the frequency domain, $\mathbf{k}_\perp$ is the transverse spatial frequency vector,  $\mathcal{L}(\omega, z)$ is a linear operator describing dispersion and absorption, $\mathbf{P}^\text{NL}(\omega, \mathbf{k}_\perp, z)$ is the frequency-domain nonlinear polarisation in reciprocal space and $N$ is a normalisation factor. \par 
 For a laser pulse propagating in a gas, not confined by a fibre or waveguide, the linear operator $\mathcal{L}(\omega, z)$ is given by 
 \begin{equation}\label{eq:Lj}
-\mathcal{L}(\omega, z) = i \left( \beta(\omega, z) - \frac{\omega}{z} \right) - \frac{1}{2} \alpha (\omega,z),
+\mathcal{L}(\omega, z) = i \left( \beta(\omega, z) - \frac{\omega}{v} \right) - \frac{1}{2} \alpha (\omega,z),
 \end{equation}
 where $\beta(\omega,z)$ is the propagation coefficient of the gas, $v$ is a reference frame velocity (chosen to be the group velocity at the central wavelength $\lambda_0$), and $\alpha(\omega,z)$ is the absorption coefficient of the gas. \par 
 

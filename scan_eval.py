@@ -3,50 +3,74 @@ import matplotlib.pyplot as plt
 import os  
 import json
 
-# ---------- QUICK SETTINGS --------------------------------------
+# ---------- OPERATION SETTINGS --------------------------------------
 
-single = False  # if True: process output from a single pressure scan; if False: process output from a set of different pressure scans ("multi-scan")
+single = False        # if True: process output from a single pressure scan
+double = False        # if True: compare output from two different pressure scans differing in one parameter (set by second_var)
+multi_power = False   # if True: compare output with different powers and all other parameters equal (apart from gas, if multi_gas=True; if using second_var,
+                      # scans may differ in one parameter)
+multi_gas = False     # if True: compare output from different gases with all parameters equal (apart from power, if multi_power=True)
 
-n    = 8   # maximum number of overlayed spectra in one plot (to avoid clutter)
-show = True # if True: open plots in matplotlib GUI; if False: don't show plots (directly write to file) 
-save = True # if True: saves plots 
+second_var = (None, None, None) # if not (None,None,None): use as second variable in multi_power or double mode; has no effect if single or multi_gas mode is used;
+                                # should have form (param, value_1, value_2) where "param" is one of 'gas', 'dens_mod', 'tau', 'lam0', 'w0', 'CEP', 
+                                # 'IR_energy', 'ion', 'propz', 'GVD', 'thickness', 'ion_mod', 'IR_int' and "value_1" and "value_2" are the two values of this 
+                                # parameter being compared
 
-old = False # if True: skip some features that were not available with some older scan data; only use if error occurs when old == False
+old = False # if True: skip some features that are not available with some older pressure scan data (mostly old Argon & Neon scans)
 
-show_title = True
-norm = True 
-comp_exp = True
-disable_latex = False 
+# ---------- SINGLE-SCAN SETTINGS --------------------------------------
 
-shift_sim = "no" # either: "no", "offset", or "factor"
-set_shift = None # if 
+n = 8   # maximum number of overlayed spectra in one plot (to avoid clutter)
+comp_exp = True # if True: overlay experimental data of UV energy as function of central pressure 
 
-multi_gas = False 
-multi_power = False 
+shift_sim = "no" # if comp_exp==True, this can be used to align the simulated and measured pressure axes
+                 #          if shift_sim=="offset": shift the simulated data along the pressure axis
+                 #          if shift_sim=="factor": rescale the simulated pressure axis by a multiplicative factor 
+                 #          else: no change to the pressure axes 
+set_shift = None # specify the magnitude of the offset/scaling factor if shift_sim=="offset" or "factor"; if 
+                 # set_shift==None, the offset/scaling factor will be set automatically to align the peak energies
 
-# ---------- MULTI-SCAN SETTINGS --------------------------------------
+single_dir = "parameter_scans\\gas_scans\\scan_200.0mW_Ne_0.0rad_f_ion_coms" # path to pressure scan directory if single=True (Note: output will be written to same directory)
+exp_file = "raw_input\\Ne_200mW_IR.txt" # path to file containing experimental data; will be overlayed if comp_exp==True 
 
+# ---------- SET KWARGS -------------------------------------------
+#
+# Note that the different operation modes (double, multi_power, multi_gas,...) 
+# generally require all scan files to have most parameters equal, in order 
+# to allow for comparison between them. This can be achieved in one of two ways:
+# by only placing files with this property in the sup_dir input directory or by 
+# using kwargs to filter for files. 
+# kwargs is a dictionary that accepts the following key values: 
+#        'gas', 'dens_mod', 'tau', 'lam0', 'w0', 'CEP', 'IR_energy', 'ion', 'propz', 'GVD', 'thickness', 'ion_mod', 'IR_int'
+# To filter for files with specific parameter values, simply add the key and chosen value to the (initially empty) kwargs dict 
+# below. For example, to select for pressure scans using Argon, the gradient model, and an IR_energy of 75uJ:
+#       kwargs["gas"]="Ar"
+#       kwargs["dens_mod"] ="grad"
+#       kwargs["IR_energy"] = 75e-6
+# An arbitrary amount of the keys listed above can be used but only one value per key is accepted. Note that if not 
+# filter value is specified for a key, no filtering will take place. In the above example, this means that since "ion" was not 
+# added to the kwargs dict, all files in the sup_dir input directory have the same value for "ion" (i.e. the compared scan files 
+# are either all with or all without ionisation)
 
+kwargs={}
 
-# ---------- INPUT/OUTPUT HANDLING --------------------------------------
-
-single_dir = "parameter_scans\\gas_scans\\scan_200.0mW_Ne_0.0rad_f_ion_coms" # path to pressure scan directory to process if single=True (Note: output will be written to same directory)
-exp_file = "raw_input\\Ne_200mW_IR.txt"
+# ---------- INPUT/OUTPUT HANDLING (FOR MULTI-SCANS) --------------------------------------
 
 sup_dir = "parameter_scans\\gas_scans" # if single==False, path to super directory containing the various pressure scan directories 
 out_dir = "scan_analysis\\gas_scans"   # if single==False, path to output directory for the produced plots 
+
+# ---------- PLOT SETTINGS ----------------------------------------
+
+show = True           # if True: open plots in matplotlib GUI; if False: don't show plots (directly write to file) 
+save = True           # if True: saves plots 
+show_title = False     # if False: no titles shown 
+norm = True           # if True: norm spectra 
+disable_latex = False # if True: disable LaTeX rendering 
 
 # ---------- MULTI-SCANS: FILE EXTRACTION --------------------------------------
 
 # get paths to all pressure scan files in sup_dir with different 
 # beam powers and all other parameters equal
-#    NOTE: if only sup_dir is specified, this assumes that all 
-#          pressure scans in sup_dir have all parameters equal 
-#          except beam power; if this is not the case, provide 
-#          a function argument to filter for relevant parameters
-#          using **kwargs (accepted kwargs: all parameters 
-#          returned by get_params)
-
 def power_comparison_get(sup_dir, **kwargs ):
 
     path_arr =np.array([])
@@ -110,7 +134,6 @@ def power_comparison_get(sup_dir, **kwargs ):
 
 # get paths to two pressure scan files that differ only in 
 # one parameter (set by second_var):
-
 def two_comparison_get(sup_dir, second_var, **kwargs):
 
     path_arr =np.array([])
@@ -162,7 +185,7 @@ def two_comparison_get(sup_dir, second_var, **kwargs):
     return path_arr
 
 # get paths to all files in super directory with different 
-# beam energies and all other parameters equal
+# gas values and all other parameters equal
 def gas_comp_singleP(sup_dir,**kwargs):
 
     path_arr = []
@@ -191,7 +214,7 @@ def gas_comp_singleP(sup_dir,**kwargs):
     return path_arr, gas_arr 
 
 # get paths to all files in super directory with different 
-# beam powers and all other parameters equal
+# beam powers and gas values and all other parameters equal
 def gas_comp_multiP(sup_dir,**kwargs):
 
     gas_arr = np.array([])
@@ -470,11 +493,11 @@ def plot_single(single_dir, n=n):
         if save: plt.savefig(os.path.join(single_dir,"spectra.png"),dpi=1000)
         if show: plt.show()
 
-# plot UV energy, THG conversion efficiency, pulse duration, UV peak position, for two scans, differing in second_var 
-def plot_double(scan_dir, second_var,**kwargs):
+# plot UV energy, THG conversion efficiency, pulse duration and UV peak position for two scans, differing in second_var 
+def plot_double(sup_dir, second_var,**kwargs):
 
     # get paths to two files
-    paths = two_comparison_get(scan_dir, second_var,**kwargs)
+    paths = two_comparison_get(sup_dir, second_var,**kwargs)
 
     # get data 
     p_arr, UVen_arr, ef_arr, tau_arr, zpeak_arr = get_data(paths[0])
@@ -584,9 +607,7 @@ def plot_double(scan_dir, second_var,**kwargs):
         if save: plt.savefig(os.path.join(out_path,"z_peak.png"),dpi=1000)
         if show: plt.show()
 
-# plot UV energy and THG conversion efficiency for different beam power
-# NOTE: a second_var can be overlayed (meant mainly for ion_mod, dens_mod,ion, and gas)
-#       for second_var: both options should have the same number of relevant files!!
+# multi power comparison: scan should only differ in power or, if second_var is used, in one additional specified variable 
 def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
 
     # check if second_var is valid (if given)
@@ -908,7 +929,7 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
             with open(os.path.join(out_path,"kwargs.txt"), "w") as file:
                 json.dump(params_dict, file)
 
-# single power, single dens model gas comparison 
+# single power gas comparison (all parameters except gas should be equal)
 def plot_gas_comp_singleP(sup_dir,**kwargs):
 
     # get data 
@@ -993,7 +1014,7 @@ def plot_gas_comp_singleP(sup_dir,**kwargs):
     if save: plt.savefig(os.path.join(out_path,"peak_positions.png"),dpi=1000)
     if show: plt.show()
 
-# multi power, single dens model gas comparison 
+# multi power gas comparison (all parameters except gas and power should be equal)
 def plot_gas_comp_multiP(sup_dir,**kwargs):
     
     # get data 
@@ -1134,9 +1155,15 @@ def plot_gas_comp_multiP(sup_dir,**kwargs):
     if show: plt.show()
 
 # ---------- EXEC --------------------------------------
+
 if single:
     plot_single(single_dir, n)
-else:  
-    #plot_multipower(sup_dir, gas="Ar", dens_mod="coms")
-    #plot_gas_comp_singleP(sup_dir, IR_energy=200e-6, dens_mod="coms")
-    plot_gas_comp_multiP(sup_dir, dens_mod="coms")
+elif double:
+    plot_double(sup_dir, second_var,**kwargs)  
+elif multi_power:
+    if multi_gas:
+        plot_gas_comp_multiP(sup_dir, **kwargs)
+    else:
+        plot_multipower(sup_dir, second_var, **kwargs)
+elif multi_gas and (not multi_power):  
+    plot_gas_comp_singleP(sup_dir, **kwargs)                 
