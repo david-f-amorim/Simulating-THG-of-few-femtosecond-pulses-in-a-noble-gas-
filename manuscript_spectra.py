@@ -25,11 +25,11 @@ fig_dim = [2 * 3.14961,2* 2.3622075] # for 8cm width ; double for 16cm width
 
 # ---------- SELECT PLOTS -------------------------------
 
-plot1 = True 
-plot2 = True 
-plot3 = True 
+plot1 = False 
+plot2 = True
+plot3 = False 
 plot4 = True 
-plot5 = True 
+plot5 = False 
 # ---------- PLOTS  --------------------------------------
 
 if plot1:
@@ -55,9 +55,9 @@ if plot1:
         if overlay==False:
             spec_measured[:,1]=spec_measured[:,1]/np.max(spec_measured[:,1])
         else:
-            max = max(np.max(spec_measured), np.max(spec_sim))
-            spec_measured[:,1]=spec_measured[:,1]/max 
-            spec_sim[:,1]=spec_sim[:,1]/max    
+            max_val = max(np.max(spec_measured), np.max(spec_sim))
+            spec_measured[:,1]=spec_measured[:,1]/ max_val 
+            spec_sim[:,1]=spec_sim[:,1]/ max_val    
 
     plt.plot(spec_measured[:,0]*1e9, spec_measured[:,1], color="red", label="meas.")
     if overlay:
@@ -85,9 +85,9 @@ if plot2:
     plt.xlabel("$\lambda$ (nm)") 
 
     if norm:
-        max = max(np.max(spec_new), np.max(spec_old))
-        spec_new[:,1]=spec_new[:,1]/max 
-        spec_old[:,1]=spec_old[:,1]/max    
+        max_val = max(np.max(spec_new), np.max(spec_old))
+        spec_new[:,1]=spec_new[:,1]/ max_val
+        spec_old[:,1]=spec_old[:,1]/ max_val   
 
     plt.plot(spec_old[:,0]*1e9, spec_old[:,1], color="red", label="old (2019)")
     plt.plot(spec_new[:,0]*1e9, spec_new[:,1], color="blue", label="new")
@@ -117,14 +117,14 @@ if plot3:
     plt.xlabel("$\lambda$ (nm)") 
 
     if norm:
-            max = max(np.max(spec_no_chirp), np.max(spec_pos_chirp), np.max(spec_neg_chirp))
-            spec_no_chirp[:,1]=spec_no_chirp[:,1]/max 
-            spec_pos_chirp[:,1]=spec_pos_chirp[:,1]/max
-            spec_neg_chirp[:,1]=spec_neg_chirp[:,1]/max   
+            max_val = max(np.max(spec_no_chirp), np.max(spec_pos_chirp), np.max(spec_neg_chirp))
+            spec_no_chirp[:,1]=spec_no_chirp[:,1]/ max_val 
+            spec_pos_chirp[:,1]=spec_pos_chirp[:,1]/ max_val
+            spec_neg_chirp[:,1]=spec_neg_chirp[:,1]/ max_val   
 
-    plt.plot(spec_pos_chirp[:,0]*1e9, spec_pos_chirp[:,1], color="red", label="+11fs$\^2$")
-    plt.plot(spec_neg_chirp[:,0]*1e9, spec_neg_chirp[:,1], color="blue", label="-11fs$\^2$")
-    plt.plot(spec_no_chirp[:,0]*1e9, spec_no_chirp[:,1], color="black", label="0.0fs$\^2$")
+    plt.plot(spec_pos_chirp[:,0]*1e9, spec_pos_chirp[:,1], color="red", label="+11fs$^2$")
+    plt.plot(spec_neg_chirp[:,0]*1e9, spec_neg_chirp[:,1], color="blue", label="-11fs$^2$")
+    plt.plot(spec_no_chirp[:,0]*1e9, spec_no_chirp[:,1], color="black", label="0.0fs$^2$")
     plt.legend()
 
     plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
@@ -156,12 +156,12 @@ if plot4:
     plt.xlabel("$\lambda$ (nm)") 
 
     if norm:
-            max = max(np.max(spec_CEP_0), np.max(spec_CEP_pi_4), np.max(spec_CEP_pi_2), np.max(spec_CEP_3pi_4), np.max(spec_CEP_pi))
-            spec_CEP_0[:,1]=spec_CEP_0[:,1]/max 
-            spec_CEP_pi_4[:,1]=spec_CEP_pi_4[:,1]/max
-            spec_CEP_pi_2[:,1]=spec_CEP_pi_2[:,1]/max 
-            spec_CEP_3pi_4[:,1]=spec_CEP_3pi_4[:,1]/max
-            spec_CEP_pi[:,1]=spec_CEP_pi[:,1]/max  
+            max_val = max(np.max(spec_CEP_0), np.max(spec_CEP_pi_4), np.max(spec_CEP_pi_2), np.max(spec_CEP_3pi_4), np.max(spec_CEP_pi))
+            spec_CEP_0[:,1]=spec_CEP_0[:,1]/ max_val
+            spec_CEP_pi_4[:,1]=spec_CEP_pi_4[:,1]/ max_val
+            spec_CEP_pi_2[:,1]=spec_CEP_pi_2[:,1]/ max_val 
+            spec_CEP_3pi_4[:,1]=spec_CEP_3pi_4[:,1]/ max_val
+            spec_CEP_pi[:,1]=spec_CEP_pi[:,1]/ max_val 
 
     cmap = plt.get_cmap("viridis")
     cval = np.linspace(0,1,5)
@@ -209,16 +209,16 @@ if plot5:
     plt.xlabel("$\lambda$ (nm)") 
 
     if norm:
-            max = max(np.max(spec1), np.max(spec2), np.max(spec3), np.max(spec4), np.max(spec5),np.max(spec6), np.max(spec7), np.max(spec8), np.max(spec9))
-            spec1[:,1]=spec1[:,1]/max
-            spec2[:,1]=spec2[:,1]/max
-            spec3[:,1]=spec3[:,1]/max
-            spec4[:,1]=spec4[:,1]/max
-            spec5[:,1]=spec5[:,1]/max
-            spec6[:,1]=spec6[:,1]/max
-            spec7[:,1]=spec7[:,1]/max
-            spec8[:,1]=spec8[:,1]/max
-            spec9[:,1]=spec9[:,1]/max
+            max_val = max(np.max(spec1), np.max(spec2), np.max(spec3), np.max(spec4), np.max(spec5),np.max(spec6), np.max(spec7), np.max(spec8), np.max(spec9))
+            spec1[:,1]=spec1[:,1]/ max_val
+            spec2[:,1]=spec2[:,1]/ max_val
+            spec3[:,1]=spec3[:,1]/ max_val
+            spec4[:,1]=spec4[:,1]/ max_val
+            spec5[:,1]=spec5[:,1]/ max_val
+            spec6[:,1]=spec6[:,1]/ max_val
+            spec7[:,1]=spec7[:,1]/ max_val
+            spec8[:,1]=spec8[:,1]/ max_val
+            spec9[:,1]=spec9[:,1]/ max_val
 
     colour_cycle = ["blue", "grey", "black", "red", "purple", "green", "cyan", "orange", "deeppink"]
 

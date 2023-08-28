@@ -328,7 +328,7 @@ function THG_main(pres=pres)
     end    
 
     if (save & !p_scan) == true              # create specific directory to store run output 
-        out_path = joinpath("output","run_"*Dates.format(Dates.now(), "yyyy_mm_dd__HH_MM"))
+        out_path = joinpath("output","run_"*Dates.format(Dates.now(), "yyyy_mm_dd__HH_MM_SS"))
         mkdir(out_path)
     elseif p_scan == true  
         out_path = joinpath("output", scan_dir)
