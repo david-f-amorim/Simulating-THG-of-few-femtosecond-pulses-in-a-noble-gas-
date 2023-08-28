@@ -5,7 +5,7 @@ import json
 
 # ---------- OPERATION SETTINGS --------------------------------------
 
-single = False        # if True: process output from a single pressure scan
+single = True        # if True: process output from a single pressure scan
 double = False        # if True: compare output from two different pressure scans differing in one parameter (set by second_var)
 multi_power = False   # if True: compare output with different powers and all other parameters equal (apart from gas, if multi_gas=True; if using second_var,
                       # scans may differ in one parameter)
@@ -21,7 +21,7 @@ old = False # if True: skip some features that are not available with some older
 # ---------- SINGLE-SCAN SETTINGS --------------------------------------
 
 n = 8   # maximum number of overlayed spectra in one plot (to avoid clutter)
-comp_exp = True # if True: overlay experimental data of UV energy as function of central pressure 
+comp_exp = False # if True: overlay experimental data of UV energy as function of central pressure 
 
 shift_sim = "no" # if comp_exp==True, this can be used to align the simulated and measured pressure axes
                  #          if shift_sim=="offset": shift the simulated data along the pressure axis

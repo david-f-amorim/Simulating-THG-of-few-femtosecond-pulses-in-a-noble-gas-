@@ -49,33 +49,22 @@ extendend previous pressure scans to O2 and SF6; implemented option to add chirp
 carried out minor chirp scan; added option to toggle between PPT and ADK; started working on handover PP; 
 cleaned up "file_prepare.py"; finished gas scans; changed from on-axis to total intensity/energy; 
 started re-writing "scan_eval.py"; now integrating along frequencies for intensity distributions; changed plot design;
-added option to norm plots; 
+added option to norm plots; finished re-writing "scan_eval" 
 
+Week 7
+-------------------------------
+
+finished handover presentation; wrote "manuscript_spectra.py" ; 
 
 
 - run "final simulations" with good parameters [and PPT!]
 	+ calculate ratios of Ar/Ne energies [just numerically at sat points; DOES NE EVEN SAT IN EXP??]
-	+ work on plot list 
-                -> start new code file for spectra !!!
+	+ test "manuscript_spectra" ??
 
 	
 - work on "documentation"
 	+ write report
 	+ prepare final presentation [use CFEL template; 12 minutes; formal]
-	+ prepare handover PP 
-			[clean up scan_eval] ; upload gas_scans etc to Sync&Share (fixed param files) !!!!!
-			-> add functions for multi_gas comparison
-			-> add quick notes section for control
-			-> write PP slide
 
-			MAKE PRESURE SHIFTING FUNCTION MORE SOPHISTICATED ??!!
 			
-			MOVE PRESSURE SCAN EXP DATA OUT OF RAW_INPUT!!
-
-		
-			rewrite PP !
-
-
-			ADD SOME COMMENTS;
-			ADD EXEC/SETTINGS 
-			ADD WARNING HOW SOME PLOTS ARE USELESS/REMOVE THEM?? 
+			
