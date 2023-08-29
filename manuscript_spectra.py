@@ -16,7 +16,7 @@ out_dir = "manuscript_spectra"     # directory to store output files
 disable_latex = False # toggle LaTeX rendering
 show_title = False     # toggle showing title 
 norm = True           # toggle normalisation
-use_pdf = False        # if true: use pdf; else: use png
+use_pdf = True        # if true: use pdf; else: use png
 
 if disable_latex == False : plt.rcParams["text.usetex"] = True   # enable LaTeX rendering
 plt.rcParams["mathtext.fontset"] = "cm" # use LateX font for maths
@@ -37,9 +37,9 @@ if plot1:
     # * * * PLOT 1: SHOW MEASURED SPECTRUM [WITH OR WITHOUT OVERLAYED SIMULATION]
     #                for manuscript: Ne 400mW 2.0bar; Ar 150mW 0.4bar
 
-    file_measured = "Ar_150mW_0.4bar.txt"     # file name of measured UV spectrum 
-    file_sim      = "1.0 bar.dat"     # file name of simulated UV spectrum
-    file_out      = "spec_comp_Ar_150mW_2.5scale_0.4bar"     # name of output file (no file ending!)
+    file_measured = "Ne_400mW_2.0bar.txt"     # file name of measured UV spectrum 
+    file_sim      = "5.0 bar.dat"     # file name of simulated UV spectrum
+    file_out      = "spec_comp_Ne_400mW_2.5scale_2.0bar"     # name of output file (no file ending!)
 
     overlay = True         # if True: overlay simulated spectrum 
 

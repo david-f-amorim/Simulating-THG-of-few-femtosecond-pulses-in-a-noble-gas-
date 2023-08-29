@@ -588,7 +588,7 @@ function THG_main(pres=pres)
         plt.figure(figsize=fig_dim) 
         if show_title plt.title("Time-domain representation of UV output pulse") end
         plt.xlabel("t (fs)")
-        plt.ylabel(norm ? "I(z=0) (norm.)" : "I(z=0) (arb. units)")
+        plt.ylabel(norm ? "I (norm.)" : "I (arb. units)")
         plt.plot(t*1e15, norm ? Maths.normbymax(It0_UV[:,end]) : It0_UV[:,end] , color="red", label=L"\tau_{TL}="*string(round(τ_UV*1e15, digits=1) )*"fs")
         plt.plot(t*1e15,norm ? Maths.normbymax(It0_UV_envelope[:,end]) : It0_UV_envelope[:,end], color="black", linestyle="--")
 

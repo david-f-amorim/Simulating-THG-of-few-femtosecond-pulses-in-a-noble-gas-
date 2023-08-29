@@ -67,12 +67,25 @@ TO DO
 - run simulations with old chip coms overnight 
 - run Ne 400mW simulations for grad to higher pressures [use existing ones??!!]
 - produce all relevant plots
-	DONE: A,B,I for Ar and ne 
+	DONE: A,B,I for Ar and ne   
 	      
-	      missing: C,D,E,F
+	      missing: C,[D,E],F   [only show envelope, not carrie ->; done on maxwell ]
+				 [add TL duration to chirp scan]
+				
+
+	running right now: Ar & Ne with and without ion pdf and png [covers D&E] ; Ar & Ne chirp scan [covers F]
+	to do: C (wait COMSOL); 
 
 	      G: scrapped
               H: on hold 
+
+		PROBLEM: pulse duration very inaccurate!!!
+
+	NOTE: FOCUS FOR NOW ARE PRESENTATION AND REPORT; MANUSCRIPT LATER; FINISH DOING PLOTS [MAINLY EXPORTING AND WAITING FOR COMSOL]
+		THEN WRITE REPORT AND PRESENTATION; THEN GO BACK TO MANUSCRIPT!!!
+
+
+	NOTE: GENERAL BLUESHIFT OF MEASURED VS SIMULATED SPECTRA ->> SIMPLY BECAUSE WRONG CENTRAL WAVELENGTH??
 
 
 DO PROMISING SPECTRA PLOT??!!!
