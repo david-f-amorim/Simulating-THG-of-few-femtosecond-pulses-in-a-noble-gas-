@@ -57,20 +57,18 @@ Week 7
 finished handover presentation; wrote "manuscript_spectra.py" ; 
 
 
-- FINISH PP WITH SAMPLE OUTPUT
+NEW PLOT FOR VINCENT!!
 
-START WRITING REPORT AND PRESENTATION WITHOUT RESULTS!!
-
-FIND PICTURES OF NEW AND OLD CHIPS!!!
+DO PROMISING SPECTRA PLOT??!!!
 
 - run "final simulations" with good parameters [and PPT!]
 	+ calculate ratios of Ar/Ne energies [just numerically at sat points; DOES NE EVEN SAT IN EXP??]
 	+ 
-
 	
 - work on "documentation"
 	+ write report
 	+ prepare final presentation [use CFEL template; 12 minutes; formal]
+	+ FIND PICTURES OF NEW AND OLD CHIPS!!!
 
 			
 			

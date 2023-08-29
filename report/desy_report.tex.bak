@@ -144,11 +144,13 @@ The fused silica chip is equipped with a laser machined central 3mm-long channel
 
 \textcolor{red}{test image}
 \begin{center}
-\begin{figure}
+\begin{figure}[h]
 \includegraphics[scale=0.5]{im/energies}\label{im:pressure_scan}
 \caption{Argon pressure scan at 150mW input beam power.}
 \end{figure}
 \end{center}
+
+\cite{reiter2010}
 
 \section{Discussion}
 

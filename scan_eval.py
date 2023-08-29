@@ -21,7 +21,7 @@ old = False # if True: skip some features that are not available with some older
 # ---------- SINGLE-SCAN SETTINGS --------------------------------------
 
 n = 8   # maximum number of overlayed spectra in one plot (to avoid clutter)
-comp_exp = True # if True: overlay experimental data of UV energy as function of central pressure 
+comp_exp = False # if True: overlay experimental data of UV energy as function of central pressure 
 
 shift_sim = "no" # if comp_exp==True, this can be used to align the simulated and measured pressure axes
                  #          if shift_sim=="offset": shift the simulated data along the pressure axis
@@ -30,7 +30,7 @@ shift_sim = "no" # if comp_exp==True, this can be used to align the simulated an
 set_shift = None # specify the magnitude of the offset/scaling factor if shift_sim=="offset" or "factor"; if 
                  # set_shift==None, the offset/scaling factor will be set automatically to align the peak energies
 
-single_dir = "parameter_scans\\gas_scans\\scan_150.0mW_Ar_0.0rad_f_ion_grad" # path to pressure scan directory if single=True (Note: output will be written to same directory)
+single_dir = "parameter_scans\\gas_scans\\scan_150.0mW_Ar_0.0rad_f_ion_coms" # path to pressure scan directory if single=True (Note: output will be written to same directory)
 exp_file = "raw_input\\Ar_150mW_IR.txt" # path to file containing experimental data; will be overlayed if comp_exp==True 
 
 # ---------- SET KWARGS -------------------------------------------
@@ -66,7 +66,7 @@ save = True           # if True: saves plots
 show_title = False     # if False: no titles shown 
 norm = True           # if True: norm spectra 
 disable_latex = False # if True: disable LaTeX rendering 
-use_pdf = True        # if True: save plots as pdf; else: use png
+use_pdf = False        # if True: save plots as pdf; else: use png
 
 # ---------- MULTI-SCANS: FILE EXTRACTION --------------------------------------
 
@@ -429,7 +429,8 @@ def plot_single(single_dir, n=n):
             if use_pdf:
                 plt.savefig(os.path.join(single_dir,"energies.pdf"))
             else:
-                plt.savefig(os.path.join(single_dir,"energies.png"),dpi=1000)    
+                plt.savefig(os.path.join(single_dir,"energies.png"),dpi=1000) 
+    if show: plt.show()               
     
     if comp_exp==False:
     
@@ -484,6 +485,38 @@ def plot_single(single_dir, n=n):
             if show: plt.show()
 
         plt.figure(figsize=fig_dim) 
+        if show_title: plt.title("??")
+        plt.subplots_adjust(top=0.9, bottom=0.14, left=0.16)
+        plt.xlabel('$\lambda$ (nm)')
+        plt.ylabel("Central pressure (bar)")
+
+        data, _ = get_spectra(single_dir, 100)
+
+        I_2d  = np.empty((len(data[0,1])-1, len(data[:,0])-1), dtype="float")
+        for i in np.arange(len(data[0,1])-1):      # lam
+            for j in np.arange(len(data[:,0])-1):  # pres 
+                I_2d[i,j] = data[j, 2][i]
+
+        X, Y = np.meshgrid(data[0,1].astype("float")*1e9, data[:,0].astype("float"))  
+        I_2d = np.swapaxes(I_2d,0,1) 
+ 
+        if norm: 
+            plt.pcolormesh(X, Y, I_2d/np.max(I_2d))
+        else:
+            plt.pcolormesh(X, Y, I_2d)    
+        
+        plt.colorbar(label="I (arb. units)" if norm==False else "I (norm.)")
+        plt.xlim(min(data[0,1])*1e9, max(data[0,1])*1e9)
+
+        if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"2d_spectra_pres.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"2d_spectra_pres.png"),dpi=1000)    
+        
+        if show: plt.show()
+
+        plt.figure(figsize=fig_dim) 
         plt.subplots_adjust(top=0.9, bottom=0.14)
         if show_title: plt.title("Simulated UV spectra")
         plt.ylabel("I (arb. units)" if norm==False else "I (norm.)")
@@ -513,6 +546,7 @@ def plot_single(single_dir, n=n):
             else:
                 plt.savefig(os.path.join(single_dir,"spectra.png"),dpi=1000)    
         if show: plt.show()
+
 
 # plot UV energy, THG conversion efficiency, pulse duration and UV peak position for two scans, differing in second_var 
 def plot_double(sup_dir, second_var,**kwargs):
@@ -1036,7 +1070,11 @@ def plot_gas_comp_singleP(sup_dir,**kwargs):
         plt.plot(p_arr, UVen_arr*1e9, color=colour_cycle[i])
 
     plt.legend()
-    if save: plt.savefig(os.path.join(out_path,"UV_energies.png"),dpi=1000)
+    if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"UV_energies.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"UV_energies.png"),dpi=1000)    
     if show: plt.show()
 
     # PLOT 2: efficiency vs pressure 
@@ -1052,7 +1090,11 @@ def plot_gas_comp_singleP(sup_dir,**kwargs):
         plt.plot(p_arr, ef_arr*1e2, color=colour_cycle[i])
 
     plt.legend()
-    if save: plt.savefig(os.path.join(out_path,"THG_efficiencies.png"),dpi=1000)
+    if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"THG_efficiencies.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"THG_efficiencies.png"),dpi=1000)    
     if show: plt.show()
 
     # PLOT 3: pulse duration vs pressure 
@@ -1068,7 +1110,11 @@ def plot_gas_comp_singleP(sup_dir,**kwargs):
         plt.plot(p_arr, tau_arr*1e15, color=colour_cycle[i])
 
     plt.legend()
-    if save: plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
+    if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"pulse_durations.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"pulse_durations.png"),dpi=1000)    
     if show: plt.show()
 
     # PLOT 4: z_peak vs pressure 
@@ -1084,7 +1130,11 @@ def plot_gas_comp_singleP(sup_dir,**kwargs):
         plt.plot(p_arr, z_peak_arr*1e3, color=colour_cycle[i])
 
     plt.legend()
-    if save: plt.savefig(os.path.join(out_path,"peak_positions.png"),dpi=1000)
+    if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"peak_positions.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"peak_positions.png"),dpi=1000)    
     if show: plt.show()
 
 # multi power gas comparison (all parameters except gas and power should be equal)
@@ -1156,7 +1206,11 @@ def plot_gas_comp_multiP(sup_dir,**kwargs):
         ax.plot(peak_arr[:,0]*1e6, peak_arr[:,2]*1e9, color=colour_cycle[k])
 
     plt.legend()
-    if save: plt.savefig(os.path.join(out_path,"peak_en_vs_beam_power.png"),dpi=1000)
+    if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"peak_en_vs_beam_power.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"peak_en_vs_beam_power.png"),dpi=1000)    
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=fig_dim)
@@ -1173,7 +1227,11 @@ def plot_gas_comp_multiP(sup_dir,**kwargs):
     secax.set_xlabel('Peak intensity (PW/cm$^2$)')
 
     plt.legend()
-    if save: plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
+    if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"peak_ef_vs_beam_power.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"peak_ef_vs_beam_power.png"),dpi=1000)    
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=fig_dim)
@@ -1191,7 +1249,11 @@ def plot_gas_comp_multiP(sup_dir,**kwargs):
     secax.set_xlabel('Peak intensity (PW/cm$^2$)')
 
     plt.legend()
-    if save: plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
+    if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"peak_p_vs_beam_power.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"peak_p_vs_beam_power.png"),dpi=1000)    
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=fig_dim)
@@ -1208,7 +1270,11 @@ def plot_gas_comp_multiP(sup_dir,**kwargs):
     secax.set_xlabel('Peak intensity (PW/cm$^2$)')
     plt.legend()
 
-    if save: plt.savefig(os.path.join(out_path,"tau_min_vs_beam_power.png"),dpi=1000)
+    if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"tau_min_vs_beam_power.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"tau_min_vs_beam_power.png"),dpi=1000)    
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=fig_dim)

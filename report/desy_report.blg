@@ -10,45 +10,45 @@ Warning--entry type for "brahms2023" isn't style-file defined
 Reallocating 'glb_str_end' (item size: 4) to 20 items.
 Reallocating 'glb_str_ptr' (item size: 4) to 20 items.
 Reallocating 'global_strs' (item size: 1) to 4000000 items.
-You've used 7 entries,
+You've used 8 entries,
             2555 wiz_defined-function locations,
-            856 strings with 8201 characters,
-and the built_in function-call counts, 3854 in all, are:
-= -- 507
-> -- 105
+            864 strings with 8520 characters,
+and the built_in function-call counts, 4597 in all, are:
+= -- 597
+> -- 140
 < -- 0
-+ -- 66
-- -- 31
-* -- 210
-:= -- 361
-add.period$ -- 12
-call.type$ -- 7
++ -- 84
+- -- 42
+* -- 261
+:= -- 441
+add.period$ -- 14
+call.type$ -- 8
 change.case$ -- 0
 chr.to.int$ -- 0
-cite$ -- 7
-duplicate$ -- 379
-empty$ -- 216
-format.name$ -- 36
-if$ -- 792
+cite$ -- 8
+duplicate$ -- 446
+empty$ -- 249
+format.name$ -- 48
+if$ -- 939
 int.to.chr$ -- 0
-int.to.str$ -- 7
-missing$ -- 8
-newline$ -- 33
-num.names$ -- 7
-pop$ -- 110
+int.to.str$ -- 8
+missing$ -- 9
+newline$ -- 37
+num.names$ -- 8
+pop$ -- 132
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 0
-skip$ -- 282
+skip$ -- 323
 stack$ -- 0
-substring$ -- 220
-swap$ -- 363
+substring$ -- 265
+swap$ -- 429
 text.length$ -- 0
 text.prefix$ -- 0
 top$ -- 0
 type$ -- 0
 warning$ -- 0
-while$ -- 18
-width$ -- 8
-write$ -- 68
+while$ -- 21
+width$ -- 9
+write$ -- 78
 (There was 1 warning)
