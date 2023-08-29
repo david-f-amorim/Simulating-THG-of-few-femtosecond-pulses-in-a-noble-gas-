@@ -30,7 +30,7 @@ shift_sim = "no" # if comp_exp==True, this can be used to align the simulated an
 set_shift = None # specify the magnitude of the offset/scaling factor if shift_sim=="offset" or "factor"; if 
                  # set_shift==None, the offset/scaling factor will be set automatically to align the peak energies
 
-single_dir = "parameter_scans\\gas_scans\\scan_150.0mW_Ar_0.0rad_f_ion_coms" # path to pressure scan directory if single=True (Note: output will be written to same directory)
+single_dir = "parameter_scans\\gas_scans\\scan_400.0mW_Ne_0.0rad_f_ion_grad" # path to pressure scan directory if single=True (Note: output will be written to same directory)
 exp_file = "raw_input\\Ar_150mW_IR.txt" # path to file containing experimental data; will be overlayed if comp_exp==True 
 
 # ---------- SET KWARGS -------------------------------------------
@@ -507,6 +507,9 @@ def plot_single(single_dir, n=n):
         
         plt.colorbar(label="I (arb. units)" if norm==False else "I (norm.)")
         plt.xlim(min(data[0,1])*1e9, max(data[0,1])*1e9)
+        plt.xlim(159,360)      # for Ar, Ne 
+        #plt.ylim(1.0, 4.5)     # for Ne
+        #plt.ylim(0.1, 1.6)     # for Ar                                        
 
         if save: 
             if use_pdf:

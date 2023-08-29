@@ -54,7 +54,7 @@ added option to norm plots; finished re-writing "scan_eval"
 Week 7
 -------------------------------
 
-finished handover presentation; wrote "manuscript_spectra.py" ; 
+finished handover presentation; wrote "manuscript_spectra.py" ; added now pressure scan plots (2d)
 
 
 NEW PLOT FOR VINCENT!!
