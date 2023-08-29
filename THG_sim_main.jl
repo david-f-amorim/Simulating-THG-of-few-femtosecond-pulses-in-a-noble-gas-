@@ -607,7 +607,7 @@ function THG_main(pres=pres)
         jw = Plotting.cmap_white("jet"; n=10)
         
         plt.figure(figsize=fig_dim)
-        plt.subplots_adjust(left=0.15, right=0.95)
+        plt.subplots_adjust(left=0.15, right=0.95, bottom=0.13)
         if show_title plt.title("Output UV pulse") end
         plt.xlabel("t (fs)")
         plt.ylabel("r (mm)")
@@ -635,7 +635,7 @@ function THG_main(pres=pres)
         
         plt.figure(figsize=fig_dim) 
         if show_title plt.suptitle("Spatiotemporal evolution of UV pulse") end
-        plt.subplots_adjust(hspace=0.6, wspace=0.55)
+        plt.subplots_adjust(hspace=0.6, wspace=0.55, bottom=0.13)
 
         for i in 1:4
             plt.subplot(2,2,i)
@@ -659,7 +659,7 @@ function THG_main(pres=pres)
         #+++++ PLOT 13: plot spatiotemporal IR pulse evolution 
         plt.figure(figsize=fig_dim) 
         if show_title plt.suptitle("Spatiotemporal evolution of IR pulse") end
-        plt.subplots_adjust(hspace=0.6, wspace=0.55)
+        plt.subplots_adjust(hspace=0.6, wspace=0.55, bottom=0.13)
 
         for i in 1:4
             plt.subplot(2,2,i)

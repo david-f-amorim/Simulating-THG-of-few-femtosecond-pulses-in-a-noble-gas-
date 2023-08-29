@@ -16,6 +16,7 @@ out_dir = "manuscript_plots"     # directory to store output files
 disable_latex = False # toggle LaTeX rendering
 show_title = True     # toggle showing title 
 norm = True           # toggle normalisation
+use_pdf = True        # if true: use pdf; else: use png
 
 if disable_latex == False : plt.rcParams["text.usetex"] = True   # enable LaTeX rendering
 plt.rcParams["mathtext.fontset"] = "cm" # use LateX font for maths
@@ -64,7 +65,10 @@ if plot1:
         plt.plot(spec_sim[:,0]*1e9, spec_sim[:,1], color="blue", label="sim.")
         plt.legend()
 
-    plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
+    if use_pdf:
+         plt.savefig(os.path.join(out_dir,file_out+".pdf"))
+    else:     
+        plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
     plt.show()
 
 if plot2:
@@ -93,7 +97,10 @@ if plot2:
     plt.plot(spec_new[:,0]*1e9, spec_new[:,1], color="blue", label="new")
     plt.legend()
 
-    plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
+    if use_pdf:
+         plt.savefig(os.path.join(out_dir,file_out+".pdf"))
+    else:     
+        plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
     plt.show()
 
 if plot3:
@@ -127,7 +134,10 @@ if plot3:
     plt.plot(spec_no_chirp[:,0]*1e9, spec_no_chirp[:,1], color="black", label="0.0fs$^2$")
     plt.legend()
 
-    plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
+    if use_pdf:
+         plt.savefig(os.path.join(out_dir,file_out+".pdf"))
+    else:     
+        plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
     plt.show()
 
 if plot4:
@@ -173,7 +183,10 @@ if plot4:
     plt.plot(spec_CEP_pi[:,0]*1e9, spec_CEP_pi[:,1], color=cmap(cval[4]), label="$\pi$")
     plt.legend()
 
-    plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
+    if use_pdf:
+         plt.savefig(os.path.join(out_dir,file_out+".pdf"))
+    else:     
+        plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
     plt.show()
 
 if plot5:
@@ -234,5 +247,8 @@ if plot5:
     
     plt.legend(ncol=3)
 
-    plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
+    if use_pdf:
+         plt.savefig(os.path.join(out_dir,file_out+".pdf"))
+    else:     
+        plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
     plt.show()

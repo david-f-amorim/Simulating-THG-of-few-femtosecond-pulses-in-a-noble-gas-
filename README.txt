@@ -61,8 +61,7 @@ finished handover presentation; wrote "manuscript_spectra.py" ;
 
 START WRITING REPORT AND PRESENTATION WITHOUT RESULTS!!
 
-
-IMPLEMENT USE_PDF IN SCAN_EVAL AND MANUSCRIPT_SPECTRA!!
+FIND PICTURES OF NEW AND OLD CHIPS!!!
 
 - run "final simulations" with good parameters [and PPT!]
 	+ calculate ratios of Ar/Ne energies [just numerically at sat points; DOES NE EVEN SAT IN EXP??]

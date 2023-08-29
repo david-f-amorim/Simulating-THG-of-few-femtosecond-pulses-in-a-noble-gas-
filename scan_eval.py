@@ -425,9 +425,12 @@ def plot_single(single_dir, n=n):
 
     plt.legend(loc="upper right")
 
-    if save: plt.savefig(os.path.join(single_dir,"energies.png"),dpi=1000)
-    if show: plt.show()
-
+    if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"energies.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"energies.png"),dpi=1000)    
+    
     if comp_exp==False:
     
         plt.figure(figsize=fig_dim) 
@@ -439,7 +442,12 @@ def plot_single(single_dir, n=n):
         plt.scatter(p_arr, ef_arr*1e2, color="blue", label="Peak: {0:.2f}\% at {1}bar".format(peak_arr[1]*1e2, peak_arr[3]))
         plt.legend()
 
-        if save: plt.savefig(os.path.join(single_dir,"efficiencies.png"),dpi=1000)
+        if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"efficiencies.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"efficiencies.png"),dpi=1000)    
+        
         if show: plt.show()
 
         if old==False:
@@ -452,7 +460,11 @@ def plot_single(single_dir, n=n):
             plt.scatter(p_arr, tau_arr*1e15, color="blue", label="Minimum: {0:.2f}fs at {1}bar".format(peak_arr[2]*1e15, peak_arr[4]))
             plt.legend()
 
-            if save: plt.savefig(os.path.join(single_dir,"durations.png"),dpi=1000)
+            if save: 
+                if use_pdf:
+                    plt.savefig(os.path.join(single_dir,"durations.pdf"))
+                else:
+                    plt.savefig(os.path.join(single_dir,"durations.png"),dpi=1000)    
             if show: plt.show()
 
             plt.figure(figsize=fig_dim) 
@@ -464,7 +476,11 @@ def plot_single(single_dir, n=n):
             plt.scatter(p_arr, zpeak_arr*1e3, color="blue", label="Maximum: {0:.2f}mm at {1}bar".format(np.max(zpeak_arr)*1e3,p_arr[np.where(zpeak_arr == np.max(zpeak_arr) )][0]))
             plt.legend()
 
-            if save: plt.savefig(os.path.join(single_dir,"z_peak.png"),dpi=1000)
+            if save: 
+                if use_pdf:
+                    plt.savefig(os.path.join(single_dir,"z_peak.pdf"))
+                else:
+                    plt.savefig(os.path.join(single_dir,"z_peak.png"),dpi=1000)    
             if show: plt.show()
 
         plt.figure(figsize=fig_dim) 
@@ -491,7 +507,11 @@ def plot_single(single_dir, n=n):
             plt.plot(data[i,1]*1e9, data[i,2] if norm==False else data[i,2]/maxI, color=cmap(cidx[i]), label="{0}bar".format(data[i,0]))
         plt.legend(loc="upper right")
 
-        if save: plt.savefig(os.path.join(single_dir,"spectra.png"),dpi=1000)
+        if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"spectra.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"spectra.png"),dpi=1000)    
         if show: plt.show()
 
 # plot UV energy, THG conversion efficiency, pulse duration and UV peak position for two scans, differing in second_var 
@@ -562,7 +582,11 @@ def plot_double(sup_dir, second_var,**kwargs):
     plt.scatter(p_arr2, UVen_arr2*1e9, color="red", label=label2)
     plt.legend(loc="upper left")
 
-    if save: plt.savefig(os.path.join(out_path,"energies.png"),dpi=1000)
+    if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"energies.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"energies.png"),dpi=1000)    
     if show: plt.show()
 
     plt.figure(figsize=fig_dim) 
@@ -576,7 +600,11 @@ def plot_double(sup_dir, second_var,**kwargs):
     plt.scatter(p_arr2, ef_arr2*1e2, color="red", label=label2)
     plt.legend(loc="upper left")
 
-    if save: plt.savefig(os.path.join(out_path,"efficiencies.png"),dpi=1000)
+    if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"efficiencies.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"efficiencies.png"),dpi=1000)    
     if show: plt.show()
 
     if old==False:
@@ -591,7 +619,11 @@ def plot_double(sup_dir, second_var,**kwargs):
         plt.scatter(p_arr2, tau_arr2*1e15, color="red", label=label2)
         plt.legend()
 
-        if save: plt.savefig(os.path.join(out_path,"durations.png"),dpi=1000)
+        if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"durations.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"durations.png"),dpi=1000)    
         if show: plt.show()
 
         plt.figure(figsize=fig_dim) 
@@ -605,7 +637,11 @@ def plot_double(sup_dir, second_var,**kwargs):
         plt.scatter(p_arr2, zpeak_arr2*1e3, color="red", label=label2)
         plt.legend()
 
-        if save: plt.savefig(os.path.join(out_path,"z_peak.png"),dpi=1000)
+        if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"z_peak.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"z_peak.png"),dpi=1000)    
         if show: plt.show()
 
 # multi power comparison: scan should only differ in power or, if second_var is used, in one additional specified variable 
@@ -723,7 +759,11 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
             plt.plot(p_arr[i], UVen_arr[i]*1e9, color=cmap(cidx[i]))
 
     plt.legend()
-    if save: plt.savefig(os.path.join(out_path,"UV_energies.png"),dpi=1000)
+    if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"UV_energies.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"UV_energies.png"),dpi=1000)    
     if show: plt.show()
 
     # PLOT 2: efficiency vs pressure 
@@ -745,7 +785,11 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
             plt.plot(p_arr[i], ef_arr[i]*1e2, color=cmap(cidx[i]))
 
     plt.legend()
-    if save: plt.savefig(os.path.join(out_path,"THG_efficiencies.png"),dpi=1000)
+    if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"THG_efficiencies.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"THG_efficiencies.png"),dpi=1000)    
     if show: plt.show()
 
     # PLOT 3: pulse duration vs pressure
@@ -767,7 +811,11 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
                 plt.plot(p_arr[i], tau_arr[i]*1e15, color=cmap(cidx[i]))
 
         plt.legend()
-        if save: plt.savefig(os.path.join(out_path,"pulse_durations.png"),dpi=1000)
+        if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"pulse_durations.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"pulse_durations.png"),dpi=1000)    
         if show: plt.show()
 
     # PLOT 4: z_peak vs pressure 
@@ -790,7 +838,11 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
                 plt.plot(p_arr[i], zpeak_arr[i]*1e3, color=cmap(cidx[i]))
 
         plt.legend()
-        if save: plt.savefig(os.path.join(out_path,"peak_positions.png"),dpi=1000)
+        if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"peak_positions.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"peak_positions.png"),dpi=1000)    
         if show: plt.show()
 
     # PLOTS 4-7: peak investigation 
@@ -834,7 +886,11 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
         ax.scatter(peak_arr[:,0]*1e6, peak_arr[:,2]*1e9, color="blue")
         ax.plot(peak_arr[:,0]*1e6, peak_arr[:,2]*1e9, color="blue")
 
-    if save: plt.savefig(os.path.join(out_path,"peak_en_vs_beam_power.png"),dpi=1000)
+    if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"peak_en_vs_beam_power.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"peak_en_vs_beam_power.png"),dpi=1000)    
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=fig_dim)
@@ -855,7 +911,11 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
     secax.set_xlabel('Peak intensity (PW/cm$^2$)')
 
-    if save: plt.savefig(os.path.join(out_path,"peak_ef_vs_beam_power.png"),dpi=1000)
+    if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"peak_ef_vs_beam_power.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"peak_ef_vs_beam_power.png"),dpi=1000)    
     if show: plt.show()
 
     fig, ax = plt.subplots(figsize=fig_dim)
@@ -876,7 +936,11 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
     secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
     secax.set_xlabel('Peak intensity (PW/cm$^2$)')
 
-    if save: plt.savefig(os.path.join(out_path,"peak_p_vs_beam_power.png"),dpi=1000)
+    if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"peak_p_vs_beam_power.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"peak_p_vs_beam_power.png"),dpi=1000)    
     if show: plt.show()
 
     if old==False:
@@ -898,7 +962,11 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
         secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
         secax.set_xlabel('Peak intensity (PW/cm$^2$)')
 
-        if save: plt.savefig(os.path.join(out_path,"tau_min_vs_beam_power.png"),dpi=1000)
+        if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"tau_min_vs_beam_power.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"tau_min_vs_beam_power.png"),dpi=1000)    
         if show: plt.show()
 
     if old==False:
@@ -920,7 +988,11 @@ def plot_multipower(sup_dir, second_var=(None, None, None), **kwargs):
         secax = ax.secondary_xaxis('top', functions=(p2i, i2p))
         secax.set_xlabel('Peak intensity (PW/cm$^2$)')
 
-        if save: plt.savefig(os.path.join(out_path,"min_tau_p_vs_beam_power.png"),dpi=1000)
+        if save: 
+            if use_pdf:
+                plt.savefig(os.path.join(single_dir,"min_tau_p_vs_beam_power.pdf"))
+            else:
+                plt.savefig(os.path.join(single_dir,"min_tau_p_vs_beam_power.png"),dpi=1000)    
         if show: plt.show()
 
         # save kwargs and sup_dir to file
