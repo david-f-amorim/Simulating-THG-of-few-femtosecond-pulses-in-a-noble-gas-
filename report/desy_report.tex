@@ -24,7 +24,9 @@
 \address{DESY Summer Student Programme 2023 \\ Group:  Attosecond Science (CFEL-ATTO) \\ Institute: Centre for Free-Electron Laser Science (CFEL)\\ Supervisor: Josina Hahne}
 
 \begin{abstract}
-\textcolor{red}{XXXX}
+Ultrashort ultraviolet (UV) laser pulses can be produced via nonlinear optical processes in noble gasses based on few-femtosecond near-infrared (NIR) input pulses. Numerical simulations of these effects were implemented using the propagation solver \textit{Luna.jl}. The simulated UV spectra for Argon and Neon agree well with measured data across different pressures and beam powers. The simulations could be used to show that ionisation-induced self-steepening contributes to spectral broadening and pulse compression, in agreement with similar studies in the literature. It was further demonstrated that using chirped NIR input pulses can further increase the spectral bandwidth. The simulations also supported experimental data on the improved performance of a new gas chip design. \par 
+With further modifications and extensions, the simulations presented here could form the basis of a robust framework that can complement experimental results and aid beamline set-ups by investigating the effects of changing various experimental parameters.  
+\textcolor{red}{REWRITE THE ABOVE}
 \end{abstract}
 ]
 
@@ -36,10 +38,7 @@
 \section{Introduction}
 The electronic motion associated with chemical reactions and atomic energy transitions takes place on femotsecond ($1 \text{fs} = 10^{-15} \text{s}$) to attosecond ($1 \text{as} = 10^{-18} \text{s}$) time scales. Time-resolved imaging of molecular dynamics therefore requires ultrashort laser pulses in the few-femtosecond regime. An important type of electronic motion is that excited by the absorption of ultraviolet (UV) radiation: a variety of biochemical processes, such as DNA damage, are known to be caused by UV excitation. Generating few-femtosecond UV pulses for time-resolved measurements of UV-excited molecules plays a crucial part in further understanding and eventually controlling these effects. \par 
 The CFEL-ATTO group at DESY produces ultrashort UV pulses in the femtosecond regime via third-harmonic generation (THG) in a gas cell \cite{galli2019}. This process is sensitive to a large range of parameters which affect the duration and energy of the generated UV pulse. Numerical simulations of the interactions between the laser pulse and the gas can therefore be advantageous to better understand how THG takes place and how it is affected by the experimental conditions. \par 
-This report summarises the work carried out as part of a DESY Summer Student project focussed on producing simulations of the THG process. The simulations were mainly carried out using the propagation solver \textit{Luna.jl} (\cite{brahms2023}) while the \textit{COMSOL Multiphysics} software was used to model the gas density distribution. The aim of the simulations was to reproduce the experimental conditions in the gas, in order to study which effects dominate the THG process and the shaping of the UV pulse. Further, parameter scans were simulated to investigate how changes to different variables in the experimental set-up affect the output pulse. \par 
-\textcolor{red}{
-briefly list findings (main relevant processes in gas, experimental conditions...)
-}
+This report summarises the work carried out as part of a DESY Summer Student project focussed on producing simulations of the THG process. The simulations were mainly carried out using the propagation solver \textit{Luna.jl} (\cite{brahms2023}) while the \textit{COMSOL Multiphysics} software was used to model the gas density distribution. The aim of the simulations was to reproduce the experimental conditions in the gas, in order to study which effects dominate the THG process and the shaping of the UV pulse. Further, parameter scans were simulated to investigate how changes to different variables in the experimental set-up affect the output pulse. This included comparing the performance of a new fused silica chip used to confine the gas to a previous design. 
 
 \section{Theoretical Background}
 This section gives a brief overview of key properties of ultrashort (femtosecond) laser pulses,  THG and other relevant nonlinear optical effects, as well as the differential equation describing the propagation of ultrafast laser pulses. An in-depth treatment of these topics can be found in textbooks like \cite{keller2021, new2011}. 
@@ -118,41 +117,22 @@ The fused silica chip is equipped with a laser machined central 3mm-long channel
 
 \textcolor{red}{section 1: comparison with experiment; section 2: investigate additional parameters; section 3: gas cell}
 
-\textcolor{red}{test image}
-\begin{center}
-\begin{figure}
-\includegraphics[scale=0.5]{im/Ar_prelim_sim_v_measured}\label{im:sim_v_measured}
-\caption{Measured and simulated UV output spectrum of Argon at 150mW input beam power and 0.4bar central pressure.}
-\end{figure}
-\end{center}
+%\textcolor{red}{test image}
+%\begin{center}
+%\begin{figure}
+%\includegraphics[scale=0.5]{im/%Ar_prelim_sim_v_measured}\label{im:sim_v_measured}
+%\caption{Measured and simulated UV output spectrum of %Argon at 150mW input beam power and 0.4bar central pressure.}
+%\end{figure}
+%\end{center}
 
-\textcolor{red}{test image}
-\begin{center}
-\begin{figure}
-\includegraphics[scale=0.5]{im/Ar_prelim_old_vs_new}\label{im:old_v_new}
-\caption{Simulated UV output spectrum of Argon at 150mW input beam power and 0.4bar central pressure with old and new gas cell design.}
-\end{figure}
-\end{center}
-
-\textcolor{red}{test image}
-\begin{center}
-\begin{figure}
-\includegraphics[scale=0.5]{im/energies}\label{im:pressure_scan}
-\caption{Argon pressure scan at 150mW input beam power.}
-\end{figure}
-\end{center}
-
-\textcolor{red}{test image}
-\begin{center}
-\begin{figure}[h]
-\includegraphics[scale=0.5]{im/energies}\label{im:pressure_scan}
-\caption{Argon pressure scan at 150mW input beam power.}
-\end{figure}
-\end{center}
 
 \cite{reiter2010}
 
 \section{Discussion}
+
+The THG simulations produced as part of this project yielded some promising results: agreement with both experimental data and data presented in the literature could be observed. Indeed, some of the figures presented in this report will be used in a manuscript submitted to the \textit{Journal of Physics: Photonics}. \par 
+There is also significant room for improvement of the simulations, however. A simple modification is to include the fact that the beam channel radius changes throughout the chip, getting narrower at the edges of the central chamber. Currently, this is reflected in the gas density simulations but not in the propagation simulations. Further, the measured spatial profile of the NIR input pulses could be fed into the simulations, replacing the Gaussian approximation as well as the assumption of radial symmetry. Finally, the modelling of the gas density distribution could be improved, by merging different gas flow regimes for the central interaction region and the edge regions of the gas cell. 
+
 
 \textcolor{red}{
 Comparison with results at times difficult: pressure and energy of output beam hard to measure, same for pulse duration}
@@ -167,13 +147,19 @@ Take into account beam spatial profile (astigmatism, deformation,...) [although 
 Improve simulations by improving COMSOL gas density model (need to use high Mach number model instead, current model does not take into account gas interaction). 
 }
 
+
+Base the spatial profile of the input beam on measured data (this requires dropping the assumption of radial symmetry)
+Take into account that the beam channel radius changes throughout the chip 
+Further improve the COMSOL simulations 
+With additional expansions, the simulation code could serve as a basis to back up future experiments with theory
+
+
 \section{Conclusions}
 \textcolor{red}{summarise everything}
 
 
 \section*{Acknowledgments}
-\textcolor{red}{I want to thank Josina Hahne for the supervision of the project and all of her support, as well as Vincent Wanie for his additional guidance. I also want to thank Chris Brahms for providing help with \textit{Luna.jl} as well as Olaf Behnke and Andreas Przystawik for organising the DESY Summer Student programme.}  
-
+I want to thank Josina Hahne for supervising the project and all of her support as well as Vincent Wanie for his additional guidance. I also want to thank Chris Brahms for providing help with \textit{Luna.jl} and Agata Azzolin for assisting with \textit{COMSOL Multiphysics}. Finally, thank you to the entire CFEL-ATTO group for being so welcoming and friendly as well as to Olaf Behnke and Andreas Przystawik for organising the DESY Summer Student programme. 
 
 \section*{References}
 \bibliographystyle{osa}

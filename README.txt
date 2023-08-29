@@ -57,7 +57,23 @@ Week 7
 finished handover presentation; wrote "manuscript_spectra.py" ; added now pressure scan plots (2d)
 
 
-NEW PLOT FOR VINCENT!!
+
+TO DO
+=====
+
+- find pressure scaling factors for both Argon and Neon: 2.5 ??
+- adjust code for pressure scaling, where relevant [DONE??]
+- cut p
+- run simulations with old chip coms overnight 
+- run Ne 400mW simulations for grad to higher pressures [use existing ones??!!]
+- produce all relevant plots
+	DONE: A,B,I for Ar and ne 
+	      
+	      missing: C,D,E,F
+
+	      G: scrapped
+              H: on hold 
+
 
 DO PROMISING SPECTRA PLOT??!!!
 

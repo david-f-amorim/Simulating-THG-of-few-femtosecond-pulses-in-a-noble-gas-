@@ -10,13 +10,13 @@ AND UNUSED CODE CHUNKS COMMENTED OUT.
 
 # ---------- INPUT/OUTPUT HANDLING  --------------------------------------
 in_dir =  "manuscript_spectra"   # directory from which to read input files 
-out_dir = "manuscript_plots"     # directory to store output files 
+out_dir = "manuscript_spectra"     # directory to store output files 
 
 # ---------- FORMAT PLOTS  --------------------------------------
 disable_latex = False # toggle LaTeX rendering
-show_title = True     # toggle showing title 
+show_title = False     # toggle showing title 
 norm = True           # toggle normalisation
-use_pdf = True        # if true: use pdf; else: use png
+use_pdf = False        # if true: use pdf; else: use png
 
 if disable_latex == False : plt.rcParams["text.usetex"] = True   # enable LaTeX rendering
 plt.rcParams["mathtext.fontset"] = "cm" # use LateX font for maths
@@ -26,10 +26,10 @@ fig_dim = [2 * 3.14961,2* 2.3622075] # for 8cm width ; double for 16cm width
 
 # ---------- SELECT PLOTS -------------------------------
 
-plot1 = False 
-plot2 = True
+plot1 = True 
+plot2 = False
 plot3 = False 
-plot4 = True 
+plot4 = False 
 plot5 = False 
 # ---------- PLOTS  --------------------------------------
 
@@ -37,9 +37,9 @@ if plot1:
     # * * * PLOT 1: SHOW MEASURED SPECTRUM [WITH OR WITHOUT OVERLAYED SIMULATION]
     #                for manuscript: Ne 400mW 2.0bar; Ar 150mW 0.4bar
 
-    file_measured = ""     # file name of measured UV spectrum 
-    file_sim      = ""     # file name of simulated UV spectrum
-    file_out      = ""     # name of output file (no file ending!)
+    file_measured = "Ar_150mW_0.4bar.txt"     # file name of measured UV spectrum 
+    file_sim      = "1.0 bar.dat"     # file name of simulated UV spectrum
+    file_out      = "spec_comp_Ar_150mW_2.5scale_0.4bar"     # name of output file (no file ending!)
 
     overlay = True         # if True: overlay simulated spectrum 
 
@@ -60,7 +60,7 @@ if plot1:
             spec_sim[:,1]=spec_sim[:,1]/ np.max(spec_sim)    
 
     plt.plot(spec_measured[:,0]*1e9, spec_measured[:,1], color="red", label="meas.")
-    plt.xlim(100, 360)
+    plt.xlim(200, 360)
     if overlay:
         plt.plot(spec_sim[:,0]*1e9, spec_sim[:,1], color="blue", label="sim.")
         plt.legend()

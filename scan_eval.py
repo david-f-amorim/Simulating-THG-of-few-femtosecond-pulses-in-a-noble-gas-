@@ -23,15 +23,17 @@ old = False # if True: skip some features that are not available with some older
 n = 8   # maximum number of overlayed spectra in one plot (to avoid clutter)
 comp_exp = False # if True: overlay experimental data of UV energy as function of central pressure 
 
-shift_sim = "no" # if comp_exp==True, this can be used to align the simulated and measured pressure axes
+shift_sim = "factor" # if comp_exp==True, this can be used to align the simulated and measured pressure axes
                  #          if shift_sim=="offset": shift the simulated data along the pressure axis
                  #          if shift_sim=="factor": rescale the simulated pressure axis by a multiplicative factor 
                  #          else: no change to the pressure axes 
-set_shift = None # specify the magnitude of the offset/scaling factor if shift_sim=="offset" or "factor"; if 
+                 # (used for energy comparisons when comp_exp==True; or for 2d pressure-spectrum map when comp_exp==False)
+set_shift = 2.5    # specify the magnitude of the offset/scaling factor if shift_sim=="offset" or "factor"; if 
                  # set_shift==None, the offset/scaling factor will be set automatically to align the peak energies
-
-single_dir = "parameter_scans\\gas_scans\\scan_400.0mW_Ne_0.0rad_f_ion_grad" # path to pressure scan directory if single=True (Note: output will be written to same directory)
-exp_file = "raw_input\\Ar_150mW_IR.txt" # path to file containing experimental data; will be overlayed if comp_exp==True 
+                 # (used for energy comparisons when comp_exp==True; or for 2d pressure-spectrum map when comp_exp==False)
+     
+single_dir = "parameter_scans\\gas_scans\\scan_150.0mW_Ar_0.0rad_f_ion_grad" # path to pressure scan directory if single=True (Note: output will be written to same directory)
+exp_file = "raw_input\\energies_Ne_400mW_IR.txt" # path to file containing experimental data; will be overlayed if comp_exp==True 
 
 # ---------- SET KWARGS -------------------------------------------
 #
@@ -64,7 +66,7 @@ out_dir = "scan_analysis\\gas_scans"   # if single==False, path to output direct
 show = True           # if True: open plots in matplotlib GUI; if False: don't show plots (directly write to file) 
 save = True           # if True: saves plots 
 show_title = False     # if False: no titles shown 
-norm = True           # if True: norm spectra 
+norm = True           # if True: norm spectra and, for comparisons with experiment, energies
 disable_latex = False # if True: disable LaTeX rendering 
 use_pdf = False        # if True: save plots as pdf; else: use png
 
@@ -401,27 +403,30 @@ def plot_single(single_dir, n=n):
 
                 if set_shift == None:
                     dif = peak_arr[3] - p_measured[np.where(en_measured == np.max(en_measured) )][0]
+                    print(dif)
                 else: dif = set_shift
 
                 p_arr -= dif
             elif shift_sim == "factor" :
                 if set_shift == None:
                     fac = peak_arr[3] / p_measured[np.where(en_measured == np.max(en_measured) )][0]
+                    print(fac)
                 else: fac = set_shift
+                
                 p_arr /= fac
             
     # plots
     plt.figure(figsize=fig_dim) 
     plt.subplots_adjust(top=0.9, bottom=0.14)
     if show_title: plt.title("Simulated UV energies")
-    plt.ylabel("Energy (nJ)")
+    plt.ylabel("Energy (nJ)" if norm==False else "Energy (norm.)")
     plt.xlabel("Central pressure (bar)")
-    plt.plot(p_arr, en_arr*1e9, color="blue")
-    plt.scatter(p_arr, en_arr*1e9, color="blue", label= ("Peak: {0:.1f}nJ at {1}bar".format(peak_arr[0]*1e9, peak_arr[3]) if comp_exp == False else "sim."))
+    plt.plot(p_arr, en_arr*1e9 if norm==False else en_arr*1e9/np.max(en_arr*1e9), color="blue",label= ("Peak: {0:.1f}nJ at {1}bar".format(peak_arr[0]*1e9, peak_arr[3]) if comp_exp == False else "sim."))
+    plt.scatter(p_arr,en_arr*1e9 if norm==False else en_arr*1e9/np.max(en_arr*1e9), color="blue")
     if comp_exp:
-        plt.plot(p_measured, en_measured, color="red")
-        plt.scatter(p_measured, en_measured, color="red", label="exp.")
-        plt.xlim(0, max(p_measured)+0.1)
+        plt.plot(p_measured, en_measured if norm==False else en_measured/np.max(en_measured), color="red", label="exp.")
+        plt.scatter(p_measured, en_measured if norm==False else en_measured/np.max(en_measured), color="red")
+        plt.xlim(min(p_measured)-0.05, max(p_measured)+0.1)
 
     plt.legend(loc="upper right")
 
@@ -497,7 +502,7 @@ def plot_single(single_dir, n=n):
             for j in np.arange(len(data[:,0])-1):  # pres 
                 I_2d[i,j] = data[j, 2][i]
 
-        X, Y = np.meshgrid(data[0,1].astype("float")*1e9, data[:,0].astype("float"))  
+        X, Y = np.meshgrid(data[0,1].astype("float")*1e9, data[:,0].astype("float") if shift_sim !="factor" else data[:,0].astype("float")/set_shift)  
         I_2d = np.swapaxes(I_2d,0,1) 
  
         if norm: 
@@ -509,7 +514,7 @@ def plot_single(single_dir, n=n):
         plt.xlim(min(data[0,1])*1e9, max(data[0,1])*1e9)
         plt.xlim(159,360)      # for Ar, Ne 
         #plt.ylim(1.0, 4.5)     # for Ne
-        #plt.ylim(0.1, 1.6)     # for Ar                                        
+        plt.ylim(0.1, 1.6)     # for Ar                                        
 
         if save: 
             if use_pdf:
