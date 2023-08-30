@@ -54,44 +54,35 @@ added option to norm plots; finished re-writing "scan_eval"
 Week 7
 -------------------------------
 
-finished handover presentation; wrote "manuscript_spectra.py" ; added now pressure scan plots (2d)
-
+finished handover presentation; wrote "manuscript_spectra.py" ; added new pressure scan plots (2d) ; 
+adjusted code for relevant plot requirements; started on final presentation and report in earnest
 
 
 TO DO
 =====
 
-- find pressure scaling factors for both Argon and Neon: 2.5 ??
-- adjust code for pressure scaling, where relevant [DONE??]
-- cut p
-- run simulations with old chip coms overnight 
-- run Ne 400mW simulations for grad to higher pressures [use existing ones??!!]
-- produce all relevant plots
-	DONE: A,B,I for Ar and ne   
-	      
-	      missing: C,[D,E],F   [only show envelope, not carrie ->; done on maxwell ]
-				 [add TL duration to chirp scan]
-				
+- clean up files and directories [if significant changes: updated handover PP]
+- make necessary changes to code [if significant changes: updated handover PP]
+	+ write out UV timing data as file ?! 
+	+ write code for Gaussian fit to UV timing data (TL duration)
+        + arrange some plots with 2x2 subplots / increase fontsize [(chirp: Ar/Ne, spec/I(t)), (profile/I(t), ion/no-ion)]
+	+ write code to compare densities (new, old, grad) 
+        + change heatmap/contourf of spatiotemporal plots 
+- process old chip COMSOL data 
+- run again for plots 
+	+ shift lam0 to 800nm 
+        + produce all relevant plots (first for own use):
+		* energy comparison (pres. scan): Neon and Argon 
+                * spectra comparison: Neon and Argon
+                * 2d comparison: Neon and Argon 
+                * UV profile evolution: Argon 
+                * self-steepening and temporal profile with and without ionisation: Argon 
+                * chirp scan spectra: Argon and Neon 
+                * gas density comparison: outside THG region and THG region-only
+		* old-v-new comparison (spectra): Argon and Neon
 
-	running right now: Ar & Ne with and without ion pdf and png [covers D&E] ; Ar & Ne chirp scan [covers F]
-	to do: C (wait COMSOL); 
+- update presentation with plots and re-write where necessary 
+- re-write report and update plots	
 
-	      G: scrapped
-              H: on hold 
-
-
-	RRE-RUN SIMULATIONS WITH 800nm ->> or just shift everything by 20nm ?? 
-
-	REMOVE PULSE DURATION FROM PLOTS / PRINT OUT UV TIME DOMAIN FILE!!! ; 
-
-		PROBLEM: pulse duration very inaccurate!!!
-
-
-		UPDATE THE PLOTS USED IN REPORT AND PP!!!
-
-
-
-CLEAN UP FILES !!! START RE-WRITING AND RE-RUNNING PLOTS !!!
-
-			
-			
+- then: do remaining plots for manuscript
+	
