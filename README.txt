@@ -86,26 +86,12 @@ TO DO
 
 		PROBLEM: pulse duration very inaccurate!!!
 
-	NOTE: FOCUS FOR NOW ARE PRESENTATION AND REPORT; MANUSCRIPT LATER; FINISH DOING PLOTS [MAINLY EXPORTING AND WAITING FOR COMSOL]
-		THEN WRITE REPORT AND PRESENTATION; THEN GO BACK TO MANUSCRIPT!!!
-
-
-	NOTE: GENERAL BLUESHIFT OF MEASURED VS SIMULATED SPECTRA ->> SIMPLY BECAUSE WRONG CENTRAL WAVELENGTH??
-
 
 		UPDATE THE PLOTS USED IN REPORT AND PP!!!
 
 
-DO PROMISING SPECTRA PLOT??!!!
 
-- run "final simulations" with good parameters [and PPT!]
-	+ calculate ratios of Ar/Ne energies [just numerically at sat points; DOES NE EVEN SAT IN EXP??]
-	+ 
-	
-- work on "documentation"
-	+ write report
-	+ prepare final presentation [use CFEL template; 12 minutes; formal]
-	+ FIND PICTURES OF NEW AND OLD CHIPS!!!
+CLEAN UP FILES !!! START RE-WRITING AND RE-RUNNING PLOTS !!!
 
 			
 			

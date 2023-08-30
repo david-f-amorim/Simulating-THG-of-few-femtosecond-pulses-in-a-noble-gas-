@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  30 AUG 2023 12:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  30 AUG 2023 17:01
 entering extended mode
 **./desy_report.tex
 (desy_report.tex
@@ -476,6 +476,12 @@ OT1/cmr/m/n/10.95 corresponds to the distance
  []
 
 
+Underfull \hbox (badness 2197) in paragraph at lines 58--59
+\OT1/cmr/m/n/10.95 dispersive media. The coefficient $\OML/cmm/m/it/10.95 []$ 
+\OT1/cmr/m/n/10.95 in the
+ []
+
+
 Underfull \hbox (badness 3657) in paragraph at lines 61--61
 \OT1/cmr/m/n/10.95 to become invalid and nonlinear polarisation
  []
@@ -697,13 +703,165 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 [6 <./im/energies_Ar_150mw_2.5scaled_grad.pdf> <./im/energies_Ne_400mw_2.5scale
 d_grad.pdf> <./im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf> <./im/spec_comp_Ne_40
 0mw_2.5scale_2.0bar.pdf>]
-Underfull \hbox (badness 1158) in paragraph at lines 207--207
-\OT1/cmr/m/n/10.95 a wide range of experimental parameters that
+<im/profile_prop_Ar.png, id=146, 455.22873pt x 341.40347pt>
+File: im/profile_prop_Ar.png Graphic file (type png)
+<use im/profile_prop_Ar.png>
+Package pdftex.def Info: im/profile_prop_Ar.png  used on input line 197.
+(pdftex.def)             Requested size: 248.96161pt x 186.70976pt.
+
+Overfull \hbox (5.0pt too wide) in paragraph at lines 197--198
+ [][] 
+ []
+
+
+Underfull \hbox (badness 1983) in paragraph at lines 194--200
+\OT1/cmr/m/n/10.95 that this self-steepening process is caused by
+ []
+
+
+Underfull \hbox (badness 1377) in paragraph at lines 194--200
+\OT1/cmr/m/n/10.95 Figure []6[]: when turning off ionisation in the
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+File: im/2d_spectra_pres_Ar_150mW_meas.pdf Graphic file (type pdf)
+<use im/2d_spectra_pres_Ar_150mW_meas.pdf>
+Package pdftex.def Info: im/2d_spectra_pres_Ar_150mW_meas.pdf  used on input li
+ne 204.
+(pdftex.def)             Requested size: 119.5043pt x 89.62502pt.
+File: im/2d_spectra_pres_Ar_150mW_2.5scaled_grad.pdf Graphic file (type pdf)
+<use im/2d_spectra_pres_Ar_150mW_2.5scaled_grad.pdf>
+Package pdftex.def Info: im/2d_spectra_pres_Ar_150mW_2.5scaled_grad.pdf  used o
+n input line 208.
+(pdftex.def)             Requested size: 119.5043pt x 89.62502pt.
+File: im/2d_spectra_pres_Ne_400mW_meas.pdf Graphic file (type pdf)
+<use im/2d_spectra_pres_Ne_400mW_meas.pdf>
+Package pdftex.def Info: im/2d_spectra_pres_Ne_400mW_meas.pdf  used on input li
+ne 212.
+(pdftex.def)             Requested size: 119.5043pt x 89.62502pt.
+File: im/2d_spectra_pres_Ne_400mW_2.5scaled_grad.pdf Graphic file (type pdf)
+<use im/2d_spectra_pres_Ne_400mW_2.5scaled_grad.pdf>
+Package pdftex.def Info: im/2d_spectra_pres_Ne_400mW_2.5scaled_grad.pdf  used o
+n input line 216.
+(pdftex.def)             Requested size: 119.5043pt x 89.62502pt.
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 2846) in paragraph at lines 221--222
+[]\OT1/cmr/m/n/10.95 Thus, it has been demonstrated that the
+ []
+
+File: im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf Graphic file (type pdf)
+<use im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf>
+Package pdftex.def Info: im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf  used on inp
+ut line 228.
+(pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
+File: im/spec_comp_Ne_400mw_2.5scale_2.0bar.pdf Graphic file (type pdf)
+<use im/spec_comp_Ne_400mw_2.5scale_2.0bar.pdf>
+Package pdftex.def Info: im/spec_comp_Ne_400mw_2.5scale_2.0bar.pdf  used on inp
+ut line 232.
+(pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
+
+Overfull \hbox (5.0pt too wide) in paragraph at lines 227--235
+ []$[]$ 
+ []
+
+
+Overfull \hbox (5.0pt too wide) in paragraph at lines 227--235
+ []$ 
+ []
+
+
+Underfull \hbox (badness 1199) in paragraph at lines 235--235
+[]\OT1/cmr/m/n/10.95 Figure 7: |Simulated UV output spectra with
  []
 
 [7 <./im/2d_spectra_pres_Ar_150mW_meas.pdf> <./im/2d_spectra_pres_Ar_150mW_2.5s
 caled_grad.pdf> <./im/2d_spectra_pres_Ne_400mW_meas.pdf> <./im/2d_spectra_pres_
-Ne_400mW_2.5scaled_grad.pdf>] (desy_report.bbl
+Ne_400mW_2.5scaled_grad.pdf>]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 1888) in paragraph at lines 241--241
+\OT1/cmr/m/n/10.95 some gas density distributions, which do not
+ []
+
+[8 <./im/profile_prop_Ar.png>]
+File: im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf Graphic file (type pdf)
+<use im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf>
+Package pdftex.def Info: im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf  used on inp
+ut line 246.
+(pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
+File: im/spec_comp_Ne_400mw_2.5scale_2.0bar.pdf Graphic file (type pdf)
+<use im/spec_comp_Ne_400mw_2.5scale_2.0bar.pdf>
+Package pdftex.def Info: im/spec_comp_Ne_400mw_2.5scale_2.0bar.pdf  used on inp
+ut line 250.
+(pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
+
+Overfull \hbox (5.0pt too wide) in paragraph at lines 245--253
+ []$[]$ 
+ []
+
+
+Overfull \hbox (5.0pt too wide) in paragraph at lines 245--253
+ []$ 
+ []
+
+
+Underfull \hbox (badness 1152) in paragraph at lines 242--255
+\OT1/cmr/m/n/10.95 between the new and old cells is the density
+ []
+
+
+Underfull \hbox (badness 1668) in paragraph at lines 256--256
+[]\OT1/cmr/m/n/10.95 The UV output spectra obtained with the
+ []
+
+File: im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf Graphic file (type pdf)
+<use im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf>
+Package pdftex.def Info: im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf  used on inp
+ut line 260.
+(pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
+File: im/spec_comp_Ne_400mw_2.5scale_2.0bar.pdf Graphic file (type pdf)
+<use im/spec_comp_Ne_400mw_2.5scale_2.0bar.pdf>
+Package pdftex.def Info: im/spec_comp_Ne_400mw_2.5scale_2.0bar.pdf  used on inp
+ut line 264.
+(pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
+
+Overfull \hbox (5.0pt too wide) in paragraph at lines 259--267
+ []$[]$ 
+ []
+
+
+Overfull \hbox (5.0pt too wide) in paragraph at lines 259--267
+ []$ 
+ []
+
+
+Underfull \hbox (badness 2818) in paragraph at lines 269--270
+[]\OT1/cmr/m/n/10.95 It is notable how drastically different the
+ []
+
+[9]
+Underfull \hbox (badness 1158) in paragraph at lines 275--275
+\OT1/cmr/m/n/10.95 a wide range of experimental parameters that
+ []
+
+
+Underfull \hbox (badness 3954) in paragraph at lines 282--282
+[]\OT1/cmr/m/n/10.95 Additionally, the simulations indicate that
+ []
+
+
+Underfull \hbox (badness 3281) in paragraph at lines 283--283
+[]\OT1/cmr/m/n/10.95 Finally, using more sophisticated but still
+ []
+
+(desy_report.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 8--14
 \OT1/cmr/m/n/9 https://opg.optica.org/ol/abstract.cfm?URI=ol-44-6-
  []
@@ -718,7 +876,7 @@ Overfull \hbox (2.08125pt too wide) in paragraph at lines 29--33
 \OT1/cmr/m/n/9 https://link.aps.org/doi/10.1103/PhysRevLett.83.2930 
  []
 
-
+[10]
 Overfull \hbox (0.53613pt too wide) in paragraph at lines 35--39
 \OT1/cmr/m/n/9 https://link.aps.org/doi/10.1103/PhysRevE.70.036604 
  []
@@ -759,7 +917,9 @@ Overfull \hbox (15.95616pt too wide) in paragraph at lines 47--52
 \OT1/cmr/m/n/9 https://link.aps.org/doi/10.1103/PhysRevLett.105.243902 
  []
 
-) [8] (desy_report.aux)
+) [11
+
+] (desy_report.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.78749pt have occurred.
@@ -768,10 +928,10 @@ Package rerunfilecheck Info: File `desy_report.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 11907 strings out of 478864
- 180840 string characters out of 2848660
- 518893 words of memory out of 3000000
- 29605 multiletter control sequences out of 15000+600000
+ 11943 strings out of 478864
+ 181462 string characters out of 2848660
+ 520589 words of memory out of 3000000
+ 29632 multiletter control sequences out of 15000+600000
  410911 words of font info for 54 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
  60i,10n,66p,1426b,567s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -793,9 +953,9 @@ ts/cm/cmr8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public
 nts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/david/AppData/Local/Programs/M
 iKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/david/AppData/Local/P
 rograms/MiKTeX/fonts/type1/public/amsfonts/cm/cmti9.pfb>
-Output written on desy_report.pdf (8 pages, 1397585 bytes).
+Output written on desy_report.pdf (11 pages, 2193444 bytes).
 PDF statistics:
- 271 PDF objects out of 1000 (max. 8388607)
- 46 named destinations out of 1000 (max. 500000)
- 51 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 297 PDF objects out of 1000 (max. 8388607)
+ 54 named destinations out of 1000 (max. 500000)
+ 56 words of extra memory for PDF output out of 10000 (max. 10000000)
 
