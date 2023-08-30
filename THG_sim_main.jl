@@ -12,7 +12,7 @@ p_scan = false               # if true, pressure scan is executed, with pressure
 
 save = true                  # if true, save output plots, run parameters and UV spectrum
 show = true                 # if true, opens plots in GUI after run 
-txt_only = false             # if true, no plots are produced (only UV spectrum and simulation parameters are written to file)
+txt_only = true             # if true, no plots are produced (only UV spectrum and simulation parameters are written to file)
 
 read_IR = true               # if true: read input IR pulse [time domain] from file; if false: use Gaussian approximation 
 read_ρ  = false              # if true: read gas density profile from file; if false: use pressure gradient approximation 
@@ -22,10 +22,12 @@ IR_spec = false              # if true: read measured input IR spectrum from fil
 show_IR = false              # if true and "read_IR" is true: overlay measured time-domain input pulse on plots (barely ever relevant; used to check that transform to frequency domain works)
 IR_spec_exp = false          # if true: read input IR spectrometer spectrum from file and overlay (barely ever relevant; used to check that FROG spectrum is accurate)
 
+save_UV_temp = true          # if true: write time-domain output UV pulse to file (has no effect for pressure scans)
+
 # ------------------ SET PHYSICAL PARAMETERS ------------------------
 
 gas = :Ar           # gas type in cell 
-pres = 0.4          # central gas pressure [bar] (for single run; not relevant for pressure scans)
+pres = 1.0          # central gas pressure [bar] (for single run; not relevant for pressure scans)
 p_ed = 1e-3         # edge gas pressure [bar] 
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed); (only relevant when read_ρ==false)
 τ = 5e-15           # FWHM pulse duration of IR pulse [s] (only relevant when read_IR==false)
@@ -45,7 +47,7 @@ z_vals =L .* [1.0/4, 1.0/3, 3.0/4, 1.0]     # points along the cell at which to 
 material = :SiO2     # material of the optics the IR beam propagates through before THG (for chirp compensation)
 thickness= 0         # thickness of the material [m] (for chirp compensation)
 
-ϕs = [0,0,0,0]     # Taylor-series coefficients of initial spectral phase  [s^n] (used to introduce additional chirp)
+ϕs = [0,0,11.0*1e-30,0]     # Taylor-series coefficients of initial spectral phase  [s^n] (used to introduce additional chirp)
 
 ion = true         # if true: enable ionisation response, if false: disable ionisation 
 ion_model="PPT"    # set to "ADK" or "PPT" (has no effect if ion==false); "ADK" is less accurate at low intensities but faster; "PPT" may crash at very high intensities
@@ -567,7 +569,7 @@ function THG_main(pres=pres)
         plt.xlabel("t (fs)")
         plt.xlim(minimum(t)*1e15, maximum(t)*1e15)
         plt.ylabel(norm ? "I(z=0) (norm.)" : "I(z=0) (arb. units)")
-        plt.plot(t*1e15,norm ? Maths.normbymax(It0[:,1]) : It0[:,1] , color="red", label=L"\tau_{TL}="*string(round(τ_input*1e15, digits=1) )*"fs")
+        plt.plot(t*1e15,norm ? Maths.normbymax(It0[:,1]) : It0[:,1] , color="red", label=L"\tau_{FWHM}="*string(round(τ_input*1e15, digits=1) )*"fs")
         plt.plot(t*1e15,norm ? Maths.normbymax(It0_envelope[:,1]) : It0_envelope[:,1], color="black", ls="--")
 
         if (read_IR & show_IR )==true  # overlay measured input pulse 
@@ -589,7 +591,7 @@ function THG_main(pres=pres)
         if show_title plt.title("Time-domain representation of UV output pulse") end
         plt.xlabel("t (fs)")
         plt.ylabel(norm ? "I (norm.)" : "I (arb. units)")
-        plt.plot(t*1e15, norm ? Maths.normbymax(It0_UV[:,end]) : It0_UV[:,end] , color="red", label=L"\tau_{TL}="*string(round(τ_UV*1e15, digits=1) )*"fs")
+        plt.plot(t*1e15, norm ? Maths.normbymax(It0_UV[:,end]) : It0_UV[:,end] , color="red", label=L"\tau_{FWHM}="*string(round(τ_UV*1e15, digits=1) )*"fs")
         plt.plot(t*1e15,norm ? Maths.normbymax(It0_UV_envelope[:,end]) : It0_UV_envelope[:,end], color="black", linestyle="--")
 
         plt.legend(loc="upper right")
@@ -770,6 +772,12 @@ function THG_main(pres=pres)
             open(joinpath(out_path,"UV_spectrum.txt"), "w") do file
                 writedlm(file, zip(λ[λlowidx:λhighidx], Iω0[λlowidx:λhighidx,end]))
             end
+        
+            if save_UV_temp==true 
+                open(joinpath(out_path,"UV_temporal.txt"), "w") do file
+                    writedlm(file, zip(t,norm ? Maths.normbymax(It0_UV_envelope[:,end]) : It0_UV_envelope[:,end]))
+            end    
+        
         end     
     end
 

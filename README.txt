@@ -63,18 +63,18 @@ TO DO
 
 - clean up files and directories [if significant changes: updated handover PP]
 - make necessary changes to code [if significant changes: updated handover PP]
-	+ write out UV timing data as file ?! 
+	+ write out UV timing data as file ?!             X
 	+ write code for Gaussian fit to UV timing data (TL duration)
         + arrange some plots with 2x2 subplots / increase fontsize [(chirp: Ar/Ne, spec/I(t)), (profile/I(t), ion/no-ion)]
 	+ write code to compare densities (new, old, grad) 
-        + change heatmap/contourf of spatiotemporal plots 
+        + change heatmap/contourf of 2d power scan plots 
 - process old chip COMSOL data 
 - run again for plots 
 	+ shift lam0 to 800nm 
         + produce all relevant plots (first for own use):
-		* energy comparison (pres. scan): Neon and Argon 
-                * spectra comparison: Neon and Argon
-                * 2d comparison: Neon and Argon 
+		* energy comparison (pres. scan): Neon and Argon        '
+                * spectra comparison: Neon and Argon                    '
+                * 2d comparison: Neon and Argon                         '
                 * UV profile evolution: Argon 
                 * self-steepening and temporal profile with and without ionisation: Argon 
                 * chirp scan spectra: Argon and Neon 
@@ -83,6 +83,4 @@ TO DO
 
 - update presentation with plots and re-write where necessary 
 - re-write report and update plots	
-
-- then: do remaining plots for manuscript
 	
