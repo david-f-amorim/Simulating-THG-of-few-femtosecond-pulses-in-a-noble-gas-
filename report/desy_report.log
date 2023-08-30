@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  29 AUG 2023 22:38
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  30 AUG 2023 12:10
 entering extended mode
 **./desy_report.tex
 (desy_report.tex
@@ -366,26 +366,7 @@ tex.def
 File: l3backend-pdftex.def 2021-05-07 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count286
 \l__pdf_internal_box=\box54
-) (desy_report.aux
-
-LaTeX Warning: Label `im:sim_v_measured' multiply defined.
-
-
-LaTeX Warning: Label `im:sim_v_measured' multiply defined.
-
-
-LaTeX Warning: Label `im:sim_v_measured' multiply defined.
-
-
-LaTeX Warning: Label `im:sim_v_measured' multiply defined.
-
-
-LaTeX Warning: Label `im:sim_v_measured' multiply defined.
-
-
-LaTeX Warning: Label `im:sim_v_measured' multiply defined.
-
-)
+) (desy_report.aux)
 \openout1 = `desy_report.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
@@ -488,11 +469,6 @@ Underfull \hbox (badness 1953) in paragraph at lines 56--56
  []
 
 
-Underfull \hbox (badness 1303) in paragraph at lines 57--57
-\OT1/cmr/m/n/10.95 pulse durations are associated with transform-
- []
-
-
 Underfull \hbox (badness 1199) in paragraph at lines 58--59
 \OML/cmm/m/it/10.95 i\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 !\OT1/cmr/m/n/10.
 95 )]\OML/cmm/m/it/10.95 L$\OT1/cmr/m/n/10.95 , where $\OML/cmm/m/it/10.95 L$ \
@@ -554,191 +530,180 @@ Underfull \hbox (badness 1708) in paragraph at lines 97--98
 \OT1/cmr/m/n/10.95 is a linear operator describing dispersion and
  []
 
-[3]
-Underfull \hbox (badness 2334) in paragraph at lines 107--107
+
+Underfull \hbox (badness 2334) in paragraph at lines 104--104
 []\OT1/cmr/m/n/10.95 As is seen in [] and [], the nonlinear
  []
 
 
-Underfull \hbox (badness 1509) in paragraph at lines 107--107
+Underfull \hbox (badness 1509) in paragraph at lines 104--104
 \OT1/cmr/m/n/10.95 numerically solving the UPPE, which lives in
  []
 
-<im/new_chip_edited.png, id=66, 272.217pt x 302.3295pt>
-File: im/new_chip_edited.png Graphic file (type png)
-<use im/new_chip_edited.png>
-Package pdftex.def Info: im/new_chip_edited.png  used on input line 119.
-(pdftex.def)             Requested size: 243.9851pt x 270.98686pt.
-<im/new_chip_foto_edited.png, id=68, 296.307pt x 277.035pt>
-File: im/new_chip_foto_edited.png Graphic file (type png)
-<use im/new_chip_foto_edited.png>
-Package pdftex.def Info: im/new_chip_foto_edited.png  used on input line 123.
-(pdftex.def)             Requested size: 243.9851pt x 228.12128pt.
-<im/schematic_galli.png, id=69, 530.58224pt x 353.52075pt>
+[3]
+<im/schematic_galli.png, id=66, 530.58224pt x 353.52075pt>
 File: im/schematic_galli.png Graphic file (type png)
 <use im/schematic_galli.png>
-Package pdftex.def Info: im/schematic_galli.png  used on input line 127.
-(pdftex.def)             Requested size: 243.9851pt x 162.56218pt.
-<im/old_cell_edited.png, id=70, 464.33475pt x 311.36325pt>
-File: im/old_cell_edited.png Graphic file (type png)
-<use im/old_cell_edited.png>
-Package pdftex.def Info: im/old_cell_edited.png  used on input line 131.
-(pdftex.def)             Requested size: 243.9851pt x 163.60593pt.
-<im/energies_Ar_150mw_2.5scaled_grad.pdf, id=71, 455.24464pt x 341.43346pt>
-File: im/energies_Ar_150mw_2.5scaled_grad.pdf Graphic file (type pdf)
-<use im/energies_Ar_150mw_2.5scaled_grad.pdf>
-Package pdftex.def Info: im/energies_Ar_150mw_2.5scaled_grad.pdf  used on input
- line 151.
-(pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
+Package pdftex.def Info: im/schematic_galli.png  used on input line 111.
+(pdftex.def)             Requested size: 248.96161pt x 165.87965pt.
+<im/new_chip_edited.png, id=68, 272.217pt x 302.3295pt>
+File: im/new_chip_edited.png Graphic file (type png)
+<use im/new_chip_edited.png>
+Package pdftex.def Info: im/new_chip_edited.png  used on input line 115.
+(pdftex.def)             Requested size: 248.96161pt x 276.51344pt.
 
-Overfull \hbox (5.0pt too wide) in paragraph at lines 151--152
- [][][][] 
- []
-
-
-Underfull \hbox (badness 1360) in paragraph at lines 152--152
-\OT1/cmr/m/n/10.95 pressures using Argon at 150mW input beam
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<im/spec_comp_Ar_150mW_2.5scale_0.4bar.pdf, id=72, 455.24464pt x 341.43346pt>
-File: im/spec_comp_Ar_150mW_2.5scale_0.4bar.pdf Graphic file (type pdf)
-<use im/spec_comp_Ar_150mW_2.5scale_0.4bar.pdf>
-Package pdftex.def Info: im/spec_comp_Ar_150mW_2.5scale_0.4bar.pdf  used on inp
-ut line 158.
-(pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
-
-Overfull \hbox (5.0pt too wide) in paragraph at lines 158--159
- [][][] 
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<im/2d_spectra_pres_Ar_150mW_meas.pdf, id=73, 455.24464pt x 341.43346pt>
-File: im/2d_spectra_pres_Ar_150mW_meas.pdf Graphic file (type pdf)
-<use im/2d_spectra_pres_Ar_150mW_meas.pdf>
-Package pdftex.def Info: im/2d_spectra_pres_Ar_150mW_meas.pdf  used on input li
-ne 167.
-(pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
-<im/2d_spectra_pres_Ar_150mW_2.5scaled_grad.pdf, id=74, 455.24464pt x 341.43346
-pt>
-File: im/2d_spectra_pres_Ar_150mW_2.5scaled_grad.pdf Graphic file (type pdf)
-<use im/2d_spectra_pres_Ar_150mW_2.5scaled_grad.pdf>
-Package pdftex.def Info: im/2d_spectra_pres_Ar_150mW_2.5scaled_grad.pdf  used o
-n input line 171.
-(pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
-
-Overfull \hbox (5.0pt too wide) in paragraph at lines 166--174
+Overfull \hbox (5.0pt too wide) in paragraph at lines 110--119
  []$[]$ 
  []
 
 
-Overfull \hbox (5.0pt too wide) in paragraph at lines 166--174
+Overfull \hbox (5.0pt too wide) in paragraph at lines 110--119
  []$ 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<im/Ar_prelim_sim_v_measured.png, id=75, 455.22873pt x 341.40347pt>
-File: im/Ar_prelim_sim_v_measured.png Graphic file (type png)
-<use im/Ar_prelim_sim_v_measured.png>
-Package pdftex.def Info: im/Ar_prelim_sim_v_measured.png  used on input line 18
-3.
-(pdftex.def)             Requested size: 119.5043pt x 89.62234pt.
-File: im/Ar_prelim_sim_v_measured.png Graphic file (type png)
-<use im/Ar_prelim_sim_v_measured.png>
-Package pdftex.def Info: im/Ar_prelim_sim_v_measured.png  used on input line 18
-7.
-(pdftex.def)             Requested size: 119.5043pt x 89.62234pt.
-File: im/Ar_prelim_sim_v_measured.png Graphic file (type png)
-<use im/Ar_prelim_sim_v_measured.png>
-Package pdftex.def Info: im/Ar_prelim_sim_v_measured.png  used on input line 19
-1.
-(pdftex.def)             Requested size: 119.5043pt x 89.62234pt.
-File: im/Ar_prelim_sim_v_measured.png Graphic file (type png)
-<use im/Ar_prelim_sim_v_measured.png>
-Package pdftex.def Info: im/Ar_prelim_sim_v_measured.png  used on input line 19
-5.
-(pdftex.def)             Requested size: 119.5043pt x 89.62234pt.
+[4 <./im/schematic_galli.png> <./im/new_chip_edited.png>]
+Underfull \hbox (badness 1067) in paragraph at lines 128--129
+\OT1/cmr/m/n/10.95 well as the effects of the differential pumping
+ []
 
-LaTeX Warning: `h' float specifier changed to `ht'.
 
-File: im/Ar_prelim_sim_v_measured.png Graphic file (type png)
-<use im/Ar_prelim_sim_v_measured.png>
-Package pdftex.def Info: im/Ar_prelim_sim_v_measured.png  used on input line 20
-4.
-(pdftex.def)             Requested size: 248.96161pt x 186.70976pt.
+Underfull \hbox (badness 2970) in paragraph at lines 133--133
+[]\OT1/cmr/m/n/10.95 While discrepancies between this simplified
+ []
 
-Overfull \hbox (5.0pt too wide) in paragraph at lines 204--205
- [][][] 
+
+Underfull \hbox (badness 1117) in paragraph at lines 133--133
+\OT1/cmr/m/n/10.95 just outside the cell, in which relevant pulse-
+ []
+
+
+Underfull \hbox (badness 1062) in paragraph at lines 134--134
+\OT1/cmr/m/n/10.95 these simulations are only approximate at the
+ []
+
+
+Underfull \hbox (badness 1308) in paragraph at lines 138--138
+\OT1/cmr/m/n/10.95 This section compares some of the simulation
+ []
+
+<im/energies_Ar_150mw_2.5scaled_grad.pdf, id=85, 455.24464pt x 341.43346pt>
+File: im/energies_Ar_150mw_2.5scaled_grad.pdf Graphic file (type pdf)
+<use im/energies_Ar_150mw_2.5scaled_grad.pdf>
+Package pdftex.def Info: im/energies_Ar_150mw_2.5scaled_grad.pdf  used on input
+ line 142.
+(pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
+<im/energies_Ne_400mw_2.5scaled_grad.pdf, id=86, 455.24464pt x 341.43346pt>
+File: im/energies_Ne_400mw_2.5scaled_grad.pdf Graphic file (type pdf)
+<use im/energies_Ne_400mw_2.5scaled_grad.pdf>
+Package pdftex.def Info: im/energies_Ne_400mw_2.5scaled_grad.pdf  used on input
+ line 146.
+(pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
+
+Overfull \hbox (5.0pt too wide) in paragraph at lines 141--149
+ []$[]$ 
+ []
+
+
+Overfull \hbox (5.0pt too wide) in paragraph at lines 141--149
+ []$ 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-File: im/Ar_prelim_sim_v_measured.png Graphic file (type png)
-<use im/Ar_prelim_sim_v_measured.png>
-Package pdftex.def Info: im/Ar_prelim_sim_v_measured.png  used on input line 21
-3.
-(pdftex.def)             Requested size: 248.96161pt x 186.70976pt.
 
-Overfull \hbox (5.0pt too wide) in paragraph at lines 213--214
- [][][] 
+Underfull \hbox (badness 1755) in paragraph at lines 151--151
+\OT1/cmr/m/n/10.95 and Neon. The energy axes for both plots
+ []
+
+
+Underfull \hbox (badness 1577) in paragraph at lines 151--151
+\OT1/cmr/m/n/10.95 comparison despite a discrepancy between the
+ []
+
+
+Underfull \hbox (badness 1354) in paragraph at lines 151--151
+\OT1/cmr/m/n/10.95 roughly ten. This overestimation of the UV
+ []
+
+
+Underfull \hbox (badness 1325) in paragraph at lines 151--151
+\OT1/cmr/m/n/10.95 and cell pressure, despite using the simplified
+ []
+
+[5]
+<im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf, id=97, 455.24464pt x 341.43346pt>
+File: im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf Graphic file (type pdf)
+<use im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf>
+Package pdftex.def Info: im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf  used on inp
+ut line 156.
+(pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
+<im/spec_comp_Ne_400mw_2.5scale_2.0bar.pdf, id=98, 455.24464pt x 341.43346pt>
+File: im/spec_comp_Ne_400mw_2.5scale_2.0bar.pdf Graphic file (type pdf)
+<use im/spec_comp_Ne_400mw_2.5scale_2.0bar.pdf>
+Package pdftex.def Info: im/spec_comp_Ne_400mw_2.5scale_2.0bar.pdf  used on inp
+ut line 160.
+(pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
+
+Overfull \hbox (5.0pt too wide) in paragraph at lines 155--163
+ []$[]$ 
+ []
+
+
+Overfull \hbox (5.0pt too wide) in paragraph at lines 155--163
+ []$ 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-File: im/Ar_prelim_sim_v_measured.png Graphic file (type png)
-<use im/Ar_prelim_sim_v_measured.png>
-Package pdftex.def Info: im/Ar_prelim_sim_v_measured.png  used on input line 22
-0.
-(pdftex.def)             Requested size: 248.96161pt x 186.70976pt.
 
-Overfull \hbox (5.0pt too wide) in paragraph at lines 220--221
- [][][] 
+Underfull \hbox (badness 1838) in paragraph at lines 165--166
+\OT1/cmr/m/n/10.95 shown in Figure []4[]. The simulations clearly
  []
 
+<im/2d_spectra_pres_Ar_150mW_meas.pdf, id=101, 455.24464pt x 341.43346pt>
+File: im/2d_spectra_pres_Ar_150mW_meas.pdf Graphic file (type pdf)
+<use im/2d_spectra_pres_Ar_150mW_meas.pdf>
+Package pdftex.def Info: im/2d_spectra_pres_Ar_150mW_meas.pdf  used on input li
+ne 170.
+(pdftex.def)             Requested size: 243.9851pt x 182.99069pt.
+<im/2d_spectra_pres_Ar_150mW_2.5scaled_grad.pdf, id=102, 455.24464pt x 341.4334
+6pt>
+File: im/2d_spectra_pres_Ar_150mW_2.5scaled_grad.pdf Graphic file (type pdf)
+<use im/2d_spectra_pres_Ar_150mW_2.5scaled_grad.pdf>
+Package pdftex.def Info: im/2d_spectra_pres_Ar_150mW_2.5scaled_grad.pdf  used o
+n input line 174.
+(pdftex.def)             Requested size: 243.9851pt x 182.99069pt.
+<im/2d_spectra_pres_Ne_400mW_meas.pdf, id=103, 455.24464pt x 341.43346pt>
+File: im/2d_spectra_pres_Ne_400mW_meas.pdf Graphic file (type pdf)
+<use im/2d_spectra_pres_Ne_400mW_meas.pdf>
+Package pdftex.def Info: im/2d_spectra_pres_Ne_400mW_meas.pdf  used on input li
+ne 178.
+(pdftex.def)             Requested size: 243.9851pt x 182.99069pt.
+<im/2d_spectra_pres_Ne_400mW_2.5scaled_grad.pdf, id=104, 455.24464pt x 341.4334
+6pt>
+File: im/2d_spectra_pres_Ne_400mW_2.5scaled_grad.pdf Graphic file (type pdf)
+<use im/2d_spectra_pres_Ne_400mW_2.5scaled_grad.pdf>
+Package pdftex.def Info: im/2d_spectra_pres_Ne_400mW_2.5scaled_grad.pdf  used o
+n input line 182.
+(pdftex.def)             Requested size: 243.9851pt x 182.99069pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-File: im/Ar_prelim_sim_v_measured.png Graphic file (type png)
-<use im/Ar_prelim_sim_v_measured.png>
-Package pdftex.def Info: im/Ar_prelim_sim_v_measured.png  used on input line 23
-1.
-(pdftex.def)             Requested size: 248.96161pt x 186.70976pt.
-
-Overfull \hbox (5.0pt too wide) in paragraph at lines 231--232
- [][][] 
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-File: im/Ar_prelim_sim_v_measured.png Graphic file (type png)
-<use im/Ar_prelim_sim_v_measured.png>
-Package pdftex.def Info: im/Ar_prelim_sim_v_measured.png  used on input line 23
-8.
-(pdftex.def)             Requested size: 248.96161pt x 186.70976pt.
-
-Overfull \hbox (5.0pt too wide) in paragraph at lines 238--239
- [][][] 
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[4]
-Underfull \hbox (badness 1158) in paragraph at lines 251--251
+[6 <./im/energies_Ar_150mw_2.5scaled_grad.pdf> <./im/energies_Ne_400mw_2.5scale
+d_grad.pdf> <./im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf> <./im/spec_comp_Ne_40
+0mw_2.5scale_2.0bar.pdf>]
+Underfull \hbox (badness 1158) in paragraph at lines 207--207
 \OT1/cmr/m/n/10.95 a wide range of experimental parameters that
  []
 
-[5 <./im/new_chip_edited.png> <./im/new_chip_foto_edited.png> <./im/schematic_g
-alli.png> <./im/old_cell_edited.png>] (desy_report.bbl
+[7 <./im/2d_spectra_pres_Ar_150mW_meas.pdf> <./im/2d_spectra_pres_Ar_150mW_2.5s
+caled_grad.pdf> <./im/2d_spectra_pres_Ne_400mW_meas.pdf> <./im/2d_spectra_pres_
+Ne_400mW_2.5scaled_grad.pdf>] (desy_report.bbl
 Underfull \hbox (badness 10000) in paragraph at lines 8--14
 \OT1/cmr/m/n/9 https://opg.optica.org/ol/abstract.cfm?URI=ol-44-6-
  []
@@ -753,9 +718,7 @@ Overfull \hbox (2.08125pt too wide) in paragraph at lines 29--33
 \OT1/cmr/m/n/9 https://link.aps.org/doi/10.1103/PhysRevLett.83.2930 
  []
 
-[6 <./im/energies_Ar_150mw_2.5scaled_grad.pdf> <./im/spec_comp_Ar_150mW_2.5scal
-e_0.4bar.pdf> <./im/2d_spectra_pres_Ar_150mW_meas.pdf> <./im/2d_spectra_pres_Ar
-_150mW_2.5scaled_grad.pdf>]
+
 Overfull \hbox (0.53613pt too wide) in paragraph at lines 35--39
 \OT1/cmr/m/n/9 https://link.aps.org/doi/10.1103/PhysRevE.70.036604 
  []
@@ -796,27 +759,22 @@ Overfull \hbox (15.95616pt too wide) in paragraph at lines 47--52
 \OT1/cmr/m/n/9 https://link.aps.org/doi/10.1103/PhysRevLett.105.243902 
  []
 
-) [7 <./im/Ar_prelim_sim_v_measured.png>] [8
-
-] (desy_report.aux)
+) [8] (desy_report.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.78749pt have occurred.
-
-
-LaTeX Warning: There were multiply-defined labels.
 
 Package rerunfilecheck Info: File `desy_report.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 11905 strings out of 478864
- 180079 string characters out of 2848660
- 524593 words of memory out of 3000000
- 29599 multiletter control sequences out of 15000+600000
- 413537 words of font info for 65 fonts, out of 8000000 for 9000
+ 11907 strings out of 478864
+ 180840 string characters out of 2848660
+ 518893 words of memory out of 3000000
+ 29605 multiletter control sequences out of 15000+600000
+ 410911 words of font info for 54 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 60i,10n,66p,1444b,612s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,10n,66p,1426b,567s stack positions out of 5000i,500n,10000p,200000b,80000s
 <C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
 cmbx10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
 fonts/cm/cmbx12.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/p
@@ -835,9 +793,9 @@ ts/cm/cmr8.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public
 nts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/david/AppData/Local/Programs/M
 iKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/david/AppData/Local/P
 rograms/MiKTeX/fonts/type1/public/amsfonts/cm/cmti9.pfb>
-Output written on desy_report.pdf (8 pages, 2561586 bytes).
+Output written on desy_report.pdf (8 pages, 1397585 bytes).
 PDF statistics:
- 234 PDF objects out of 1000 (max. 8388607)
- 51 named destinations out of 1000 (max. 500000)
- 46 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 271 PDF objects out of 1000 (max. 8388607)
+ 46 named destinations out of 1000 (max. 500000)
+ 51 words of extra memory for PDF output out of 10000 (max. 10000000)
 
