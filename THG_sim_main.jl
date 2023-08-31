@@ -31,7 +31,7 @@ pres = 1.0          # central gas pressure [bar] (for single run; not relevant f
 p_ed = 1e-3         # edge gas pressure [bar] 
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed); (only relevant when read_ρ==false)
 τ = 5e-15           # FWHM pulse duration of IR pulse [s] (only relevant when read_IR==false)
-λ0 = 740e-9         # central wavelength of IR pulse [m]
+λ0 = 800e-9         # central wavelength of IR pulse [m]
 w0 = 65e-6          # beam waist of IR pulse [m]
 CEP = 0.0           # carrier-envelope phase of IR pulse (ϕ0) [rad] (only relevant when read_IR==true)                                 
 IRenergy = 150e-6    # IR pulse energy [J] (related to beam power via 1kHz repetition rate)                                                           
@@ -776,8 +776,8 @@ function THG_main(pres=pres)
             if save_UV_temp==true 
                 open(joinpath(out_path,"UV_temporal.txt"), "w") do file
                     writedlm(file, zip(t,norm ? Maths.normbymax(It0_UV_envelope[:,end]) : It0_UV_envelope[:,end]))
-            end    
-        
+                end    
+            end
         end     
     end
 

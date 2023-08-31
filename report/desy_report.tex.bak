@@ -37,6 +37,7 @@ With further modifications and extensions, the simulations presented here could 
 \section{Introduction}
 The electronic motion associated with chemical reactions and atomic energy transitions takes place on femotsecond ($1 \text{fs} = 10^{-15} \text{s}$) to attosecond ($1 \text{as} = 10^{-18} \text{s}$) time scales. Time-resolved imaging of molecular dynamics therefore requires ultrashort laser pulses in the few-femtosecond regime. An important type of electronic motion is that excited by the absorption of ultraviolet (UV) radiation: a variety of biochemical processes, such as DNA damage, are known to be caused by UV excitation. Generating few-femtosecond UV pulses for time-resolved measurements of UV-excited molecules plays a crucial part in further understanding and eventually controlling these effects. \par 
 The CFEL-ATTO group at DESY produces ultrashort UV pulses in the femtosecond regime via third-harmonic generation (THG) in a gas cell \cite{galli2019}. This process is sensitive to a large range of parameters which affect the duration and energy of the generated UV pulse. Numerical simulations of the interactions between the laser pulse and the gas can therefore be advantageous to better understand how THG takes place and how it is affected by the experimental conditions. \par 
+MENTION THAT DIFFICULT TO SIMULATE BECAUSE OF SLOWLY-VARYING ENVELOPE APPROXIMATIONS...
 This report summarises the work carried out as part of a DESY Summer Student project focussed on producing simulations of the THG process. The simulations were mainly carried out using the propagation solver \textit{Luna.jl} (\cite{brahms2023}) while the \textit{COMSOL Multiphysics} software was used to model the gas density distribution. The aim of the simulations was to reproduce the experimental conditions in the gas, in order to study which effects dominate the THG process and the shaping of the UV pulse. Further, parameter scans were simulated to investigate how changes to different variables in the experimental set-up affect the output pulse. This included comparing the performance of a new fused silica chip used to confine the gas to a previous design. 
 
 \section{Background}
@@ -129,7 +130,13 @@ Apart from the profile of the NIR input beam, the most important THG condition t
 \begin{equation}
 p(z)^2 = p(z_0)^2 + (z-z_0) \frac{p(z_1)^2 - p(z_0)^2}{z_1 - z_0}, 
 \end{equation}
-where $z$ is a point on the between $z_0$ and $z_1$, which are two points at which the pressure is known, such as the centre and edges of the THG region. The density distribution is then inferred from the interpolated pressure distribution. \par 
+where $z$ is a point on the between $z_0$ and $z_1$, which are two points at which the pressure is known, such as the centre and edges of the THG region. The density distribution is then inferred from the interpolated pressure distribution.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.5\textwidth]{im/grad_model}
+\caption{XXX}\label{im:grad}
+\end{figure}
+\textcolor{red}{INCLUDE FIGURE OF DENSITY AT DIFFERENT PRESSURES ?!!} \par 
 While discrepancies between this simplified density model and the real distribution are to be expected, especially due the lower-density regions just outside the cell, in which relevant pulse-shaping and absorption processes likely take place, being ignored, the gradient model of the central interaction region can be expected to at least provide qualitatively meaningful results. \par 
 In Section XX, the simulations are extended outside the central interaction region in order to compare the performance of the new chip with that of the old cell. The density distributions used in these cases are based on \textit{COMSOL Multiphysics} simulations of the gas flow. As mentioned above, these simulations are only approximate at the present stage, as they do not sufficiently take into account the interactions between gas molecules in the high pressure regions. Thus, the comparison between the cells is a qualitative one. Note that both the old and the new cell are modelled equally well by the gradient model. \par 
 While the simulations can be run for a variety of different gases, central pressures and input beam powers, the results presented in this report will, for simplicity, mostly focus on Argon at 150mW NIR power and Neon at 400mW NIR power, with central gas pressures of 0.4bar and 2.0bar, respectively. These values were chosen due to the availability of high quality experimental data at these parameters. 
@@ -139,11 +146,11 @@ This section compares some of the simulation output with experimental data. \par
 \begin{figure}[h]
 \centering
  \begin{subfigure}{0.5\textwidth}
-\includegraphics[width=\textwidth]{im/energies_Ar_150mw_2.5scaled_grad}
+\includegraphics[width=\textwidth]{im/energies_Ar}
 \caption{Argon at 150mW NIR beam power}\label{im:sim_v_measured_Ar}
 \end{subfigure}
  \begin{subfigure}{0.5\textwidth}
-\includegraphics[width=\textwidth]{im/energies_Ne_400mw_2.5scaled_grad}
+\includegraphics[width=\textwidth]{im/energies_Ne}
 \caption{Neon at 400mW NIR beam power}\label{im:sim_v_measured_Ne}
 \end{subfigure}
 \caption{Simulated and experimental values for UV output energies at different central pressures. Note that the pressure axes of the simulated data have been rescaled and the energy axes normalised.}\label{im:sim_v_measured}
@@ -162,8 +169,8 @@ Figure \ref{im:sim_v_measured} shows that in both simulations and experiment, UV
 \end{subfigure}
 \caption{Simulated and measured UV output spectra. The power values in the subfigure captions refer to the NIR beam power and the pressure values to the central cell pressures. Note that the pressures of the simulated spectra have been rescaled.}\label{im:spec}
 \end{figure}
-Beyond the UV energies, it is also instructive to consider the simulated UV output spectra. Figure \ref{im:spec} compares the measured and simulated spectra for both Argon and Neon. Despite the shortcomings of the gradient model, the spectra are in remarkable agreement, with most significant features of the experimental spectra reproduced in the simulations. As expected, the spectra are centred on roughly 266nm, corresponding to the third harmonic of the central wavelength (800nm) of the NIR input beam. A comparison of simulated and experimental UV spectra across different central pressures is shown in Figure \ref{im:spec_2d}. The simulations clearly reproduce the general trend of higher pressures resulting in a gradual red-shift. Some discrepancies between simulated and measured data are also apparent, however, like the simulations predicting the splitting of the central peak for Argon and the saturation of UV intensities in Neon not being reproduced. 
-
+Beyond the UV energies, it is also instructive to consider the simulated UV output spectra. Figure \ref{im:spec} compares the measured and simulated spectra for both Argon and Neon. Despite the shortcomings of the gradient model, the spectra are in fairly good agreement, with the general features of the experimental spectra reproduced in the simulations. As expected, the spectra are centred on roughly 266nm, corresponding to the third harmonic of the central wavelength (800nm) of the NIR input beam. A comparison of simulated and experimental UV spectra across different central pressures is shown in Figure \ref{im:spec_2d}. The simulations clearly reproduce the general trend of higher pressures resulting in a gradual red-shift. Some discrepancies between simulated and measured data are also apparent, however, like the simulations predicting the splitting of the central peak for Argon and the saturation of UV intensities in Neon not being reproduced. 
+MENTION OFFSET OF ARGON PRESSURES!!!
 \begin{figure*}[h]
 \centering
  \begin{subfigure}{0.49\textwidth}
@@ -171,7 +178,7 @@ Beyond the UV energies, it is also instructive to consider the simulated UV outp
     \caption{}
     \end{subfigure}
     \begin{subfigure}{0.49\textwidth}
-        \includegraphics[width=\textwidth]{im/2d_spectra_pres_Ar_150mW_2.5scaled_grad}
+        \includegraphics[width=\textwidth]{im/2d_Ar_sim}
     \caption{}
     \end{subfigure}   
      \begin{subfigure}{0.49\textwidth}
@@ -179,7 +186,7 @@ Beyond the UV energies, it is also instructive to consider the simulated UV outp
     \caption{}
     \end{subfigure}
     \begin{subfigure}{0.49\textwidth}
-        \includegraphics[width=\textwidth]{im/2d_spectra_pres_Ne_400mW_2.5scaled_grad}
+        \includegraphics[width=\textwidth]{im/2d_Ne_sim}
     \caption{}
     \end{subfigure}  
 \caption{UV output spectra at different central pressures. Measured data is shown in the left column, simulated data with rescaled pressure axes in the right column. The top row corresponds to Argon at 150mW NIR power while the bottom row corresponds to Neon at 400mW NIR power}\label{im:spec_2d}
@@ -194,46 +201,54 @@ Note that for concision, only Argon at 150mW NIR power and 0.4bar central pressu
 One parameter that can be accessed using the simulation is the spatiotemporal beam profile of the UV pulses as they propagate through the central interaction region of the chip. Figure \ref{im:prop} shows how the UV pulses are increasingly deformed and leading-edge self-steepening sets in with increasing propagation distance. 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.5\textwidth]{im/profile_prop_Ar}
+\includegraphics[width=0.5\textwidth]{im/UV_pulse_evolution_Ar_ion}
 \caption{Simulated spatiotemporal beam profile of the UV pulses in Argon (150mW NIR power and 0.4bar central pressure). With increasing propagation distance through the 3mm cell leading-edge self-steepening sets in.}\label{im:prop}
 \end{figure}
 Further investigation reveals that this self-steepening process is  caused by photoionisation effects in the gas, as is seen in Figure \ref{im:profile_Ar}: when turning off ionisation in the simulations no self-steepening in the UV output pulse is observed. This demonstrates that the effects of ionisation are not merely to introduce loss but that it also contributes to pulse shaping. As is shown in Figure \ref{im:profile_Ar}, the ionisation-induced self-steepening has the effect of reducing the UV pulse duration. These results agree with similar studies in the literature, like \cite{reiter2010}. \par 
-\begin{figure}[h]
+\begin{figure*}[h]
 \centering
- \begin{subfigure}{0.24\textwidth}
-        \includegraphics[width=\textwidth]{im/2d_spectra_pres_Ar_150mW_meas}
+ \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{im/UV_pulse_output_Ar_ion}
     \caption{}
     \end{subfigure}
-    \begin{subfigure}{0.24\textwidth}
-        \includegraphics[width=\textwidth]{im/2d_spectra_pres_Ar_150mW_2.5scaled_grad}
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{im/UV_pulse_output_Ar_no_ion}
     \caption{}
     \end{subfigure}   
-     \begin{subfigure}{0.24\textwidth}
-        \includegraphics[width=\textwidth]{im/2d_spectra_pres_Ne_400mW_meas}
+     \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{im/temporal_Ar_ion}
     \caption{}
     \end{subfigure}
-    \begin{subfigure}{0.24\textwidth}
-        \includegraphics[width=\textwidth]{im/2d_spectra_pres_Ne_400mW_2.5scaled_grad}
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{im/temporal_Ar_no_ion}
     \caption{}
     \end{subfigure}  
 \caption{Simulated UV beam profiles at the output using Argon at 150mW NIR power and 0.4bar central pressure. The left column corresponds to simulations including ionisation effects while ionisation is turned off in the right column. }\label{im:profile_Ar}
-\end{figure}
+\end{figure*}
 Thus, it has been demonstrated that the simulations, even when limited to the gradient model, can give valuable insights into the process shaping UV generation. 
 
 \subsection{Effects of Chirp}
 Another advantage of simulations is that they can be used to probe the effect of changing different experimental parameters. As a case study, this section considers the effect of a chirped NIR input pulse on the generated UV pulses. Figure \ref{im:chirp} shows the effects of both a positively and negatively chirped driving pulse on the UV output spectra. 
-\begin{figure}[h]
+\begin{figure*}[h]
 \centering
- \begin{subfigure}{0.5\textwidth}
-\includegraphics[width=\textwidth]{im/spec_comp_Ar_150mw_2.5scale_0.4bar}
+ \begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{im/Ar_chirp}
 \caption{Argon at 150mW and 0.4bar}\label{im:chirp_Ar}
 \end{subfigure}
- \begin{subfigure}{0.5\textwidth}
-\includegraphics[width=\textwidth]{im/spec_comp_Ne_400mw_2.5scale_2.0bar}
+ \begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{im/Ne_chirp}
 \caption{Neon at 400mW and 2.0bar}\label{im:chirp_Ne}
 \end{subfigure}
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{im/temporal_Ar_chirp}
+\caption{Argon at 150mW and 0.4bar}\label{im:chirp_Ar_temp}
+\end{subfigure}
+\begin{subfigure}{0.49\textwidth}
+\includegraphics[width=\textwidth]{im/temporal_Ne_chirp}
+\caption{Neon at 400mW and 2.0bar}\label{im:chirp_Ne_temp}
+\end{subfigure}
 \caption{Simulated UV output spectra with different GVD values. The power values in the subfigure captions refer to the NIR beam power and the pressure values to the central cell pressures. Note that the pressures of the simulated spectra have been rescaled.}\label{im:chirp}
-\end{figure}
+\end{figure*}
 As can be seen, adding chirp to the input pulse is predicted by the simulations to produce more intense and shorter UV pulses (more details once plots are there!). This prediction can now be tested experimentally. \par 
 Thus, it has been demonstrated here how using the simulations one can guide the experimental design by testing the effects of different parameter variations computationally, in a more time-efficient manner. 
 
@@ -242,22 +257,15 @@ As was mentioned earlier, the THG simulations only encompassed the central inter
 Figure \ref{im:dens} compares the simulated gas density distributions in the new and the old cell and further to the gradient model in the central interaction region. 
 \begin{figure}[h]
 \centering
- \begin{subfigure}{0.5\textwidth}
-\includegraphics[width=\textwidth]{im/spec_comp_Ar_150mw_2.5scale_0.4bar}
-\caption{Cell and surroundings}\label{im:dens_whole}
-\end{subfigure}
- \begin{subfigure}{0.5\textwidth}
-\includegraphics[width=\textwidth]{im/spec_comp_Ne_400mw_2.5scale_2.0bar}
-\caption{Central interaction region}\label{im:dens_cent}
-\end{subfigure}
-\caption{Comparison of the \textit{COMSOL}-generated gas density distributions of the new and old fused silica chip as well as the gradient model.}\label{im:dens}
+\includegraphics[width=0.5 \textwidth]{im/old_new_comp}
+\caption{Comparison of the \textit{COMSOL}-generated gas density distributions of the new and old fused silica chip as well as the gradient model. AT 2 BAR}\label{im:dens}
 \end{figure}
 Evidently, the gas is less tightly confined in the chips than in the gradient model, i.e. the density at the edges of the central interaction regions drops off more slowly. The main difference between the new and old cells is the density distribution outside the THG region, however: due to the pumping stages in the new chip being closer to the gas inlet, the gas distribution has shorter wings than the old cell. \par 
 The UV output spectra obtained with the \textit{COMSOL} models of the new and old cells are shown in Figure \ref{im:coms}. As can be seen, the new chip generates UV pulses that are more intense and have a higher spectral bandwidth than the old cell. This agrees with experimental comparisons of the two designs. \par 
 \begin{figure}[h]
 \centering
  \begin{subfigure}{0.5\textwidth}
-\includegraphics[width=\textwidth]{im/spec_comp_Ar_150mw_2.5scale_0.4bar}
+\includegraphics[width=0.5\textwidth]{im/spec_comp_Ar_150mw_2.5scale_0.4bar}
 \caption{Argon (150mW, 0.4bar)}\label{im:coms_Ar}
 \end{subfigure}
  \begin{subfigure}{0.5\textwidth}

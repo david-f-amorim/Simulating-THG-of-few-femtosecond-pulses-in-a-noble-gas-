@@ -32,8 +32,8 @@ set_shift = 2.5    # specify the magnitude of the offset/scaling factor if shift
                  # set_shift==None, the offset/scaling factor will be set automatically to align the peak energies
                  # (used for energy comparisons when comp_exp==True; or for 2d pressure-spectrum map when comp_exp==False)
      
-single_dir = "parameter_scans\\gas_scans\\scan_150.0mW_Ar_0.0rad_f_ion_grad" # path to pressure scan directory if single=True (Note: output will be written to same directory)
-exp_file = "raw_input\\energies_Ne_400mW_IR.txt" # path to file containing experimental data; will be overlayed if comp_exp==True 
+single_dir = "parameter_scans\\report_Ne_scan" # path to pressure scan directory if single=True (Note: output will be written to same directory)
+exp_file = "raw_input\\energies_Ar_150mW_IR.txt" # path to file containing experimental data; will be overlayed if comp_exp==True 
 
 # ---------- SET KWARGS -------------------------------------------
 #
@@ -68,7 +68,7 @@ save = True           # if True: saves plots
 show_title = False     # if False: no titles shown 
 norm = True           # if True: norm spectra and, for comparisons with experiment, energies
 disable_latex = False # if True: disable LaTeX rendering 
-use_pdf = False        # if True: save plots as pdf; else: use png
+use_pdf = True        # if True: save plots as pdf ; else: use png 
 
 # ---------- MULTI-SCANS: FILE EXTRACTION --------------------------------------
 
@@ -497,28 +497,29 @@ def plot_single(single_dir, n=n):
 
         data, _ = get_spectra(single_dir, 100)
 
-        I_2d  = np.empty((len(data[0,1])-1, len(data[:,0])-1), dtype="float")
-        for i in np.arange(len(data[0,1])-1):      # lam
-            for j in np.arange(len(data[:,0])-1):  # pres 
-                I_2d[i,j] = data[j, 2][i]
+        I_2d  = np.empty((len(data[0,1]), len(data[:,0])), dtype="float")
+        for i in np.arange(len(data[0,1])):      # lam
+            for j in np.arange(len(data[:,0])):  # pres 
+                I_2d[i,j] = data[j, 2][i]        
 
         X, Y = np.meshgrid(data[0,1].astype("float")*1e9, data[:,0].astype("float") if shift_sim !="factor" else data[:,0].astype("float")/set_shift)  
         I_2d = np.swapaxes(I_2d,0,1) 
- 
+        
         if norm: 
-            plt.pcolormesh(X, Y, I_2d/np.max(I_2d))
+            plt.contourf(X, Y, I_2d/np.max(I_2d), 5, vmin=0.1)
         else:
             plt.pcolormesh(X, Y, I_2d)    
         
         plt.colorbar(label="I (arb. units)" if norm==False else "I (norm.)")
         plt.xlim(min(data[0,1])*1e9, max(data[0,1])*1e9)
-        plt.xlim(159,360)      # for Ar, Ne 
-        #plt.ylim(1.0, 4.5)     # for Ne
-        plt.ylim(0.1, 1.6)     # for Ar                                        
+        plt.xlim(159,360)       # for comparison with measured data
+        plt.ylim(1.0, 4.0)     # for Ne (comparison with measured data)
+        #plt.ylim(0.1, 1.6)      # for Ar (comparison with measured data)                                        
 
         if save: 
             if use_pdf:
                 plt.savefig(os.path.join(single_dir,"2d_spectra_pres.pdf"))
+                plt.savefig(os.path.join(single_dir,"2d_spectra_pres.png"),dpi=1000)
             else:
                 plt.savefig(os.path.join(single_dir,"2d_spectra_pres.png"),dpi=1000)    
         

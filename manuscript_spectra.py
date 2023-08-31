@@ -16,7 +16,7 @@ out_dir = "manuscript_spectra"     # directory to store output files
 disable_latex = False # toggle LaTeX rendering
 show_title = False     # toggle showing title 
 norm = True           # toggle normalisation
-use_pdf = False        # if true: use pdf; else: use png
+use_pdf = True        # if true: use pdf and png; else: use png only
 
 if disable_latex == False : plt.rcParams["text.usetex"] = True   # enable LaTeX rendering
 plt.rcParams["mathtext.fontset"] = "cm" # use LateX font for maths
@@ -26,8 +26,8 @@ fig_dim = [2 * 3.14961,2* 2.3622075] # for 8cm width ; double for 16cm width
 
 # ---------- SELECT PLOTS -------------------------------
 
-plot1 = True  # exp. and sim.
-plot2 = False # old v. new 
+plot1 = False  # exp. and sim.
+plot2 = True # old v. new 
 plot3 = False # chirp 
 plot4 = False # CEP
 plot5 = False # 10 best 
@@ -37,9 +37,9 @@ if plot1:
     # * * * PLOT 1: SHOW MEASURED SPECTRUM [WITH OR WITHOUT OVERLAYED SIMULATION]
     #                for manuscript: Ne 400mW 2.0bar; Ar 150mW 0.4bar
 
-    file_measured = "Ar_800.txt"     # file name of measured UV spectrum 
-    file_sim      =  "1.0 bar.dat"    # file name of simulated UV spectrum
-    file_out      = "spec_comp_Ar_150mW_2.5scale_0.4bar"     # name of output file (no file ending!)
+    file_measured = "Ar_150mW_0.4bar.txt"     # file name of measured UV spectrum 
+    file_sim      =  "spectrum_Ar.txt"    # file name of simulated UV spectrum
+    file_out      = "spec_comp_Ar_150mW_2.5scale_2.0bar"     # name of output file (no file ending!)
 
     overlay = True         # if True: overlay simulated spectrum 
 
@@ -62,25 +62,26 @@ if plot1:
     plt.plot(spec_measured[:,0]*1e9, spec_measured[:,1], color="red", label="exp.")
     plt.xlim(200, 360)
     if overlay:
-        plt.plot(spec_sim[:,0]*1e9+20, spec_sim[:,1], color="blue", label="sim.")
+        plt.plot(spec_sim[:,0]*1e9, spec_sim[:,1], color="blue", label="sim.")
         plt.legend()
 
     if use_pdf:
-         plt.savefig(os.path.join(out_dir,file_out+".pdf"))
-    else:     
-        plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
+         plt.savefig(os.path.join(out_dir,file_out+".pdf")) 
+    plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
     plt.show()
 
 if plot2:
     # * * * PLOT 2: SHOW SIMULATIONS FOR OLD VERSUS NEW CELL
     #                for manuscript: Ne 400mW 2.0bar; Ar 150mW 0.4bar
 
-    file_old = ""     # file name of simulated UV spectrum (old cell)
-    file_new = ""     # file name of simulated UV spectrum (new cell)
-    file_out = ""     # name of output file (no file ending!)
+    file_old = "spectrum_Ar_old.txt"     # file name of simulated UV spectrum (old cell)
+    file_new = "spectrum_Ar_new.txt"     # file name of simulated UV spectrum (new cell)
+    file_grad ="spectrum_Ar.txt" 
+    file_out = "Ar_old_v_new_v_grad"     # name of output file (no file ending!)
 
     spec_new = np.loadtxt(os.path.join(in_dir, file_new))   # read in "new" spectrum
     spec_old = np.loadtxt(os.path.join(in_dir, file_old))   # read in "old" spectrum
+    spec_grad = np.loadtxt(os.path.join(in_dir, file_grad))
 
     plt.figure(figsize=fig_dim) 
     plt.subplots_adjust(top=0.9, bottom=0.14)
@@ -89,18 +90,22 @@ if plot2:
     plt.xlabel("$\lambda$ (nm)") 
 
     if norm:
-        max_val = max(np.max(spec_new), np.max(spec_old))
+        max_val = max(np.max(spec_new), np.max(spec_old),np.max(spec_grad))
         spec_new[:,1]=spec_new[:,1]/ max_val
-        spec_old[:,1]=spec_old[:,1]/ max_val   
+        spec_old[:,1]=spec_old[:,1]/ max_val
+        spec_grad[:,1]=spec_grad[:,1]/ max_val   
 
-    plt.plot(spec_old[:,0]*1e9, spec_old[:,1], color="red", label="old (2019)")
-    plt.plot(spec_new[:,0]*1e9, spec_new[:,1], color="blue", label="new")
+    plt.plot(spec_old[:,0]*1e9, spec_old[:,1], color="blue", label="old cell")
+    plt.plot(spec_new[:,0]*1e9, spec_new[:,1], color="red", label="new chip")
+    plt.plot(spec_grad[:,0]*1e9, spec_grad[:,1], color="black", label="gradient")
+
+    plt.xlim(200,360)
     plt.legend()
 
     if use_pdf:
-         plt.savefig(os.path.join(out_dir,file_out+".pdf"))
-    else:     
-        plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
+         plt.savefig(os.path.join(out_dir,file_out+".pdf")) 
+         plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
+    plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
     plt.show()
 
 if plot3:
@@ -108,10 +113,10 @@ if plot3:
     #                for manuscript: Ne 400mW 2.0bar; Ar 150mW 0.4bar;
     #                                GVD: 0, +11fs^2, -11fs^2
 
-    file_no_chirp = ""     # file name of simulated UV spectrum (no chirp)
-    file_pos_chirp=""      # file name of simulated UV spectrum (pos. chirp)
-    file_neg_chirp=""      # file name of simulated UV spectrum (neg. chirp)
-    file_out = ""          # name of output file (no file ending!)
+    file_no_chirp = "spectrum_Ar.txt"     # file name of simulated UV spectrum (no chirp)
+    file_pos_chirp="spectrum_Ar_pos_chirp.txt"      # file name of simulated UV spectrum (pos. chirp)
+    file_neg_chirp="spectrum_Ar_neg_chirp.txt"      # file name of simulated UV spectrum (neg. chirp)
+    file_out = "Ar_chirp"          # name of output file (no file ending!)
 
     spec_no_chirp = np.loadtxt(os.path.join(in_dir, file_no_chirp))   
     spec_pos_chirp = np.loadtxt(os.path.join(in_dir, file_pos_chirp))   
@@ -122,6 +127,7 @@ if plot3:
     if show_title: plt.title("Simulated UV spectra")
     plt.ylabel("I (arb. units)" if norm==False else "I (norm.)")
     plt.xlabel("$\lambda$ (nm)") 
+    plt.xlim(200,360)
 
     if norm:
             max_val = max(np.max(spec_no_chirp), np.max(spec_pos_chirp), np.max(spec_neg_chirp))
@@ -135,9 +141,9 @@ if plot3:
     plt.legend()
 
     if use_pdf:
-         plt.savefig(os.path.join(out_dir,file_out+".pdf"))
-    else:     
-        plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
+         plt.savefig(os.path.join(out_dir,file_out+".pdf")) 
+         plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
+    plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
     plt.show()
 
 if plot4:
@@ -184,9 +190,8 @@ if plot4:
     plt.legend()
 
     if use_pdf:
-         plt.savefig(os.path.join(out_dir,file_out+".pdf"))
-    else:     
-        plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
+         plt.savefig(os.path.join(out_dir,file_out+".pdf")) 
+    plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
     plt.show()
 
 if plot5:
@@ -248,7 +253,6 @@ if plot5:
     plt.legend(ncol=3)
 
     if use_pdf:
-         plt.savefig(os.path.join(out_dir,file_out+".pdf"))
-    else:     
-        plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
+         plt.savefig(os.path.join(out_dir,file_out+".pdf")) 
+    plt.savefig(os.path.join(out_dir,file_out+".png"),dpi=1000)
     plt.show()

@@ -63,23 +63,29 @@ TO DO
 
 - clean up files and directories [if significant changes: updated handover PP]
 - make necessary changes to code [if significant changes: updated handover PP]
-	+ write out UV timing data as file ?!             X
-	+ write code for Gaussian fit to UV timing data (TL duration)
-        + arrange some plots with 2x2 subplots / increase fontsize [(chirp: Ar/Ne, spec/I(t)), (profile/I(t), ion/no-ion)]
+	+ write out UV timing data as file ?!             DONE
+	+ write code for Gaussian fit to UV timing data (TL duration) DONE
+
+        + arrange some plots with 2x2 subplots / increase fontsize [(chirp: Ar/Ne, spec/I(t) THIS CAN BE DONE IN MANUSCRIPT_SPECTRA!), (profile/I(t), ion/no-ion)]
 	+ write code to compare densities (new, old, grad) 
         + change heatmap/contourf of 2d power scan plots 
 - process old chip COMSOL data 
 - run again for plots 
-	+ shift lam0 to 800nm 
+	+ shift lam0 to 800nm '
         + produce all relevant plots (first for own use):
-		* energy comparison (pres. scan): Neon and Argon        '
-                * spectra comparison: Neon and Argon                    '
-                * 2d comparison: Neon and Argon                         '
-                * UV profile evolution: Argon 
-                * self-steepening and temporal profile with and without ionisation: Argon 
-                * chirp scan spectra: Argon and Neon 
-                * gas density comparison: outside THG region and THG region-only
-		* old-v-new comparison (spectra): Argon and Neon
+		* energy comparison (pres. scan): Neon and Argon        DONE
+                * spectra comparison: Neon and Argon                    DONE
+                * 2d comparison: Neon and Argon                         DONE
+                * UV profile evolution: Argon                           DONE
+                * self-steepening and temporal profile with and without ionisation: Argon DONE
+                * chirp scan spectra: Argon and Neon                    DONE
+                * gas density comparison: outside THG region and THG region-only  DONE
+		* old-v-new comparison (spectra): Argon and Neon        DONE 
+		* gradient model at different pressures                 DONE
+
+THE SIMULATIONS RUN OVERNIGHT SHOULD COVER ALL BUT THE GAS DENSITY SIMULATIONS
+-> CAREFULLY CHECK THE MAXWELL OUTPUT DIRECTORY IN THE MORNING TO SEE WHICH FILES EXIST!!
+
 
 - update presentation with plots and re-write where necessary 
 - re-write report and update plots	
