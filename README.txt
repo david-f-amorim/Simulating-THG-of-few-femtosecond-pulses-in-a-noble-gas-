@@ -61,32 +61,18 @@ adjusted code for relevant plot requirements; started on final presentation and 
 TO DO
 =====
 
-- clean up files and directories [if significant changes: updated handover PP]
-- make necessary changes to code [if significant changes: updated handover PP]
-	+ write out UV timing data as file ?!             DONE
-	+ write code for Gaussian fit to UV timing data (TL duration) DONE
+CHANGES IN PP:
+	
 
-        + arrange some plots with 2x2 subplots / increase fontsize [(chirp: Ar/Ne, spec/I(t) THIS CAN BE DONE IN MANUSCRIPT_SPECTRA!), (profile/I(t), ion/no-ion)]
-	+ write code to compare densities (new, old, grad) 
-        + change heatmap/contourf of 2d power scan plots 
-- process old chip COMSOL data 
-- run again for plots 
-	+ shift lam0 to 800nm '
-        + produce all relevant plots (first for own use):
-		* energy comparison (pres. scan): Neon and Argon        DONE
-                * spectra comparison: Neon and Argon                    DONE
-                * 2d comparison: Neon and Argon                         DONE
-                * UV profile evolution: Argon                           DONE
-                * self-steepening and temporal profile with and without ionisation: Argon DONE
-                * chirp scan spectra: Argon and Neon                    DONE
-                * gas density comparison: outside THG region and THG region-only  DONE
-		* old-v-new comparison (spectra): Argon and Neon        DONE 
-		* gradient model at different pressures                 DONE
+	       - add IR output pulse    
 
-THE SIMULATIONS RUN OVERNIGHT SHOULD COVER ALL BUT THE GAS DENSITY SIMULATIONS
--> CAREFULLY CHECK THE MAXWELL OUTPUT DIRECTORY IN THE MORNING TO SEE WHICH FILES EXIST!!
+		NORMALISE TIME DOMAIN CHIRP PLOTS !!!
+		CHANGE ALL REFERENCES TO TL!!
 
+		- rewrite ending
+	         
 
-- update presentation with plots and re-write where necessary 
-- re-write report and update plots	
+EQUIVALENT CHANGES IN REPORT
+
+SEND THEORY TO VINCENT ASAP	
 	

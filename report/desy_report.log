@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  1 SEP 2023 09:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  1 SEP 2023 16:09
 entering extended mode
 **./desy_report.tex
 (desy_report.tex
@@ -495,19 +495,6 @@ Underfull \hbox (badness 1953) in paragraph at lines 58--58
  []
 
 
-Underfull \hbox (badness 1199) in paragraph at lines 60--61
-\OML/cmm/m/it/10.95 i\OT1/cmr/m/n/10.95 (\OML/cmm/m/it/10.95 !\OT1/cmr/m/n/10.
-95 )]\OML/cmm/m/it/10.95 L$\OT1/cmr/m/n/10.95 , where $\OML/cmm/m/it/10.95 L$ \
-OT1/cmr/m/n/10.95 corresponds to the distance
- []
-
-
-Underfull \hbox (badness 2197) in paragraph at lines 60--61
-\OT1/cmr/m/n/10.95 dispersive media. The coefficient $\OML/cmm/m/it/10.95 []$ 
-\OT1/cmr/m/n/10.95 in the
- []
-
-
 Underfull \hbox (badness 3657) in paragraph at lines 63--63
 \OT1/cmr/m/n/10.95 to become invalid and nonlinear polarisation
  []
@@ -550,6 +537,16 @@ Underfull \hbox (badness 1533) in paragraph at lines 81--81
 
 Underfull \hbox (badness 4353) in paragraph at lines 81--81
 \OT1/cmr/m/n/10.95 experiencing a different group velocity in a
+ []
+
+
+Underfull \hbox (badness 1997) in paragraph at lines 81--81
+\OT1/cmr/m/n/10.95 in the leading edge of the pulse or, in the
+ []
+
+
+Underfull \hbox (badness 1342) in paragraph at lines 81--81
+\OT1/cmr/m/n/10.95 temporal compression and spectral broadening.
  []
 
 
@@ -615,7 +612,7 @@ Underfull \hbox (badness 1117) in paragraph at lines 129--130
 \OT1/cmr/m/n/10.95 using a gradient profile, based on the central
  []
 
-<im/grad_model.pdf, id=89, 455.24464pt x 341.43346pt>
+<im/grad_model.pdf, id=88, 455.24464pt x 341.43346pt>
 File: im/grad_model.pdf Graphic file (type pdf)
 <use im/grad_model.pdf>
 Package pdftex.def Info: im/grad_model.pdf  used on input line 136.
@@ -638,23 +635,13 @@ Underfull \hbox (badness 1226) in paragraph at lines 140--141
 \OT1/cmr/m/n/10.95 NIR power and Neon at 400mW NIR power,
  []
 
-
-Underfull \hbox (badness 3942) in paragraph at lines 143--143
-\OT1/cmr/m/n/10.95 The most important metric to evaluate the
- []
-
-
-Underfull \hbox (badness 1142) in paragraph at lines 144--144
-\OT1/cmr/m/n/10.95 simulated data will always be presented using
- []
-
 [5 <./im/grad_model.pdf>]
-<im/energies_Ar.pdf, id=114, 455.24464pt x 341.43346pt>
+<im/energies_Ar.pdf, id=113, 455.24464pt x 341.43346pt>
 File: im/energies_Ar.pdf Graphic file (type pdf)
 <use im/energies_Ar.pdf>
 Package pdftex.def Info: im/energies_Ar.pdf  used on input line 148.
 (pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
-<im/energies_Ne.pdf, id=115, 455.24464pt x 341.43346pt>
+<im/energies_Ne.pdf, id=114, 455.24464pt x 341.43346pt>
 File: im/energies_Ne.pdf Graphic file (type pdf)
 <use im/energies_Ne.pdf>
 Package pdftex.def Info: im/energies_Ne.pdf  used on input line 152.
@@ -670,6 +657,11 @@ Overfull \hbox (5.0pt too wide) in paragraph at lines 147--155
  []
 
 
+Underfull \hbox (badness 1845) in paragraph at lines 155--155
+[]\OT1/cmr/m/n/10.95 Figure 3: |Simulated and experimental values
+ []
+
+
 Underfull \hbox (badness 4792) in paragraph at lines 157--157
 \OT1/cmr/m/n/10.95 output energies at various (rescaled) central
  []
@@ -679,13 +671,13 @@ Underfull \hbox (badness 3735) in paragraph at lines 159--159
 \OT1/cmr/m/n/10.95 experiment, UV energies (initially) rise with
  []
 
-<im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf, id=119, 455.24464pt x 341.43346pt>
+<im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf, id=118, 455.24464pt x 341.43346pt>
 File: im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf Graphic file (type pdf)
 <use im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf>
 Package pdftex.def Info: im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf  used on inp
 ut line 163.
 (pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
-<im/spec_comp_Ne_400mw_2.5scale_2.0bar.pdf, id=120, 455.24464pt x 341.43346pt>
+<im/spec_comp_Ne_400mw_2.5scale_2.0bar.pdf, id=119, 455.24464pt x 341.43346pt>
 File: im/spec_comp_Ne_400mw_2.5scale_2.0bar.pdf Graphic file (type pdf)
 <use im/spec_comp_Ne_400mw_2.5scale_2.0bar.pdf>
 Package pdftex.def Info: im/spec_comp_Ne_400mw_2.5scale_2.0bar.pdf  used on inp
@@ -704,209 +696,204 @@ Overfull \hbox (5.0pt too wide) in paragraph at lines 162--170
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-Underfull \hbox (badness 1325) in paragraph at lines 172--172
-\OT1/cmr/m/n/10.95 to consider the simulated UV output spectra.
- []
-
-<im/2d_spectra_pres_Ar_150mW_meas.pdf, id=122, 455.24464pt x 341.43346pt>
+<im/2d_spectra_pres_Ar_150mW_meas.pdf, id=121, 455.24464pt x 341.43346pt>
 File: im/2d_spectra_pres_Ar_150mW_meas.pdf Graphic file (type pdf)
 <use im/2d_spectra_pres_Ar_150mW_meas.pdf>
 Package pdftex.def Info: im/2d_spectra_pres_Ar_150mW_meas.pdf  used on input li
-ne 177.
+ne 176.
 (pdftex.def)             Requested size: 243.9851pt x 182.99069pt.
-<im/2d_Ar_sim.pdf, id=123, 455.24464pt x 341.43346pt>
+<im/2d_Ar_sim.pdf, id=122, 455.24464pt x 341.43346pt>
 File: im/2d_Ar_sim.pdf Graphic file (type pdf)
 <use im/2d_Ar_sim.pdf>
-Package pdftex.def Info: im/2d_Ar_sim.pdf  used on input line 181.
+Package pdftex.def Info: im/2d_Ar_sim.pdf  used on input line 180.
 (pdftex.def)             Requested size: 243.9851pt x 182.99069pt.
-<im/2d_spectra_pres_Ne_400mW_meas.pdf, id=124, 455.24464pt x 341.43346pt>
+<im/2d_spectra_pres_Ne_400mW_meas.pdf, id=123, 455.24464pt x 341.43346pt>
 File: im/2d_spectra_pres_Ne_400mW_meas.pdf Graphic file (type pdf)
 <use im/2d_spectra_pres_Ne_400mW_meas.pdf>
 Package pdftex.def Info: im/2d_spectra_pres_Ne_400mW_meas.pdf  used on input li
-ne 185.
+ne 184.
 (pdftex.def)             Requested size: 243.9851pt x 182.99069pt.
-<im/2d_Ne_sim.pdf, id=125, 455.24464pt x 341.43346pt>
+<im/2d_Ne_sim.pdf, id=124, 455.24464pt x 341.43346pt>
 File: im/2d_Ne_sim.pdf Graphic file (type pdf)
 <use im/2d_Ne_sim.pdf>
-Package pdftex.def Info: im/2d_Ne_sim.pdf  used on input line 189.
+Package pdftex.def Info: im/2d_Ne_sim.pdf  used on input line 188.
 (pdftex.def)             Requested size: 243.9851pt x 182.99069pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-Underfull \hbox (badness 1762) in paragraph at lines 194--194
-\OT1/cmr/m/n/10.95 intensity due to saturation at high pressures.
- []
-
-
-Underfull \hbox (badness 2799) in paragraph at lines 194--194
-\OT1/cmr/m/n/10.95 that of the experimental data, although the
- []
-
 [6 <./im/energies_Ar.pdf> <./im/energies_Ne.pdf>]
-Underfull \hbox (badness 1117) in paragraph at lines 195--196
+Underfull \hbox (badness 1117) in paragraph at lines 194--195
 []\OT1/cmr/m/n/10.95 In summary, despite the simplified gradient
  []
 
 
-Underfull \hbox (badness 2662) in paragraph at lines 195--196
-\OT1/cmr/m/n/10.95 were able to at least qualitatively reproduce
+Underfull \hbox (badness 1048) in paragraph at lines 194--195
+\OT1/cmr/m/n/10.95 were able to qualitatively reproduce important
  []
 
-<im/UV_pulse_evolution_Ar_ion.png, id=153, 455.22873pt x 341.40347pt>
+
+Underfull \hbox (badness 2717) in paragraph at lines 197--197
+\OT1/cmr/m/n/10.95 is now worth considering applications of the
+ []
+
+<im/UV_pulse_evolution_Ar_ion.png, id=151, 455.22873pt x 341.40347pt>
 File: im/UV_pulse_evolution_Ar_ion.png Graphic file (type png)
 <use im/UV_pulse_evolution_Ar_ion.png>
 Package pdftex.def Info: im/UV_pulse_evolution_Ar_ion.png  used on input line 2
-08.
+00.
 (pdftex.def)             Requested size: 248.96161pt x 186.70976pt.
 
-Overfull \hbox (5.0pt too wide) in paragraph at lines 208--209
+Overfull \hbox (5.0pt too wide) in paragraph at lines 200--201
  [][] 
  []
 
-
-Underfull \hbox (badness 1983) in paragraph at lines 205--211
-\OT1/cmr/m/n/10.95 that this self-steepening process is caused by
- []
-
-
-Underfull \hbox (badness 1377) in paragraph at lines 205--211
-\OT1/cmr/m/n/10.95 Figure []7[]: when turning off ionisation in the
- []
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<im/UV_pulse_output_Ar_ion.png, id=157, 455.22873pt x 341.40347pt>
+<im/UV_pulse_output_Ar_ion.png, id=152, 455.22873pt x 341.40347pt>
 File: im/UV_pulse_output_Ar_ion.png Graphic file (type png)
 <use im/UV_pulse_output_Ar_ion.png>
-Package pdftex.def Info: im/UV_pulse_output_Ar_ion.png  used on input line 215.
+Package pdftex.def Info: im/UV_pulse_output_Ar_ion.png  used on input line 207.
 
 (pdftex.def)             Requested size: 243.9851pt x 182.97984pt.
-<im/UV_pulse_output_Ar_no_ion.png, id=158, 455.22873pt x 341.40347pt>
+<im/UV_pulse_output_Ar_no_ion.png, id=153, 455.22873pt x 341.40347pt>
 File: im/UV_pulse_output_Ar_no_ion.png Graphic file (type png)
 <use im/UV_pulse_output_Ar_no_ion.png>
 Package pdftex.def Info: im/UV_pulse_output_Ar_no_ion.png  used on input line 2
-19.
+11.
 (pdftex.def)             Requested size: 243.9851pt x 182.97984pt.
-<im/temporal_Ar_ion.pdf, id=159, 455.24464pt x 341.43346pt>
+<im/temporal_Ar_ion.pdf, id=154, 455.24464pt x 341.43346pt>
 File: im/temporal_Ar_ion.pdf Graphic file (type pdf)
 <use im/temporal_Ar_ion.pdf>
-Package pdftex.def Info: im/temporal_Ar_ion.pdf  used on input line 223.
+Package pdftex.def Info: im/temporal_Ar_ion.pdf  used on input line 215.
 (pdftex.def)             Requested size: 243.9851pt x 182.99069pt.
-<im/temporal_Ar_no_ion.pdf, id=160, 455.24464pt x 341.43346pt>
+<im/temporal_Ar_no_ion.pdf, id=155, 455.24464pt x 341.43346pt>
 File: im/temporal_Ar_no_ion.pdf Graphic file (type pdf)
 <use im/temporal_Ar_no_ion.pdf>
-Package pdftex.def Info: im/temporal_Ar_no_ion.pdf  used on input line 227.
+Package pdftex.def Info: im/temporal_Ar_no_ion.pdf  used on input line 219.
 (pdftex.def)             Requested size: 243.9851pt x 182.99069pt.
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 2846) in paragraph at lines 232--233
-[]\OT1/cmr/m/n/10.95 Thus, it has been demonstrated that the
+Underfull \hbox (badness 4595) in paragraph at lines 224--225
+\OT1/cmr/m/n/10.95 the gas cell. With increasing propagation
  []
-
-<im/Ar_chirp.pdf, id=162, 455.24464pt x 341.43346pt>
-File: im/Ar_chirp.pdf Graphic file (type pdf)
-<use im/Ar_chirp.pdf>
-Package pdftex.def Info: im/Ar_chirp.pdf  used on input line 239.
-(pdftex.def)             Requested size: 243.9851pt x 182.99069pt.
-<im/Ne_chirp.pdf, id=163, 455.24464pt x 341.43346pt>
-File: im/Ne_chirp.pdf Graphic file (type pdf)
-<use im/Ne_chirp.pdf>
-Package pdftex.def Info: im/Ne_chirp.pdf  used on input line 243.
-(pdftex.def)             Requested size: 243.9851pt x 182.99069pt.
-<im/temporal_Ar_chirp.pdf, id=164, 455.24464pt x 341.43346pt>
-File: im/temporal_Ar_chirp.pdf Graphic file (type pdf)
-<use im/temporal_Ar_chirp.pdf>
-Package pdftex.def Info: im/temporal_Ar_chirp.pdf  used on input line 247.
-(pdftex.def)             Requested size: 243.9851pt x 182.99069pt.
-<im/temporal_Ne_chirp.pdf, id=165, 455.24464pt x 341.43346pt>
-File: im/temporal_Ne_chirp.pdf Graphic file (type pdf)
-<use im/temporal_Ne_chirp.pdf>
-Package pdftex.def Info: im/temporal_Ne_chirp.pdf  used on input line 251.
-(pdftex.def)             Requested size: 243.9851pt x 182.99069pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
 
 [7 <./im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf> <./im/spec_comp_Ne_400mw_2.5sc
-ale_2.0bar.pdf>]
-Underfull \hbox (badness 1210) in paragraph at lines 260--260
-\OT1/cmr/m/n/10.95 of the gas flow. As mentioned above, these
+ale_2.0bar.pdf> <./im/UV_pulse_evolution_Ar_ion.png>]
+Underfull \hbox (badness 1067) in paragraph at lines 227--228
+\OT1/cmr/m/n/10.95 of the physical effects shaping UV generation.
  []
 
 
-Underfull \hbox (badness 1888) in paragraph at lines 261--261
+Underfull \hbox (badness 2922) in paragraph at lines 230--230
+\OT1/cmr/m/n/10.95 Another broad application of the simulations
+ []
+
+
+Underfull \hbox (badness 1490) in paragraph at lines 230--230
+\OT1/cmr/m/n/10.95 is to explore the effects of changing different
+ []
+
+<im/Ne_chirp.pdf, id=186, 455.24464pt x 341.43346pt>
+File: im/Ne_chirp.pdf Graphic file (type pdf)
+<use im/Ne_chirp.pdf>
+Package pdftex.def Info: im/Ne_chirp.pdf  used on input line 234.
+(pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
+<im/temporal_Ne_chirp.pdf, id=187, 455.24464pt x 341.43346pt>
+File: im/temporal_Ne_chirp.pdf Graphic file (type pdf)
+<use im/temporal_Ne_chirp.pdf>
+Package pdftex.def Info: im/temporal_Ne_chirp.pdf  used on input line 238.
+(pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
+
+Overfull \hbox (5.0pt too wide) in paragraph at lines 233--241
+ []$[]$ 
+ []
+
+
+Overfull \hbox (5.0pt too wide) in paragraph at lines 233--241
+ []$ 
+ []
+
+
+Underfull \hbox (badness 1199) in paragraph at lines 241--241
+[]\OT1/cmr/m/n/10.95 Figure 8: |Simulated UV output spectra with
+ []
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[8 <./im/2d_spectra_pres_Ar_150mW_meas.pdf> <./im/2d_Ar_sim.pdf> <./im/2d_spect
+ra_pres_Ne_400mW_meas.pdf> <./im/2d_Ne_sim.pdf>] [9 <./im/UV_pulse_output_Ar_io
+n.png> <./im/UV_pulse_output_Ar_no_ion.png> <./im/temporal_Ar_ion.pdf> <./im/te
+mporal_Ar_no_ion.pdf>]
+Underfull \hbox (badness 1062) in paragraph at lines 253--253
+\OT1/cmr/m/n/10.95 these simulations are only approximate at the
+ []
+
+
+Underfull \hbox (badness 1888) in paragraph at lines 254--254
 \OT1/cmr/m/n/10.95 some gas density distributions, which do not
  []
 
-<im/old_new_comp.pdf, id=192, 455.24464pt x 341.43346pt>
+<im/old_new_comp.pdf, id=253, 455.24464pt x 341.43346pt>
 File: im/old_new_comp.pdf Graphic file (type pdf)
 <use im/old_new_comp.pdf>
-Package pdftex.def Info: im/old_new_comp.pdf  used on input line 265.
+Package pdftex.def Info: im/old_new_comp.pdf  used on input line 258.
 (pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
 
-Overfull \hbox (5.0pt too wide) in paragraph at lines 265--266
+Overfull \hbox (5.0pt too wide) in paragraph at lines 258--259
  [][] 
  []
 
 
-Underfull \hbox (badness 1152) in paragraph at lines 262--268
+Underfull \hbox (badness 1152) in paragraph at lines 255--261
 \OT1/cmr/m/n/10.95 between the new and old cells is the density
  []
 
-[8 <./im/2d_spectra_pres_Ar_150mW_meas.pdf> <./im/2d_Ar_sim.pdf> <./im/2d_spect
-ra_pres_Ne_400mW_meas.pdf> <./im/2d_Ne_sim.pdf>]
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-
-Underfull \hbox (badness 1668) in paragraph at lines 269--269
+Underfull \hbox (badness 1668) in paragraph at lines 262--262
 []\OT1/cmr/m/n/10.95 The UV output spectra obtained with the
  []
 
-<im/Ar_old_v_new.pdf, id=228, 455.24464pt x 341.43346pt>
+<im/Ar_old_v_new.pdf, id=255, 455.24464pt x 341.43346pt>
 File: im/Ar_old_v_new.pdf Graphic file (type pdf)
 <use im/Ar_old_v_new.pdf>
-Package pdftex.def Info: im/Ar_old_v_new.pdf  used on input line 273.
+Package pdftex.def Info: im/Ar_old_v_new.pdf  used on input line 266.
 (pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
-<im/Ne_old_v_new.pdf, id=229, 455.24464pt x 341.43346pt>
+<im/Ne_old_v_new.pdf, id=256, 455.24464pt x 341.43346pt>
 File: im/Ne_old_v_new.pdf Graphic file (type pdf)
 <use im/Ne_old_v_new.pdf>
-Package pdftex.def Info: im/Ne_old_v_new.pdf  used on input line 277.
+Package pdftex.def Info: im/Ne_old_v_new.pdf  used on input line 270.
 (pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
 
-Overfull \hbox (5.0pt too wide) in paragraph at lines 272--280
+Overfull \hbox (5.0pt too wide) in paragraph at lines 265--273
  []$[]$ 
  []
 
 
-Overfull \hbox (5.0pt too wide) in paragraph at lines 272--280
+Overfull \hbox (5.0pt too wide) in paragraph at lines 265--273
  []$ 
  []
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<im/Ar_old_v_new_v_grad.pdf, id=230, 455.24464pt x 341.43346pt>
+<im/Ar_old_v_new_v_grad.pdf, id=257, 455.24464pt x 341.43346pt>
 File: im/Ar_old_v_new_v_grad.pdf Graphic file (type pdf)
 <use im/Ar_old_v_new_v_grad.pdf>
-Package pdftex.def Info: im/Ar_old_v_new_v_grad.pdf  used on input line 287.
+Package pdftex.def Info: im/Ar_old_v_new_v_grad.pdf  used on input line 280.
 (pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
-<im/Ne_old_v_new_v_grad.pdf, id=231, 455.24464pt x 341.43346pt>
+<im/Ne_old_v_new_v_grad.pdf, id=258, 455.24464pt x 341.43346pt>
 File: im/Ne_old_v_new_v_grad.pdf Graphic file (type pdf)
 <use im/Ne_old_v_new_v_grad.pdf>
-Package pdftex.def Info: im/Ne_old_v_new_v_grad.pdf  used on input line 291.
+Package pdftex.def Info: im/Ne_old_v_new_v_grad.pdf  used on input line 284.
 (pdftex.def)             Requested size: 248.96161pt x 186.72095pt.
 
-Overfull \hbox (5.0pt too wide) in paragraph at lines 286--294
+Overfull \hbox (5.0pt too wide) in paragraph at lines 279--287
  []$[]$ 
  []
 
 
-Overfull \hbox (5.0pt too wide) in paragraph at lines 286--294
+Overfull \hbox (5.0pt too wide) in paragraph at lines 279--287
  []$ 
  []
 
@@ -914,22 +901,24 @@ Overfull \hbox (5.0pt too wide) in paragraph at lines 286--294
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-Underfull \hbox (badness 2818) in paragraph at lines 296--297
+Underfull \hbox (badness 2818) in paragraph at lines 289--290
 []\OT1/cmr/m/n/10.95 It is notable how drastically different the
  []
 
-
-Underfull \hbox (badness 1158) in paragraph at lines 302--302
+[10 <./im/Ne_chirp.pdf> <./im/temporal_Ne_chirp.pdf> <./im/old_new_comp.pdf>]
+[11 <./im/Ar_old_v_new.pdf> <./im/Ne_old_v_new.pdf> <./im/Ar_old_v_new_v_grad.p
+df> <./im/Ne_old_v_new_v_grad.pdf>]
+Underfull \hbox (badness 1158) in paragraph at lines 295--295
 \OT1/cmr/m/n/10.95 a wide range of experimental parameters that
  []
 
-[9 <./im/UV_pulse_evolution_Ar_ion.png>]
-Underfull \hbox (badness 3954) in paragraph at lines 309--309
+
+Underfull \hbox (badness 3954) in paragraph at lines 302--302
 []\OT1/cmr/m/n/10.95 Additionally, the simulations indicate that
  []
 
 
-Underfull \hbox (badness 3281) in paragraph at lines 310--310
+Underfull \hbox (badness 3281) in paragraph at lines 303--303
 []\OT1/cmr/m/n/10.95 Finally, using more sophisticated but still
  []
 
@@ -938,8 +927,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 8--14
 \OT1/cmr/m/n/9 https://opg.optica.org/ol/abstract.cfm?URI=ol-44-6-
  []
 
-[10 <./im/UV_pulse_output_Ar_ion.png> <./im/UV_pulse_output_Ar_no_ion.png> <./i
-m/temporal_Ar_ion.pdf> <./im/temporal_Ar_no_ion.pdf>]
+
 Underfull \hbox (badness 1496) in paragraph at lines 29--33
 []\OT1/cmr/m/n/9 M. Geissler, G. Tem-pea, A. Scrinzi, M. Schnurer,
  []
@@ -990,16 +978,7 @@ Overfull \hbox (15.95616pt too wide) in paragraph at lines 47--52
 \OT1/cmr/m/n/9 https://link.aps.org/doi/10.1103/PhysRevLett.105.243902 
  []
 
-) [11 <./im/Ar_chirp.pdf> <./im/Ne_chirp.pdf> <./im/temporal_Ar_chirp.pdf> <./i
-m/temporal_Ne_chirp.pdf>]
-
-LaTeX Warning: Text page 12 contains only floats.
-
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [12 <./im/old_new_comp.pdf> <./im/Ar_old_v_new.pdf> <./im/Ne_old_v_new.pdf> <.
-/im/Ar_old_v_new_v_grad.pdf> <./im/Ne_old_v_new_v_grad.pdf>] (desy_report.aux)
+) [12] (desy_report.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 0.78749pt have occurred.
@@ -1011,13 +990,13 @@ Package rerunfilecheck Info: File `desy_report.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 12072 strings out of 478864
- 184305 string characters out of 2848660
- 522663 words of memory out of 3000000
- 29749 multiletter control sequences out of 15000+600000
+ 12051 strings out of 478864
+ 183772 string characters out of 2848660
+ 520033 words of memory out of 3000000
+ 29730 multiletter control sequences out of 15000+600000
  410911 words of font info for 54 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
- 60i,10n,66p,1426b,567s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 60i,10n,66p,1444b,567s stack positions out of 5000i,500n,10000p,200000b,80000s
 <C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/
 cmbx10.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/public/ams
 fonts/cm/cmbx12.pfb><C:/Users/david/AppData/Local/Programs/MiKTeX/fonts/type1/p
@@ -1037,9 +1016,9 @@ nts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/david/AppData/Local/Programs/M
 iKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/david/AppData/Local/P
 rograms/MiKTeX/fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Users/david/AppData
 /Local/Programs/MiKTeX/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on desy_report.pdf (12 pages, 2734356 bytes).
+Output written on desy_report.pdf (12 pages, 2712808 bytes).
 PDF statistics:
- 441 PDF objects out of 1000 (max. 8388607)
+ 414 PDF objects out of 1000 (max. 8388607)
  57 named destinations out of 1000 (max. 500000)
- 126 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 116 words of extra memory for PDF output out of 10000 (max. 10000000)
 

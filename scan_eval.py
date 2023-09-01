@@ -32,7 +32,7 @@ set_shift = 2.5    # specify the magnitude of the offset/scaling factor if shift
                  # set_shift==None, the offset/scaling factor will be set automatically to align the peak energies
                  # (used for energy comparisons when comp_exp==True; or for 2d pressure-spectrum map when comp_exp==False)
      
-single_dir = "parameter_scans\\report_Ne_scan" # path to pressure scan directory if single=True (Note: output will be written to same directory)
+single_dir = "parameter_scans\\report_Ar_scan" # path to pressure scan directory if single=True (Note: output will be written to same directory)
 exp_file = "raw_input\\energies_Ar_150mW_IR.txt" # path to file containing experimental data; will be overlayed if comp_exp==True 
 
 # ---------- SET KWARGS -------------------------------------------
