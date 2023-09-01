@@ -61,18 +61,19 @@ adjusted code for relevant plot requirements; started on final presentation and 
 TO DO
 =====
 
-CHANGES IN PP:
-	
+
+	PLOTS:
 
 	       - add IR output pulse    
 
 		NORMALISE TIME DOMAIN CHIRP PLOTS !!!
 		CHANGE ALL REFERENCES TO TL!!
 
-		- rewrite ending
+
+	RE-WRITE REPORT [DISCUSSION AND CONCLUSION] AND PP 
+		-> send to Vincent and Josina
 	         
 
-EQUIVALENT CHANGES IN REPORT
 
-SEND THEORY TO VINCENT ASAP	
+before leaving: make sure everything on Maxwell is uploaded to S&S!
 	

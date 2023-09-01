@@ -245,52 +245,45 @@ In the next step, it would therefore be interesting to consider the spectral pha
 These findings illustrate, once again, the utility of having access to simulations of the THG process:   
 investigations of the effects of varying different experimental parameters can be carried out in a time-efficient manner. This principle can, of course, be extended to a wide range of variables beyond the chirp of the input pulse. For instance, as part of this project simulations were produced to compare the UV generation properties of a variety of different gases other than Argon and Neon, including Helium, Krypton, Xenon, Oxygen, Nitrogen and N$_2$O. Additionally, the effects of driving THG with NIR pulses at different CEP values were investigated. A full analysis of these results could not be completed in the available time but it seems that Argon and Neon offer the best conditions for short but energetic UV pulses and that the CEP phase has only limited effects on UV spectra. 
 
-\subsection{Comparison of Cells}
-
-
-
-
-In Section XX, the simulations are extended outside the central interaction region in order to compare the performance of the new chip with that of the old cell. The density distributions used in these cases are based on \textit{COMSOL Multiphysics} simulations of the gas flow. As mentioned above, these simulations are only approximate at the present stage, as they do not sufficiently take into account the interactions between gas molecules in the high pressure regions. Thus, the comparison between the cells is a qualitative one. Note that both the old and the new cell are modelled equally well by the gradient model. \par 
-As was mentioned earlier, the THG simulations only encompassed the central interaction region and used a simple gradient approximation to model the gas density distribution, due to the lack of appropriate gas flow simulations. The modelling software \textit{COMSOL Multiphysics} was used to obtain some gas density distributions, which do not appropriately capture interactions between the gas molecules, however, and are therefore not suitable for general use. The existing \textit{COMSOL} simulations can nonetheless be used to qualitatively compare the new gas chip to the old cell, which has an identical central interaction region but differs in its pumping system, i.e. in the density distribution outside the THG region. \par 
-Figure \ref{im:dens} compares the simulated gas density distributions in the new and the old cell and further to the gradient model in the central interaction region. 
+\subsection{Comparison of Density Distributions}
+As has been mentioned throughout this report, the simulation results presented so far were based on the gradient approximation of the density distribution, which only considers the central interaction region of the gas chip. This section gives an overview of the simulation results obtained when using more sophisticated gas density models. These models were produced with the \textit{COMSOL Multiphysics} software and take into account the geometry of the gas cell outside the central interaction region as well as the effects of the two pumping stages. The reason the gradient model has not yet been replaced by these \textit{COMSOL} simulations is that they currently do not sufficiently take into account the interactions of gas atoms in higher density regions due the fluid flow models neglecting several important effects. The existing \textit{COMSOL} density models can nonetheless be used to qualitatively compare the gas distribution in the current fused silica chip to that in the previously used cell, which has a similar central interaction regions but differs in the way the gas is confined and pumped. \par 
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.5 \textwidth]{im/old_new_comp}
-\caption{Comparison of the \textit{COMSOL}-generated gas density distributions of the new and old fused silica chip as well as the gradient model. AT 2 BAR}\label{im:dens}
+\caption{Comparison of the \textit{COMSOL}-generated gas density distributions of the new and old fused silica chip as well as the gradient model. The central pressure in all three cases is 2.0bar.}\label{im:dens}
 \end{figure}
-Evidently, the gas is less tightly confined in the chips than in the gradient model, i.e. the density at the edges of the central interaction regions drops off more slowly. The main difference between the new and old cells is the density distribution outside the THG region, however: due to the pumping stages in the new chip being closer to the gas inlet, the gas distribution has shorter wings than the old cell. \par 
-The UV output spectra obtained with the \textit{COMSOL} models of the new and old cells are shown in Figure \ref{im:coms}. As can be seen, the new chip generates UV pulses that are more intense and have a higher spectral bandwidth than the old cell. This agrees with experimental comparisons of the two designs. \par 
+Figure \ref{im:dens} demonstrates that the main difference between the new chip and the old cell, at least based on the approximative \textit{COMSOL} models, is the density distribution in the roughly 5mm on either side of the central interaction region: in the new chip, the gas density drops approximately linearly while in the old cell the gas is almost entirely confined to the central interaction region. The linear density domain outside the THG region likely corresponds to the gas flowing through the laser machined channel of the fused silica chip, as shown in \ref{im:new_chip}. It is also noteworthy how closely the gradient model agrees with the density distribution of the old chip towards the edges of the central interaction region. The gradient model predicts a significantly sharper density peak than either of the two other models, however: in the new chip, and to a lesser extent also in the old chip, gas densities remain close to their peak value throughout most of the THG region. \par 
 \begin{figure}[h]
 \centering
- \begin{subfigure}{0.5\textwidth}
-\includegraphics[width=\textwidth]{im/Ar_old_v_new}
-\caption{Argon (150mW, 0.4bar)}\label{im:coms_Ar}
-\end{subfigure}
  \begin{subfigure}{0.5\textwidth}
 \includegraphics[width=\textwidth]{im/Ne_old_v_new}
-\caption{Neon (400mW, 2.0bar)}\label{im:coms_Ne}
+\caption{}\label{im:coms_Ne}
 \end{subfigure}
-\caption{Comparison of the UV output spectra simulated for the new and old gas cells}\label{im:coms}
-\end{figure}
-
-
-\begin{figure}[h]
-\centering
- \begin{subfigure}{0.5\textwidth}
-\includegraphics[width=\textwidth]{im/Ar_old_v_new_v_grad}
-\caption{Argon (150mW, 0.4bar)}\label{im:coms_Ar}
-\end{subfigure}
- \begin{subfigure}{0.5\textwidth}
+\begin{subfigure}{0.5\textwidth}
 \includegraphics[width=\textwidth]{im/Ne_old_v_new_v_grad}
-\caption{Neon (400mW, 2.0bar)}\label{im:coms_Ne}
+\caption{}\label{im:coms_Ne_grad}
 \end{subfigure}
-\caption{Comparison of the UV output spectra simulated for the new and old gas cells}\label{im:coms}
+\caption{Comparison of the UV output spectra simulated for the new and old gas cells as well as the gradient model. Neon at 400mW NIR and 2.0bar (rescaled) central pressure is used.}\label{im:coms}
 \end{figure}
+The simulated UV spectra for propagation through the new and old cell are shown in Figure \ref{im:coms_Ne}. For concision, only results for Neon are shown, although using Argon produces equivalent output. Evidently, the new gas chip produces more intense UV pulses with a slightly broader spectrum than the old cell and is thus superior in its overall performance. These conclusions are in agreement with experimental data. Considering Figure \ref{im:dens}, the improved output using the new chip design is likely caused by the regions with linearly decreasing density on either side of the central interaction region. This implies that extremely tight gas confinement is not necessarily the best design strategy for UV generation in a gas cell. The effect of these linear density regions on THG and pulse shaping is one of the most interesting questions to be explored once improved \textit{COMSOL} density models can be produced. \par 
+Another critical conclusion can be drawn from Figure \ref{im:coms_Ne_grad}, which superimposes the UV spectrum obtained via the gradient model on the spectra resulting from the \textit{COMSOL} gas profiles: the gradient spectrum is significantly more intense than that of both the new chip and the old cell, by a factor of roughly 10. Indeed, the simulated UV pulse energies associated  with the new chip and the old cell are of the same order of magnitude as the measured energies, whereas the gradient model predicted energies that were about 10 times too high, as mentioned previously. This is significant because Figure \ref{im:dens} clearly demonstrates that the only key difference between the gradient model and the gas distribution in the old cell is the fact that the gradient model does not take into account the regions of very low gas density outside the central interaction region. This indicates that these low-density regions significantly reduce UV output intensity, presumably via absorption or similar effects. Investigating these processes, which had previously been ass
+
+
+significant absorption, or other processes depleting the UV pulses, takes place in these regions of very low gas densities. 
+
+
+
+NEW CHIP BETTER -> LINEAR REGIONS?? HIGHER PEAK INTENSITY...
+
+GRADIENT MODELS MUCHHH MORE INTENSE... ABSORPTION... 
+
+---------------------------------------------------
+
 It is notable how drastically different the simulated spectra produced using the gas density simulations for the new and old chips look to those using the gradient model. This highlights that the UV generation process is highly sensitive to the gas density distribution and confinement. For this reason, the design of the fused silica chip is crucial for production of short yet energetic UV laser pulses. Conceivably, provided that accurate gas flow models are available, the THG simulations could be used to aid in the design of further improved chips. 
 
 \section{Discussion}
 
-The THG simulations produced as part of this project yielded some promising results: qualitative agreement with experimental data and the literature could be observed. Indeed, some of the figures presented in this report will be used in a manuscript submitted to the \textit{Journal of Physics: Photonics}. \par 
+The THG simulation package produced as part of this project yielded some promising results: qualitative agreement with experimental data and the literature could be observed. Indeed, some of the figures presented in this report will be used in a manuscript submitted to the \textit{Journal of Physics: Photonics}. \par 
 There is significant room for further improvement of the simulations. For instance, the measured spatial profile of the NIR input pulses could be fed into the simulations, replacing the Gaussian approximation as well as the assumption of radial symmetry. As the input beam shape and its potential defects, like astigmatisms, have been shown experimentally to affect UV generation it is likely that implementing this degree of freedom in the simulations would have a significant effect. Most importantly, the THG simulations should be extended beyond the 3mm central interaction region in the chip. As the preliminary comparison between the old and new chip in Section 5 showed, the gas density profile outside the central interaction region seems to have a significant effect on UV generation.  A better model of the gas distribution, taking into account nonlinear optical effects as well as absorption outside the central chamber might resolve the misalignment of the simulated and measured energy scales: the preliminary \textit{COMSOL Multiphysics} gas distributions show a change in UV energies compared to considering only the central interaction region of an order of magnitude. Whether the simulated and measured pressure scales can be aligned by an improved gas density model remains to be seen, however, as determining the pressure in the cell is an experimental challenge. \par 
 With these improvements, or in their present form, the THG simulations can be used to explore a wide range of experimental parameters that influence UV generation. These include different pressure and beam power regimes, a more thorough investigation of the effects of a chirped input beam, as well as different gases. \par 
 Given sufficient future modification and calibration, the THG simulations have the potential to become useful tools in evaluating experimental data as well as theoretically exploring the effects of changing various experimental parameters.  
