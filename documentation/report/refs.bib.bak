@@ -1,0 +1,211 @@
+% paper on solving UPPE
+@article{tani2014,
+author = {Francesco Tani and John C. Travers and Philip St.J. Russell},
+journal = {J. Opt. Soc. Am. B},
+keywords = {Nonlinear optics, fibers; Pulse propagation and temporal solitons ; Photonic crystal fibers ; Electric fields; Hollow core fibers; Nonlinear effects; Nonlinear optical waveguides; Nonlinear optics; Ultrafast nonlinear optics},
+number = {2},
+pages = {311--320},
+publisher = {Optica Publishing Group},
+title = {Multimode ultrafast nonlinear optics in optical waveguides: numerical modeling and experiments in kagome photonic-crystal fiber},
+volume = {31},
+month = {Feb},
+year = {2014},
+url = {https://opg.optica.org/josab/abstract.cfm?URI=josab-31-2-311},
+doi = {10.1364/JOSAB.31.000311}
+}
+
+% paper on deriving UPPE from Maxwell's Eq
+@article{kolesik2004,
+  title = {Nonlinear optical pulse propagation simulation: From Maxwell's to unidirectional equations},
+  author = {Kolesik, M. and Moloney, J. V.},
+  journal = {Phys. Rev. E},
+  volume = {70},
+  issue = {3},
+  pages = {036604},
+  numpages = {11},
+  year = {2004},
+  month = {Sep},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevE.70.036604},
+  url = {https://link.aps.org/doi/10.1103/PhysRevE.70.036604}
+}
+
+% UV generation book chapter 
+@incollection{wanie2021,
+author = {Wanie, Vincent and Colaizzi, Lorenzo and Cartella, Andrea and Trabattoni, Andrea and Calegari, Francesca},
+title = {Advances of ultraviolet light sources: towards femtosecond pulses in the few-cycle
+            regime},
+booktitle = {Emerging Laser Technologies for High-Power and Ultrafast Science},
+publisher = {IOP Publishing},
+year = {2021},
+series = {2053-2563},
+type = {Book Chapter},
+pages = {5-1 to 5-26}
+}
+
+% THG in a gas mix
+@article{young1971,
+  title = {Third-Harmonic Generation in Phase-Matched Rb Vapor},
+  author = {Young, J. F. and Bjorklund, G. C. and Kung, A. H. and Miles, R. B. and Harris, S. E.},
+  journal = {Phys. Rev. Lett.},
+  volume = {27},
+  issue = {23},
+  pages = {1551--1553},
+  numpages = {0},
+  year = {1971},
+  month = {Dec},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevLett.27.1551},
+  url = {https://link.aps.org/doi/10.1103/PhysRevLett.27.1551}
+}
+
+% turns ionisation on/off; self-steepening; first (?) ultrafast UV pulse ?
+@article{reiter2010,
+  title = {Route to Attosecond Nonlinear Spectroscopy},
+  author = {Reiter, F. and Graf, U. and Serebryannikov, E. E. and Schweinberger, W. and Fiess, M. and Schultze, M. and Azzeer, A. M. and Kienberger, R. and Krausz, F. and Zheltikov, A. M. and Goulielmakis, E.},
+  journal = {Phys. Rev. Lett.},
+  volume = {105},
+  issue = {24},
+  pages = {243902},
+  numpages = {4},
+  year = {2010},
+  month = {Dec},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevLett.105.243902},
+  url = {https://link.aps.org/doi/10.1103/PhysRevLett.105.243902}
+}
+
+% THG in different gas 
+@ARTICLE{miles1973,
+  author={Miles, R. and Harris, S.},
+  journal={IEEE Journal of Quantum Electronics}, 
+  title={Optical third-harmonic generation in alkali metal vapors}, 
+  year={1973},
+  volume={9},
+  number={4},
+  pages={470-484},
+  doi={10.1109/JQE.1973.1077492}
+}
+
+% UV generation in CFEL-ATTo
+@article{galli2019,
+author = {Mara Galli and Vincent Wanie and Diogo Pereira Lopes and Erik P. M{\aa}nsson and Andrea Trabattoni and Lorenzo Colaizzi and Krishna Saraswathula and Andrea Cartella and Fabio Frassetto and Luca Poletto and Fran\c{c}ois L\'{e}gar\'{e} and Salvatore Stagira and Mauro Nisoli and Rebeca Mart\'{i}nez V\'{a}zquez and Roberto Osellame and Francesca Calegari},
+journal = {Opt. Lett.},
+keywords = {Deep ultraviolet; Phase matching; Photonic crystal fibers; Self phase modulation; Soft x rays; Ultraviolet radiation},
+number = {6},
+pages = {1308--1311},
+publisher = {Optica Publishing Group},
+title = {Generation of deep ultraviolet sub-2-fs pulses},
+volume = {44},
+month = {Mar},
+year = {2019},
+url = {https://opg.optica.org/ol/abstract.cfm?URI=ol-44-6-1308},
+doi = {10.1364/OL.44.001308}
+}
+
+% ??? sent by Vincent
+@Article{khurel2021,
+AUTHOR = {Khurelbaatar, Tsendsuren and Gliserin, Alexander and Mun, Je-Hoi and Heo, Jaeuk and Lee, Yunman and Kim, Dong-Eon},
+TITLE = {Realization of a Continuously Phase-Locked Few-Cycle Deep-UV/XUV Pump-Probe Beamline with Attosecond Precision for Ultrafast Spectroscopy},
+JOURNAL = {Applied Sciences},
+VOLUME = {11},
+YEAR = {2021},
+NUMBER = {15},
+ARTICLE-NUMBER = {6840},
+URL = {https://www.mdpi.com/2076-3417/11/15/6840},
+ISSN = {2076-3417},
+DOI = {10.3390/app11156840}
+}
+  
+% investigated effect of different beam focus positions
+@Article{khurel2021_2,
+AUTHOR = {Khurelbaatar, Tsendsuren and Mun, Je-Hoi and Heo, Jaeuk and Lee, Yunman and Kim, Dong-Eon},
+TITLE = {Few-Cycle, μJ-Class, Deep-UV Source from Gas Media},
+JOURNAL = {Applied Sciences},
+VOLUME = {11},
+YEAR = {2021},
+NUMBER = {14},
+ARTICLE-NUMBER = {6440},
+URL = {https://www.mdpi.com/2076-3417/11/14/6440},
+ISSN = {2076-3417},
+DOI = {10.3390/app11146440}
+}  
+
+% general textbook on nonlinear optics
+@book{new2011, 
+place={Cambridge}, 
+title={Introduction to Nonlinear Optics}, 
+DOI={10.1017/CBO9780511975851}, 
+publisher={Cambridge University Press}, 
+author={New, Geoffrey}, 
+year={2011}
+}
+
+% general textbook on ultrafast laser physics
+@book{keller2021,
+author={Keller,Ursula},
+year={2021},
+title={Ultrafast lasers: a comprehensive introduction to fundamental principles with practical applications},
+publisher={Springer},
+address={Cham, Switzerland},
+keywords={Laser pulses, Ultrashort},
+isbn={9783030825324;3030825329;},
+language={English}
+}
+
+% Luna 
+@software{brahms2023,
+author= {Brahms, Christian and
+                  Travers, John C.},
+  title = {Luna.jl},
+  year         = {2023},
+  publisher    = {Zenodo},
+  version      = {v0.3.0},
+  doi          = {10.5281/zenodo.8242646},
+  url          = {https://doi.org/10.5281/zenodo.8242646}
+}
+
+% derivation P_ion 
+@article{geissler1999,
+  title = {Light Propagation in Field-Ionizing Media: Extreme Nonlinear Optics},
+  author = {Geissler, M. and Tempea, G. and Scrinzi, A. and Schn\"urer, M. and Krausz, F. and Brabec, T.},
+  journal = {Phys. Rev. Lett.},
+  volume = {83},
+  issue = {15},
+  pages = {2930--2933},
+  numpages = {0},
+  year = {1999},
+  month = {Oct},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevLett.83.2930},
+  url = {https://link.aps.org/doi/10.1103/PhysRevLett.83.2930}
+}
+
+% numerical solutions for ionisation rate
+@article{scrinzi1999,
+  title = {Ionization Above the Coulomb Barrier},
+  author = {Scrinzi, Armin and Geissler, Michael and Brabec, Thomas},
+  journal = {Phys. Rev. Lett.},
+  volume = {83},
+  issue = {4},
+  pages = {706--709},
+  numpages = {0},
+  year = {1999},
+  month = {Jul},
+  publisher = {American Physical Society},
+  doi = {10.1103/PhysRevLett.83.706},
+  url = {https://link.aps.org/doi/10.1103/PhysRevLett.83.706}
+}
+
+% analytical solution for ionisation rate (ADK) model
+@article{ammosov1986,
+title={Tunnel Ionization Of Complex Atoms And Atomic Ions In Electromagnetic Field},
+author={Maxim V Ammosov and Nikolai B Delone and Vladimir P Krainov},
+year={1986},
+journal={Soviet Physics JETP},
+volume={64},
+issue={6},
+publisher={American Institute of Physics}
+}
+
+

@@ -1,0 +1,15 @@
+gas     = N2
+p_ed    = 0.001
+dens_mod= grad
+τ       = 6.185291734720502e-15
+λ0      = 7.3e-7
+w0      = 6.5e-5
+CEP     = 0.0
+energy  = 0.00015
+L       = 0.003
+kerr    = f
+ion     = true
+propz   = -0.0015
+GVD     = 0.0
+thickness= 0.0
+ion_mod = ADK

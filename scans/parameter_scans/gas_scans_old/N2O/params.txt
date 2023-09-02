@@ -1,0 +1,19 @@
+gas     = N2O
+pres    = 1.0
+p_ed    = 0.001
+p_const = false
+τ       = 5.0e-15
+λ0      = 8.0e-7
+w0      = 6.5e-5
+ϕ       = 0.0
+energy  = 0.0003
+L       = 0.003
+kerr    = f
+ion     = true
+propz   = -0.0015
+
+
+E_out   = 1.7910895778618707e-6
+η       = 0.005970101771471143
+
+# IR input beam read from: input/IRpulse.dat

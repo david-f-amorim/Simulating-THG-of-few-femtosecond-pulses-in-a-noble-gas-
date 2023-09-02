@@ -1,0 +1,54 @@
+This is BibTeX, Version 0.99d
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: desy_report.aux
+Reallocating 'name_of_file' (item size: 1) to 4 items.
+The style file: osa.bst
+Reallocating 'name_of_file' (item size: 1) to 9 items.
+Database file #1: refs.bib
+Warning--entry type for "brahms2023" isn't style-file defined
+--line 157 of file refs.bib
+Reallocating 'glb_str_end' (item size: 4) to 20 items.
+Reallocating 'glb_str_ptr' (item size: 4) to 20 items.
+Reallocating 'global_strs' (item size: 1) to 4000000 items.
+You've used 8 entries,
+            2555 wiz_defined-function locations,
+            864 strings with 8520 characters,
+and the built_in function-call counts, 4597 in all, are:
+= -- 597
+> -- 140
+< -- 0
++ -- 84
+- -- 42
+* -- 261
+:= -- 441
+add.period$ -- 14
+call.type$ -- 8
+change.case$ -- 0
+chr.to.int$ -- 0
+cite$ -- 8
+duplicate$ -- 446
+empty$ -- 249
+format.name$ -- 48
+if$ -- 939
+int.to.chr$ -- 0
+int.to.str$ -- 8
+missing$ -- 9
+newline$ -- 37
+num.names$ -- 8
+pop$ -- 132
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 323
+stack$ -- 0
+substring$ -- 265
+swap$ -- 429
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 21
+width$ -- 9
+write$ -- 78
+(There was 1 warning)
