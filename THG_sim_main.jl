@@ -47,7 +47,7 @@ z_vals =L .* [1.0/4, 1.0/3, 3.0/4, 1.0]     # points along the cell at which to 
 material = :SiO2     # material of the optics the IR beam propagates through before THG (for chirp compensation)
 thickness= 0         # thickness of the material [m] (for chirp compensation)
 
-ϕs = [0,0,11.0*1e-30,0]     # Taylor-series coefficients of initial spectral phase  [s^n] (used to introduce additional chirp)
+ϕs = [0,0,0,0]     # Taylor-series coefficients of initial spectral phase  [s^n] (used to introduce additional chirp)
 
 ion = true         # if true: enable ionisation response, if false: disable ionisation 
 ion_model="PPT"    # set to "ADK" or "PPT" (has no effect if ion==false); "ADK" is less accurate at low intensities but faster; "PPT" may crash at very high intensities

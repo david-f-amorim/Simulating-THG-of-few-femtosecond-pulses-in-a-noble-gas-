@@ -238,7 +238,7 @@ Another broad application of the simulations is to explore the effects of changi
 \includegraphics[width=\textwidth]{im/temporal_Ne_chirp}
 \caption{}\label{im:chirp_Ne}
 \end{subfigure}
-\caption{Simulated UV output spectra with different GVD values for Neon at 400mW NIR power and 2.0bar (rescaled) central pressure.}\label{im:chirp}
+\caption{Simulated UV output spectra with different GVD values for Neon at 400mW NIR power and 2.0bar (rescaled) central pressure. Note that $\tau$ corresponds to the FWHM pulse duration.}\label{im:chirp}
 \end{figure}
 Figure \ref{im:chirp} compares the effects on the UV output spectra of using a positively chirped, negatively chirped, or unchirped driving pulse. Evidently,  negatively chirped NIR pulses result in a more intense UV spectrum while positively chirped pulses result in spectral broadening. Considering the effects of chirp in the time domain, however, shows that the spectral broadening induced by a positively chirped NIR pulse does not translate to shorter UV pulse durations. In fact, the unchirped input pulse provides slightly shorter pulses. This indicates that the chirped input pulses also result in chirped UV pulses, increasing their time-bandwidth product and hence limiting the pulse compression that can be achieved via spectral broadening. \par 
 In the next step, it would therefore be interesting to consider the spectral phase of the UV output pulses and how it is affected by a chirped input pulse. This could be used to investigate whether a suitable optical set-up can compensate the chirp on the UV pulses and hence whether the spectral broadening effects  induced by a positively chirped input pulse can be exploited for pulse compression. \par 

@@ -204,20 +204,28 @@ Having demonstrated that the simulations, even at their present stage, can produ
 \begin{figure*}[h]
 \centering
  \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{im/IR_pulse_output_Ar_ion}
+    \caption{NIR beam with ionisation}
+    \end{subfigure}
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{im/IR_pulse_output_Ar_no_ion}
+    \caption{NIR beam without ionisation}
+    \end{subfigure} 
+    \begin{subfigure}{0.49\textwidth}
         \includegraphics[width=\textwidth]{im/UV_pulse_output_Ar_ion}
-    \caption{with ionisation}
+    \caption{UV beam with ionisation}
     \end{subfigure}
     \begin{subfigure}{0.49\textwidth}
         \includegraphics[width=\textwidth]{im/UV_pulse_output_Ar_no_ion}
-    \caption{without ionisation}
+    \caption{UV beam without ionisation}
     \end{subfigure}   
      \begin{subfigure}{0.49\textwidth}
         \includegraphics[width=\textwidth]{im/temporal_Ar_ion}
-    \caption{with ionisation}
+    \caption{UV temporal profile with ionisation}
     \end{subfigure}
     \begin{subfigure}{0.49\textwidth}
         \includegraphics[width=\textwidth]{im/temporal_Ar_no_ion}
-    \caption{without ionisation}
+    \caption{UV temporal profile without ionisation}
     \end{subfigure}  
 \caption{Simulated UV beam profiles at the output using Argon at 150mW NIR power and 0.4bar (rescaled) central pressure. Note that $\tau$ corresponds to the FWHM pulse duration.}\label{im:profile_Ar}
 \end{figure*}
@@ -238,7 +246,7 @@ Another broad application of the simulations is to explore the effects of changi
 \includegraphics[width=\textwidth]{im/temporal_Ne_chirp}
 \caption{}\label{im:chirp_Ne}
 \end{subfigure}
-\caption{Simulated UV output spectra with different GVD values for Neon at 400mW NIR power and 2.0bar (rescaled) central pressure.}\label{im:chirp}
+\caption{Simulated UV output spectra with different GVD values for Neon at 400mW NIR power and 2.0bar (rescaled) central pressure. Note that $\tau$ corresponds to the FWHM pulse duration.}\label{im:chirp}
 \end{figure}
 Figure \ref{im:chirp} compares the effects on the UV output spectra of using a positively chirped, negatively chirped, or unchirped driving pulse. Evidently,  negatively chirped NIR pulses result in a more intense UV spectrum while positively chirped pulses result in spectral broadening. Considering the effects of chirp in the time domain, however, shows that the spectral broadening induced by a positively chirped NIR pulse does not translate to shorter UV pulse durations. In fact, the unchirped input pulse provides slightly shorter pulses. This indicates that the chirped input pulses also result in chirped UV pulses, increasing their time-bandwidth product and hence limiting the pulse compression that can be achieved via spectral broadening. \par 
 In the next step, it would therefore be interesting to consider the spectral phase of the UV output pulses and how it is affected by a chirped input pulse. This could be used to investigate whether a suitable optical set-up can compensate the chirp on the UV pulses and hence whether the spectral broadening effects  induced by a positively chirped input pulse can be exploited for pulse compression. \par 
@@ -271,7 +279,7 @@ In summary, this section demonstrated, perhaps more so than any of the previous 
 
 \section{Discussion}
 The THG simulation package produced as part of this project yielded some promising results: qualitative agreement with experimental data and the literature could be observed. Indeed, some of the results presented in this report will be part of a manuscript submitted to the \textit{Journal of Physics: Photonics}. \par 
-
+-------------------------------------------------------------------------------
 
 As was mentioned repeatedly thoughout the report, there is significant room for further improvement of the simulations. For instance, the measured spatial profile of the NIR input pulses could be fed into the simulations, replacing the Gaussian approximation as well as the assumption of radial symmetry. As the input beam shape and its potential defects, like astigmatisms, have been shown experimentally to affect UV generation, it is likely that implementing this degree of freedom in the simulations would have a significant effect. Most importantly, the THG simulations should be extended beyond the 3mm central interaction region in the chip. As the preliminary comparison between the old and new chip in Section 5 showed, the gas density profile outside the central interaction region seems to have a significant effect on UV generation.  A better model of the gas distribution, taking into account nonlinear optical effects as well as absorption outside the central chamber might resolve the misalignment of the simulated and measured energy scales: the preliminary \textit{COMSOL Multiphysics} gas distributions show a change in UV energies compared to considering only the central interaction region of an order of magnitude. Whether the simulated and measured pressure scales can be aligned by an improved gas density model remains to be seen, however, as determining the pressure in the cell is an experimental challenge. \par 
 With these improvements, or in their present form, the THG simulations can be used to explore a wide range of experimental parameters that influence UV generation. These include different pressure and beam power regimes, a more thorough investigation of the effects of a chirped input beam, as well as different gases. \par 
