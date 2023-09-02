@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  2 SEP 2023 19:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (MiKTeX 21.6) (preloaded format=pdflatex 2021.9.24)  2 SEP 2023 21:04
 entering extended mode
 **./desy_report.tex
 (desy_report.tex
@@ -615,8 +615,8 @@ Underfull \hbox (badness 2970) in paragraph at lines 139--139
  []
 
 
-Underfull \hbox (badness 1226) in paragraph at lines 140--141
-\OT1/cmr/m/n/10.95 NIR power and Neon at 400mW NIR power,
+Underfull \hbox (badness 1147) in paragraph at lines 144--144
+\OT1/cmr/m/n/10.95 are based directly on pressures in the central
  []
 
 [5 <./im/grad_model.pdf>]
@@ -646,6 +646,11 @@ Underfull \hbox (badness 1845) in paragraph at lines 155--155
  []
 
 
+Underfull \hbox (badness 1286) in paragraph at lines 155--155
+\OT1/cmr/m/n/10.95 of normalised UV output energies at different
+ []
+
+
 Underfull \hbox (badness 4792) in paragraph at lines 157--157
 \OT1/cmr/m/n/10.95 output energies at various (rescaled) central
  []
@@ -653,6 +658,11 @@ Underfull \hbox (badness 4792) in paragraph at lines 157--157
 
 Underfull \hbox (badness 3735) in paragraph at lines 159--159
 \OT1/cmr/m/n/10.95 experiment, UV energies (initially) rise with
+ []
+
+
+Underfull \hbox (badness 2401) in paragraph at lines 159--159
+\OT1/cmr/m/n/10.95 in the cell and hence the presence of more
  []
 
 <im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf, id=118, 455.24464pt x 341.43346pt>
@@ -679,6 +689,11 @@ Overfull \hbox (5.0pt too wide) in paragraph at lines 162--170
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
+
+
+Underfull \hbox (badness 1803) in paragraph at lines 172--172
+\OT1/cmr/m/n/10.95 expected, the spectra are centred on roughly
+ []
 
 <im/2d_spectra_pres_Ar_150mW_meas.pdf, id=121, 455.24464pt x 341.43346pt>
 File: im/2d_spectra_pres_Ar_150mW_meas.pdf Graphic file (type pdf)
@@ -770,8 +785,13 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 [7 <./im/spec_comp_Ar_150mw_2.5scale_0.4bar.pdf> <./im/spec_comp_Ne_400mw_2.5sc
 ale_2.0bar.pdf> <./im/UV_pulse_evolution_Ar_ion.png>]
-Underfull \hbox (badness 1067) in paragraph at lines 234--235
-\OT1/cmr/m/n/10.95 of the physical effects shaping UV generation.
+Underfull \hbox (badness 2229) in paragraph at lines 234--235
+\OT1/cmr/m/n/10.95 gradient density model currently used in the
+ []
+
+
+Underfull \hbox (badness 1142) in paragraph at lines 234--235
+\OT1/cmr/m/n/10.95 description of the physical effects shaping UV
  []
 
 
@@ -854,16 +874,6 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 Underfull \hbox (badness 2158) in paragraph at lines 275--275
 []\OT1/cmr/m/n/10.95 The simulated UV spectra for propagation
- []
-
-
-Underfull \hbox (badness 1292) in paragraph at lines 277--278
-\OT1/cmr/m/n/10.95 more so than any of the previous ones, how
- []
-
-
-Underfull \hbox (badness 1622) in paragraph at lines 277--278
-\OT1/cmr/m/n/10.95 While this utility is currently limited by the
  []
 
 [11 <./im/Ne_old_v_new.pdf> <./im/Ne_old_v_new_v_grad.pdf>]
@@ -954,8 +964,8 @@ Package rerunfilecheck Info: File `desy_report.out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  12055 strings out of 478864
- 184014 string characters out of 2848660
- 520113 words of memory out of 3000000
+ 184140 string characters out of 2848660
+ 520112 words of memory out of 3000000
  29734 multiletter control sequences out of 15000+600000
  410911 words of font info for 54 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
@@ -979,7 +989,7 @@ nts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Users/david/AppData/Local/Programs/M
 iKTeX/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Users/david/AppData/Local/P
 rograms/MiKTeX/fonts/type1/public/amsfonts/cm/cmti9.pfb><C:/Users/david/AppData
 /Local/Programs/MiKTeX/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on desy_report.pdf (13 pages, 4425417 bytes).
+Output written on desy_report.pdf (13 pages, 4425124 bytes).
 PDF statistics:
  410 PDF objects out of 1000 (max. 8388607)
  57 named destinations out of 1000 (max. 500000)
