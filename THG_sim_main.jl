@@ -626,7 +626,29 @@ function THG_main(pres=pres)
             end 
         end
 
-        #+++++ PLOT 12: plot spatiotemporal UV pulse evolution 
+        #+++++ PLOT 12: plot spatiotemporal IR pulse at output
+        rsym = Hankel.Rsymmetric(q)
+        jw = Plotting.cmap_white("jet"; n=10)
+        
+        plt.figure(figsize=fig_dim)
+        plt.subplots_adjust(left=0.15, right=0.95, bottom=0.13)
+        if show_title plt.title("Output IR pulse") end
+        plt.xlabel("t (fs)")
+        plt.ylabel("r (mm)")
+        plt.ylim(minimum(rsym*1e3)/2, maximum(rsym*1e3)/2)
+        plt.xlim(minimum(grid.t*1e15)/2, maximum(grid.t*1e15)/2)
+        plt.pcolormesh(grid.t*1e15, rsym*1e3,norm ? Maths.normbymax(abs2.(Hankel.symmetric(Et_IR[:, :, end], q)')) : abs2.(Hankel.symmetric(Et_IR[:, :, end], q)'), cmap=jw)
+        plt.colorbar(label=(norm ? "I (norm.)" : "I (arb. units)"))
+
+        if save==true
+            if use_pdf == true 
+                plt.savefig(joinpath(out_path,"IR_pulse_output.pdf"))
+            else     
+                plt.savefig(joinpath(out_path,"IR_pulse_output.png"),dpi=1000)
+            end 
+        end
+
+        #+++++ PLOT 13: plot spatiotemporal UV pulse evolution 
         if read_ρ==true 
             z_vals_local =[L_total/2,L_total/2+L*0.5,L_total/2+L,L_total] # re-define zvals 
         else 
@@ -658,7 +680,7 @@ function THG_main(pres=pres)
             end 
         end
 
-        #+++++ PLOT 13: plot spatiotemporal IR pulse evolution 
+        #+++++ PLOT 14: plot spatiotemporal IR pulse evolution 
         plt.figure(figsize=fig_dim) 
         if show_title plt.suptitle("Spatiotemporal evolution of IR pulse") end
         plt.subplots_adjust(hspace=0.6, wspace=0.55, bottom=0.13)
@@ -682,7 +704,7 @@ function THG_main(pres=pres)
             end 
         end
 
-        #+++++ PLOT 14: UV spectral evolution
+        #+++++ PLOT 15: UV spectral evolution
         c = [plt.get_cmap("viridis")(i) for i in range(0,1,length(z_vals_local))]
         
         if norm 
@@ -775,7 +797,7 @@ function THG_main(pres=pres)
         
             if save_UV_temp==true 
                 open(joinpath(out_path,"UV_temporal.txt"), "w") do file
-                    writedlm(file, zip(t,norm ? Maths.normbymax(It0_UV_envelope[:,end]) : It0_UV_envelope[:,end]))
+                    writedlm(file, zip(t,It0_UV_envelope[:,end]))
                 end    
             end
         end     
