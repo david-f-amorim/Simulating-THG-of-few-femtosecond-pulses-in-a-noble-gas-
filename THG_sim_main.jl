@@ -6,7 +6,6 @@ import NumericalIntegration: integrate, SimpsonEven
 import Dates                   
 using  DelimitedFiles
 using  LaTeXStrings 
-using Polynomials
        
 # ----------------- QUICK SETTINGS -------------------------------
 p_scan = false               # if true, pressure scan is executed, with pressure range set by the variable "pres_arr" below; if false, a single run is simulated
@@ -751,7 +750,7 @@ function THG_main(pres=pres)
         plt.figure(figsize=fig_dim)
         if show_title plt.title("IR spectral phase") end
          
-        plt.plot(ω[ωlowIRidx:ωhighIRidx]*1e-15,ϕω0[ωlowIRidx:ωhighIRidx,0], color="grey", label="z="*string(round(zout[0]*1e3, digits=3))*"mm")
+        plt.plot(ω[ωlowIRidx:ωhighIRidx]*1e-15,ϕω0[ωlowIRidx:ωhighIRidx,1], color="grey", label="z="*string(round(zout[1]*1e3, digits=3))*"mm")
         plt.plot(ω[ωlowIRidx:ωhighIRidx]*1e-15,ϕω0[ωlowIRidx:ωhighIRidx,end], color="red", label="z="*string(round(zout[end]*1e3, digits=3))*"mm")
          
          plt.ylabel(L"\varphi"*"(rad)")
@@ -770,15 +769,11 @@ function THG_main(pres=pres)
         plt.figure(figsize=fig_dim)
         if show_title plt.title("UV spectral phase at output") end
          
-        poly = Polynomials.polyfit(ω[ωlowUVidx:ωhighUVidx],ϕω0[ωlowUVidx:ωhighUVidx,end], n=2)  
-        GVD = coeffs(poly)[end]
-
-        plt.plot(ω[ωlowUVidx:ωhighUVidx]*1e-15,ϕω0[ωlowUVidx:ωhighUVidx,end], color="red", label="GVD="+string(round(GVD*1e30, digits=3))*"fs"*L"^2")
-        plt.plot(ω[ωlowUVidx:ωhighUVidx]*1e-15,poly.(ϕω0[ωlowUVidx:ωhighUVidx,end]), color="grey",ls="--" , label="fit")
+        plt.plot(ω[ωlowUVidx:ωhighUVidx]*1e-15,ϕω0[ωlowUVidx:ωhighUVidx,end], color="red")
          
-         plt.ylabel(L"\varphi"*"(rad)")
-         plt.xlabel(L"\omega"*L"(10^{15}"*"rad/s)")
-         plt.legend(loc="upper right")
+        plt.ylabel(L"\varphi"*"(rad)")
+        plt.xlabel(L"\omega"*L"(10^{15}"*"rad/s)")
+
  
          if save==true
              if use_pdf == true 
