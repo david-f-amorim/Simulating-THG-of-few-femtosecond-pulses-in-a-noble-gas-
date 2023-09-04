@@ -23,18 +23,19 @@ show_IR = false              # if true and "read_IR" is true: overlay measured t
 IR_spec_exp = false          # if true: read input IR spectrometer spectrum from file and overlay (barely ever relevant; used to check that FROG spectrum is accurate)
 
 save_UV_temp = true          # if true: write time-domain output UV pulse to file (has no effect for pressure scans)
+save_UV_phase = true         # if true: write UV spectral phase at output to file (has no effect for pressure scans)
 
 # ------------------ SET PHYSICAL PARAMETERS ------------------------
 
 gas = :Ar           # gas type in cell 
-pres = 1.0          # central gas pressure [bar] (for single run; not relevant for pressure scans)
+pres = 0.1          # central gas pressure [bar] (for single run; not relevant for pressure scans)
 p_ed = 1e-3         # edge gas pressure [bar] 
 p_const = false     # if true: set constant pressure profile P==(pres,pres,pres) ; if false: set simple gradient: P==(p_ed, pres, p_ed); (only relevant when read_ρ==false)
 τ = 5e-15           # FWHM pulse duration of IR pulse [s] (only relevant when read_IR==false)
 λ0 = 800e-9         # central wavelength of IR pulse [m]
 w0 = 65e-6          # beam waist of IR pulse [m]
 CEP = 0.0           # carrier-envelope phase of IR pulse (ϕ0) [rad] (only relevant when read_IR==true)                                 
-IRenergy = 150e-6    # IR pulse energy [J] (related to beam power via 1kHz repetition rate)                                                           
+IRenergy = 75e-6    # IR pulse energy [J] (related to beam power via 1kHz repetition rate)                                                           
 L = 3e-3            # propagation distance (cell length) [m]
 
 propz = -L/2        # propagation distance from the waist [m], i.e. beam focus position  (NOTE: always specified in a coordinate system where the cell starts at 0 and ends at L!)
@@ -59,7 +60,7 @@ pres_arr = range(start= 0.1, stop= 5.1, step= 0.1)  # pressure range (only relev
 show_title = false # if false: hides figure titles
 norm = true        # if true: normalise intensities on figures
 disable_latex = false # if true: disable latex rendering of plots (saves time but might result in some labels or title being displayed incorrectly)
-use_pdf = true     # if true: save output as pdf; if false: use png
+use_pdf = false     # if true: save output as pdf; if false: use png
 
 # ----------------- FILE HANDLING -------------------------------
 
@@ -765,21 +766,6 @@ function THG_main(pres=pres)
              end 
          end
 
-        #+++++ PLOT 17: phase evolution along z
-        plt.figure(figsize=fig_dim)
-        if show_title plt.suptitle("Phase evolution") end
-        plt.pcolormesh(zout*1e3, ω*1e-15,ϕω0)     
-        plt.colorbar(label=L"\varphi"*"(rad)")
-        plt.xlabel("z (mm)")
-        plt.ylabel(L"\omega"*L"(10^{15}"*"rad/s)")
-
-        if save==true
-            if use_pdf == true 
-                plt.savefig(joinpath(out_path,"phase_evolution.pdf"))
-            else     
-                plt.savefig(joinpath(out_path,"phase_evolution.png"),dpi=1000)
-            end 
-        end
     end    
 
     # ----------------- WRITE PARAMS & UV SPECTRUM TO FILE ------------------
@@ -843,6 +829,12 @@ function THG_main(pres=pres)
             if save_UV_temp==true 
                 open(joinpath(out_path,"UV_temporal.txt"), "w") do file
                     writedlm(file, zip(t,It0_UV_envelope[:,end]))
+                end    
+            end
+
+            if save_UV_phase==true 
+                open(joinpath(out_path,"UV_phase.txt"), "w") do file
+                    writedlm(file, zip(ω[ωlowUVidx:ωhighUVidx],ϕω0[ωlowUVidx:ωhighUVidx,end]))
                 end    
             end
         end     
