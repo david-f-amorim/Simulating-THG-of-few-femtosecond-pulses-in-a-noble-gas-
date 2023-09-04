@@ -290,15 +290,17 @@ function THG_main(pres=pres)
     It0 = abs2.(Et0)                                 #  intensity across all r in time domain [arbitrary units]
     It = abs2.(Maths.hilbert(Etout))                 #  intensity of envelope at r≠0 in time domain [arbitrary units]
 
+    # * * * FIND SPECTRAL PHASE  
+    ϕω0 = angle.(Er0)                                # spectral phase across all r 
+    ϕωr = angle.(Erout)                              # spectral phase at r≠0
+
     # * * * INTEGRATE FREQUENCY DOMAIN UV
-    #       AND IR INTENSITIES; FIND SPECTRAL PHASE 
+    #       AND IR INTENSITIES 
     Iωr_UV = zeros((length(q.r),length(zout)))                   # set up arrays
     Iωr_IR  =zeros((length(q.r),length(zout)))
     Iω0_UV = zeros(length(zout))                   
     Iω0_IR  = zeros(length(zout))
-    ϕω_UV = zeros(length(zout))                               
-    ϕω_IR = zeros(length(zout))
-
+    
     for i = 1:length(zout)
 
         for j=1:length(q.r)
@@ -312,8 +314,6 @@ function THG_main(pres=pres)
         Iω0_UV[i] = abs2.(Er0_int_UV) # frequency domain UV intensity (integrated along r)
         Iω0_IR[i] = abs2.(Er0_int_IR) # frequency domain IR intensity (integrated along r)
 
-        ϕω_UV[i] = angle.(Er0_int_UV) # UV pulse spectral phase 
-        ϕω_IR[i] = angle.(Er0_int_IR) # IR pulse spectral phase
 
     end    
     
@@ -745,12 +745,12 @@ function THG_main(pres=pres)
             end 
         end
 
-         #+++++ PLOT 16: spectral phase IR 
+         #+++++ PLOT 16: spectral phase
          plt.figure(figsize=fig_dim)
          if show_title plt.title("Spectral phase IR") end
          
          for i in 1:length(z_vals_local)
-            plt.plot(ω[ωlowIRidx, ωhighIRidx]*1e-15,ϕω_IR[:,i], color=c[i], label="z="*string(round(z_vals_local[i]*1e3, digits=3))*"mm")
+            plt.plot(ω*1e-15,ϕω0[:,i], color=c[i], label="z="*string(round(z_vals_local[i]*1e3, digits=3))*"mm")
          end
          
          plt.ylabel(L"\varphi"*"(rad)")
@@ -759,31 +759,27 @@ function THG_main(pres=pres)
  
          if save==true
              if use_pdf == true 
-                 plt.savefig(joinpath(out_path,"spectral_phase_IR.pdf"))
+                 plt.savefig(joinpath(out_path,"spectral_phase.pdf"))
              else     
-                 plt.savefig(joinpath(out_path,"spectral_phase_IR.png"),dpi=1000)
+                 plt.savefig(joinpath(out_path,"spectral_phase.png"),dpi=1000)
              end 
          end
 
-         #+++++ PLOT 16: spectral phase UV 
-         plt.figure(figsize=fig_dim)
-         if show_title plt.title("Spectral phase UV") end
-         
-         for i in 1:length(z_vals_local)
-            plt.plot(ω[ωlowUVidx, ωhighUVidx]*1e-15,ϕω_UV[:,i], color=c[i], label="z="*string(round(z_vals_local[i]*1e3, digits=3))*"mm")
-         end
-         
-         plt.ylabel(L"\varphi"*"(rad)")
-         plt.xlabel(L"\omega"*L"(10^{15}"*"rad/s)")
-         plt.legend(loc="upper right")
- 
-         if save==true
-             if use_pdf == true 
-                 plt.savefig(joinpath(out_path,"spectral_phase_UV.pdf"))
-             else     
-                 plt.savefig(joinpath(out_path,"spectral_phase_UV.png"),dpi=1000)
-             end 
-         end
+        #+++++ PLOT 17: phase evolution along z
+        plt.figure(figsize=fig_dim)
+        if show_title plt.suptitle("Phase evolution") end
+        plt.pcolormesh(zout*1e3, ω*1e-15,ϕω0)     
+        plt.colorbar(label=L"\varphi"*"(rad)")
+        plt.xlabel("z (mm)")
+        plt.ylabel(L"\omega"*L"(10^{15}"*"rad/s)")
+
+        if save==true
+            if use_pdf == true 
+                plt.savefig(joinpath(out_path,"phase_evolution.pdf"))
+            else     
+                plt.savefig(joinpath(out_path,"phase_evolution.png"),dpi=1000)
+            end 
+        end
     end    
 
     # ----------------- WRITE PARAMS & UV SPECTRUM TO FILE ------------------
