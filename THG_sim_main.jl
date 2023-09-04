@@ -754,7 +754,7 @@ function THG_main(pres=pres)
         plt.plot(ω[ωlowIRidx:ωhighIRidx]*1e-15,ϕω0[ωlowIRidx:ωhighIRidx,end], color="red", label="z="*string(round(zout[end]*1e3, digits=3))*"mm")
          
          plt.ylabel(L"\varphi"*"(rad)")
-         plt.xlabel(L"\omega"*L"(10^{15}"*"rad/s)")
+         plt.xlabel(L"\omega"*" "*L"(10^{15}"*"rad/s)")
          plt.legend(loc="upper right")
  
          if save==true
@@ -772,7 +772,7 @@ function THG_main(pres=pres)
         plt.plot(ω[ωlowUVidx:ωhighUVidx]*1e-15,ϕω0[ωlowUVidx:ωhighUVidx,end], color="red")
          
         plt.ylabel(L"\varphi"*"(rad)")
-        plt.xlabel(L"\omega"*L"(10^{15}"*"rad/s)")
+        plt.xlabel(L"\omega"*" "*L"(10^{15}"*"rad/s)")
 
  
          if save==true
