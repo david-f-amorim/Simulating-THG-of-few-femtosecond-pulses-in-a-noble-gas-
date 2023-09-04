@@ -231,12 +231,6 @@ function THG_main(pres=pres)
     Et0 = FFTW.irfft(Er0, length(t),1)          # total time-domain real field amplitude across all radii
     Et = Maths.hilbert(Etout)                   # time-domain real field amplitude of envelope at r≠0
 
-    # * * * CONVERT TO INTENSITIES:
-    Iωr = abs2.(Erout)                               #  intensity at r≠0 in frequency domain  [arbitrary units]
-    Iω0 = abs2.(Er0)                                 #  intensity across all r in frequency domain  [arbitrary units]
-    It0 = abs2.(Et0)                                 #  intensity across all r in time domain [arbitrary units]
-    It = abs2.(Maths.hilbert(Etout))                 #  intensity of envelope at r≠0 in time domain [arbitrary units]
-
     # * * * FILTER FOR UV FIELD (r≠0):
     filter=FFTW.rfft(Etout, 1)        # set up filter array 
     filter[1:ωlowUVidx,:,:].=0;       # filters out ω < ω_min
@@ -290,22 +284,37 @@ function THG_main(pres=pres)
 
     z_peak = zout[findmax(UV_pulse_en)[2]]             # z-coordinate of peak UV energy
 
+    # * * * CONVERT TO INTENSITIES:
+    Iωr = abs2.(Erout)                               #  intensity at r≠0 in frequency domain  [arbitrary units]
+    Iω0 = abs2.(Er0)                                 #  intensity across all r in frequency domain  [arbitrary units]
+    It0 = abs2.(Et0)                                 #  intensity across all r in time domain [arbitrary units]
+    It = abs2.(Maths.hilbert(Etout))                 #  intensity of envelope at r≠0 in time domain [arbitrary units]
+
     # * * * INTEGRATE FREQUENCY DOMAIN UV
-    #       AND IR INTENSITIES 
+    #       AND IR INTENSITIES; FIND SPECTRAL PHASE 
     Iωr_UV = zeros((length(q.r),length(zout)))                   # set up arrays
     Iωr_IR  =zeros((length(q.r),length(zout)))
     Iω0_UV = zeros(length(zout))                   
     Iω0_IR  = zeros(length(zout))
+    ϕω_UV = zeros(length(zout))                               
+    ϕω_IR = zeros(length(zout))
 
     for i = 1:length(zout)
 
         for j=1:length(q.r)
-            Iωr_UV[j,i] = integrate(ω[ωlowUVidx:ωhighUVidx],Iωr[ωlowUVidx:ωhighUVidx, j, i], SimpsonEven()) # frequency domain UV intensity (at r ≠0)
-            Iωr_IR[j,i] = integrate(ω[ωlowIRidx:ωhighIRidx],Iωr[ωlowIRidx:ωhighIRidx, j, i], SimpsonEven())  # frequency domain IR intensity (at r ≠ 0)
+            Iωr_UV[j,i] = abs2.(integrate(ω[ωlowUVidx:ωhighUVidx],Erout[ωlowUVidx:ωhighUVidx, j, i], SimpsonEven())) # frequency domain UV intensity (at r ≠0)
+            Iωr_IR[j,i] = abs2.(integrate(ω[ωlowIRidx:ωhighIRidx],Erout[ωlowIRidx:ωhighIRidx, j, i], SimpsonEven()))  # frequency domain IR intensity (at r ≠ 0)
         end    
 
-        Iω0_UV[i] = integrate(ω[ωlowUVidx:ωhighUVidx],Iω0[ωlowUVidx:ωhighUVidx,  i] ,SimpsonEven()) # frequency domain UV intensity (integrated along r)
-        Iω0_IR[i] = integrate(ω[ωlowIRidx:ωhighIRidx],Iω0[ωlowIRidx:ωhighIRidx,  i]  ,SimpsonEven()) # frequency domain IR intensity (integrated along r)
+        Er0_int_UV = integrate(ω[ωlowUVidx:ωhighUVidx],Er0[ωlowUVidx:ωhighUVidx,  i] ,SimpsonEven()) # integrated UV field across all r
+        Er0_int_IR = integrate(ω[ωlowIRidx:ωhighIRidx],Er0[ωlowIRidx:ωhighIRidx,  i] ,SimpsonEven()) # integrated IR field across all r
+
+        Iω0_UV[i] = abs2.(Er0_int_UV) # frequency domain UV intensity (integrated along r)
+        Iω0_IR[i] = abs2.(Er0_int_IR) # frequency domain IR intensity (integrated along r)
+
+        ϕω_UV[i] = angle.(Er0_int_UV) # UV pulse spectral phase 
+        ϕω_IR[i] = angle.(Er0_int_IR) # IR pulse spectral phase
+
     end    
     
     # * * * PROCESS MEASURED DATA FROM FILES 
@@ -379,7 +388,7 @@ function THG_main(pres=pres)
             end
         end    
             
-        #+++++ PLOT 2:  fundamental and third harmonic intensities as functions of z
+        #+++++ PLOT 2:  IR and UV intensities as functions of z
         plt.figure(figsize=fig_dim)
         if show_title plt.suptitle("Total intensity of IR and UV beams") end
         plt.subplots_adjust(hspace=0.6)
@@ -735,6 +744,46 @@ function THG_main(pres=pres)
                 plt.savefig(joinpath(out_path,"UV_spectral_evolution.png"),dpi=1000)
             end 
         end
+
+         #+++++ PLOT 16: spectral phase IR 
+         plt.figure(figsize=fig_dim)
+         if show_title plt.title("Spectral phase IR") end
+         
+         for i in 1:length(z_vals_local)
+            plt.plot(ω[ωlowIRidx, ωhighIRidx]*1e-15,ϕω_IR[:,i], color=c[i], label="z="*string(round(z_vals_local[i]*1e3, digits=3))*"mm")
+         end
+         
+         plt.ylabel(L"\varphi"*"(rad)")
+         plt.xlabel(L"\omega"*L"(10^{15}"*"rad/s)")
+         plt.legend(loc="upper right")
+ 
+         if save==true
+             if use_pdf == true 
+                 plt.savefig(joinpath(out_path,"spectral_phase_IR.pdf"))
+             else     
+                 plt.savefig(joinpath(out_path,"spectral_phase_IR.png"),dpi=1000)
+             end 
+         end
+
+         #+++++ PLOT 16: spectral phase UV 
+         plt.figure(figsize=fig_dim)
+         if show_title plt.title("Spectral phase UV") end
+         
+         for i in 1:length(z_vals_local)
+            plt.plot(ω[ωlowUVidx, ωhighUVidx]*1e-15,ϕω_UV[:,i], color=c[i], label="z="*string(round(z_vals_local[i]*1e3, digits=3))*"mm")
+         end
+         
+         plt.ylabel(L"\varphi"*"(rad)")
+         plt.xlabel(L"\omega"*L"(10^{15}"*"rad/s)")
+         plt.legend(loc="upper right")
+ 
+         if save==true
+             if use_pdf == true 
+                 plt.savefig(joinpath(out_path,"spectral_phase_UV.pdf"))
+             else     
+                 plt.savefig(joinpath(out_path,"spectral_phase_UV.png"),dpi=1000)
+             end 
+         end
     end    
 
     # ----------------- WRITE PARAMS & UV SPECTRUM TO FILE ------------------

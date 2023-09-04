@@ -1,10 +1,11 @@
 LEFT TO DO 
 ============================
 
-- clean up report and send to Vincent & Josina 
-- clean up presentation (send to Vincent & Josina?)
-- practice presentation 
+- wait for feedback on report and implement it 
+- work on manuscript plots (?)
 
 
+2d heat maps: time vs spectrum 
 
+spectral and temporal phase of IR and UV -> fit polynomial for GVD values?
 	

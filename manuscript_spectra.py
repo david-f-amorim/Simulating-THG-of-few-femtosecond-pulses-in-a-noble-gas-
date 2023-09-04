@@ -9,8 +9,8 @@ AND UNUSED CODE CHUNKS COMMENTED OUT.
 """
 
 # ---------- INPUT/OUTPUT HANDLING  --------------------------------------
-in_dir =  "manuscript_spectra"   # directory from which to read input files 
-out_dir = "manuscript_spectra"     # directory to store output files 
+in_dir =  os.path.join("manuscript","manuscript_spectra")   # directory from which to read input files 
+out_dir = "manuscript"     # directory to store output files 
 
 # ---------- FORMAT PLOTS  --------------------------------------
 disable_latex = False # toggle LaTeX rendering
@@ -26,8 +26,8 @@ fig_dim = [2 * 3.14961,2* 2.3622075] # for 8cm width ; double for 16cm width
 
 # ---------- SELECT PLOTS -------------------------------
 
-plot1 = False  # exp. and sim.
-plot2 = True # old v. new 
+plot1 = True  # exp. and sim.
+plot2 = False # old v. new 
 plot3 = False # chirp 
 plot4 = False # CEP
 plot5 = False # 10 best 
@@ -38,10 +38,10 @@ if plot1:
     #                for manuscript: Ne 400mW 2.0bar; Ar 150mW 0.4bar
 
     file_measured = "Ar_150mW_0.4bar.txt"     # file name of measured UV spectrum 
-    file_sim      =  "spectrum_Ar.txt"    # file name of simulated UV spectrum
-    file_out      = "spec_comp_Ar_150mW_2.5scale_2.0bar"     # name of output file (no file ending!)
+    file_sim      =  "spectrum_Ne.txt"    # file name of simulated UV spectrum
+    file_out      = "spec_Ar_150mW_0.4bar_meas"     # name of output file (no file ending!)
 
-    overlay = True         # if True: overlay simulated spectrum 
+    overlay = False         # if True: overlay simulated spectrum 
 
     spec_measured = np.loadtxt(os.path.join(in_dir, file_measured))   # read in measured spectrum 
     if overlay: spec_sim = np.loadtxt(os.path.join(in_dir, file_sim)) # read in simulated spectrum 
@@ -60,9 +60,12 @@ if plot1:
             spec_sim[:,1]=spec_sim[:,1]/ np.max(spec_sim)    
 
     plt.plot(spec_measured[:,0]*1e9, spec_measured[:,1], color="red", label="exp.")
-    plt.xlim(200, 360)
+    plt.fill_between(spec_measured[:,0]*1e9, spec_measured[:,1],0 * spec_measured[:,1], color="red", alpha=0.2 )
+
+    plt.xlim(180, 350)
     if overlay:
         plt.plot(spec_sim[:,0]*1e9, spec_sim[:,1], color="blue", label="sim.")
+        plt.fill_between(spec_sim[:,0]*1e9, spec_sim[:,1],0 * spec_sim[:,1], color="blue", alpha=0.2 )
         plt.legend()
 
     if use_pdf:
