@@ -6,13 +6,14 @@ import NumericalIntegration: integrate, SimpsonEven
 import Dates                   
 using  DelimitedFiles
 using  LaTeXStrings 
+using Polynomials
        
 # ----------------- QUICK SETTINGS -------------------------------
 p_scan = false               # if true, pressure scan is executed, with pressure range set by the variable "pres_arr" below; if false, a single run is simulated
 
 save = true                  # if true, save output plots, run parameters and UV spectrum
 show = true                 # if true, opens plots in GUI after run 
-txt_only = true             # if true, no plots are produced (only UV spectrum and simulation parameters are written to file)
+txt_only = false             # if true, no plots are produced (only UV spectrum and simulation parameters are written to file)
 
 read_IR = true               # if true: read input IR pulse [time domain] from file; if false: use Gaussian approximation 
 read_ρ  = false              # if true: read gas density profile from file; if false: use pressure gradient approximation 
@@ -746,13 +747,12 @@ function THG_main(pres=pres)
             end 
         end
 
-         #+++++ PLOT 16: spectral phase
-         plt.figure(figsize=fig_dim)
-         if show_title plt.title("Spectral phase IR") end
+        #+++++ PLOT 16: spectral phase IR
+        plt.figure(figsize=fig_dim)
+        if show_title plt.title("IR spectral phase") end
          
-         for i in 1:length(z_vals_local)
-            plt.plot(ω*1e-15,ϕω0[:,i], color=c[i], label="z="*string(round(z_vals_local[i]*1e3, digits=3))*"mm")
-         end
+        plt.plot(ω[ωlowIRidx:ωhighIRidx]*1e-15,ϕω0[ωlowIRidx:ωhighIRidx,0], color="grey", label="z="*string(round(zout[0]*1e3, digits=3))*"mm")
+        plt.plot(ω[ωlowIRidx:ωhighIRidx]*1e-15,ϕω0[ωlowIRidx:ωhighIRidx,end], color="red", label="z="*string(round(zout[end]*1e3, digits=3))*"mm")
          
          plt.ylabel(L"\varphi"*"(rad)")
          plt.xlabel(L"\omega"*L"(10^{15}"*"rad/s)")
@@ -760,11 +760,33 @@ function THG_main(pres=pres)
  
          if save==true
              if use_pdf == true 
-                 plt.savefig(joinpath(out_path,"spectral_phase.pdf"))
+                 plt.savefig(joinpath(out_path,"spectral_phase_IR.pdf"))
              else     
-                 plt.savefig(joinpath(out_path,"spectral_phase.png"),dpi=1000)
+                 plt.savefig(joinpath(out_path,"spectral_phase_IR.png"),dpi=1000)
              end 
          end
+
+        #+++++ PLOT 16: spectral phase UV output
+        plt.figure(figsize=fig_dim)
+        if show_title plt.title("UV spectral phase at output") end
+         
+        poly = Polynomials.polyfit(ω[ωlowUVidx:ωhighUVidx],ϕω0[ωlowUVidx:ωhighUVidx,end], n=2)  
+        GVD = coeffs(poly)[end]
+
+        plt.plot(ω[ωlowUVidx:ωhighUVidx]*1e-15,ϕω0[ωlowUVidx:ωhighUVidx,end], color="red", label="GVD="+string(round(GVD*1e30, digits=3))*"fs"*L"^2")
+        plt.plot(ω[ωlowUVidx:ωhighUVidx]*1e-15,poly.(ϕω0[ωlowUVidx:ωhighUVidx,end]), color="grey",ls="--" , label="fit")
+         
+         plt.ylabel(L"\varphi"*"(rad)")
+         plt.xlabel(L"\omega"*L"(10^{15}"*"rad/s)")
+         plt.legend(loc="upper right")
+ 
+         if save==true
+             if use_pdf == true 
+                 plt.savefig(joinpath(out_path,"spectral_phase_UV.pdf"))
+             else     
+                 plt.savefig(joinpath(out_path,"spectral_phase_UV.png"),dpi=1000)
+             end 
+         end 
 
     end    
 
