@@ -268,8 +268,9 @@ function THG_main(pres=pres)
 
     for i = 1:length(ω[ωlowUVidx:ωhighUVidx])
         Er0_filtered = Er0[:,end]
-        Er0_filtered[1:i] .=0 
-        Er0_filtered[i:end] .= 0
+        ωi = range(ωlowUVidx,ωhighUVidx)[i]
+        Er0_filtered[1:ωi] .=0 
+        Er0_filtered[ωi:end] .= 0
         trans= FFTW.irfft(Er0_filtered[:,end], length(t),1) # for each UV frequency component at the output find temporal profile
         for j = 1:length(t)
             E_ωt_UV[i,j] = trans[j]
@@ -388,10 +389,6 @@ function THG_main(pres=pres)
         end
 
         X, Y = meshgrid(λ[λlowidx:λhighidx]*1e9, t*1e15)
-
-        println(size(X))
-        println(size(Y))
-        println(size(I_ωt_UV))
 
         plt.contourf(X,Y, norm ? Maths.normbymax(I_ωt_UV) : I_ωt_UV)
         plt.colorbar(label=(norm ? "I (norm.)" : "I (arb. units)" ))
