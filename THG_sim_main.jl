@@ -11,7 +11,7 @@ using  LaTeXStrings
 p_scan = false               # if true, pressure scan is executed, with pressure range set by the variable "pres_arr" below; if false, a single run is simulated
 
 save = true                  # if true, save output plots, run parameters and UV spectrum
-show = true                 # if true, opens plots in GUI after run 
+show = false                 # if true, opens plots in GUI after run 
 txt_only = false             # if true, no plots are produced (only UV spectrum and simulation parameters are written to file)
 
 read_IR = true               # if true: read input IR pulse [time domain] from file; if false: use Gaussian approximation 
@@ -58,7 +58,7 @@ pres_arr = range(start= 0.1, stop= 5.1, step= 0.1)  # pressure range (only relev
 # ----------------- PLOT SETTINGS -------------------------------
 
 show_title = false # if false: hides figure titles
-norm = true        # if true: normalise intensities on figures
+norm = false        # if true: normalise intensities on figures
 disable_latex = false # if true: disable latex rendering of plots (saves time but might result in some labels or title being displayed incorrectly)
 use_pdf = false     # if true: save output as pdf; if false: use png
 
@@ -266,11 +266,11 @@ function THG_main(pres=pres)
     # * * * GET FREQUENCY-RESOLVED UV TEMPORAL PROFILE AT OUTPUT 
     n = 15 # bin size 
 
-    E_ωt_UV = zeros(ComplexF64,(length(ω[ωlowUVidx:ωhighUVidx]), length(t)))
+    E_ωt_UV = zeros(ComplexF64,(length(ω[ωlowUVidx:n:ωhighUVidx]), length(t)))
 
-    for i = 1:length(ω[ωlowUVidx:ωhighUVidx])
+    for i = 1:length(ω[ωlowUVidx:n:ωhighUVidx])
         Er0_filtered = Er0[:,end]
-        ωi = range(ωlowUVidx,ωhighUVidx)[i]
+        ωi = range(ωlowUVidx,ωhighUVidx; step=n)[i]
         Er0_filtered[1:ωi] .=0 
         Er0_filtered[ωi+n:end] .= 0
         trans= FFTW.irfft(Er0_filtered[:,end], length(t),1) # for each UV frequency component at the output find temporal profile
@@ -390,10 +390,10 @@ function THG_main(pres=pres)
             return X, Y
         end
 
-        X, Y = meshgrid(λ[λlowidx:λhighidx]*1e9, t*1e15)
+        X, Y = meshgrid(λ[λlowidx:n:λhighidx]*1e9, t*1e15)
 
-        plt.contourf(X,Y, norm ? Maths.normbymax(I_ωt_UV) : I_ωt_UV, 5, vmin=0.1)
-        plt.ylim(minimum(t)/2, maximum(t)/2)
+        plt.contourf(X,Y, norm ? Maths.normbymax(I_ωt_UV) : I_ωt_UV, 5)
+        plt.ylim(minimum(t)/2 *1e15, maximum(t)/2 *1e15)
         plt.colorbar(label=(norm ? "I (norm.)" : "I (arb. units)" ))
         plt.ylabel("t (fs)")
         plt.xlabel(L"\lambda"*"(nm)")
