@@ -58,7 +58,7 @@ pres_arr = range(start= 0.1, stop= 5.1, step= 0.1)  # pressure range (only relev
 # ----------------- PLOT SETTINGS -------------------------------
 
 show_title = false # if false: hides figure titles
-norm = false        # if true: normalise intensities on figures
+norm = true        # if true: normalise intensities on figures
 disable_latex = false # if true: disable latex rendering of plots (saves time but might result in some labels or title being displayed incorrectly)
 use_pdf = false     # if true: save output as pdf; if false: use png
 
@@ -279,7 +279,7 @@ function THG_main(pres=pres)
         end 
     end  
     
-    I_ωt_UV = abs2.(E_ωt_UV)
+    I_ωt_UV = abs2.(Maths.hilbert(E_ωt_UV))
 
     # * * * EXTRACT INTENSITY ENVELOPES 
     It0_envelope = abs2.(Maths.hilbert(Et0))          # envelope modulating It0
