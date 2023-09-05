@@ -264,13 +264,15 @@ function THG_main(pres=pres)
     Et0_IR =FFTW.irfft(filter_all_r_IR, length(t), 1)    # time-domain real field amplitude of IR pulse across r
 
     # * * * GET FREQUENCY-RESOLVED UV TEMPORAL PROFILE AT OUTPUT 
+    n = 15 # bin size 
+
     E_ωt_UV = zeros(ComplexF64,(length(ω[ωlowUVidx:ωhighUVidx]), length(t)))
 
     for i = 1:length(ω[ωlowUVidx:ωhighUVidx])
         Er0_filtered = Er0[:,end]
         ωi = range(ωlowUVidx,ωhighUVidx)[i]
         Er0_filtered[1:ωi] .=0 
-        Er0_filtered[ωi:end] .= 0
+        Er0_filtered[ωi+n:end] .= 0
         trans= FFTW.irfft(Er0_filtered[:,end], length(t),1) # for each UV frequency component at the output find temporal profile
         for j = 1:length(t)
             E_ωt_UV[i,j] = trans[j]
@@ -390,7 +392,8 @@ function THG_main(pres=pres)
 
         X, Y = meshgrid(λ[λlowidx:λhighidx]*1e9, t*1e15)
 
-        plt.contourf(X,Y, norm ? Maths.normbymax(I_ωt_UV) : I_ωt_UV)
+        plt.contourf(X,Y, norm ? Maths.normbymax(I_ωt_UV) : I_ωt_UV, 5, vmin=0.1)
+        plt.ylim(minimum(t)/2, maximum(t)/2)
         plt.colorbar(label=(norm ? "I (norm.)" : "I (arb. units)" ))
         plt.ylabel("t (fs)")
         plt.xlabel(L"\lambda"*"(nm)")
