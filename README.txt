@@ -2,7 +2,6 @@ LEFT TO DO
 ============================
 
 - wait for feedback on report and implement it 
-- work on manuscript plots (?)
 
 
 2d heat maps: time vs spectrum 

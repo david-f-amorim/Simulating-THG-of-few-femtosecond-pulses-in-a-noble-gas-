@@ -263,6 +263,18 @@ function THG_main(pres=pres)
 
     Et0_IR =FFTW.irfft(filter_all_r_IR, length(t), 1)    # time-domain real field amplitude of IR pulse across r
 
+    # * * * GET FREQUENCY-RESOLVED UV TEMPORAL PROFILE AT OUTPUT  
+    E_ωt_UV = zeros(ComplexF64,(length(ω[ωlowUVidx:ωhighUVidx]), length(t)))
+
+    for i = 1:length(ω[ωlowUVidx:ωhighUVidx])
+        trans= FFTW.irfft(Er0[i,end], length(t),1)  # for each UV frequency component at the output find temporal profile
+        for j = 1:length(t)
+            E_ωt_UV[i,j] = trans[j]
+        end 
+    end  
+    
+    I_ωt_UV = abs2.(E_ωt_UV)
+
     # * * * EXTRACT INTENSITY ENVELOPES 
     It0_envelope = abs2.(Maths.hilbert(Et0))          # envelope modulating It0
     It0_UV_envelope = abs2.(Maths.hilbert(Et0_UV))    # envelope modulating It0_UV
@@ -361,6 +373,23 @@ function THG_main(pres=pres)
         rcParams["font.family"] = "STIXGeneral" # use LateX font for text
         rcParams["font.size"] = 16 # set standard font size 
         fig_dim = 2* [3.14961, 2.3622075] # for 8cm width ; double for 16cm width  
+
+        #+++++ PLOT 0:  Frequency-resolved UV output temporal profile 
+        plt.figure(figsize=fig_dim)
+        if show_title plt.title("Frequency-resolved UV output temporal profile") end
+        
+        plt.pcolormesh(λ[λlowidx:λhighidx]*1e9, t*1e15, norm ? Maths.normbymax(Iωt_UV) : I_ωt_UV)
+        plt.colorbar(label=(norm ? "I (norm.)" : "I (arb. units)" ))
+        plt.ylabel("t (fs)")
+        plt.xlabel(L"\lambda"*"(nm)")
+        
+        if save==true
+            if use_pdf == true
+                plt.savefig(joinpath(out_path,"UV_output_2d_map_time_frequency.pdf"))
+            else 
+                plt.savefig(joinpath(out_path,"UV_output_2d_map_time_frequency.png"),dpi=1000)
+            end
+        end  
 
         #+++++ PLOT 1:  IR and UV intensities as functions of z and r≠0
         plt.figure(figsize=fig_dim)
@@ -733,7 +762,7 @@ function THG_main(pres=pres)
             plt.plot(λ[λlowidx:λhighidx]*1e9,norm ? Iω0[λlowidx:λhighidx,idcs[i]]/max : Iω0[λlowidx:λhighidx,idcs[i]], label="z="*string(round(z_vals_local[i]*1e3, digits=3))*"mm", color=c[i])
         end
         plt.xlim(λ_rangeUV[1]*1e9, λ_rangeUV[2]*1e9)
-        plt.xlabel(L"\lambda"*"(nm)")
+        plt.xlabel(L"\lambda"*" (nm)")
         plt.ylabel(norm ? "I (norm.)" : "I (arb. units)")
 
         plt.legend(loc="upper right")
@@ -753,7 +782,7 @@ function THG_main(pres=pres)
         plt.plot(ω[ωlowIRidx:ωhighIRidx]*1e-15,ϕω0[ωlowIRidx:ωhighIRidx,1], color="grey", label="z="*string(round(zout[1]*1e3, digits=3))*"mm")
         plt.plot(ω[ωlowIRidx:ωhighIRidx]*1e-15,ϕω0[ωlowIRidx:ωhighIRidx,end], color="red", label="z="*string(round(zout[end]*1e3, digits=3))*"mm")
          
-         plt.ylabel(L"\varphi"*"(rad)")
+         plt.ylabel(L"\varphi"*" (rad)")
          plt.xlabel(L"\omega"*" "*L"(10^{15}"*"rad/s)")
          plt.legend(loc="upper right")
  
@@ -771,7 +800,7 @@ function THG_main(pres=pres)
          
         plt.plot(ω[ωlowUVidx:ωhighUVidx]*1e-15,ϕω0[ωlowUVidx:ωhighUVidx,end], color="red")
          
-        plt.ylabel(L"\varphi"*"(rad)")
+        plt.ylabel(L"\varphi"*" (rad)")
         plt.xlabel(L"\omega"*" "*L"(10^{15}"*"rad/s)")
 
  
