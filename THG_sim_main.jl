@@ -273,13 +273,13 @@ function THG_main(pres=pres)
         ωi = range(ωlowUVidx,ωhighUVidx; step=n)[i]
         Er0_filtered[1:ωi] .=0 
         Er0_filtered[ωi+n:end] .= 0
-        trans= FFTW.irfft(Er0_filtered[:,end], length(t),1) # for each UV frequency component at the output find temporal profile
+        trans= Maths.hilbert(FFTW.irfft(Er0_filtered[:,end], length(t),1)) # for each UV frequency component at the output find temporal envelope
         for j = 1:length(t)
             E_ωt_UV[i,j] = trans[j]
         end 
     end  
     
-    I_ωt_UV = abs2.(Maths.hilbert(E_ωt_UV))
+    I_ωt_UV = abs2.(E_ωt_UV)
 
     # * * * EXTRACT INTENSITY ENVELOPES 
     It0_envelope = abs2.(Maths.hilbert(Et0))          # envelope modulating It0
@@ -332,8 +332,6 @@ function THG_main(pres=pres)
 
         Iω0_UV[i] = abs2.(Er0_int_UV) # frequency domain UV intensity (integrated along r)
         Iω0_IR[i] = abs2.(Er0_int_IR) # frequency domain IR intensity (integrated along r)
-
-
     end    
     
     # * * * PROCESS MEASURED DATA FROM FILES 
