@@ -264,12 +264,15 @@ function THG_main(pres=pres)
     Et0_IR =FFTW.irfft(filter_all_r_IR, length(t), 1)    # time-domain real field amplitude of IR pulse across r
 
     # * * * GET FREQUENCY-RESOLVED UV TEMPORAL PROFILE AT OUTPUT 
-    n_sample = 4        # sample spacing  
-    E_ωt_UV = zeros(ComplexF64,(length(ω[ωlowUVidx:n:ωhighUVidx]), length(t[begin:n:end])))
+    E_ωt_UV = zeros(ComplexF64,(length(ω[ωlowUVidx:ωhighUVidx]), length(t)))
 
-    for i = 1:length(ω[ωlowUVidx:n:ωhighUVidx])
-        trans= FFTW.irfft(Er0[i:i+n-1,end], length(t[begin:n:end]),1)  # for each UV frequency component at the output find temporal profile
-        for j = 1:length(t[begin:n:end])
+
+    for i = 1:length(ω[ωlowUVidx:ωhighUVidx])
+        Er0_filtered = Er_0[:,end]
+        Er0_filtered[1:i] .=0 
+        Er0_filtered[i:end] .= 0
+        trans= FFTW.irfft(Er0_filtered[:,end], length(t),1)[ωlowUVidx:ωhighUVidx]  # for each UV frequency component at the output find temporal profile
+        for j = 1:length(t)
             E_ωt_UV[i,j] = trans[j]
         end 
     end  
@@ -379,7 +382,7 @@ function THG_main(pres=pres)
         plt.figure(figsize=fig_dim)
         if show_title plt.title("Frequency-resolved UV output temporal profile") end
         
-        plt.pcolormesh(λ[λlowidx:n:λhighidx]*1e9, t[begin:n:end]*1e15, norm ? Maths.normbymax(Iωt_UV) : I_ωt_UV)
+        plt.pcolormesh(λ[λlowidx:λhighidx]*1e9, t*1e15, norm ? Maths.normbymax(Iωt_UV) : I_ωt_UV)
         plt.colorbar(label=(norm ? "I (norm.)" : "I (arb. units)" ))
         plt.ylabel("t (fs)")
         plt.xlabel(L"\lambda"*"(nm)")
