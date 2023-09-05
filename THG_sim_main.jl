@@ -378,32 +378,6 @@ function THG_main(pres=pres)
         rcParams["font.size"] = 16 # set standard font size 
         fig_dim = 2* [3.14961, 2.3622075] # for 8cm width ; double for 16cm width  
 
-        #+++++ PLOT 0:  Frequency-resolved UV output temporal profile 
-        plt.figure(figsize=fig_dim)
-        if show_title plt.title("Frequency-resolved UV output temporal profile") end
-        
-        function meshgrid(x, y)
-            X = [i for i in x, j in 1:length(y)]
-            Y = [j for i in 1:length(x), j in y]
-            return X, Y
-        end
-
-        X, Y = meshgrid(λ[λlowidx:n:λhighidx]*1e9, t*1e15)
-
-        plt.contourf(X,Y, norm ? Maths.normbymax(I_ωt_UV) : I_ωt_UV, 5)
-        plt.ylim(minimum(t)/2 *1e15, maximum(t)/2 *1e15)
-        plt.colorbar(label=(norm ? "I (norm.)" : "I (arb. units)" ))
-        plt.ylabel("t (fs)")
-        plt.xlabel(L"\lambda"*"(nm)")
-        
-        if save==true
-            if use_pdf == true
-                plt.savefig(joinpath(out_path,"UV_output_2d_map_time_frequency.pdf"))
-            else 
-                plt.savefig(joinpath(out_path,"UV_output_2d_map_time_frequency.png"),dpi=1000)
-            end
-        end  
-
         #+++++ PLOT 1:  IR and UV intensities as functions of z and r≠0
         plt.figure(figsize=fig_dim)
         if show_title plt.suptitle("Off-axis intensity of IR and UV beams") end
@@ -807,7 +781,7 @@ function THG_main(pres=pres)
              end 
          end
 
-        #+++++ PLOT 16: spectral phase UV output
+        #+++++ PLOT 17: spectral phase UV output
         plt.figure(figsize=fig_dim)
         if show_title plt.title("UV spectral phase at output") end
          
@@ -824,6 +798,32 @@ function THG_main(pres=pres)
                  plt.savefig(joinpath(out_path,"spectral_phase_UV.png"),dpi=1000)
              end 
          end 
+
+        #+++++ PLOT 18:  Frequency-resolved UV output temporal profile 
+        plt.figure(figsize=fig_dim)
+        if show_title plt.title("Frequency-resolved UV output temporal profile") end
+        
+        function meshgrid(x, y)
+            X = [i for i in x, j in 1:length(y)]
+            Y = [j for i in 1:length(x), j in y]
+            return X, Y
+        end
+
+        X, Y = meshgrid(λ[λlowidx:n:λhighidx]*1e9, t*1e15)
+
+        plt.contourf(X,Y, norm ? Maths.normbymax(I_ωt_UV) : I_ωt_UV, 10)
+        plt.ylim(minimum(t)/2 *1e15, maximum(t)/2 *1e15)
+        plt.colorbar(label=(norm ? "I (norm.)" : "I (arb. units)" ))
+        plt.ylabel("t (fs)")
+        plt.xlabel(L"\lambda"*"(nm)")
+        
+        if save==true
+            if use_pdf == true
+                plt.savefig(joinpath(out_path,"UV_output_2d_map_time_frequency.pdf"))
+            else 
+                plt.savefig(joinpath(out_path,"UV_output_2d_map_time_frequency.png"),dpi=1000)
+            end
+        end  
 
     end    
 
