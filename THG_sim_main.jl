@@ -381,7 +381,19 @@ function THG_main(pres=pres)
         plt.figure(figsize=fig_dim)
         if show_title plt.title("Frequency-resolved UV output temporal profile") end
         
-        plt.pcolormesh(λ[λlowidx:λhighidx]*1e9, t*1e15, norm ? Maths.normbymax(I_ωt_UV[λlowidx:λhighidx,:]) : I_ωt_UV[λlowidx:λhighidx,:])
+        function meshgrid(x, y)
+            X = [i for i in x, j in 1:length(y)]
+            Y = [j for i in 1:length(x), j in y]
+            return X, Y
+        end
+
+        X, Y = meshgrid(λ[λlowidx:λhighidx]*1e9, t*1e15)
+
+        println(shape(X))
+        println(shape(Y))
+        println(shape(I_ωt_UV))
+
+        plt.contourf(X,Y, norm ? Maths.normbymax(I_ωt_UV) : I_ωt_UV)
         plt.colorbar(label=(norm ? "I (norm.)" : "I (arb. units)" ))
         plt.ylabel("t (fs)")
         plt.xlabel(L"\lambda"*"(nm)")
