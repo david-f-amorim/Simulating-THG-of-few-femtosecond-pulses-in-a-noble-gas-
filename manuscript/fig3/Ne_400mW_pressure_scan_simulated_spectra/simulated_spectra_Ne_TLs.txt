@@ -1,0 +1,36 @@
+0.25 bar	
+0.5 bar		
+0.75 bar	
+1.0 bar		
+1.25 bar	
+1.5 bar		
+1.75 bar	
+2.0 bar		1.74 fs
+2.25 bar	
+2.5 bar		
+2.75 bar	
+3.0 bar		1.69 fs
+3.25 bar	
+3.5 bar		
+3.75 bar	
+4.0 bar		1.61 fs
+4.25 bar	
+4.5 bar		
+4.75 bar	
+5.0 bar		1.59 fs 1.20 fs
+5.25 bar	
+5.5 bar		
+5.75 bar	
+6.0 bar		1.52 fs
+6.25 bar	
+6.5 bar		
+6.75 bar	
+7.0 bar		1.49 fs
+7.5 bar		
+8.0 bar		1.47 fs
+8.5 bar		
+9.0 bar		1.46 fs
+9.5 bar		1.45 fs
+10.0 bar	1.45 fs	1.21 fs
+12.5 bar	1.47 fs
+15.0 bar	1.54 fs

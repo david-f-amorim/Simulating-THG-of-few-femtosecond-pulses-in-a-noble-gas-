@@ -227,7 +227,7 @@ function THG_main(pres=pres)
     for i = 1:size(Eout, 1), j = 1:size(Eout, 3)
         Er0[i,j] = Hankel.integrateK(Eout[i,:,j], q)             # integrate along r (technically: k) to obtain total real-space amplitude in frequency domain  
     end 
-
+    
     Etout = FFTW.irfft(Erout, length(t), 1)     # time-domain real field amplitude at r≠0
     Et0 = FFTW.irfft(Er0, length(t),1)          # total time-domain real field amplitude across all radii
     Et = Maths.hilbert(Etout)                   # time-domain real field amplitude of envelope at r≠0

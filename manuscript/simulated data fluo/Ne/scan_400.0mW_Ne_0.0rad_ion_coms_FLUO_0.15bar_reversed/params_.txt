@@ -1,0 +1,24 @@
+gas     = Ne
+p_ed    = 0.001
+dens_mod = coms
+τ       = 6.171079424448836e-15
+λ0      = 8.0e-7
+w0      = 6.5e-5
+CEP     = 0.0
+IRenergy  = 0.0004
+L       = 0.00558
+kerr    = f
+ion     = true
+only_r0     = false
+propz   = -0.00279
+GVD     = 0
+thickness= 0
+ion_mod = PPT
+N = 1024
+R = 0.00025
+
+# IR input beam read from: input/IRpulse_old.dat
+
+# Gas density distribution read from: input/dens_0.15bar_FLUORESCENCE.dat
+
+N = 1024 up to 4.6 bar in steps of 0.2 bar, N = 512 from 4.5 bar in steps of 0.5 bar

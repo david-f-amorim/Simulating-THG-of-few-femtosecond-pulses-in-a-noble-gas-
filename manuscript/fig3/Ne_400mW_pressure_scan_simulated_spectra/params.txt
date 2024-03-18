@@ -1,0 +1,20 @@
+gas     = Ne
+p_ed    = 0.001
+dens_mod = grad
+τ       = 6.168457043876359e-15
+λ0      = 8.0e-7
+w0      = 6.5e-5
+CEP     = 0.0
+IRenergy  = 0.0004
+L       = 0.003
+kerr    = f
+ion     = true
+only_r0     = false
+propz   = -0.0015
+GVD     = 0
+thickness= 0
+ion_mod = PPT
+N = 512
+R = 0.0002
+
+# IR input beam read from: input/IRpulse_old.dat

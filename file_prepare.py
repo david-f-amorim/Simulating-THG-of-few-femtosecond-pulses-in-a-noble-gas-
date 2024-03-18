@@ -24,10 +24,10 @@ use_IR_spec_exp = False      # if true, a second IR spectrum data file is proces
 in_dir  = "raw_input"    # name of input directory containing the raw data
 out_dir = "input"        # name of input directory to which processed data is saved  (NOTE: should be the same as the "THG_sim_main.jl" input directory) 
 
-in_rho         = "CellAndSpace_0-2bar.txt"             # name of file containing density data 
+in_rho         = "density_distribution_fluoresence_reverse_pumpOFF.txt"             # name of file containing density data 
 in_IR          = "Ek.dat"                               # name of file containing IR time-intensity information
 in_IR_spec     = "Speck.dat"                            # name of file containing IR spectrum data 
-in_UV          = "1.0bar_Subt2__0__17-08-23-927.txt"    # name of file containing UV spectrum data 
+in_UV          = "Ne_200mW_2.0bar.txt"    # name of file containing UV spectrum data 
 in_IR_spec_exp = "2.0bar_Ne_400mW.txt"     # name of file containing alternative IR spectrum data 
 # c:\Users\david\Downloads\CellAndSpace_0-2bar.txt c:\Users\david\Downloads\differentialPumpingChip_2-10bar.txt c:\Users\david\Downloads\CellAndSpace_2-10bar.txt
 # ----------------- FILE PROCESSING -------------------------------
@@ -133,12 +133,14 @@ if use_UV:
 if use_rho: 
 
     arr = np.loadtxt(os.path.join(in_dir, in_rho), comments="%", delimiter=",", dtype="float")
-    arr[:,0] += np.max(arr[:,0].astype("float"))
+    arr[:,0] += np.abs(np.min(arr[:,0].astype("float")))
     arr[:,0] *= 1e-3 
+
+    outputs = ["FLUORESCENCE", "FLUOGAUSS"]
 
     for i in np.arange(arr.shape[1]-1)+1:
         dens = arr[:,i].astype("float")
-        out_rho="dens_{0:.1f}bar_OLD_CELL.dat".format(0+(i-1)*0.2) # change back to 0.1+(i-1)*0.1
+        out_rho="dens_0.25bar_" + outputs[i-1] + "_pumpOFF.dat"
         out_arr =np.empty(shape=(len(dens),2), dtype="float")
         out_arr[:,0]= arr[:,0]
         out_arr[:,1]= dens 

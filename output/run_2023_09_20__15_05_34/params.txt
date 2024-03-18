@@ -1,0 +1,24 @@
+gas     = Ne
+pres    = 0.01
+p_ed    = 0
+dens_mod = grad
+τ       = 7.368921594044362e-15
+λ0      = 8.0e-7
+w0      = 6.5e-5
+CEP     = 0.0
+IRenergy  = 0.0004
+L       = 0.5
+kerr    = f
+ion     = true
+propz   = -0.25
+GVD     = 1.1000000000000001e-29
+thickness= 0
+ion_mod = PPT
+
+
+E_out   = 5.634418718253179e-8
+η       = 0.00014088970826224638
+τ_UV    = 2.8554385496954326e-15
+z_peak  = 0.045
+
+# IR input beam read from: A:\scratch\Josina\Other documents\UV cell\Simulating-THG-of-few-femtosecond-pulses-in-a-noble-gas-\input\IRpulse.dat
